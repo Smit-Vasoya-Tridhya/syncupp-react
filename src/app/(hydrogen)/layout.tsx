@@ -20,15 +20,15 @@ export default function DefaultLayout({
     return null;
   }
 
-  if (layout === LAYOUT_OPTIONS.HELIUM) {
-    return <HeliumLayout>{children}</HeliumLayout>;
-  }
-  if (layout === LAYOUT_OPTIONS.LITHIUM) {
-    return <LithiumLayout>{children}</LithiumLayout>;
-  }
-  if (layout === LAYOUT_OPTIONS.BERYLLIUM) {
-    return <BerylLiumLayout>{children}</BerylLiumLayout>;
-  }
+  // if (layout === LAYOUT_OPTIONS.HYDROGEN) {
+  //   return <HydrogenLayout>{children}</HydrogenLayout>;
+  // }
+  // if (layout === LAYOUT_OPTIONS.LITHIUM) {
+  //   return <LithiumLayout>{children}</LithiumLayout>;
+  // }
+  // if (layout === LAYOUT_OPTIONS.BERYLLIUM) {
+  //   return <BerylLiumLayout>{children}</BerylLiumLayout>;
+  // }
 
-  return <HydrogenLayout>{children}</HydrogenLayout>;
+  return <HeliumLayout>{children}</HeliumLayout>;
 }

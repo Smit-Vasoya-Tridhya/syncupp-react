@@ -3,6 +3,8 @@ import logoImg from '@public/logo.svg';
 import { LAYOUT_OPTIONS } from '@/config/enums';
 import logoIconImg from '@public/logo-short.svg';
 import { OpenGraph } from 'next/dist/lib/metadata/types/opengraph-types';
+import syncuppLogo from '@public/assets/syncupp-logo.svg';
+
 
 enum MODE {
   DARK = 'dark',
@@ -12,10 +14,10 @@ enum MODE {
 export const siteConfig = {
   title: 'SyncUpp - Agency Dashboard ',
   description: `Isomorphic the ultimate React TypeScript Admin Template. Streamline your admin dashboard development with our feature-rich, responsive, and highly customizable solution. Boost productivity and create stunning admin interfaces effortlessly.`,
-  logo: logoImg,
+  logo: syncuppLogo,
   icon: logoIconImg,
   mode: MODE.LIGHT,
-  layout: LAYOUT_OPTIONS.HYDROGEN,
+  layout: LAYOUT_OPTIONS.HELIUM,
   // TODO: favicon
 };
 

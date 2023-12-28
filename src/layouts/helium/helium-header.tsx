@@ -55,9 +55,9 @@ function HeaderMenuRight() {
           />
         </ActionIcon>
       </NotificationDropdown>
-      <SettingsButton className="rounded-full before:absolute before:h-full before:w-full before:-rotate-45 before:rounded-full before:bg-gradient-to-l before:from-green-dark/25 before:via-green-dark/0 before:to-green-dark/0 3xl:h-10 3xl:w-10">
+      {/* <SettingsButton className="rounded-full before:absolute before:h-full before:w-full before:-rotate-45 before:rounded-full before:bg-gradient-to-l before:from-green-dark/25 before:via-green-dark/0 before:to-green-dark/0 3xl:h-10 3xl:w-10">
         <PiGearFill className="h-[22px] w-auto animate-spin-slow" />
-      </SettingsButton>
+      </SettingsButton> */}
       <ProfileMenu />
     </div>
   );
@@ -83,7 +83,7 @@ export default function Header() {
         >
           <Logo iconOnly={true} />
         </Link>
-        <SearchWidget />
+        {/* <SearchWidget /> */}
       </div>
       <HeaderMenuRight />
     </header>

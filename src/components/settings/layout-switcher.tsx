@@ -11,22 +11,22 @@ import RadioBox from '@/components/settings/radio-box';
 import DrawerBlock from '@/components/settings/drawer-block';
 
 const layoutOptions = [
-  {
-    icon: HydrogenIcon,
-    value: LAYOUT_OPTIONS.HYDROGEN,
-  },
+  // {
+  //   icon: HydrogenIcon,
+  //   value: LAYOUT_OPTIONS.HYDROGEN,
+  // },
   {
     icon: HeliumIcon,
     value: LAYOUT_OPTIONS.HELIUM,
   },
-  {
-    icon: LithiumIcon,
-    value: LAYOUT_OPTIONS.LITHIUM,
-  },
-  {
-    icon: BerylliumIcon,
-    value: LAYOUT_OPTIONS.BERYLLIUM,
-  },
+  // {
+  //   icon: LithiumIcon,
+  //   value: LAYOUT_OPTIONS.LITHIUM,
+  // },
+  // {
+  //   icon: BerylliumIcon,
+  //   value: LAYOUT_OPTIONS.BERYLLIUM,
+  // },
 ];
 
 export default function LayoutSwitcher() {
