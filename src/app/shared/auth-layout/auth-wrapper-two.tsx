@@ -24,6 +24,7 @@ import {
   PiUserCirclePlus,
 } from 'react-icons/pi';
 import { FcGoogle } from 'react-icons/fc';
+import { siteConfig } from '@/config/site.config';
 
 export default function AuthWrapperTwo({
   children,
@@ -99,14 +100,14 @@ function AuthNavBar() {
   return (
     <div className="flex shrink-0 justify-between rounded-bl-xl rounded-tl-xl bg-white px-4 py-4 dark:bg-transparent xl:sticky xl:top-0 xl:w-36 xl:flex-col xl:items-center xl:justify-start xl:px-0 xl:py-14 2xl:w-[184px]">
       <Link href="/" className="mb-1 inline-block max-w-[64px]">
-        <Image src={logoImg} alt="Isomorphic" className="dark:invert" />
+        <Image src={siteConfig.logo} alt="Isomorphic" className="dark:invert" width={40} height={35} />
       </Link>
       <div className="flex space-x-6 xl:w-full xl:flex-col xl:space-x-0 xl:space-y-6 xl:pt-9 2xl:space-y-7 2xl:pt-12 3xl:pt-14">
-        <AuthNavLink href={routes.auth.signUp2}>
+        <AuthNavLink href={routes.signUp}>
           <PiUserCirclePlus className="h-6 w-6" />
           Sign up
         </AuthNavLink>
-        <AuthNavLink href={routes.auth.signIn2}>
+        <AuthNavLink href={routes.signIn}>
           <PiArrowLineRight className="h-[22px] w-[22px]" />
           Login
         </AuthNavLink>
