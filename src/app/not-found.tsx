@@ -11,6 +11,16 @@ export default function NotFound() {
   return (
     <div className="flex min-h-screen flex-col bg-[#F8FAFC]">
       <div className="sticky top-0 z-40 flex justify-center py-5 backdrop-blur-lg lg:backdrop-blur-none xl:py-10">
+        <Link href="/">
+          <Image
+            src={siteConfig.logo}
+            alt={siteConfig.title}
+            className="dark:invert"
+            priority
+            width={40}
+            height={35}
+          />
+        </Link>
       </div>
 
       <div className="flex grow items-center px-6 xl:px-10">

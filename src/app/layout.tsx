@@ -39,7 +39,7 @@ export default async function RootLayout({
         suppressHydrationWarning
         className={cn(inter.variable, lexendDeca.variable, 'font-inter')}
       >
-        <AuthProvider session={session}>
+        {/* <AuthProvider session={session}> */}
           <ThemeProvider>
             <NextProgress />
             {children}
@@ -47,7 +47,7 @@ export default async function RootLayout({
             <GlobalDrawer />
             <GlobalModal />
           </ThemeProvider>
-        </AuthProvider>
+        {/* </AuthProvider> */}
       </body>
     </html>
   );
