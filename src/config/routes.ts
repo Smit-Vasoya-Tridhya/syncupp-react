@@ -2,6 +2,8 @@ export const routes = {
   file: {
     dashboard: '/file',
   },
-  signIn: '/signin',
-  signUp: '/signup',
+  signIn: '/admin/signin',
+  signUp: '/admin/signup',
+  forgotPassword:'/admin/forgot-password',
+  resetPassword:'/admin/reset-password'
 };

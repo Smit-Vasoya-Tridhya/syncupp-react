@@ -11,16 +11,27 @@ import { Form } from '@/components/ui/form';
 import { Text } from '@/components/ui/text';
 import { routes } from '@/config/routes';
 import { loginSchema, LoginSchema } from '@/utils/validators/login.schema';
+// import api from '@/app/api/api';
 
 const initialValues: LoginSchema = {
-  email: 'admin@admin.com',
-  password: 'admin',
+  email: '',
+  password: '',
   rememberMe: true,
 };
-
 export default function SignInForm() {
   const isMedium = useMedia('(max-width: 1200px)', false);
-  const onSubmit: SubmitHandler<LoginSchema> = (data) => {
+  const onSubmit: SubmitHandler<LoginSchema> = async (data) => {
+    // try {
+    //   const response = await api('/admin/login','POST')
+    //   const responseData = await response.json(); // Parse the JSON response
+    //   if (response.ok) {
+    //     console.log('Login successful:', responseData);
+    //   } else {
+    //     console.error('Login failed:', responseData);
+    //   }
+    // } catch (error) {
+    //   console.error('Error during login:', error);
+    // }
     console.log('Sign in data', data);
   };
 
@@ -28,7 +39,7 @@ export default function SignInForm() {
     <>
       <Form<LoginSchema>
         validationSchema={loginSchema}
-        onSubmit={onSubmit}
+        onSubmit={SignInForm}
         useFormProps={{
           mode: 'onChange',
           defaultValues: initialValues,
@@ -79,6 +90,7 @@ export default function SignInForm() {
               color="info"
               rounded="pill"
             >
+              <Link href={routes.forgotPassword}></Link>
               Sign in
             </Button>
           </div>
