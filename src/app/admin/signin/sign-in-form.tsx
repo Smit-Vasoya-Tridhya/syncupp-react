@@ -77,7 +77,7 @@ export default function SignInForm() {
                 className="[&>label>span]:font-medium"
               />
               <Link
-                href={routes.forgotPassword}
+                href={routes.admin.forgotPassword}
                 className="h-auto p-0 text-sm font-semibold text-blue underline transition-colors hover:text-gray-900 hover:no-underline"
               >
                 Forget Password?
@@ -90,7 +90,7 @@ export default function SignInForm() {
               color="info"
               rounded="pill"
             >
-              <Link href={routes.forgotPassword}></Link>
+              {/* <Link href={routes.admin.forgotPassword}></Link> */}
               Sign in
             </Button>
           </div>
