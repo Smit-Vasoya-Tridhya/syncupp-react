@@ -49,7 +49,7 @@ import {
 export const menuItems = [
   {
     name: 'Dashboard',
-    href: '/',
+    href: '/home',
     icon: <PiFolderNotchDuotone />,
   },
   {

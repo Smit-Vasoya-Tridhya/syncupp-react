@@ -52,8 +52,8 @@ export const authOptions: NextAuthOptions = {
         // submitted and returns either a object representing a user or value
         // that is false/null if the credentials are invalid
         const user = {
-          email: 'admin@admin.com',
-          password: 'admin',
+          email: '',
+          password: '',
         };
 
         if (
@@ -67,10 +67,10 @@ export const authOptions: NextAuthOptions = {
         return null;
       },
     }),
-    GoogleProvider({
-      clientId: env.GOOGLE_CLIENT_ID || '',
-      clientSecret: env.GOOGLE_CLIENT_SECRET || '',
-      allowDangerousEmailAccountLinking: true,
-    }),
+    // GoogleProvider({
+    //   clientId: env.GOOGLE_CLIENT_ID || '',
+    //   clientSecret: env.GOOGLE_CLIENT_SECRET || '',
+    //   allowDangerousEmailAccountLinking: true,
+    // }),
   ],
 };
