@@ -11,28 +11,35 @@ import { Form } from '@/components/ui/form';
 import { Text } from '@/components/ui/text';
 import { routes } from '@/config/routes';
 import { loginSchema, LoginSchema } from '@/utils/validators/login.schema';
-import { useState } from 'react';
+// import api from '@/app/api/api';
 
 const initialValues: LoginSchema = {
   email: '',
   password: '',
-  rememberMe: false,
+  rememberMe: true,
 };
-
 export default function SignInForm() {
   const isMedium = useMedia('(max-width: 1200px)', false);
-  const [reset, setReset] = useState({});
-  const onSubmit: SubmitHandler<LoginSchema> = (data) => {
+  const onSubmit: SubmitHandler<LoginSchema> = async (data) => {
+    // try {
+    //   const response = await api('/admin/login','POST')
+    //   const responseData = await response.json(); // Parse the JSON response
+    //   if (response.ok) {
+    //     console.log('Login successful:', responseData);
+    //   } else {
+    //     console.error('Login failed:', responseData);
+    //   }
+    // } catch (error) {
+    //   console.error('Error during login:', error);
+    // }
     console.log('Sign in data', data);
-    setReset({ ...initialValues, rememberMe: false });
   };
 
   return (
     <>
       <Form<LoginSchema>
         validationSchema={loginSchema}
-        onSubmit={onSubmit}
-        resetValues={reset}
+        onSubmit={SignInForm}
         useFormProps={{
           mode: 'onChange',
           defaultValues: initialValues,
@@ -70,7 +77,7 @@ export default function SignInForm() {
                 className="[&>label>span]:font-medium"
               />
               <Link
-                href={routes.forgotPassword}
+                href={routes.admin.forgotPassword}
                 className="h-auto p-0 text-sm font-semibold text-blue underline transition-colors hover:text-gray-900 hover:no-underline"
               >
                 Forget Password?
@@ -83,6 +90,7 @@ export default function SignInForm() {
               color="info"
               rounded="pill"
             >
+              {/* <Link href={routes.admin.forgotPassword}></Link> */}
               Sign in
             </Button>
           </div>

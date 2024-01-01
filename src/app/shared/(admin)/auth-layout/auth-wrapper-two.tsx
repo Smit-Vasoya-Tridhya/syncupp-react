@@ -2,30 +2,26 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Avatar } from '@/components/ui/avatar';
-import logoImg from '@public/logo-short.svg';
+import logoImg from '@public/assets/syncupp-logo.svg';
 import starImg from '@public/auth/star.svg';
 import { Title, Text } from '@/components/ui/text';
-import { Button } from '@/components/ui/button';
 import { usePathname } from 'next/navigation';
 import { routes } from '@/config/routes';
 import cn from '@/utils/class-names';
-import ArrowShape from '@/components/shape/arrow';
-import OrSeparation from './or-separation';
 import {
-  PiAppleLogo,
   PiArrowLeftBold,
+  PiArrowLineRight,
   PiDribbbleLogo,
   PiFacebookLogo,
   PiInstagramLogo,
   PiLinkedinLogo,
   PiTwitterLogo,
-  PiArrowLineRight,
   PiUserCirclePlus,
 } from 'react-icons/pi';
 import { FcGoogle } from 'react-icons/fc';
 import { FaFacebook } from "react-icons/fa";
 import { siteConfig } from '@/config/site.config';
+import { Button } from 'rizzui';
 
 export default function AuthWrapperTwo({
   children,
@@ -39,7 +35,7 @@ export default function AuthWrapperTwo({
   isSignIn?: boolean;
 }) {
   return (
-    <div className="min-h-screen items-center justify-center xl:flex xl:bg-gray-50 xl:px-5 xl:py-16 2xl:px-8 2xl:py-28">
+    <div className="min-h-screen items-center justify-center xl:flex xl:bg-gray-50 ">
       <div className="mx-auto w-full py-2 xl:py-14 2xl:w-[1720px]">
         <div className="rounded-xl bg-white dark:bg-transparent xl:flex dark:xl:bg-gray-100/50">
           <AuthNavBar />
@@ -174,10 +170,7 @@ function IntroBannerBlock() {
             that will help you improve your business and stay ahead of the
             competition.
           </Text>
-
-          <JoinedMember />
         </div>
-
         <SocialLinks />
       </div>
     </div>
@@ -236,23 +229,3 @@ const members = [
   'https://randomuser.me/api/portraits/women/43.jpg',
   'https://randomuser.me/api/portraits/women/44.jpg',
 ];
-function JoinedMember() {
-  return (
-    <div className="flex items-center">
-      <div className="mx-0.5">
-        {members.map((member) => (
-          <Avatar
-            key={member}
-            src={member}
-            name="avatar"
-            className="relative -mx-0.5 inline-flex object-cover ring-2 ring-gray-0"
-          />
-        ))}
-      </div>
-      <div className="relative inline-flex items-center justify-center px-3 text-xs font-semibold">
-        Join 30,000+ users
-      </div>
-      <ArrowShape className="h-11 w-10 text-white" />
-    </div>
-  );
-}

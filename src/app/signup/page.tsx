@@ -1,15 +1,15 @@
 import AuthWrapperTwo from '@/app/shared/(admin)/auth-layout/auth-wrapper-two';
-import SignInForm from './sign-in-form';
+import SignUpForm from './sign-up-form';
 import { metaObject } from '@/config/site.config';
 
 export const metadata = {
-  ...metaObject('Sign In 2'),
+  ...metaObject('Sign Up 2'),
 };
 
-export default function SignIn() {
+export default function SignUpPage() {
   return (
-    <AuthWrapperTwo title="Sign In" isSignIn isSocialLoginActive={true}>
-      <SignInForm />
+    <AuthWrapperTwo title="Sign Up!" isSocialLoginActive={true}>
+      <SignUpForm />
     </AuthWrapperTwo>
   );
 }

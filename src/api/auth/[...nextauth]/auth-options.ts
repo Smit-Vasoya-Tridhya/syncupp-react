@@ -1,7 +1,5 @@
 import type { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import GoogleProvider from 'next-auth/providers/google';
-import { env } from '@/env.mjs';
 import isEqual from 'lodash/isEqual';
 import { pagesOptions } from './pages-options';
 
@@ -53,12 +51,13 @@ export const authOptions: NextAuthOptions = {
         // that is false/null if the credentials are invalid
         const user = {
           email: '',
+          username: '',
           password: '',
         };
 
         if (
           isEqual(user, {
-            email: credentials?.email,
+            username: credentials?.username,
             password: credentials?.password,
           })
         ) {
@@ -72,5 +71,6 @@ export const authOptions: NextAuthOptions = {
     //   clientSecret: env.GOOGLE_CLIENT_SECRET || '',
     //   allowDangerousEmailAccountLinking: true,
     // }),
+    // })
   ],
 };
