@@ -73,7 +73,7 @@ export default function ForgetPasswordForm() {
       <Text className="mt-5 text-center text-[15px] leading-loose text-gray-500 lg:text-start xl:mt-7 xl:text-base">
         Don’t want to reset?{' '}
         <Link
-          href={routes.signIn}
+          href={routes.admin.signIn}
           className="font-semibold text-gray-700 transition-colors hover:text-blue"
         >
           Sign In
