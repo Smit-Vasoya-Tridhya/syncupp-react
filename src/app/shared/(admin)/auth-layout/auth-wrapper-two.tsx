@@ -2,29 +2,19 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Avatar } from '@/components/ui/avatar';
-import logoImg from '@public/logo-short.svg';
+import logoImg from '@public/assets/syncupp-logo.svg';
 import starImg from '@public/auth/star.svg';
 import { Title, Text } from '@/components/ui/text';
-import { Button } from '@/components/ui/button';
 import { usePathname } from 'next/navigation';
 import { routes } from '@/config/routes';
 import cn from '@/utils/class-names';
-import ArrowShape from '@/components/shape/arrow';
-import OrSeparation from './or-separation';
 import {
-  PiAppleLogo,
-  PiArrowLeftBold,
   PiDribbbleLogo,
   PiFacebookLogo,
   PiInstagramLogo,
   PiLinkedinLogo,
   PiTwitterLogo,
-  PiArrowLineRight,
-  PiUserCirclePlus,
 } from 'react-icons/pi';
-import { FcGoogle } from 'react-icons/fc';
-import { siteConfig } from '@/config/site.config';
 
 export default function AuthWrapperTwo({
   children,
@@ -38,7 +28,7 @@ export default function AuthWrapperTwo({
   isSignIn?: boolean;
 }) {
   return (
-    <div className="min-h-screen items-center justify-center xl:flex xl:bg-gray-50 xl:px-5 xl:py-16 2xl:px-8 2xl:py-28">
+    <div className="min-h-screen items-center justify-center xl:flex xl:bg-gray-50 ">
       <div className="mx-auto w-full py-2 xl:py-14 2xl:w-[1720px]">
         <div className="rounded-xl bg-white dark:bg-transparent xl:flex dark:xl:bg-gray-100/50">
           <AuthNavBar />
@@ -54,10 +44,6 @@ export default function AuthWrapperTwo({
               {isSocialLoginActive && (
                 <>
                   <SocialAuth />
-                  <OrSeparation
-                    className="mb-8 dark:before:bg-gray-200 xl:mb-7 dark:[&>span]:bg-[#191919]"
-                    title={`OR ${isSignIn ? 'LOGIN' : 'SIGN UP'} WITH`}
-                  />
                 </>
               )}
               {children}
@@ -100,24 +86,7 @@ function AuthNavBar() {
   return (
     <div className="flex shrink-0 justify-between rounded-bl-xl rounded-tl-xl bg-white px-4 py-4 dark:bg-transparent xl:sticky xl:top-0 xl:w-36 xl:flex-col xl:items-center xl:justify-start xl:px-0 xl:py-14 2xl:w-[184px]">
       <Link href="/" className="mb-1 inline-block max-w-[64px]">
-        <Image src={siteConfig.logo} alt="Isomorphic" className="dark:invert" width={40} height={35} />
-      </Link>
-      <div className="flex space-x-6 xl:w-full xl:flex-col xl:space-x-0 xl:space-y-6 xl:pt-9 2xl:space-y-7 2xl:pt-12 3xl:pt-14">
-        <AuthNavLink href={routes.signUp}>
-          <PiUserCirclePlus className="h-6 w-6" />
-          Sign up
-        </AuthNavLink>
-        <AuthNavLink href={routes.signIn}>
-          <PiArrowLineRight className="h-[22px] w-[22px]" />
-          Login
-        </AuthNavLink>
-      </div>
-      <Link
-        href={'/'}
-        className="relative hidden items-center gap-x-1.5 text-[15px] font-medium text-gray-700 transition-colors duration-200 hover:text-gray-1000 xl:mt-auto xl:flex xl:gap-x-1.5 xl:py-0.5 xl:pe-6 xl:ps-3 xl:text-base xl:text-gray-500 xl:before:top-0 xl:before:h-full xl:hover:text-gray-700 2xl:pe-9 2xl:ps-7 [&>svg]:w-[22px] [&>svg]:shrink-0 xl:[&>svg]:w-6"
-      >
-        <PiArrowLeftBold />
-        Back
+        <Image src={logoImg} alt="Isomorphic" className="dark:invert" />
       </Link>
     </div>
   );
@@ -125,16 +94,7 @@ function AuthNavBar() {
 
 function SocialAuth() {
   return (
-    <div className="grid grid-cols-1 gap-4 pb-7 md:grid-cols-2 xl:gap-5 xl:pb-8">
-      <Button className="h-11 w-full" rounded="pill">
-        <PiAppleLogo className="me-2 h-4 w-4 shrink-0" />
-        <span className="truncate">Signin With Apple</span>
-      </Button>
-      <Button variant="outline" className="h-11 w-full" rounded="pill">
-        <FcGoogle className="me-2 h-4 w-4 shrink-0" />
-        <span className="truncate">Signin With Google</span>
-      </Button>
-    </div>
+   <></>
   );
 }
 
@@ -169,10 +129,7 @@ function IntroBannerBlock() {
             that will help you improve your business and stay ahead of the
             competition.
           </Text>
-
-          <JoinedMember />
         </div>
-
         <SocialLinks />
       </div>
     </div>
@@ -231,23 +188,3 @@ const members = [
   'https://randomuser.me/api/portraits/women/43.jpg',
   'https://randomuser.me/api/portraits/women/44.jpg',
 ];
-function JoinedMember() {
-  return (
-    <div className="flex items-center">
-      <div className="mx-0.5">
-        {members.map((member) => (
-          <Avatar
-            key={member}
-            src={member}
-            name="avatar"
-            className="relative -mx-0.5 inline-flex object-cover ring-2 ring-gray-0"
-          />
-        ))}
-      </div>
-      <div className="relative inline-flex items-center justify-center px-3 text-xs font-semibold">
-        Join 30,000+ users
-      </div>
-      <ArrowShape className="h-11 w-10 text-white" />
-    </div>
-  );
-}
