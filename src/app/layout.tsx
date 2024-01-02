@@ -1,6 +1,9 @@
 import dynamic from 'next/dynamic';
 import { Toaster } from 'react-hot-toast';
 // import { getServerSession } from 'next-auth/next';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '../api/auth/[...nextauth]/auth-options';
+import AuthProvider from '../api/auth/[...nextauth]/auth-provider';
 import GlobalDrawer from '@/app/shared/drawer-views/container';
 import GlobalModal from '@/app/shared/modal-views/container';
 import { ThemeProvider } from '@/app/shared/theme-provider';

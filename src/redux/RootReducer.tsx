@@ -4,6 +4,7 @@ import signupSlice from "./slices/user/auth/signupSlice";
 import resetPasswordSlice from "./slices/user/auth/resetPasswordSlice";
 import changePasswordSlice from "./slices/user/auth/changePasswordSlice";
 import forgotPasswordSlice from "./slices/user/auth/forgotPasswordSlice";
+import authSliceReducer from './slices/admin/auth/signin/signinSlice';
 
 const combinedReducer = combineReducers({
   signIn: signinSlice,
