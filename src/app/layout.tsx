@@ -1,8 +1,8 @@
 import dynamic from 'next/dynamic';
 import { Toaster } from 'react-hot-toast';
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/app/api/auth/[...nextauth]/auth-options';
-import AuthProvider from '@/app/api/auth/[...nextauth]/auth-provider';
+import { authOptions } from '../api/auth/[...nextauth]/auth-options';
+import AuthProvider from '../api/auth/[...nextauth]/auth-provider';
 import GlobalDrawer from '@/app/shared/drawer-views/container';
 import GlobalModal from '@/app/shared/modal-views/container';
 import { ThemeProvider } from '@/app/shared/theme-provider';
@@ -15,6 +15,7 @@ const NextProgress = dynamic(() => import('@/components/next-progress'), {
 });
 // styles
 import '@/app/globals.css';
+import { Providers } from '@/redux/provider';
 
 export const metadata = {
   title: siteConfig.title,
@@ -39,7 +40,8 @@ export default async function RootLayout({
         suppressHydrationWarning
         className={cn(inter.variable, lexendDeca.variable, 'font-inter')}
       >
-        <AuthProvider session={session}>
+        {/* <AuthProvider session={session}> */}
+        <Providers>
           <ThemeProvider>
             <NextProgress />
             {children}
@@ -47,7 +49,8 @@ export default async function RootLayout({
             <GlobalDrawer />
             <GlobalModal />
           </ThemeProvider>
-        </AuthProvider>
+        </Providers>
+        {/* </AuthProvider> */}
       </body>
     </html>
   );

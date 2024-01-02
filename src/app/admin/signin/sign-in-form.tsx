@@ -11,27 +11,26 @@ import { Form } from '@/components/ui/form';
 import { Text } from '@/components/ui/text';
 import { routes } from '@/config/routes';
 import { loginSchema, LoginSchema } from '@/utils/validators/login.schema';
+import { useState } from 'react';
+import { postSignin } from '@/redux/slices/admin/auth/signin/signinSlice';
+import { useDispatch } from 'react-redux';
 // import api from '@/app/api/api';
 
 const initialValues: LoginSchema = {
   email: '',
   password: '',
-  rememberMe: true,
+  rememberMe: false,
 };
 export default function SignInForm() {
   const isMedium = useMedia('(max-width: 1200px)', false);
+  const [reset, setReset] = useState({});
+  const dispatch = useDispatch();
   const onSubmit: SubmitHandler<LoginSchema> = async (data) => {
-    // try {
-    //   const response = await api('/admin/login','POST')
-    //   const responseData = await response.json(); // Parse the JSON response
-    //   if (response.ok) {
-    //     console.log('Login successful:', responseData);
-    //   } else {
-    //     console.error('Login failed:', responseData);
-    //   }
-    // } catch (error) {
-    //   console.error('Error during login:', error);
-    // }
+    const requestObject = {
+      ...data,
+    }
+    dispatch(postSignin(requestObject))
+    setReset({...initialValues})
     console.log('Sign in data', data);
   };
 
@@ -39,7 +38,8 @@ export default function SignInForm() {
     <>
       <Form<LoginSchema>
         validationSchema={loginSchema}
-        onSubmit={SignInForm}
+        onSubmit={onSubmit}
+        resetValues={reset}
         useFormProps={{
           mode: 'onChange',
           defaultValues: initialValues,

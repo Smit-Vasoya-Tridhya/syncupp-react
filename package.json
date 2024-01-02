@@ -88,7 +88,6 @@
     "simplebar-react": "^3.2.4",
     "swiper": "^11.0.5",
     "tailwind-merge": "^2.1.0",
-    "types": "^0.1.1",
     "typescript": "5.3.3",
     "uploadthing": "^6.0.4",
     "zod": "^3.22.4"

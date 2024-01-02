@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import logoImg from '@public/assets/syncupp-logo.svg';
 import starImg from '@public/auth/star.svg';
 import { Title, Text } from '@/components/ui/text';
 import { usePathname } from 'next/navigation';
@@ -15,6 +14,8 @@ import {
   PiLinkedinLogo,
   PiTwitterLogo,
 } from 'react-icons/pi';
+import { siteConfig } from '@/config/site.config';
+import OrSeparation from './or-separation';
 
 export default function AuthWrapperTwo({
   children,
@@ -86,7 +87,7 @@ function AuthNavBar() {
   return (
     <div className="flex shrink-0 justify-between rounded-bl-xl rounded-tl-xl bg-white px-4 py-4 dark:bg-transparent xl:sticky xl:top-0 xl:w-36 xl:flex-col xl:items-center xl:justify-start xl:px-0 xl:py-14 2xl:w-[184px]">
       <Link href="/" className="mb-1 inline-block max-w-[64px]">
-        <Image src={logoImg} alt="Isomorphic" className="dark:invert" />
+        <Image src={siteConfig.logo} alt="Isomorphic" className="dark:invert" width={40} height={35} />
       </Link>
     </div>
   );
@@ -94,7 +95,7 @@ function AuthNavBar() {
 
 function SocialAuth() {
   return (
-   <></>
+    <></>
   );
 }
 
