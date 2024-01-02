@@ -14,6 +14,8 @@ import {
   forgetPasswordSchema,
   ForgetPasswordSchema,
 } from '@/utils/validators/forget-password.schema';
+import { useDispatch } from 'react-redux';
+import { postForgetPassword } from '@/redux/slices/admin/auth/forgotpassword/forgetPasswordSlice';
 
 const initialValues = {
   email: '',
@@ -22,17 +24,22 @@ const initialValues = {
 export default function ForgetPasswordForm() {
   const isMedium = useMedia('(max-width: 1200px)', false);
   const [reset, setReset] = useState({});
+  const dispatch = useDispatch();
   const onSubmit: SubmitHandler<ForgetPasswordSchema> = (data) => {
+    const requestObject = {
+      ...data,
+    }
+    dispatch(postForgetPassword(requestObject))
+    setReset({...initialValues})
     console.log('Forgot password form data->', data);
-    toast.success(
-      <Text>
-        Reset link sent to this email:{' '}
-        <Text as="b" className="font-semibold">
-          {data.email}
-        </Text>
-      </Text>
-    );
-    setReset(initialValues);
+    // toast.success(
+    //   <Text>
+    //     Reset link sent to this email:{' '}
+    //     <Text as="b" className="font-semibold">
+    //       {data.email}
+    //     </Text>
+    //   </Text>
+    // );
   };
 
   return (

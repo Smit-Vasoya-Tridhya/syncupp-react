@@ -1,19 +1,23 @@
-import AxiosDefault from "../../services/AxiosDefault";
+import AxiosDefault from "../../../services/AxiosDefault";
 
-type RequestData = {
+export type RequestData = {
   email: string;
   password: string;
+};
+export type ForgotData = {
+  email: string;
 };
 
 type ApiResponse = {
   success: boolean;
   message: string;
   token: string;
+  data?: any 
 };
-
+// signin API
 export const PostSignin = async (data: RequestData): Promise<ApiResponse> => {
   const response = await AxiosDefault({
-    url: "/v1/users/signin",
+    url: "/admin/login",
     method: "POST",
     data: data,
     contentType: "application/json", 
@@ -21,10 +25,10 @@ export const PostSignin = async (data: RequestData): Promise<ApiResponse> => {
   const responseData: ApiResponse = response.data;
   return responseData;
 };
-
-export const PostForgetPassword = async (data: RequestData): Promise<ApiResponse> => {
+// ForgotPassword API
+export const PostForgetPassword = async (data: ForgotData): Promise<ApiResponse> => {
   const response = await AxiosDefault({
-    url: "/v1/users/forgot-password",
+    url: "/admin/forgotPassword",
     method: "POST",
     data: data,
     contentType: "application/json", 
@@ -32,10 +36,10 @@ export const PostForgetPassword = async (data: RequestData): Promise<ApiResponse
   const responseData: ApiResponse = response.data;
   return responseData;
 };
-
-export const PostForgetPasswordReset = async (data: RequestData): Promise<ApiResponse> => {
+// Reset password API
+export const PostResetPassword = async (data: RequestData): Promise<ApiResponse> => {
   const response = await AxiosDefault({
-    url: "/v1/users/reset-password",
+    url: "/admin/resetpassword",
     method: "POST",
     data: data,
     contentType: "application/json", 

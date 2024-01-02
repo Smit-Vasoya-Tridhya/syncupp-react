@@ -8,7 +8,7 @@ export const metadata = {
 
 export default function SignIn() {
   return (
-    <AuthWrapperTwo title="Sign In" isSignIn isSocialLoginActive={true}>
+    <AuthWrapperTwo title="Sign In" isSignIn isSocialLoginActive={false}>
       <SignInForm />
     </AuthWrapperTwo>
   );
