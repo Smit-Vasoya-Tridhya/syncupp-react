@@ -11,17 +11,20 @@ import { Form } from '@/components/ui/form';
 import { Text } from '@/components/ui/text';
 import { routes } from '@/config/routes';
 import { loginSchema, LoginSchema } from '@/utils/validators/login.schema';
+import { useState } from 'react';
 
 const initialValues: LoginSchema = {
-  email: 'admin@admin.com',
-  password: 'admin',
-  rememberMe: true,
+  email: '',
+  password: '',
+  rememberMe: false,
 };
 
 export default function SignInForm() {
   const isMedium = useMedia('(max-width: 1200px)', false);
+  const [reset, setReset] = useState({});
   const onSubmit: SubmitHandler<LoginSchema> = (data) => {
     console.log('Sign in data', data);
+    setReset({ ...initialValues, rememberMe: false });
   };
 
   return (
@@ -29,6 +32,7 @@ export default function SignInForm() {
       <Form<LoginSchema>
         validationSchema={loginSchema}
         onSubmit={onSubmit}
+        resetValues={reset}
         useFormProps={{
           mode: 'onChange',
           defaultValues: initialValues,

@@ -18,6 +18,8 @@ export default function NotFoundPage() {
           src={NotFoundImg}
           alt="not found"
           className="mx-auto mb-8 aspect-[360/326] max-w-[256px] xs:max-w-[370px] lg:mb-12 2xl:mb-16"
+          width={40}
+          height={35}
         />
         <Title
           as="h1"
