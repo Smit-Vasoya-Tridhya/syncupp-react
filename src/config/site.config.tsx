@@ -3,7 +3,7 @@ import logoImg from '@public/logo.svg';
 import { LAYOUT_OPTIONS } from '@/config/enums';
 import logoIconImg from '@public/logo-short.svg';
 import { OpenGraph } from 'next/dist/lib/metadata/types/opengraph-types';
-import syncuppLogo from '@public/assets/syncupp-logo.svg';
+import syncuppLogo from '@public/assets/svgs/syncupp-logo.svg';
 
 
 enum MODE {

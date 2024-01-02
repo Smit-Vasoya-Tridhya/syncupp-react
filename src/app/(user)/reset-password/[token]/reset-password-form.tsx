@@ -9,6 +9,9 @@ import { useMedia } from '@/hooks/use-media';
 import { Form } from '@/components/ui/form';
 import { useState } from 'react';
 import { resetPasswordSchema, ResetPasswordSchema } from '@/utils/validators/reset-password.schema';
+import { useDispatch } from 'react-redux';
+import { resetPasswordUser } from '@/redux/slices/user/auth/resetPasswordSlice';
+import { usePathname } from 'next/navigation';
 
 const initialValues: ResetPasswordSchema = {
   email: '',
@@ -19,8 +22,16 @@ const initialValues: ResetPasswordSchema = {
 export default function ResetPasswordForm() {
   const isMedium = useMedia('(max-width: 1200px)', false);
   const [reset, setReset] = useState({});
+  const dispatch = useDispatch();
+  const pathName = usePathname();
+  console.log("reset password path....", pathName)
+
+  const token = pathName.slice(16);
+  console.log("token....", token)
+
   const onSubmit: SubmitHandler<ResetPasswordSchema> = (data) => {
     console.log('Reset Password data.....', data);
+    dispatch(resetPasswordUser({...data, token}));
     setReset({ ...initialValues });
   };
 

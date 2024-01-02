@@ -1,11 +1,20 @@
-import { AnyAction, combineReducers } from "@reduxjs/toolkit";
+import { combineReducers } from "@reduxjs/toolkit";
+import signinSlice from "./slices/user/auth/signinSlice";
+import signupSlice from "./slices/user/auth/signupSlice";
+import resetPasswordSlice from "./slices/user/auth/resetPasswordSlice";
+import changePasswordSlice from "./slices/user/auth/changePasswordSlice";
+import forgotPasswordSlice from "./slices/user/auth/forgotPasswordSlice";
 import authSliceReducer from './slices/admin/auth/signin/signinSlice';
 
 const combinedReducer = combineReducers({
-  auth: authSliceReducer,
+  signIn: signinSlice,
+  signUp: signupSlice,
+  forgotPassword: forgotPasswordSlice,
+  resetPassword: resetPasswordSlice,
+  changePassword: changePasswordSlice
 });
 
-export const rootReducer = (state:any, action: AnyAction) => {
+export const rootReducer = (state: any, action: any) => {
   // if (action.type === "auth/Logout") {
   //   state = undefined;
   // }

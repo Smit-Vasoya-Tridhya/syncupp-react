@@ -9,7 +9,7 @@ export const messages = {
   newPasswordRequired: 'New Password is required',
   newPasswordLength: 'New Password must be at least 8 characters',
   confirmPasswordRequired: 'Confirm Password is required',
-  passwordsDidNotMatch: "Passwords don't match",
+  passwordsDidNotMatch: "Password & Confirm password didn't match",
   nameIsRequired: 'Name is required',
   firstNameRequired: 'First name is required',
   companyNameRequired: 'Company name is required',
@@ -77,5 +77,6 @@ export const messages = {
   roleNameLengthMin: 'Role name must be at least 3 letters',
   errorSendingEmail: 'Error sending email',
   emailSentSuccessfully: 'Your email has been sent successfully.',
-  contactRequired: 'Contact Number is required'
+  contactRequired: 'Contact Number is required',
+  contactLengthMin: 'Contact must be at least 10 characters'
 };

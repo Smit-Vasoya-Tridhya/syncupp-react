@@ -1,6 +1,6 @@
 
 'use client';
-import AuthWrapperTwo from '@/app/shared/auth-layout/auth-wrapper-two';
+import AuthWrapperTwo from '@/app/shared/(user)/auth-layout/auth-wrapper-two';
 import ResetPasswordForm from './reset-password-form';
 
 

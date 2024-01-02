@@ -12,6 +12,8 @@ import { Text } from '@/components/ui/text';
 import { routes } from '@/config/routes';
 import { loginSchema, LoginSchema } from '@/utils/validators/login.schema';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { signInUser } from '@/redux/slices/user/auth/signinSlice';
 
 const initialValues: LoginSchema = {
   email: '',
@@ -22,8 +24,10 @@ const initialValues: LoginSchema = {
 export default function SignInForm() {
   const isMedium = useMedia('(max-width: 1200px)', false);
   const [reset, setReset] = useState({});
+  const dispatch = useDispatch();
   const onSubmit: SubmitHandler<LoginSchema> = (data) => {
     console.log('Sign in data', data);
+    dispatch(signInUser(data))
     setReset({ ...initialValues, rememberMe: false });
   };
 

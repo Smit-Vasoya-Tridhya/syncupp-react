@@ -8,6 +8,8 @@ import useMedia from "react-use/lib/useMedia";
 import { Button } from "rizzui";
 import CompanyDetailsForm from "./company-details";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { signUpUser } from "@/redux/slices/user/auth/signupSlice";
 
 
 const initialValues = {
@@ -25,6 +27,8 @@ export default function CompanyForm(props: any) {
 
     const isMedium = useMedia('(max-width: 1200px)', false);
 
+    const dispatch = useDispatch();
+
     const methods = useForm<CompanyDetailsSchema>({
         resolver: zodResolver(companyDetailsSchema),
         defaultValues: initialValues,
@@ -33,11 +37,13 @@ export default function CompanyForm(props: any) {
     const onSubmit: SubmitHandler<CompanyDetailsSchema> = (data) => {
         console.log('Company Details data...', data);
         console.log('Full data...', {...signUpFormData, ...data});
+        dispatch(signUpUser({...signUpFormData, ...data}))
         methods.reset(initialValues);
     };
 
     const handleClick = () => {
         console.log('Skip & Save clicked');
+        dispatch(signUpUser({...signUpFormData}))
     };
 
     return(

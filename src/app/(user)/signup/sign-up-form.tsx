@@ -90,7 +90,7 @@ export default function SignUpForm(props: any) {
                 type="text"
                 size={isMedium ? 'lg' : 'xl'}
                 label="Contact Number"
-                placeholder="Enter your email"
+                placeholder="Enter phone number"
                 rounded="pill"
                 color="info"
                 className="[&>label>span]:font-medium"
