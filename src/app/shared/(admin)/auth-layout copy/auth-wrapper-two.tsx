@@ -22,7 +22,6 @@ import { FcGoogle } from 'react-icons/fc';
 import { FaFacebook } from "react-icons/fa";
 import { siteConfig } from '@/config/site.config';
 import { Button } from 'rizzui';
-import OrSeparation from './or-separation';
 
 export default function AuthWrapperTwo({
   children,

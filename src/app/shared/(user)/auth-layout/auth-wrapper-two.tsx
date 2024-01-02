@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import logoImg from '@public/assets/syncupp-logo.svg';
+import logoImg from '@public/assets/svgs/syncupp-logo.svg';
 import starImg from '@public/auth/star.svg';
 import { Title, Text } from '@/components/ui/text';
 import { usePathname } from 'next/navigation';

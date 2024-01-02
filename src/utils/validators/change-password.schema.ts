@@ -7,7 +7,7 @@ import {
 } from '@/utils/validators/common-rules';
 
 // form zod validation schema
-export const passwordFormSchema = z
+export const changePasswordSchema = z
   .object({
     currentPassword: validatePassword,
     newPassword: validateNewPassword,
@@ -19,4 +19,4 @@ export const passwordFormSchema = z
   });
 
 // generate form types from zod validation schema
-export type PasswordFormTypes = z.infer<typeof passwordFormSchema>;
+export type ChangePasswordSchema = z.infer<typeof changePasswordSchema>;

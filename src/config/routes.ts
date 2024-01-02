@@ -1,10 +1,19 @@
 export const routes = {
+
+  // User panel
+
   home: '/home',
   signIn: '/signin',
   signUp: '/signup',
   forgotPassword: '/forgot-password',
-  resetPassword: '/reset-password',
+  resetPassword: (token: string) => `/reset-password/${token}`,
+  changePassword: '/change-password',
   dashboard: '/dashboard',
+
+
+
+  // Admin panel
+
   file: {
     dashboard: '/file',
   },
@@ -14,4 +23,5 @@ export const routes = {
     forgotPassword:'/admin/forgot-password',
     resetPassword:'/admin/reset-password'
   },
+  
 };

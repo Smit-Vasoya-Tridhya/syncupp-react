@@ -11,10 +11,9 @@ const AxiosDefaultSetting = async ({
   data?: any;
   url?: string;
   contentType?: string;
-}): Promise<any> => {
-  
+}): Promise<any> => {  
   const AxiosDefault = axios.create({
-    baseURL: process.env.REACT_APP_API_ROUTE,
+    baseURL: process.env.NEXT_PUBLIC_API,
     timeout: 5000,
     headers: {
       "Content-Type": isEmpty(contentType) ? "application/json" : contentType,
@@ -55,6 +54,8 @@ const AxiosDefaultSetting = async ({
       return Promise.reject(error);
     }
   );
+
+  AxiosDefault.defaults.method = method;
 
   return await AxiosDefault({
     method,

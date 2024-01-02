@@ -1,4 +1,4 @@
-import AuthWrapperTwo from '@/app/shared/(admin)/auth-layout/auth-wrapper-two';
+import AuthWrapperTwo from '@/app/shared/(user)/auth-layout/auth-wrapper-two';
 import SignInForm from './sign-in-form';
 import { metaObject } from '@/config/site.config';
 
