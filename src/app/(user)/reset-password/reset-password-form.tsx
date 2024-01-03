@@ -14,6 +14,7 @@ import { resetPasswordUser } from '@/redux/slices/user/auth/resetPasswordSlice';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { handleKeyDown } from '@/utils/common-functions';
 import Spinner from '@/components/ui/spinner';
+import { routes } from '@/config/routes';
 
 const initialValues: ResetPasswordSchema = {
   // email: '',
@@ -24,6 +25,11 @@ const initialValues: ResetPasswordSchema = {
 export default function ResetPasswordForm() {
   const isMedium = useMedia('(max-width: 1200px)', false);
   const [reset, setReset] = useState({});
+
+  useEffect(() => {
+    localStorage.clear();
+  }, [])
+  
   const dispatch = useDispatch();
 
   const searchParams = useSearchParams();
@@ -38,15 +44,18 @@ export default function ResetPasswordForm() {
   const resetPassword = useSelector((state: any) => state?.root?.resetPassword)
   console.log("resetPassword state.....", resetPassword)
 
-  useEffect(()=> {
-    if(resetPassword.user.success === true){
-      router.replace('/signin')
-    }
-  }, [router, resetPassword]);
+
 
   const onSubmit: SubmitHandler<ResetPasswordSchema> = (data) => {
     console.log('Reset Password data.....', data);
-    dispatch(resetPasswordUser({...data, token, email}));
+    dispatch(resetPasswordUser({...data, token, email})).then((result: any) => {
+      if (resetPasswordUser.fulfilled.match(result)) {
+        // console.log('resultt', result)
+        if (result && result.payload.success === true ) {
+          router.replace(routes.signIn);
+        } 
+      }
+    });
     // setReset({ ...initialValues });
   };
 

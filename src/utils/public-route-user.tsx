@@ -5,15 +5,17 @@ import { useRouter } from 'next/navigation';
 import Spinner from '@/components/ui/spinner';
 import { routes } from '@/config/routes';
 
-const WithAuth = (WrappedComponent: any) => {
+const WithAuthPublic = (WrappedComponent: any) => {
   const AuthComponent = (props: any) => {
     const router = useRouter();
     const [isLoading, setLoading] = useState(true);
 
     const token = localStorage.getItem('token');
     useEffect(() => {
-      if (!token) {
-        router.replace(routes.signIn);
+
+      console.log("####" ,token)
+      if (token) {
+        router.back()
       } else {
         setLoading(false);
       }
@@ -29,4 +31,4 @@ const WithAuth = (WrappedComponent: any) => {
   return AuthComponent;
 };
 
-export default WithAuth;
+export default WithAuthPublic

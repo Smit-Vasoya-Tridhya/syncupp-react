@@ -3,8 +3,9 @@ import SignUpForm from './sign-up-form';
 import { useState } from 'react';
 import CompanyForm from './company-form';
 import AuthWrapperTwo from '@/app/shared/(user)/auth-layout/auth-wrapper-two';
+import WithAuthPublic from '@/utils/public-route-user';
 
-export default function SignUpPage() {
+function SignUpPage() {
   const [formData, setFormData] = useState({});
   const [title, setTitle] = useState('Sign Up!');
   const [nextBtn, setNextBtn] = useState(false);
@@ -22,3 +23,6 @@ export default function SignUpPage() {
     </>
   );
 }
+
+
+export default WithAuthPublic(SignUpPage);

@@ -1,6 +1,6 @@
 'use client';
 
-import cn from "@/utils/class-names";
+// import cn from "@/utils/class-names";
 import { CompanyDetailsSchema, companyDetailsSchema } from "@/utils/validators/signup.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { signUpUser } from "@/redux/slices/user/auth/signupSlice";
 import { useRouter } from "next/navigation";
 import Spinner from "@/components/ui/spinner";
+import { routes } from "@/config/routes";
 
 
 const initialValues = {
@@ -28,6 +29,7 @@ export default function CompanyForm(props: any) {
     console.log("Signupform data.......", signUpFormData);
 
     const isMedium = useMedia('(max-width: 1200px)', false);
+    const [loader, setLoader] = useState(false)
 
     const dispatch = useDispatch();
 
@@ -35,11 +37,13 @@ export default function CompanyForm(props: any) {
     const signUp = useSelector((state: any) => state?.root?.signUp)
     console.log("signUp state.....", signUp)
   
-    useEffect(()=> {
-      if(signUp.user.success === true ){
-        router.push('/dashboard')
-      }
-    }, [router, signUp]);
+    // useEffect(()=> {
+
+    //   if(signUp.user.status === false) {
+    //     setLoader(true);
+    //   }
+
+    // }, [router, signUp]);
 
     const methods = useForm<CompanyDetailsSchema>({
         resolver: zodResolver(companyDetailsSchema),
@@ -47,15 +51,29 @@ export default function CompanyForm(props: any) {
     });
 
     const onSubmit: SubmitHandler<CompanyDetailsSchema> = (data) => {
+
         console.log('Company Details data...', data);
         console.log('Full data...', {...signUpFormData, ...data});
-        dispatch(signUpUser({...signUpFormData, ...data}))
+        dispatch(signUpUser({...signUpFormData, ...data})).then((result: any) => {
+            if (signUpUser.fulfilled.match(result)) {
+            //   console.log('resultt', result)
+              if (result && result.payload.success === true ) {
+                router.replace(routes.dashboard);
+              } 
+            }
+          })
         // methods.reset(initialValues);
     };
 
     const handleClick = () => {
         console.log('Skip & Save clicked');
-        dispatch(signUpUser({...signUpFormData}))
+        dispatch(signUpUser({...signUpFormData})).then((result: any) => {
+            if (signUpUser.fulfilled.match(result)) {
+            //   console.log('resultt', result)
+              setLoader(false)
+            }
+        })
+        setLoader(true);
     };
 
     return(
@@ -66,7 +84,7 @@ export default function CompanyForm(props: any) {
                     // className={cn('[&_label.block>span]:font-medium', className)}
                 >
                     <CompanyDetailsForm />
-                     { signUp.loading ? (<Button
+                     { signUp.loading  && !loader ? (<Button
                         className="border-2 text-base font-bold float-right mt-8"
                         type="submit"
                         size={isMedium ? 'lg' : 'xl'}
@@ -88,7 +106,7 @@ export default function CompanyForm(props: any) {
                 }
                 </form>
             </FormProvider>
-            {signUp.loading ? (<Button
+            {loader ? (<Button
                 className="border-2  text-base font-medium float-right me-3 mt-8"
                 type="submit"
                 size={isMedium ? 'lg' : 'xl'}
