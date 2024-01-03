@@ -24,7 +24,10 @@ export const validatePassword = z
   .regex(new RegExp('.*[a-z].*'), {
     message: messages.passwordOneLowercase,
   })
-  .regex(new RegExp('.*\\d.*'), { message: messages.passwordOneNumeric });
+  .regex(new RegExp('.*\\d.*'), { message: messages.passwordOneNumeric })
+  .regex(new RegExp('.*[!@#$%^&*()_+\\-=\\[\\]{};:\'\\",.<>/?`~\\\\].*'), {
+    message: messages.passwordOneSpecialChar,
+  });
 
 export const validateNewPassword = z
   .string()
@@ -36,16 +39,22 @@ export const validateNewPassword = z
   .regex(new RegExp('.*[a-z].*'), {
     message: messages.passwordOneLowercase,
   })
-  .regex(new RegExp('.*\\d.*'), { message: messages.passwordOneNumeric });
+  .regex(new RegExp('.*\\d.*'), { message: messages.passwordOneNumeric })
+  .regex(new RegExp('.*[!@#$%^&*()_+\\-=\\[\\]{};:\'\\",.<>/?`~\\\\].*'), {
+    message: messages.passwordOneSpecialChar,
+  });
 
 export const validateConfirmPassword = z
   .string()
   .min(1, { message: messages.confirmPasswordRequired })
-  .min(6, { message: messages.passwordLengthMin })
+  .min(8, { message: messages.passwordLengthMin })
   .regex(new RegExp('.*[A-Z].*'), {
     message: messages.passwordOneUppercase,
   })
   .regex(new RegExp('.*[a-z].*'), {
     message: messages.passwordOneLowercase,
   })
-  .regex(new RegExp('.*\\d.*'), { message: messages.passwordOneNumeric });
+  .regex(new RegExp('.*\\d.*'), { message: messages.passwordOneNumeric })
+  .regex(new RegExp('.*[!@#$%^&*()_+\\-=\\[\\]{};:\'\\",.<>/?`~\\\\].*'), {
+    message: messages.passwordOneSpecialChar,
+  });

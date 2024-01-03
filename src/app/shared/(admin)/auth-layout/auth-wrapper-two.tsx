@@ -8,11 +8,14 @@ import { usePathname } from 'next/navigation';
 import { routes } from '@/config/routes';
 import cn from '@/utils/class-names';
 import {
+  PiArrowLeftBold,
+  PiArrowLineRight,
   PiDribbbleLogo,
   PiFacebookLogo,
   PiInstagramLogo,
   PiLinkedinLogo,
   PiTwitterLogo,
+  PiUserCirclePlus,
 } from 'react-icons/pi';
 import { siteConfig } from '@/config/site.config';
 import OrSeparation from './or-separation';
@@ -44,7 +47,11 @@ export default function AuthWrapperTwo({
               </Title>
               {isSocialLoginActive && (
                 <>
-                  <SocialAuth />
+                  <SocialAuth isSignIn={isSignIn} />
+                  <OrSeparation
+                    className="mb-8 dark:before:bg-gray-200 xl:mb-7 dark:[&>span]:bg-[#191919]"
+                    title={`OR ${isSignIn ? 'LOGIN' : 'SIGN UP'} WITH`}
+                  />
                 </>
               )}
               {children}
@@ -93,7 +100,11 @@ function AuthNavBar() {
   );
 }
 
-function SocialAuth() {
+function SocialAuth({
+  isSignIn = false,
+}: {
+  isSignIn?: boolean;
+}) {
   return (
     <></>
   );

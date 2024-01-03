@@ -50,6 +50,17 @@ const nextConfig = {
   //   REACT_APP_API_URL: "http://172.16.0.241:3000/api/v1",
   // },
   reactStrictMode: false,
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/home',
+        permanent: false,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
+
+

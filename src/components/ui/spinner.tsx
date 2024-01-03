@@ -23,6 +23,7 @@ const colors = {
   success: 'text-green',
   warning: 'text-orange',
   current: 'text-current',
+  white:'white'
 };
 
 export type SpinnerSizeTypes = keyof typeof sizes;
