@@ -14,8 +14,8 @@ import { loginSchema, LoginSchema } from '@/utils/validators/login.schema';
 import { useEffect, useState } from 'react';
 import { postSignin } from '@/redux/slices/admin/auth/signin/signinSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { handleKeyDown } from '@/utils/common-functions';
 import { useRouter } from 'next/navigation';
+import Spinner from '@/components/ui/spinner';
 // import api from '@/app/api/api';
 
 const initialValues: LoginSchema = {
@@ -99,16 +99,27 @@ export default function SignInForm() {
                 Forget Password?
               </Link>
             </div>
-            <Button
+            { adminSignIn.loading ? (<Button
+              className="w-full border-2 border-primary-light text-base font-bold"
+              type="submit"
+              size={isMedium ? 'lg' : 'xl'}
+              color="info"
+              rounded="pill"
+              disabled
+            >
+              Sign in
+              <Spinner size="sm" tag='div' className='ms-3' color='white' />
+            </Button>):(
+              <Button
               className="w-full border-2 border-primary-light text-base font-bold"
               type="submit"
               size={isMedium ? 'lg' : 'xl'}
               color="info"
               rounded="pill"
             >
-              {/* <Link href={routes.admin.forgotPassword}></Link> */}
               Sign in
             </Button>
+            )}
           </div>
         )}
       </Form>
