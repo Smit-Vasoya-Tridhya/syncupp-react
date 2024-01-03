@@ -13,7 +13,7 @@ import { useMedia } from '@/hooks/use-media';
 import { Password } from '@/components/ui/password';
 import { ChangePasswordSchema, changePasswordSchema } from '@/utils/validators/change-password.schema';
 import { useDispatch, useSelector } from 'react-redux';
-import { changePasswordUser } from '@/redux/slices/user/auth/changePasswordSlice';
+import { changePasswordAdmin } from '@/redux/slices/admin/auth/updatePassword/changePasswordSlice';
 import { handleKeyDown } from '@/utils/common-functions';
 import { useRouter } from 'next/navigation';
 import Spinner from '@/components/ui/spinner';
@@ -37,8 +37,8 @@ export default function ChangePasswordForm() {
 
   const onSubmit: SubmitHandler<ChangePasswordSchema> = (data) => {
     console.log('Change password form data->', data);
-    dispatch(changePasswordUser(data)).then((result: any) => {
-      if (changePasswordUser.fulfilled.match(result)) {
+    dispatch(changePasswordAdmin(data)).then((result: any) => {
+      if (changePasswordAdmin.fulfilled.match(result)) {
         // console.log('resultt', result)/
         if (result && result.payload.success === true ) {
           router.replace(routes.dashboard);

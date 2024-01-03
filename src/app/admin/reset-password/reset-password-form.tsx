@@ -107,10 +107,8 @@ export default function ResetPasswordForm() {
               size="lg"
               color="info"
               rounded="pill"
-              disabled
             >
               Reset Password
-              <Spinner size="sm" tag='div' className='ms-3' color='white' />
             </Button>
             )}
           </div>

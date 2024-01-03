@@ -22,6 +22,7 @@ export const routes = {
     signUp: '/admin/signup',
     forgotPassword:'/admin/forgot-password',
     resetPassword:'/admin/reset-password',
+    changePassword:'/admin/change-password',
     dashboard: '/admin/dashboard'
   },
   
