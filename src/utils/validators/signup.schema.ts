@@ -27,7 +27,7 @@ export type SignUpSchema = z.infer<typeof signUpSchema>;
 // form zod validation schema
 export const companyDetailsSchema = z.object({
   companyName: z.string().min(1, { message: messages.companyNameRequired }),
-  companyWebsite: z.string().min(1, { message: messages.companyWebsiteRequired }),
+  companyWebsite: z.string().min(1, { message: messages.companyWebsiteRequired }).url({ message: messages.companyUrlInvalid }),
   peopleCount: z
     .string({ required_error: messages.peopleCountRequired })
     .min(1, { message: messages.peopleCountRequired }),

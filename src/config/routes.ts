@@ -6,7 +6,7 @@ export const routes = {
   signIn: '/signin',
   signUp: '/signup',
   forgotPassword: '/forgot-password',
-  resetPassword: (token: string) => `/reset-password/${token}`,
+  resetPassword: '/reset-password',
   changePassword: '/change-password',
   dashboard: '/dashboard',
 
@@ -21,7 +21,8 @@ export const routes = {
     signIn: '/admin/signin',
     signUp: '/admin/signup',
     forgotPassword:'/admin/forgot-password',
-    resetPassword:'/admin/reset-password'
+    resetPassword:'/admin/reset-password',
+    dashboard: '/admin/dashboard'
   },
   
 };

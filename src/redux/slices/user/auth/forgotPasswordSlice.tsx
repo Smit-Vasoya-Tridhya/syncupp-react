@@ -30,10 +30,10 @@ const initialState: ForgotPasswordState = {
 export const forgotPasswordUser : any = createAsyncThunk(
   "forgotPassword/forgotPasswordUser",
   async (data: userEmail) => {
-    console.log("We are in forgotPassword slice.........", data)
+    // console.log("We are in forgotPassword slice.........", data)
     try {
       const response:any = await PostForgotPassword(data);
-      console.log("Forgot password response......", response);
+      // console.log("Forgot password response......", response);
       return response;
     } catch (error:any) {
       return { status: false, message: error.response.data.message } as PostForgotPasswordResponse;
@@ -52,24 +52,29 @@ export const forgotPasswordSlice = createSlice({
         return{
         ...state,
         loading: true,
+        forgotPasswordUserStatus: 'pending'
         }
       })
       .addCase(forgotPasswordUser.fulfilled, (state,action) => {
-        console.log(action.payload);
+        // console.log(action.payload);
         if(action.payload.success == true){
           toast.success(action.payload.message)
         } else {
           toast.error(action.payload.message)
         }
+        localStorage.clear();
         return{
           ...state,
-          user: action.payload
+          user: action.payload,
+          forgotPasswordUserStatus: 'success',
+          loading: false,
         }
       })
       .addCase(forgotPasswordUser.rejected, (state) => {
         return{
           ...state,
-          loading: false
+          loading: false,
+          forgotPasswordUserStatus: 'error'
         }
       });
   },

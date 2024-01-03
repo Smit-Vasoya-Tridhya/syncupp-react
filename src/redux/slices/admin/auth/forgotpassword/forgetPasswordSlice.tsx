@@ -1,4 +1,4 @@
-import { PostForgetPassword} from "@/api/auth/signin/signin";
+import { PostForgetPassword } from "@/api/auth/signin/signin";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import toast, { Toast } from "react-hot-toast";
 
@@ -33,20 +33,21 @@ export const forgetPasswordSlice = createSlice({
       .addCase(postForgetPassword.pending, (state) => {
         state.loading = true;
       })
-      .addCase(postForgetPassword.fulfilled, (state,{payload}) => {
+      .addCase(postForgetPassword.fulfilled, (state, action) => {
         state.loading = false;
-        state.data = payload.data;
-        if(payload.status == 200){
-          toast.success(payload.message)
+        state.data = action.payload;
+        if(action.payload.success == true){
+          toast.success(action.payload.message)
         }
         else {
-          toast.error(payload.message)
+          toast.error(action.payload.message)
         }
+        localStorage.clear();
       })
       .addCase(postForgetPassword.rejected, (state) => {
         state.loading = false;
       })
   },
 });
-export const getData = (state: { forgetPassword: any; }) => state.forgetPassword;
+// export const getData = (state: { forgetPassword: any; }) => state.forgetPassword;
 export default forgetPasswordSlice.reducer;

@@ -1,14 +1,14 @@
 import { routes } from '@/config/routes';
 import {
-  PiUserPlusDuotone,
   PiFolderNotchDuotone,
+  PiUserPlusDuotone,
 } from 'react-icons/pi';
 
 // Note: do not add href in the label object, it is rendering as label
-export const berylliumSidebarMenuItems = [
+export const menuItems = [
   {
     name: 'Dashboard',
-    href: '/',
+    href: '/home',
     icon: <PiFolderNotchDuotone />,
   },
   {

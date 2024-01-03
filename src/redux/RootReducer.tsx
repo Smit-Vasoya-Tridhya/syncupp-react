@@ -4,19 +4,28 @@ import signupSlice from "./slices/user/auth/signupSlice";
 import resetPasswordSlice from "./slices/user/auth/resetPasswordSlice";
 import changePasswordSlice from "./slices/user/auth/changePasswordSlice";
 import forgotPasswordSlice from "./slices/user/auth/forgotPasswordSlice";
-import authSliceReducer from './slices/admin/auth/signin/signinSlice';
+import adminSignInSlice from "./slices/admin/auth/signin/signinSlice";
+import adminForgotPasswordSlice from "./slices/admin/auth/forgotpassword/forgetPasswordSlice";
+import adminResetPasswordSlice from "./slices/admin/auth/resetpassword/resetPasswordSlice";
 
-const combinedReducer = combineReducers({
+
+ const combinedReducer = combineReducers({
   signIn: signinSlice,
   signUp: signupSlice,
   forgotPassword: forgotPasswordSlice,
   resetPassword: resetPasswordSlice,
-  changePassword: changePasswordSlice
+  changePassword: changePasswordSlice,
+  adminSignIn: adminSignInSlice,
+  adminForgotPassword: adminForgotPasswordSlice,
+  adminResetPassword: adminResetPasswordSlice,
+
 });
 
-export const rootReducer = (state: any, action: any) => {
+ const rootReducer = (state: any, action: any) => {
   // if (action.type === "auth/Logout") {
   //   state = undefined;
   // }
   return combinedReducer(state, action);
 };
+
+export default rootReducer

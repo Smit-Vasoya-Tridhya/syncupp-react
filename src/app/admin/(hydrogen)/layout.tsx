@@ -1,7 +1,7 @@
 'use client';
-import HeliumLayout from '@/layouts/helium/helium-layout';
+import HeliumLayout from '@/layouts/helium-admin/helium-layout';
 import { useIsMounted } from '@/hooks/use-is-mounted';
-import WithAuth from '@/utils/private-route-user';
+import WithAuth from '@/utils/private-route-admin';
 
 
 
@@ -19,6 +19,5 @@ function DefaultLayout({
 
   return <HeliumLayout>{children}</HeliumLayout>;
 }
-
 
 export default WithAuth(DefaultLayout);

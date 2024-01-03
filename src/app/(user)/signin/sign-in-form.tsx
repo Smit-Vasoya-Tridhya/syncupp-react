@@ -11,9 +11,12 @@ import { Form } from '@/components/ui/form';
 import { Text } from '@/components/ui/text';
 import { routes } from '@/config/routes';
 import { loginSchema, LoginSchema } from '@/utils/validators/login.schema';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { signInUser } from '@/redux/slices/user/auth/signinSlice';
+import { handleKeyDown } from '@/utils/common-functions';
+import { useRouter } from 'next/navigation';
+import Spinner from '@/components/ui/spinner';
 
 const initialValues: LoginSchema = {
   email: '',
@@ -25,10 +28,21 @@ export default function SignInForm() {
   const isMedium = useMedia('(max-width: 1200px)', false);
   const [reset, setReset] = useState({});
   const dispatch = useDispatch();
+  const router = useRouter();
+  const signIn = useSelector((state: any) => state?.root?.signIn)
+  console.log("signIn state.....", signIn)
+
+  useEffect(()=> {
+    if(signIn.user.success === true){
+      router.push('/dashboard')
+    }
+  }, [router, signIn]);
+
+
   const onSubmit: SubmitHandler<LoginSchema> = (data) => {
     console.log('Sign in data', data);
     dispatch(signInUser(data))
-    setReset({ ...initialValues, rememberMe: false });
+    // setReset({ ...initialValues, rememberMe: false });
   };
 
   return (
@@ -36,7 +50,7 @@ export default function SignInForm() {
       <Form<LoginSchema>
         validationSchema={loginSchema}
         onSubmit={onSubmit}
-        resetValues={reset}
+        // resetValues={reset}
         useFormProps={{
           mode: 'onChange',
           defaultValues: initialValues,
@@ -45,6 +59,7 @@ export default function SignInForm() {
         {({ register, formState: { errors } }) => (
           <div className="space-y-5">
             <Input
+              onKeyDown={handleKeyDown}
               type="email"
               size={isMedium ? 'lg' : 'xl'}
               label="Email"
@@ -56,6 +71,7 @@ export default function SignInForm() {
               error={errors.email?.message}
             />
             <Password
+              onKeyDown={handleKeyDown}
               label="Password"
               placeholder="Enter your password"
               size={isMedium ? 'lg' : 'xl'}
@@ -80,15 +96,26 @@ export default function SignInForm() {
                 Forget Password?
               </Link>
             </div>
-            <Button
-              className="w-full border-2 border-primary-light text-base font-bold"
+            { signIn.loading ? (<Button
+              className="w-full border-2 text-base font-bold"
+              type="submit"
+              size={isMedium ? 'lg' : 'xl'}
+              color="info"
+              rounded="pill"
+              disabled
+            >
+              Sign in
+              <Spinner size="sm" tag='div' className='ms-3' color='white' />
+            </Button>) : (<Button
+              className="w-full border-2  text-base font-bold"
               type="submit"
               size={isMedium ? 'lg' : 'xl'}
               color="info"
               rounded="pill"
             >
               Sign in
-            </Button>
+            </Button>)
+            }
           </div>
         )}
       </Form>

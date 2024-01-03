@@ -6,8 +6,6 @@ import { Popover } from '@/components/ui/popover';
 import { Title, Text } from '@/components/ui/text';
 import { routes } from '@/config/routes';
 import { logoutUserAdmin } from '@/redux/slices/admin/auth/signin/signinSlice';
-import { logoutUser } from '@/redux/slices/user/auth/signinSlice';
-import { logoutUserSignUp } from '@/redux/slices/user/auth/signupSlice';
 import cn from '@/utils/class-names';
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
@@ -37,9 +35,8 @@ function DropdownMenu() {
 
   const handleClick = () => {
     console.log("signout clicked..")
-    dispatch(logoutUser(''))
-    dispatch(logoutUserSignUp(''))
-    router.replace('/signin');
+    dispatch(logoutUserAdmin(''));
+    router.replace('/admin/signin');
   }
 
   return (
