@@ -49,7 +49,7 @@ export default function ProductModernCard({
       </div>
 
       <div className="pt-3">
-        <Link
+        {/* <Link
           href={routes.eCommerce.productDetails(
             String(slug ?? generateSlug(title))
           )}
@@ -60,7 +60,7 @@ export default function ProductModernCard({
           >
             {title}
           </Title>
-        </Link>
+        </Link> */}
 
         <Text as="p" className="truncate">
           {description}

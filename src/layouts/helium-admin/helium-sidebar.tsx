@@ -8,7 +8,7 @@ import { Collapse } from '@/components/ui/collapse';
 import cn from '@/utils/class-names';
 import { PiCaretDownBold } from 'react-icons/pi';
 import SimpleBar from '@/components/ui/simplebar';
-import { menuItems } from '@/layouts/helium/helium-menu-items';
+import { menuItems } from '@/layouts/helium-admin/helium-menu-items';
 import Image from 'next/image';
 import { siteConfig } from '@/config/site.config';
 import StatusBadge from '@/components/get-status-badge';

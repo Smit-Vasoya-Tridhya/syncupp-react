@@ -7,7 +7,7 @@ import { CartItem, PosProduct } from '@/types';
 import { toCurrency } from '@/utils/to-currency';
 import { PiMinus, PiPlus } from 'react-icons/pi';
 import { Button } from '@/components/ui/button';
-import { useCart } from '@/store/quick-cart/cart.context';
+// import { useCart } from '@/store/quick-cart/cart.context';
 
 interface ProductProps {
   product: PosProduct;
@@ -21,7 +21,7 @@ export default function ProductClassicCard({
   const { name, description, price, image, salePrice, discount, base64 } =
     product;
 
-  const { addItemToCart, isInCart } = useCart();
+  // const { addItemToCart, isInCart } = useCart();
 
   return (
     <div className={cn('pb-0.5', className)}>
@@ -65,7 +65,7 @@ export default function ProductClassicCard({
             </del>
           )}
         </div>
-        <div className="mt-3">
+        {/* <div className="mt-3">
           {isInCart(product.id) ? (
             <QuantityControl item={product} />
           ) : (
@@ -77,33 +77,33 @@ export default function ProductClassicCard({
               Order
             </Button>
           )}
-        </div>
+        </div> */}
       </div>
     </div>
   );
 }
 
-function QuantityControl({ item }: { item: CartItem }) {
-  const { addItemToCart, removeItemFromCart, getItemFromCart } = useCart();
-  return (
-    <div className="flex h-10 w-full items-center justify-between rounded-md border border-gray-300 px-1 duration-200 hover:border-gray-900">
-      <button
-        title="Decrement"
-        className="flex items-center justify-center rounded p-2 duration-200 hover:bg-gray-100 hover:text-gray-900"
-        onClick={() => removeItemFromCart(item.id)}
-      >
-        <PiMinus className="h-3.5 w-3.5" />
-      </button>
-      <span className="grid w-8 place-content-center font-medium">
-        {getItemFromCart(item.id).quantity}
-      </span>
-      <button
-        title="Decrement"
-        className="flex items-center justify-center rounded p-2 duration-200 hover:bg-gray-100 hover:text-gray-900"
-        onClick={() => addItemToCart(item, 1)}
-      >
-        <PiPlus className="h-3.5 w-3.5" />
-      </button>
-    </div>
-  );
-}
+// function QuantityControl({ item }: { item: CartItem }) {
+//   // const { addItemToCart, removeItemFromCart, getItemFromCart } = useCart();
+//   return (
+//     <div className="flex h-10 w-full items-center justify-between rounded-md border border-gray-300 px-1 duration-200 hover:border-gray-900">
+//       <button
+//         title="Decrement"
+//         className="flex items-center justify-center rounded p-2 duration-200 hover:bg-gray-100 hover:text-gray-900"
+//         onClick={() => removeItemFromCart(item.id)}
+//       >
+//         <PiMinus className="h-3.5 w-3.5" />
+//       </button>
+//       <span className="grid w-8 place-content-center font-medium">
+//         {getItemFromCart(item.id).quantity}
+//       </span>
+//       <button
+//         title="Decrement"
+//         className="flex items-center justify-center rounded p-2 duration-200 hover:bg-gray-100 hover:text-gray-900"
+//         onClick={() => addItemToCart(item, 1)}
+//       >
+//         <PiPlus className="h-3.5 w-3.5" />
+//       </button>
+//     </div>
+//   );
+// }

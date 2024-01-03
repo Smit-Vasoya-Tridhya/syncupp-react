@@ -9,7 +9,7 @@ import cn from '@/utils/class-names';
 import { siteConfig } from '@/config/site.config';
 import { routes } from '@/config/routes';
 
-const ignoreBackButtonRoutes = [routes.accessDenied, routes.notFound];
+// const ignoreBackButtonRoutes = [routes.accessDenied, routes.notFound];
 
 export default function OtherPagesLayout({
   children,
@@ -18,7 +18,7 @@ export default function OtherPagesLayout({
 }) {
   const { back } = useRouter();
   const pathName = usePathname();
-  let notIn = !ignoreBackButtonRoutes.includes(pathName);
+  // let notIn = !ignoreBackButtonRoutes.includes(pathName);
   return (
     <div className="flex min-h-screen flex-col bg-[#F8FAFC] dark:bg-gray-50">
       {/* sticky top header  */}
@@ -26,7 +26,7 @@ export default function OtherPagesLayout({
         <div
           className={cn(
             'mx-auto flex max-w-[1520px] items-center',
-            notIn ? 'justify-between' : 'justify-center'
+            // notIn ? 'justify-between' : 'justify-center'
           )}
         >
           <Link href={'/'}>
@@ -37,7 +37,7 @@ export default function OtherPagesLayout({
               priority
             />
           </Link>
-          {notIn && (
+          {/* {notIn && (
             <Button
               variant="outline"
               size="sm"
@@ -46,7 +46,7 @@ export default function OtherPagesLayout({
             >
               Go to home
             </Button>
-          )}
+          )} */}
         </div>
       </div>
       {children}

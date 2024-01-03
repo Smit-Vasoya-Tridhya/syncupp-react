@@ -100,38 +100,38 @@ export default function SearchList({ onClose }: { onClose?: () => void }) {
         </>
 
         {menuItemsFiltered.map((item, index) => {
-          return (
-            <Fragment key={item.name + '-' + index}>
-              {item?.href ? (
-                <Link
-                  href={item?.href as string}
-                  className="relative my-0.5 flex items-center rounded-lg px-3 py-2 text-sm hover:bg-gray-100 focus:outline-none focus-visible:bg-gray-100 dark:hover:bg-gray-50/50 dark:hover:backdrop-blur-lg"
-                >
-                  <span className="inline-flex items-center justify-center rounded-md border border-gray-300 p-2 text-gray-500">
-                    <PiFileTextDuotone className="h-5 w-5" />
-                  </span>
+          return (<></>
+            // <Fragment key={item.name + '-' + index}>
+            //   {item?.href ? (
+            //     <Link
+            //       href={item?.href as string}
+            //       className="relative my-0.5 flex items-center rounded-lg px-3 py-2 text-sm hover:bg-gray-100 focus:outline-none focus-visible:bg-gray-100 dark:hover:bg-gray-50/50 dark:hover:backdrop-blur-lg"
+            //     >
+            //       <span className="inline-flex items-center justify-center rounded-md border border-gray-300 p-2 text-gray-500">
+            //         <PiFileTextDuotone className="h-5 w-5" />
+            //       </span>
 
-                  <span className="ms-3 grid gap-0.5">
-                    <span className="font-medium capitalize text-gray-900 dark:text-gray-700">
-                      {item.name}
-                    </span>
-                    <span className="text-gray-500">
-                      {item?.href as string}
-                    </span>
-                  </span>
-                </Link>
-              ) : (
-                <Title
-                  as="h6"
-                  className={cn(
-                    'mb-1 px-3 text-xs font-semibold uppercase tracking-widest text-gray-500 dark:text-gray-500',
-                    index !== 0 && 'mt-6 4xl:mt-7'
-                  )}
-                >
-                  {item.name}
-                </Title>
-              )}
-            </Fragment>
+            //       <span className="ms-3 grid gap-0.5">
+            //         <span className="font-medium capitalize text-gray-900 dark:text-gray-700">
+            //           {item.name}
+            //         </span>
+            //         <span className="text-gray-500">
+            //           {item?.href as string}
+            //         </span>
+            //       </span>
+            //     </Link>
+            //   ) : (
+            //     <Title
+            //       as="h6"
+            //       className={cn(
+            //         'mb-1 px-3 text-xs font-semibold uppercase tracking-widest text-gray-500 dark:text-gray-500',
+            //         index !== 0 && 'mt-6 4xl:mt-7'
+            //       )}
+            //     >
+            //       {item.name}
+            //     </Title>
+            //   )}
+            // </Fragment>
           );
         })}
       </div>
