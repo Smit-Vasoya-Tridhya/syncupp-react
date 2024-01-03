@@ -47,8 +47,8 @@ export default function ProductMinimalCard({
 
       <div className="pt-3.5">
         <div className="pb-1 font-medium text-red-dark">Just In</div>
-        <Link
-          href={routes.eCommerce.productDetails(
+        {/* <Link
+          href={routes.productDetails(
             String(slug ?? generateSlug(title))
           )}
         >
@@ -58,7 +58,7 @@ export default function ProductMinimalCard({
           >
             {title}
           </Title>
-        </Link>
+        </Link> */}
         <Text as="p" className="mb-1 truncate">
           {description}
         </Text>
