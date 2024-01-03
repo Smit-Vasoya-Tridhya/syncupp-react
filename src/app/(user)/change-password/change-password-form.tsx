@@ -5,15 +5,18 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { SubmitHandler } from 'react-hook-form';
 import { Form } from '@/components/ui/form';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { routes } from '@/config/routes';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
 import { useMedia } from '@/hooks/use-media';
 import { Password } from '@/components/ui/password';
 import { ChangePasswordSchema, changePasswordSchema } from '@/utils/validators/change-password.schema';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { changePasswordUser } from '@/redux/slices/user/auth/changePasswordSlice';
+import { handleKeyDown } from '@/utils/common-functions';
+import { useRouter } from 'next/navigation';
+import Spinner from '@/components/ui/spinner';
 
 
 const initialValues: ChangePasswordSchema = {
@@ -27,17 +30,27 @@ export default function ChangePasswordForm() {
   const [reset, setReset] = useState({});
   const dispatch = useDispatch();
 
+  const router = useRouter();
+  const changePassword = useSelector((state: any) => state?.root?.changePassword)
+  console.log("changePassword state.....", changePassword)
+
+  useEffect(()=> {
+    if(changePassword.user.success === true ){
+      router.replace('/dashboard')
+    }
+  }, [router, changePassword]);
+
   const onSubmit: SubmitHandler<ChangePasswordSchema> = (data) => {
     console.log('Change password form data->', data);
     dispatch(changePasswordUser(data));
-    setReset({ ...initialValues });
+    // setReset({ ...initialValues });
   };
 
   return (
     <>
       <Form<ChangePasswordSchema>
         validationSchema={changePasswordSchema}
-        resetValues={reset}
+        // resetValues={reset}
         onSubmit={onSubmit}
         useFormProps={{
           defaultValues: initialValues,
@@ -46,6 +59,7 @@ export default function ChangePasswordForm() {
         {({ register, formState: { errors } }) => (
           <div className="space-y-5">
             <Password
+                onKeyDown={handleKeyDown}
                 label="Current Password"
                 placeholder="Enter your password"
                 size={isMedium ? 'lg' : 'xl'}
@@ -56,6 +70,7 @@ export default function ChangePasswordForm() {
                 error={errors.currentPassword?.message}
               />
             <Password
+                onKeyDown={handleKeyDown}
                 label="New Password"
                 placeholder="Enter your password"
                 size={isMedium ? 'lg' : 'xl'}
@@ -66,6 +81,7 @@ export default function ChangePasswordForm() {
                 error={errors.newPassword?.message}
               />
             <Password
+                onKeyDown={handleKeyDown}
                 label="Confirm New Password"
                 placeholder="Enter your password"
                 size={isMedium ? 'lg' : 'xl'}
@@ -75,15 +91,26 @@ export default function ChangePasswordForm() {
                 {...register('confirmedPassword')}
                 error={errors.confirmedPassword?.message}
             />
-            <Button
-              className="w-full border-2 border-primary-light text-base font-medium"
+            { changePassword.loading ? (<Button
+              className="w-full border-2 text-base font-bold"
               type="submit"
               size={isMedium ? 'lg' : 'xl'}
               color="info"
               rounded="pill"
+              disabled
             >
               Change Password
-            </Button>
+              <Spinner size="sm" tag='div' className='ms-3' color='white' />
+              </Button>) : (<Button
+                className="w-full border-2  text-base font-bold"
+                type="submit"
+                size={isMedium ? 'lg' : 'xl'}
+                color="info"
+                rounded="pill"
+              >
+                Change Password
+              </Button>)
+            }
           </div>
         )}
       </Form>

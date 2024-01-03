@@ -3,7 +3,7 @@ import ForgetPasswordForm from './forgot-password-form';
 
 export default function ForgotPassword() {
   return (
-    <AuthWrapperTwo title="Reset your Password">
+    <AuthWrapperTwo title="Forgot your Password">
       <ForgetPasswordForm />
     </AuthWrapperTwo>
   );

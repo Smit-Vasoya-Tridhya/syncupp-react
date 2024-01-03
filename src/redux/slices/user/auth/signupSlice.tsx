@@ -38,7 +38,7 @@ const initialState:SignUpState = {
 export const signUpUser: any = createAsyncThunk(
   "signup/signUpUser",
   async (data: UserData) => {
-    console.log("We are in signup slice.........", data)
+    // console.log("We are in signup slice.........", data)
     const apiData={
       first_name: data.firstName,
       last_name: data.lastName,
@@ -52,7 +52,9 @@ export const signUpUser: any = createAsyncThunk(
     }
     try {
       const response: any = await PostSignup(apiData);
-      console.log("Signup response.....", response);
+      // console.log("Signup response.....", response);
+      // console.log("Tokenn....", response.data.token)
+      localStorage.setItem("token", response.data.token);
       return response;
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as PostSignUpResponse;
@@ -63,17 +65,32 @@ export const signUpUser: any = createAsyncThunk(
 export const signupSlice = createSlice({
   name: "signup",
   initialState,
-  reducers: {},
+  reducers: {
+
+    logoutUserSignUp(state, action) {
+      localStorage.clear();
+      sessionStorage.clear();
+      return {
+        ...state,
+        loading: false,
+        user: {},
+        signUpUserStatus: '',
+        signUpUserError: '', 
+      };
+  },
+
+  },
   extraReducers: (builder) => {
     builder
       .addCase(signUpUser.pending, (state) => {
           return{
             ...state,
             loading: true,
+            signUpUserStatus: 'pending'
           }
       })
       .addCase(signUpUser.fulfilled, (state,action) => {
-        console.log(action.payload);
+        // console.log(action.payload);
         if(action.payload.success == true){
           toast.success(action.payload.message)
         } else {
@@ -81,16 +98,20 @@ export const signupSlice = createSlice({
         }
         return{
           ...state,
-          user: action.payload
+          user: action.payload,
+          loading: false,
+          signUpUserStatus: 'success'
         }
       })
       .addCase(signUpUser.rejected, (state) => {
         return{
           ...state,
-          loading: false
+          loading: false,
+          signUpUserStatus: 'error'
         }
       });
   },
 });
 
+export const { logoutUserSignUp } = signupSlice.actions;
 export default signupSlice.reducer;

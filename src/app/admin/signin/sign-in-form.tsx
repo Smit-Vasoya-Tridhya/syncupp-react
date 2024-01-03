@@ -11,9 +11,11 @@ import { Form } from '@/components/ui/form';
 import { Text } from '@/components/ui/text';
 import { routes } from '@/config/routes';
 import { loginSchema, LoginSchema } from '@/utils/validators/login.schema';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { postSignin } from '@/redux/slices/admin/auth/signin/signinSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { handleKeyDown } from '@/utils/common-functions';
+import { useRouter } from 'next/navigation';
 // import api from '@/app/api/api';
 
 const initialValues: LoginSchema = {
@@ -21,16 +23,28 @@ const initialValues: LoginSchema = {
   password: '',
   rememberMe: false,
 };
+
 export default function SignInForm() {
   const isMedium = useMedia('(max-width: 1200px)', false);
   const [reset, setReset] = useState({});
   const dispatch = useDispatch();
+
+  const router = useRouter();
+  const adminSignIn = useSelector((state: any) => state?.root?.adminSignIn)
+  console.log("adminSignIn state.....", adminSignIn)
+
+  useEffect(()=> {
+    if(adminSignIn.userData.success === true){
+      router.replace('/admin/dashboard')
+    }
+  }, [router, adminSignIn]);
+
   const onSubmit: SubmitHandler<LoginSchema> = async (data) => {
     const requestObject = {
       ...data,
     }
     dispatch(postSignin(requestObject))
-    setReset({...initialValues})
+    // setReset({...initialValues})
     console.log('Sign in data', data);
   };
 
@@ -39,7 +53,7 @@ export default function SignInForm() {
       <Form<LoginSchema>
         validationSchema={loginSchema}
         onSubmit={onSubmit}
-        resetValues={reset}
+        // resetValues={reset}
         useFormProps={{
           mode: 'onChange',
           defaultValues: initialValues,
@@ -48,6 +62,7 @@ export default function SignInForm() {
         {({ register, formState: { errors } }) => (
           <div className="space-y-5">
             <Input
+              onKeyDown={handleKeyDown}
               type="email"
               size={isMedium ? 'lg' : 'xl'}
               label="Email"
@@ -59,6 +74,7 @@ export default function SignInForm() {
               error={errors.email?.message}
             />
             <Password
+              onKeyDown={handleKeyDown}
               label="Password"
               placeholder="Enter your password"
               size={isMedium ? 'lg' : 'xl'}

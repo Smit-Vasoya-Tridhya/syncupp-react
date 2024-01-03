@@ -49,7 +49,7 @@ export default async function RootLayout({
             <ThemeProvider>
               <NextProgress />
                 {children}
-              <Toaster />
+              <Toaster position='top-right' />
               <GlobalDrawer />
               <GlobalModal />
             </ThemeProvider>

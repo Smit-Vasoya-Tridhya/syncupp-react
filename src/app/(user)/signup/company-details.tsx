@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic';
 import { Input } from '@/components/ui/input';
 import { Controller, useFormContext } from 'react-hook-form';
 import useMedia from 'react-use/lib/useMedia';
+import { handleKeyDown } from '@/utils/common-functions';
 
 
 const Select = dynamic(() => import('@/components/ui/select'), {
@@ -13,10 +14,17 @@ const Select = dynamic(() => import('@/components/ui/select'), {
 });
 
 
-const options = [
-  { name: 'Apple', value: 'apple' },
-  { name: 'Banana', value: 'banana' },
-  { name: 'Cherry', value: 'cherry' },
+const peopleCountOptions = [
+  { name: '1-50', value: '1-50' },
+  { name: '51-200', value: '51-200' },
+  { name: '201-500', value: '201-500' },
+  { name: '501-1000', value: '501-1000' },
+]
+
+const industryOptions = [
+  { name: 'IT', value: 'IT' },
+  { name: 'Marketing', value: 'Marketing' },
+  { name: 'Digital Marketing', value: 'Digital Marketing' },
 ]
 
 export default function CompanyDetailsForm() {
@@ -34,6 +42,7 @@ export default function CompanyDetailsForm() {
       <div className="space-y-5">
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:gap-5 xl:pb-2">
           <Input
+            onKeyDown={handleKeyDown}
             type="text"
             size={isMedium ? 'lg' : 'xl'}
             label="Company Name"
@@ -45,6 +54,7 @@ export default function CompanyDetailsForm() {
             error={errors.companyName?.message as string}
           />
           <Input
+            onKeyDown={handleKeyDown}
             type="text"
             size={isMedium ? 'lg' : 'xl'}
             label="Company Website"
@@ -62,7 +72,7 @@ export default function CompanyDetailsForm() {
             name="peopleCount"
             render={({ field: { onChange, value } }) => (
               <Select
-                options={options}
+                options={peopleCountOptions}
                 onChange={onChange}
                 value={value}
                 size={isMedium ? 'lg' : 'xl'}
@@ -82,7 +92,7 @@ export default function CompanyDetailsForm() {
             rules={{ required: 'How many people is required' }}
             render={({ field: { onChange, value } }) => (
               <Select
-                options={options}
+                options={industryOptions}
                 onChange={onChange}
                 value={value}
                 size={isMedium ? 'lg' : 'xl'}

@@ -31,7 +31,7 @@ const initialState: ResetPasswordState = {
 export const resetPasswordUser : any = createAsyncThunk(
     "resetPassword/resetPasswordUser",
     async (data: ResetPasswordData) => {
-        console.log("We are in resetPassword slice.........", data)
+        // console.log("We are in resetPassword slice.........", data)
         try {
             const ApiData = {
               email: data.email,
@@ -39,7 +39,7 @@ export const resetPasswordUser : any = createAsyncThunk(
               token: data.token,
             }
             const response = await PostResetPassword(ApiData);
-            console.log("Reset password response......", response);
+            // console.log("Reset password response......", response);
             return response;
         } catch (error: any) {
             return { status: false, message: error.response.data.message } as PostResetPasswordResponse;
@@ -57,24 +57,29 @@ export const resetPasswordSlice = createSlice({
         return{
         ...state,
         loading: true,
+        resetPasswordUserStatus: 'pending'
         }
       })
       .addCase(resetPasswordUser.fulfilled, (state,action) => {
-        console.log(action.payload);
+        // console.log(action.payload);
         if(action.payload.success == true){
           toast.success(action.payload.message)
         } else {
           toast.error(action.payload.message)
         }
+        localStorage.clear();
         return{
           ...state,
-          user: action.payload
+          loading: false,
+          user: action.payload,
+          resetPasswordUserStatus: 'success'
         }
       })
       .addCase(resetPasswordUser.rejected, (state) => {
         return{
           ...state,
-          loading: false
+          loading: false,
+          resetPasswordUserStatus: 'error'
         }
       });
   },

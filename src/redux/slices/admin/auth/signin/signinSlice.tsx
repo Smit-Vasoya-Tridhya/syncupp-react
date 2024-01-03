@@ -6,6 +6,7 @@ import { messages } from "@/config/messages";
 type UserData = {
   email: string;
   password: string;
+  rememberMe?: string;
 }
 
 interface SigninState {
@@ -27,9 +28,9 @@ export const postSignin: any = createAsyncThunk(
   "signin/postSignin",
   async (data: UserData) => {
     try {
-      console.log('..............')
+      // console.log('..............')
       const response: any = await PostSignin(data);
-      return response as UserData;
+      return response;
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as PostSigninResponse;
     }
@@ -39,7 +40,19 @@ export const postSignin: any = createAsyncThunk(
 export const signinSlice = createSlice({
   name: "signin",
   initialState,
-  reducers: {},
+  reducers: {
+
+    logoutUserAdmin(state, action) {
+      localStorage.clear();
+      sessionStorage.clear();
+      return {
+          ...state,
+          loading: false,
+          userData: {},
+      };
+  },
+
+  },
   extraReducers: (builder) => {
     builder
       .addCase(postSignin.pending, (state) => {
@@ -48,12 +61,11 @@ export const signinSlice = createSlice({
       .addCase(postSignin.fulfilled, (state, action) => {
         state.loading = false;
         console.log(action.payload,'action.payload')
-        if (action.payload.status == 200) {
-          localStorage.setItem('token', action.payload.data.token);
-          state.userData = action.payload.data.user;
-          toast.success(action.payload.message);
-        } else {
+        state.userData = action.payload
+        if (action.payload.status == false) {
           toast.error(action.payload.message);
+        } else {
+          localStorage.setItem('token', action.payload.data.token);
         }
       })
       .addCase(postSignin.rejected, (state) => {
@@ -62,4 +74,6 @@ export const signinSlice = createSlice({
   },
 });
 export const getUserData = (state: { signin: { userData: any; }; }) => state.signin.userData;
+
+export const {  logoutUserAdmin } = signinSlice.actions;
 export default signinSlice.reducer;
