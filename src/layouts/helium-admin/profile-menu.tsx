@@ -16,15 +16,11 @@ import { useDispatch } from 'react-redux';
 const menuItems = [
   {
     name: 'My Profile',
-    href: routes.signIn,
+    href: routes.admin.signIn,
   },
   {
-    name: 'Account Settings',
-    href: routes.signIn,
-  },
-  {
-    name: 'Activity Log',
-    href: routes.signIn,
+    name: 'Change Password',
+    href: routes.admin.changePassword,
   },
 ];
 
@@ -51,7 +47,7 @@ function DropdownMenu() {
           <Title as="h6" className="font-semibold">
             Albert Flores
           </Title>
-          <Text className="text-gray-600">flores@doe.io</Text>
+          {/* <Text className="text-gray-600">flores@doe.io</Text> */}
         </div>
       </div>
       <div className="grid px-3.5 py-3.5 font-medium text-gray-700">
@@ -71,7 +67,7 @@ function DropdownMenu() {
           variant="text"
           onClick={handleClick}
         >
-          Sign Out
+          Logout
         </Button>
       </div>
     </div>
