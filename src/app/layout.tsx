@@ -1,8 +1,9 @@
 import dynamic from 'next/dynamic';
 import { Toaster } from 'react-hot-toast';
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '../api/auth/[...nextauth]/auth-options';
-import AuthProvider from '../api/auth/[...nextauth]/auth-provider';
+// import { getServerSession } from 'next-auth/next';
+// import { getServerSession } from 'next-auth/next';
+// import { authOptions } from '../api/auth/[...nextauth]/auth-options';
+// import AuthProvider from '../api/auth/[...nextauth]/auth-provider';
 import GlobalDrawer from '@/app/shared/drawer-views/container';
 import GlobalModal from '@/app/shared/modal-views/container';
 import { ThemeProvider } from '@/app/shared/theme-provider';
@@ -16,6 +17,8 @@ const NextProgress = dynamic(() => import('@/components/next-progress'), {
 // styles
 import '@/app/globals.css';
 import { Providers } from '@/redux/provider';
+import { Persistor } from '@/redux/persistor';
+// import { authOptions } from '@/api/auth/[...nextauth]/auth-options';
 
 export const metadata = {
   title: siteConfig.title,
@@ -27,7 +30,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await getServerSession(authOptions);
+  // const session = await getServerSession(authOptions);
   return (
     <html
       lang="en"
@@ -42,14 +45,16 @@ export default async function RootLayout({
       >
         {/* <AuthProvider session={session}> */}
         <Providers>
-          <ThemeProvider>
-            <NextProgress />
-            {children}
-            <Toaster />
-            <GlobalDrawer />
-            <GlobalModal />
-          </ThemeProvider>
-        </Providers>
+          <Persistor>
+            <ThemeProvider>
+              <NextProgress />
+                {children}
+              <Toaster position='top-right' />
+              <GlobalDrawer />
+              <GlobalModal />
+            </ThemeProvider>
+          </Persistor>
+        </Providers>  
         {/* </AuthProvider> */}
       </body>
     </html>

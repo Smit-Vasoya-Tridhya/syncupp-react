@@ -5,28 +5,43 @@ import { Button } from '@/components/ui/button';
 import { Popover } from '@/components/ui/popover';
 import { Title, Text } from '@/components/ui/text';
 import { routes } from '@/config/routes';
+import { logoutUserAdmin } from '@/redux/slices/admin/auth/signin/signinSlice';
+import { logoutUser } from '@/redux/slices/user/auth/signinSlice';
+import { logoutUserSignUp } from '@/redux/slices/user/auth/signupSlice';
 import cn from '@/utils/class-names';
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 const menuItems = [
+  // {
+  //   name: 'My Profile',
+  //   href: routes.signIn,
+  // },
   {
-    name: 'My Profile',
-    href: routes.signIn,
+    name: 'Change Password',
+    href: routes.changePassword,
   },
-  {
-    name: 'Account Settings',
-    href: routes.signIn,
-  },
-  {
-    name: 'Activity Log',
-    href: routes.signIn,
-  },
+  // {
+  //   name: 'Activity Log',
+  //   href: routes.signIn,
+  // },
 ];
 
 function DropdownMenu() {
+
+  const dispatch = useDispatch();
+  const router = useRouter();
+
+  const handleClick = () => {
+    console.log("signout clicked..")
+    dispatch(logoutUser(''))
+    dispatch(logoutUserSignUp(''))
+    router.replace('/signin');
+  }
+
   return (
     <div className="w-64 text-left rtl:text-right">
       <div className="flex items-center border-b border-gray-300 px-6 pb-5 pt-6">
@@ -57,7 +72,7 @@ function DropdownMenu() {
         <Button
           className="h-auto w-full justify-start p-0 font-medium text-gray-700 outline-none focus-within:text-gray-600 hover:text-gray-900 focus-visible:ring-0"
           variant="text"
-          // onClick={() => signOut()}
+          onClick={handleClick}
         >
           Sign Out
         </Button>

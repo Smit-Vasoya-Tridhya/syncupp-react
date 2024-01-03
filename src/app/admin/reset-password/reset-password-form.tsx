@@ -69,6 +69,7 @@ export default function ResetPasswordForm() {
         {({ register, formState: { errors } }) => (
           <div className="space-y-6">
             <Password
+              onKeyDown={handleKeyDown}
               label="New Password"
               placeholder="Enter New password"
               size="lg"
@@ -80,6 +81,7 @@ export default function ResetPasswordForm() {
               error={errors.password?.message}
             />
             <Password
+              onKeyDown={handleKeyDown}
               label="Confirm Password"
               placeholder="Enter confirm password"
               size="lg"

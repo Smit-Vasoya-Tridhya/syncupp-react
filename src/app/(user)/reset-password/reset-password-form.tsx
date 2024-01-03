@@ -7,11 +7,17 @@ import { Button } from '@/components/ui/button';
 import { Password } from '@/components/ui/password';
 import { useMedia } from '@/hooks/use-media';
 import { Form } from '@/components/ui/form';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { resetPasswordSchema, ResetPasswordSchema } from '@/utils/validators/reset-password.schema';
+import { useDispatch, useSelector } from 'react-redux';
+import { resetPasswordUser } from '@/redux/slices/user/auth/resetPasswordSlice';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { handleKeyDown } from '@/utils/common-functions';
+import Spinner from '@/components/ui/spinner';
+import { routes } from '@/config/routes';
 
 const initialValues: ResetPasswordSchema = {
-  email: '',
+  // email: '',
   password: '',
   confirmPassword: ''
 };
@@ -19,9 +25,38 @@ const initialValues: ResetPasswordSchema = {
 export default function ResetPasswordForm() {
   const isMedium = useMedia('(max-width: 1200px)', false);
   const [reset, setReset] = useState({});
+
+  useEffect(() => {
+    localStorage.clear();
+  }, [])
+  
+  const dispatch = useDispatch();
+
+  const searchParams = useSearchParams();
+  // console.log("search Params", searchParams.get("email"))
+
+  const token = searchParams.get("token");
+  const email = searchParams.get("email");
+
+  // console.log("token....", token)
+
+  const router = useRouter();
+  const resetPassword = useSelector((state: any) => state?.root?.resetPassword)
+  console.log("resetPassword state.....", resetPassword)
+
+
+
   const onSubmit: SubmitHandler<ResetPasswordSchema> = (data) => {
     console.log('Reset Password data.....', data);
-    setReset({ ...initialValues });
+    dispatch(resetPasswordUser({...data, token, email})).then((result: any) => {
+      if (resetPasswordUser.fulfilled.match(result)) {
+        // console.log('resultt', result)
+        if (result && result.payload.success === true ) {
+          router.replace(routes.signIn);
+        } 
+      }
+    });
+    // setReset({ ...initialValues });
   };
 
   return (
@@ -29,7 +64,7 @@ export default function ResetPasswordForm() {
       <Form<ResetPasswordSchema>
         validationSchema={resetPasswordSchema}
         onSubmit={onSubmit}
-        resetValues={reset}
+        // resetValues={reset}
         useFormProps={{
           mode: 'onChange',
           defaultValues: initialValues,
@@ -37,7 +72,7 @@ export default function ResetPasswordForm() {
       >
         {({ register, formState: { errors } }) => (
           <div className="space-y-5">
-            <Input
+            {/* <Input
                 type="email"
                 size={isMedium ? 'lg' : 'xl'}
                 label="Email ID"
@@ -47,8 +82,9 @@ export default function ResetPasswordForm() {
                 className="[&>label>span]:font-medium"
                 {...register('email')}
                 error={errors.email?.message}
-            />
+            /> */}
             <Password
+                onKeyDown={handleKeyDown}
                 label="New Password"
                 placeholder="Enter your password"
                 size={isMedium ? 'lg' : 'xl'}
@@ -59,6 +95,7 @@ export default function ResetPasswordForm() {
                 error={errors.password?.message}
               />
             <Password
+                onKeyDown={handleKeyDown}
                 label="Confirm New Password"
                 placeholder="Enter your password"
                 size={isMedium ? 'lg' : 'xl'}
@@ -68,15 +105,26 @@ export default function ResetPasswordForm() {
                 {...register('confirmPassword')}
                 error={errors.confirmPassword?.message}
             />
-            <Button
-              className="w-full border-2 border-primary-light text-base font-bold"
+            { resetPassword.loading ? (<Button
+              className="w-full border-2 text-base font-bold"
               type="submit"
               size={isMedium ? 'lg' : 'xl'}
               color="info"
               rounded="pill"
+              disabled
             >
               Reset Password
-            </Button>
+              <Spinner size="sm" tag='div' className='ms-3' color='white' />
+              </Button>) : (<Button
+                className="w-full border-2  text-base font-bold"
+                type="submit"
+                size={isMedium ? 'lg' : 'xl'}
+                color="info"
+                rounded="pill"
+              >
+                Reset Password
+              </Button>)
+            }
           </div>
         )}
       </Form>

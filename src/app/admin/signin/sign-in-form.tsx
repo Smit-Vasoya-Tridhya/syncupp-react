@@ -62,6 +62,7 @@ export default function SignInForm() {
         {({ register, formState: { errors } }) => (
           <div className="space-y-5">
             <Input
+              onKeyDown={handleKeyDown}
               type="email"
               size={isMedium ? 'lg' : 'xl'}
               label="Email"
@@ -73,6 +74,7 @@ export default function SignInForm() {
               error={errors.email?.message}
             />
             <Password
+              onKeyDown={handleKeyDown}
               label="Password"
               placeholder="Enter your password"
               size={isMedium ? 'lg' : 'xl'}

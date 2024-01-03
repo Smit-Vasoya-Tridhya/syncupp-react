@@ -16,6 +16,7 @@ import {
 } from '@/utils/validators/forget-password.schema';
 import { useDispatch } from 'react-redux';
 import { postForgetPassword } from '@/redux/slices/admin/auth/forgotpassword/forgetPasswordSlice';
+import { handleKeyDown } from '@/utils/common-functions';
 
 const initialValues = {
   email: '',
@@ -30,7 +31,7 @@ export default function ForgetPasswordForm() {
       ...data,
     }
     dispatch(postForgetPassword(requestObject))
-    setReset({...initialValues})
+    // setReset({...initialValues})
     console.log('Forgot password form data->', data);
     // toast.success(
     //   <Text>
@@ -46,7 +47,7 @@ export default function ForgetPasswordForm() {
     <>
       <Form<ForgetPasswordSchema>
         validationSchema={forgetPasswordSchema}
-        resetValues={reset}
+        // resetValues={reset}
         onSubmit={onSubmit}
         useFormProps={{
           defaultValues: initialValues,
@@ -55,6 +56,7 @@ export default function ForgetPasswordForm() {
         {({ register, formState: { errors } }) => (
           <div className="space-y-5">
             <Input
+              onKeyDown={handleKeyDown}
               type="email"
               size={isMedium ? 'lg' : 'xl'}
               label="Email"
@@ -72,7 +74,7 @@ export default function ForgetPasswordForm() {
               color="info"
               rounded="pill"
             >
-              Reset Password
+              Submit
             </Button>
           </div>
         )}

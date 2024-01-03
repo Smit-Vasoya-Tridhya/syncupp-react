@@ -8,7 +8,7 @@ import {
 export const menuItems = [
   {
     name: 'Dashboard',
-    href: '/home',
+    href: routes.dashboard,
     icon: <PiFolderNotchDuotone />,
   },
   {

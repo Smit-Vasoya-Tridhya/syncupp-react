@@ -23,7 +23,7 @@ const colors = {
   success: 'text-green',
   warning: 'text-orange',
   current: 'text-current',
-  white:'white'
+  white: 'white',
 };
 
 export type SpinnerSizeTypes = keyof typeof sizes;
@@ -47,7 +47,7 @@ export default function Spinner({
   return (
     <Component
       className={cn(
-        'relative mx-auto flex flex-shrink-0',
+        'relative flex flex-shrink-0',
         sizes[size],
         colors[color],
         className

@@ -18,6 +18,7 @@ import {
   PiUserCirclePlus,
 } from 'react-icons/pi';
 import { siteConfig } from '@/config/site.config';
+import { Button } from 'rizzui';
 import OrSeparation from './or-separation';
 
 export default function AuthWrapperTwo({

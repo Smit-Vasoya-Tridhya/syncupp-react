@@ -11,6 +11,7 @@ import { Text } from '@/components/ui/text';
 import { Form } from '@/components/ui/form';
 import { routes } from '@/config/routes';
 import { SignUpSchema, signUpSchema } from '@/utils/validators/signup.schema';
+import { handleKeyDown } from '@/utils/common-functions';
 
 const initialValues = {
   firstName: '',
@@ -35,14 +36,14 @@ export default function SignUpForm(props: any) {
     setNextBtn(true);
     setTitle('Company Detail');
     console.log('sign up form data', data);
-    setReset({ ...initialValues });
+    // setReset({ ...initialValues });
   };
 
   return (
     <>
       <Form<SignUpSchema>
         validationSchema={signUpSchema}
-        resetValues={reset}
+        // resetValues={reset}
         onSubmit={onSubmit}
         useFormProps={{
           defaultValues: initialValues,
@@ -52,6 +53,7 @@ export default function SignUpForm(props: any) {
           <div className="space-y-5">
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:gap-5 xl:pb-2">
               <Input
+                onKeyDown={handleKeyDown}
                 type="text"
                 size={isMedium ? 'lg' : 'xl'}
                 label="First Name"
@@ -63,6 +65,7 @@ export default function SignUpForm(props: any) {
                 error={errors.firstName?.message}
               />
               <Input
+                onKeyDown={handleKeyDown}
                 type="text"
                 size={isMedium ? 'lg' : 'xl'}
                 label="Last Name"
@@ -76,6 +79,7 @@ export default function SignUpForm(props: any) {
             </div>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:gap-5 xl:pb-2">
               <Input
+                onKeyDown={handleKeyDown}
                 type="email"
                 size={isMedium ? 'lg' : 'xl'}
                 label="Email ID"
@@ -87,10 +91,11 @@ export default function SignUpForm(props: any) {
                 error={errors.email?.message}
               />
               <Input
+                onKeyDown={handleKeyDown}
                 type="text"
                 size={isMedium ? 'lg' : 'xl'}
                 label="Contact Number"
-                placeholder="Enter your email"
+                placeholder="Enter phone number"
                 rounded="pill"
                 color="info"
                 className="[&>label>span]:font-medium"
@@ -100,6 +105,7 @@ export default function SignUpForm(props: any) {
             </div>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:gap-5 xl:pb-2">
               <Password
+                onKeyDown={handleKeyDown}
                 label="Password"
                 placeholder="Enter your password"
                 size={isMedium ? 'lg' : 'xl'}
@@ -110,6 +116,7 @@ export default function SignUpForm(props: any) {
                 error={errors.password?.message}
               />
               <Password
+                onKeyDown={handleKeyDown}
                 label="Confirm Password"
                 placeholder="Enter your password"
                 size={isMedium ? 'lg' : 'xl'}
