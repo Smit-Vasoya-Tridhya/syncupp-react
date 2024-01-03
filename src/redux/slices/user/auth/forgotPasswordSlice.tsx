@@ -65,7 +65,7 @@ export const forgotPasswordSlice = createSlice({
         localStorage.clear();
         return{
           ...state,
-          user: action.payload,
+          // user: action.payload,
           forgotPasswordUserStatus: 'success',
           loading: false,
         }

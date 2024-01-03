@@ -34,15 +34,17 @@ export default function ChangePasswordForm() {
   const changePassword = useSelector((state: any) => state?.root?.changePassword)
   console.log("changePassword state.....", changePassword)
 
-  useEffect(()=> {
-    if(changePassword.user.success === true ){
-      router.replace('/dashboard')
-    }
-  }, [router, changePassword]);
 
   const onSubmit: SubmitHandler<ChangePasswordSchema> = (data) => {
     console.log('Change password form data->', data);
-    dispatch(changePasswordUser(data));
+    dispatch(changePasswordUser(data)).then((result: any) => {
+      if (changePasswordUser.fulfilled.match(result)) {
+        // console.log('resultt', result)/
+        if (result && result.payload.success === true ) {
+          router.replace(routes.dashboard);
+        } 
+      }
+    })
     // setReset({ ...initialValues });
   };
 

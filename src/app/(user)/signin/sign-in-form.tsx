@@ -8,10 +8,10 @@ import { Password } from '@/components/ui/password';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useMedia } from '@/hooks/use-media';
 import { Form } from '@/components/ui/form';
-import { Text } from '@/components/ui/text';
+// import { Text } from '@/components/ui/text';
 import { routes } from '@/config/routes';
 import { loginSchema, LoginSchema } from '@/utils/validators/login.schema';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { signInUser } from '@/redux/slices/user/auth/signinSlice';
 import { handleKeyDown } from '@/utils/common-functions';
@@ -31,17 +31,19 @@ export default function SignInForm() {
   const router = useRouter();
   const signIn = useSelector((state: any) => state?.root?.signIn)
   console.log("signIn state.....", signIn)
-
-  useEffect(()=> {
-    if(signIn.user.success === true){
-      router.push('/dashboard')
-    }
-  }, [router, signIn]);
+  
 
 
   const onSubmit: SubmitHandler<LoginSchema> = (data) => {
     console.log('Sign in data', data);
-    dispatch(signInUser(data))
+    dispatch(signInUser(data)).then((result: any) => {
+      if (signInUser.fulfilled.match(result)) {
+        // console.log('resultt', result)
+        if (result && result.payload.success === true ) {
+          router.replace(routes.dashboard);
+        } 
+      }
+    })
     // setReset({ ...initialValues, rememberMe: false });
   };
 

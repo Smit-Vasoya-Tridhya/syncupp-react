@@ -1,14 +1,14 @@
 'use client';
 
-import { Title, Text } from '@/components/ui/text';
+import { Text } from '@/components/ui/text';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { SubmitHandler } from 'react-hook-form';
 import { Form } from '@/components/ui/form';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { routes } from '@/config/routes';
 import Link from 'next/link';
-import toast from 'react-hot-toast';
+// import toast from 'react-hot-toast';
 import { useMedia } from '@/hooks/use-media';
 import {
   forgetPasswordSchema,
@@ -33,11 +33,6 @@ export default function ForgetPasswordForm() {
   const forgotPassword = useSelector((state: any) => state?.root?.forgotPassword)
   console.log("forgotPassword state.....", forgotPassword)
 
-  // useEffect(()=> {
-  //   if(forgotPassword.forgotPasswordUserStatus === 'success'){
-  //     router.replace('/dashboard')
-  //   }
-  // }, [router, forgotPassword]);
 
   const onSubmit: SubmitHandler<ForgetPasswordSchema> = (data) => {
     // console.log('Forgot password form data->', data);

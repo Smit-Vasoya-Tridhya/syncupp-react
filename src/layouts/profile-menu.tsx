@@ -16,18 +16,18 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 const menuItems = [
+  // {
+  //   name: 'My Profile',
+  //   href: routes.signIn,
+  // },
   {
-    name: 'My Profile',
-    href: routes.signIn,
+    name: 'Change Password',
+    href: routes.changePassword,
   },
-  {
-    name: 'Account Settings',
-    href: routes.signIn,
-  },
-  {
-    name: 'Activity Log',
-    href: routes.signIn,
-  },
+  // {
+  //   name: 'Activity Log',
+  //   href: routes.signIn,
+  // },
 ];
 
 function DropdownMenu() {

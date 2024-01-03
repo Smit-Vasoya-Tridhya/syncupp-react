@@ -71,7 +71,7 @@ export const resetPasswordSlice = createSlice({
         return{
           ...state,
           loading: false,
-          user: action.payload,
+          // user: action.payload,
           resetPasswordUserStatus: 'success'
         }
       })

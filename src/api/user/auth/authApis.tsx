@@ -85,6 +85,7 @@ export const PostResetPassword = async (data: ResetPasswordData) => {
 };
 
 export const PostChangePassword = async (data: ChangePasswordData) => {
+  console.log("Herreeeeeeeeeeeeeeeeeee")
   const response = await AxiosDefault({
     url: "/api/v1/auth/change-password",
     method: "POST",
