@@ -62,7 +62,6 @@ export const forgotPasswordSlice = createSlice({
         } else {
           toast.error(action.payload.message)
         }
-        localStorage.clear();
         return{
           ...state,
           // user: action.payload,

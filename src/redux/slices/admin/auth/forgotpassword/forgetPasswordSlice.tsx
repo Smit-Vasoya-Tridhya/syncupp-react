@@ -42,7 +42,6 @@ export const forgetPasswordSlice = createSlice({
         else {
           toast.error(action.payload.message)
         }
-        localStorage.clear();
       })
       .addCase(postForgetPassword.rejected, (state) => {
         state.loading = false;

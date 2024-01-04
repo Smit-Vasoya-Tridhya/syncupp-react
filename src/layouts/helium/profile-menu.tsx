@@ -1,5 +1,7 @@
 'use client';
 
+import ChangePasswordForm from '@/app/shared/(user)/forms/change-password-form';
+import ModalButton from '@/app/shared/modal-button';
 import { Avatar } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Popover } from '@/components/ui/popover';
@@ -20,10 +22,10 @@ const menuItems = [
   //   name: 'My Profile',
   //   href: routes.signIn,
   // },
-  {
-    name: 'Change Password',
-    href: routes.changePassword,
-  },
+  // {
+  //   name: 'Change Password',
+  //   href: routes.changePassword,
+  // },
   // {
   //   name: 'Activity Log',
   //   href: routes.signIn,
@@ -58,7 +60,7 @@ function DropdownMenu() {
         </div>
       </div>
       <div className="grid px-3.5 py-3.5 font-medium text-gray-700">
-        {menuItems.map((item) => (
+        {/* {menuItems.map((item) => (
           <Link
             key={item.name}
             href={item.href}
@@ -66,7 +68,15 @@ function DropdownMenu() {
           >
             {item.name}
           </Link>
-        ))}
+        ))} */}
+
+        <ModalButton
+          label="Change Password"
+          view={<ChangePasswordForm />}
+          customSize="625px"
+          className="mt-0 w-full hover:bg-gray-700 @lg:w-auto dark:bg-gray-100 dark:text-white dark:hover:bg-gray-200 dark:active:bg-gray-100"
+        />
+
       </div>
       <div className="border-t border-gray-300 px-6 pb-6 pt-5">
         <Button

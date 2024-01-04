@@ -98,7 +98,7 @@ export const signupSlice = createSlice({
         }
         return{
           ...state,
-          // user: action.payload,
+          user: action.payload,
           loading: false,
           signUpUserStatus: 'success'
         }

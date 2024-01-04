@@ -95,7 +95,7 @@ export default function SignInForm() {
                 href={routes.forgotPassword}
                 className="h-auto p-0 text-sm font-semibold text-blue underline transition-colors hover:text-gray-900 hover:no-underline"
               >
-                Forget Password?
+                Forgot Password?
               </Link>
             </div>
             { signIn.loading ? (<Button

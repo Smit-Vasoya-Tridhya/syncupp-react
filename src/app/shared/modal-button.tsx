@@ -16,16 +16,16 @@ interface ModalButtonProps extends ButtonProps {
 export default function ModalButton({
   label = 'Add New',
   className,
-  customSize = '500px',
+  customSize = '600px',
   view,
   icon = <PiPlusBold className="me-1.5 h-[17px] w-[17px]" />,
   ...rest
 }: ModalButtonProps) {
   const { openModal } = useModal();
   return (
-    <Button
+    <Button 
       className={cn(
-        'mt-5 w-full text-xs capitalize @lg:w-auto dark:bg-gray-100 dark:text-white dark:active:bg-gray-100 sm:text-sm lg:mt-0',
+        'mt-5 w-full bg-none text-xs capitalize @lg:w-auto dark:bg-gray-100 dark:text-white dark:active:bg-gray-100 sm:text-sm lg:mt-0',
         className
       )}
       onClick={() =>
@@ -36,7 +36,7 @@ export default function ModalButton({
       }
       {...rest}
     >
-      {icon}
+      {/* {icon} */}
       {label}
     </Button>
   );

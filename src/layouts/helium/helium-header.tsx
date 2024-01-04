@@ -4,9 +4,9 @@ import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import { ActionIcon } from '@/components/ui/action-icon';
 import SearchWidget from '@/components/search/search';
-import MessagesDropdown from '@/layouts/messages-dropdown';
-import NotificationDropdown from '@/layouts/notification-dropdown';
-import ProfileMenu from '@/layouts/profile-menu';
+import MessagesDropdown from '@/layouts/helium/messages-dropdown';
+import NotificationDropdown from '@/layouts/helium/notification-dropdown';
+import ProfileMenu from '@/layouts/helium/profile-menu';
 import SettingsButton from '@/components/settings/settings-button';
 import HamburgerButton from '@/layouts/hamburger-button';
 import Logo from '@/components/logo';
@@ -20,7 +20,7 @@ import Sidebar from './helium-sidebar';
 
 function HeaderMenuRight() {
   return (
-    <div className="ms-auto grid shrink-0 grid-cols-4 items-center gap-2 text-gray-700 xs:gap-3 xl:gap-4">
+    <div className="ms-auto grid shrink-0 grid-cols-3 items-center gap-2 text-gray-700 xs:gap-3 xl:gap-4">
       <MessagesDropdown>
         <ActionIcon
           aria-label="Messages"
