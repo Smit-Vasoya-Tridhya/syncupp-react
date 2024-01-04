@@ -1,16 +1,13 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Password } from '@/components/ui/password';
-import { Input } from '@/components/ui/input';
 import { SubmitHandler } from 'react-hook-form';
 import { Form } from '@/components/ui/form';
 import { Text } from '@/components/ui/text';
 import { routes } from '@/config/routes';
 import {resetPasswordSchema,ResetPasswordSchema} from '@/utils/validators/reset-password.schema';
-import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { postResetPassword } from '@/redux/slices/admin/auth/resetpassword/resetPasswordSlice';
 import useMedia from 'react-use/lib/useMedia';
@@ -24,7 +21,6 @@ const initialValues = {
 
 export default function ResetPasswordForm() {
   const isMedium = useMedia('(max-width: 1200px)', false);
-  const [reset, setReset] = useState({});
   const dispatch = useDispatch();
 
   const searchParams = useSearchParams();
@@ -39,29 +35,28 @@ export default function ResetPasswordForm() {
   const adminResetPassword = useSelector((state: any) => state?.root?.adminResetPassword)
   console.log("adminResetPassword state.....", adminResetPassword)
 
-  useEffect(()=> {
-    if(adminResetPassword.data.success === true){
-      router.replace('/admin/signin')
-    }
-  }, [router, adminResetPassword]);
-
   const onSubmit: SubmitHandler<ResetPasswordSchema> = (data) => {
     const requestObject = {
       ...data,
       token,
       email
     }
-    dispatch(postResetPassword(requestObject))
+    dispatch(postResetPassword(requestObject)).then((result: any) => {
+      if (postResetPassword.fulfilled.match(result)) {
+        console.log('resultt', result)
+        if (result && result.payload.success === true ) {
+          router.replace(routes.admin.signIn);
+        } 
+      }
+    })
   };
 
   return (
     <>
       <Form<ResetPasswordSchema>
         validationSchema={resetPasswordSchema}
-        // resetValues={reset}
         onSubmit={onSubmit}
         useFormProps={{
-          // mode: 'onChange',
           defaultValues: initialValues,
         }}
         className="pt-1.5"
@@ -90,27 +85,17 @@ export default function ResetPasswordForm() {
               {...register('confirmPassword')}
               error={errors.confirmPassword?.message}
             />
-            { adminResetPassword.loading ? (<Button
+            <Button
               className="mt-2 w-full"
               type="submit"
               size="lg"
               color="info"
               rounded="pill"
-              disabled
+              // disabled={adminResetPassword.loading}
             >
               Reset Password
-              <Spinner size="sm" tag='div' className='ms-3' color='white' />
-            </Button>):(
-              <Button
-              className="mt-2 w-full"
-              type="submit"
-              size="lg"
-              color="info"
-              rounded="pill"
-            >
-              Reset Password
+              {/* {adminResetPassword.loading && <Spinner size="sm" tag='div' className='ms-3' />} */}
             </Button>
-            )}
           </div>
         )}
       </Form>

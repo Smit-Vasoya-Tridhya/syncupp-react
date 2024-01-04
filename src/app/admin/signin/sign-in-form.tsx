@@ -8,15 +8,12 @@ import { Password } from '@/components/ui/password';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useMedia } from '@/hooks/use-media';
 import { Form } from '@/components/ui/form';
-import { Text } from '@/components/ui/text';
 import { routes } from '@/config/routes';
 import { loginSchema, LoginSchema } from '@/utils/validators/login.schema';
-import { useEffect, useState } from 'react';
 import { postSignin } from '@/redux/slices/admin/auth/signin/signinSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import Spinner from '@/components/ui/spinner';
-// import api from '@/app/api/api';
 
 const initialValues: LoginSchema = {
   email: '',
@@ -26,25 +23,24 @@ const initialValues: LoginSchema = {
 
 export default function SignInForm() {
   const isMedium = useMedia('(max-width: 1200px)', false);
-  const [reset, setReset] = useState({});
   const dispatch = useDispatch();
 
   const router = useRouter();
   const adminSignIn = useSelector((state: any) => state?.root?.adminSignIn)
   console.log("adminSignIn state.....", adminSignIn)
 
-  useEffect(()=> {
-    if(adminSignIn.userData.success === true){
-      router.replace('/admin/dashboard')
-    }
-  }, [router, adminSignIn]);
-
   const onSubmit: SubmitHandler<LoginSchema> = async (data) => {
     const requestObject = {
       ...data,
     }
-    dispatch(postSignin(requestObject))
-    // setReset({...initialValues})
+    dispatch(postSignin(requestObject)).then((result: any) => {
+      if (postSignin.fulfilled.match(result)) {
+        // console.log('resultt', result)
+        if (result && result.payload.success === true ) {
+          router.replace(routes.admin.dashboard);
+        } 
+      }
+    })
     console.log('Sign in data', data);
   };
 
@@ -53,7 +49,6 @@ export default function SignInForm() {
       <Form<LoginSchema>
         validationSchema={loginSchema}
         onSubmit={onSubmit}
-        // resetValues={reset}
         useFormProps={{
           mode: 'onChange',
           defaultValues: initialValues,
@@ -97,27 +92,18 @@ export default function SignInForm() {
                  Forgot Password?
               </Link>
             </div>
-            { adminSignIn.loading ? (<Button
+            <Button
               className="w-full border-2 text-base font-bold"
               type="submit"
               size={isMedium ? 'lg' : 'xl'}
               color="info"
               rounded="pill"
-              disabled
+              disabled={adminSignIn.loading}
+
             >
               Sign in
-              <Spinner size="sm" tag='div' className='ms-3' color='white' />
-            </Button>):(
-              <Button
-              className="w-full border-2 text-base font-bold"
-              type="submit"
-              size={isMedium ? 'lg' : 'xl'}
-              color="info"
-              rounded="pill"
-            >
-              Sign in
+              {adminSignIn.loading && <Spinner size="sm" tag='div' className='ms-3' />}
             </Button>
-            )}
           </div>
         )}
       </Form>

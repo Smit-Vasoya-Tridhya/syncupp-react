@@ -43,16 +43,24 @@ export const resetPasswordSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(postResetPassword.pending, (state) => {
-        state.loading = true;
+        return{
+          ...state,
+          loading: true
+        }
       })
       .addCase(postResetPassword.fulfilled, (state, action) => {
         if(action.payload.success == true){
           toast.success(action.payload.message)
-          state.loading = false;
-          state.data = action.payload
+          // state.loading = false;
+          // state.data = action.payload
         }
         else {
           toast.error(action.payload.message)
+        }
+        return{
+          ...state,
+          loading: false,
+          data: action.payload,
         }
       })
       .addCase(postResetPassword.rejected, (state) => {
