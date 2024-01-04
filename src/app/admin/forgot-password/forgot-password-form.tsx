@@ -1,6 +1,6 @@
 'use client';
 
-import { Title, Text } from '@/components/ui/text';
+import { Text } from '@/components/ui/text';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { SubmitHandler } from 'react-hook-form';
@@ -8,15 +8,15 @@ import { Form } from '@/components/ui/form';
 import { useState } from 'react';
 import { routes } from '@/config/routes';
 import Link from 'next/link';
-import toast from 'react-hot-toast';
 import { useMedia } from '@/hooks/use-media';
 import {
   forgetPasswordSchema,
   ForgetPasswordSchema,
 } from '@/utils/validators/forget-password.schema';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { postForgetPassword } from '@/redux/slices/admin/auth/forgotpassword/forgetPasswordSlice';
 import { handleKeyDown } from '@/utils/common-functions';
+import Spinner from '@/components/ui/spinner';
 
 const initialValues = {
   email: '',
@@ -26,21 +26,17 @@ export default function ForgetPasswordForm() {
   const isMedium = useMedia('(max-width: 1200px)', false);
   const [reset, setReset] = useState({});
   const dispatch = useDispatch();
+
+  const adminForgotPassword = useSelector((state: any) => state?.root?.adminForgotPassword)
+  console.log("changePassword state.....", adminForgotPassword)
+
   const onSubmit: SubmitHandler<ForgetPasswordSchema> = (data) => {
     const requestObject = {
       ...data,
     }
+    
     dispatch(postForgetPassword(requestObject))
-    // setReset({...initialValues})
     console.log('Forgot password form data->', data);
-    // toast.success(
-    //   <Text>
-    //     Reset link sent to this email:{' '}
-    //     <Text as="b" className="font-semibold">
-    //       {data.email}
-    //     </Text>
-    //   </Text>
-    // );
   };
 
   return (
@@ -68,13 +64,16 @@ export default function ForgetPasswordForm() {
               error={errors.email?.message as string}
             />
             <Button
-              className="w-full border-2 border-primary-light text-base font-medium"
+              className="w-full border-2 text-base font-medium"
               type="submit"
               size={isMedium ? 'lg' : 'xl'}
               color="info"
               rounded="pill"
+              disabled={adminForgotPassword.loading}
+
             >
               Submit
+              {adminForgotPassword.loading && <Spinner size="sm" tag='div' className='ms-3' />}
             </Button>
           </div>
         )}

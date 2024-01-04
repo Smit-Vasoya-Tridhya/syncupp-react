@@ -17,9 +17,7 @@ export default function HomePage() {
     const router = useRouter()
     const[loading, setLoading] = useState(false);
     
-
-
-    const onSubmit: SubmitHandler = (data) => {
+    const onSubmit: SubmitHandler<any> = (data:any) => {
         console.log('Sign in data', data);
         router.replace('/signin');
         setLoading(true)

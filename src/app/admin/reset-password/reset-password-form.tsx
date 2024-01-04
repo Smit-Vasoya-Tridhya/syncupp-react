@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { postResetPassword } from '@/redux/slices/admin/auth/resetpassword/resetPasswordSlice';
 import useMedia from 'react-use/lib/useMedia';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { handleKeyDown } from '@/utils/common-functions';
+import Spinner from '@/components/ui/spinner';
 
 const initialValues = {
   password: '',
@@ -52,14 +52,6 @@ export default function ResetPasswordForm() {
       email
     }
     dispatch(postResetPassword(requestObject))
-
-    // console.log(data);
-    // toast.success(
-    //   <Text className='ml-14'>
-    //     Password reset successfully
-    //   </Text>
-    // );
-    // setReset(initialValues);
   };
 
   return (
@@ -77,7 +69,6 @@ export default function ResetPasswordForm() {
         {({ register, formState: { errors } }) => (
           <div className="space-y-6">
             <Password
-              onKeyDown={handleKeyDown}
               label="New Password"
               placeholder="Enter New password"
               size="lg"
@@ -89,7 +80,6 @@ export default function ResetPasswordForm() {
               error={errors.password?.message}
             />
             <Password
-              onKeyDown={handleKeyDown}
               label="Confirm Password"
               placeholder="Enter confirm password"
               size="lg"
@@ -100,7 +90,18 @@ export default function ResetPasswordForm() {
               {...register('confirmPassword')}
               error={errors.confirmPassword?.message}
             />
-            <Button
+            { adminResetPassword.loading ? (<Button
+              className="mt-2 w-full"
+              type="submit"
+              size="lg"
+              color="info"
+              rounded="pill"
+              disabled
+            >
+              Reset Password
+              <Spinner size="sm" tag='div' className='ms-3' color='white' />
+            </Button>):(
+              <Button
               className="mt-2 w-full"
               type="submit"
               size="lg"
@@ -109,6 +110,7 @@ export default function ResetPasswordForm() {
             >
               Reset Password
             </Button>
+            )}
           </div>
         )}
       </Form>

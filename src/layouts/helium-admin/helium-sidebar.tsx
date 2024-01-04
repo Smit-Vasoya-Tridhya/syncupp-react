@@ -36,7 +36,8 @@ export default function HeliumSidebar({ className }: { className?: string }) {
           </Link>
         </div>
 
-        <SimpleBar className="h-[calc(100%-80px)]">
+        {/* <SimpleBar className="h-[calc(100%-80px)]"> */}
+        {/* <SimpleBar className="h-[calc(100%-80px)]">
           <div className="mt-4 pb-3 3xl:mt-6">
             {menuItems.map((item, index) => {
               const isActive = pathname === (item?.href as string);
@@ -166,6 +167,7 @@ export default function HeliumSidebar({ className }: { className?: string }) {
             })}
           </div>
         </SimpleBar>
+        </SimpleBar> */}
       </div>
     </aside>
   );

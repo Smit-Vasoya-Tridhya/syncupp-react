@@ -14,8 +14,8 @@ import { loginSchema, LoginSchema } from '@/utils/validators/login.schema';
 import { useEffect, useState } from 'react';
 import { postSignin } from '@/redux/slices/admin/auth/signin/signinSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { handleKeyDown } from '@/utils/common-functions';
 import { useRouter } from 'next/navigation';
+import Spinner from '@/components/ui/spinner';
 // import api from '@/app/api/api';
 
 const initialValues: LoginSchema = {
@@ -62,7 +62,6 @@ export default function SignInForm() {
         {({ register, formState: { errors } }) => (
           <div className="space-y-5">
             <Input
-              onKeyDown={handleKeyDown}
               type="email"
               size={isMedium ? 'lg' : 'xl'}
               label="Email"
@@ -74,7 +73,6 @@ export default function SignInForm() {
               error={errors.email?.message}
             />
             <Password
-              onKeyDown={handleKeyDown}
               label="Password"
               placeholder="Enter your password"
               size={isMedium ? 'lg' : 'xl'}
@@ -96,19 +94,30 @@ export default function SignInForm() {
                 href={routes.admin.forgotPassword}
                 className="h-auto p-0 text-sm font-semibold text-blue underline transition-colors hover:text-gray-900 hover:no-underline"
               >
-                Forget Password?
+                 Forgot Password?
               </Link>
             </div>
-            <Button
-              className="w-full border-2 border-primary-light text-base font-bold"
+            { adminSignIn.loading ? (<Button
+              className="w-full border-2 text-base font-bold"
+              type="submit"
+              size={isMedium ? 'lg' : 'xl'}
+              color="info"
+              rounded="pill"
+              disabled
+            >
+              Sign in
+              <Spinner size="sm" tag='div' className='ms-3' color='white' />
+            </Button>):(
+              <Button
+              className="w-full border-2 text-base font-bold"
               type="submit"
               size={isMedium ? 'lg' : 'xl'}
               color="info"
               rounded="pill"
             >
-              {/* <Link href={routes.admin.forgotPassword}></Link> */}
               Sign in
             </Button>
+            )}
           </div>
         )}
       </Form>
