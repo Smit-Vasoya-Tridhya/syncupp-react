@@ -1,5 +1,7 @@
 'use client';
 
+import ChangePasswordForm from '@/app/admin/(hydrogen)/change-password/change-password-form';
+import ModalButton from '@/app/shared/modal-button';
 import { Avatar } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Popover } from '@/components/ui/popover';
@@ -18,10 +20,10 @@ const menuItems = [
     name: 'My Profile',
     href: routes.admin.signIn,
   },
-  {
-    name: 'Change Password',
-    href: routes.admin.changePassword,
-  },
+  // {
+  //   name: 'Change Password',
+  //   // href: routes.admin.changePassword,
+  // },
 ];
 
 function DropdownMenu() {
@@ -50,17 +52,12 @@ function DropdownMenu() {
           {/* <Text className="text-gray-600">flores@doe.io</Text> */}
         </div>
       </div>
-      <div className="grid px-3.5 py-3.5 font-medium text-gray-700">
-        {menuItems.map((item) => (
-          <Link
-            key={item.name}
-            href={item.href}
-            className="group my-0.5 flex items-center rounded-md px-2.5 py-2 hover:bg-gray-100 focus:outline-none hover:dark:bg-gray-50/50"
-          >
-            {item.name}
-          </Link>
-        ))}
-      </div>
+      <ModalButton
+          label="Change Password"
+          view={<ChangePasswordForm />}
+          customSize="625px"
+          className="mt-0 w-full hover:bg-gray-700 @lg:w-auto dark:bg-gray-100 dark:text-white dark:hover:bg-gray-200 dark:active:bg-gray-100"
+        />
       <div className="border-t border-gray-300 px-6 pb-6 pt-5">
         <Button
           className="h-auto w-full justify-start p-0 font-medium text-gray-700 outline-none focus-within:text-gray-600 hover:text-gray-900 focus-visible:ring-0"
