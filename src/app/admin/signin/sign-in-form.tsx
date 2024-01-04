@@ -94,11 +94,11 @@ export default function SignInForm() {
                 href={routes.admin.forgotPassword}
                 className="h-auto p-0 text-sm font-semibold text-blue underline transition-colors hover:text-gray-900 hover:no-underline"
               >
-                Forget Password?
+                 Forgot Password?
               </Link>
             </div>
             { adminSignIn.loading ? (<Button
-              className="w-full border-2 border-primary-light text-base font-bold"
+              className="w-full border-2 text-base font-bold"
               type="submit"
               size={isMedium ? 'lg' : 'xl'}
               color="info"
@@ -109,7 +109,7 @@ export default function SignInForm() {
               <Spinner size="sm" tag='div' className='ms-3' color='white' />
             </Button>):(
               <Button
-              className="w-full border-2 border-primary-light text-base font-bold"
+              className="w-full border-2 text-base font-bold"
               type="submit"
               size={isMedium ? 'lg' : 'xl'}
               color="info"

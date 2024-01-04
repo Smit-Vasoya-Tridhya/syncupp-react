@@ -12,6 +12,7 @@ import {
   PiArrowLineRight,
   PiDribbbleLogo,
   PiFacebookLogo,
+  PiGoogleChromeLogo,
   PiInstagramLogo,
   PiLinkedinLogo,
   PiTwitterLogo,
@@ -156,24 +157,9 @@ const socialLinks = [
     icon: <PiFacebookLogo className="h-auto w-4" />,
   },
   {
-    title: 'Twitter',
-    link: 'https://twitter.com/RedqTeam',
-    icon: <PiTwitterLogo className="h-auto w-4" />,
-  },
-  {
-    title: 'Instagram',
-    link: 'https://www.instagram.com/redqteam/',
-    icon: <PiInstagramLogo className="h-auto w-4" />,
-  },
-  {
-    title: 'Linkedin',
-    link: 'https://www.linkedin.com/company/redqinc/',
-    icon: <PiLinkedinLogo className="h-auto w-4" />,
-  },
-  {
-    title: 'Dribbble',
-    link: 'https://dribbble.com/redqinc',
-    icon: <PiDribbbleLogo className="h-auto w-4" />,
+    title: 'Google',
+    link: 'https://www.google.com/',
+    icon: <PiGoogleChromeLogo className="h-auto w-4" />,
   },
 ];
 function SocialLinks() {

@@ -17,44 +17,44 @@ export const validateEmail = z
 export const validatePassword = z
   .string()
   .min(1, { message: messages.passwordRequired })
-  .min(8, { message: messages.passwordLengthMin })
+  .min(8, { message: messages.passwordvalidation })
   .regex(new RegExp('.*[A-Z].*'), {
-    message: messages.passwordOneUppercase,
+    message: messages.passwordvalidation,
   })
   .regex(new RegExp('.*[a-z].*'), {
-    message: messages.passwordOneLowercase,
+    message: messages.passwordvalidation,
   })
-  .regex(new RegExp('.*\\d.*'), { message: messages.passwordOneNumeric })
+  .regex(new RegExp('.*\\d.*'), { message: messages.passwordvalidation })
   .regex(new RegExp('.*[!@#$%^&*()_+\\-=\\[\\]{};:\'\\",.<>/?`~\\\\].*'), {
-    message: messages.passwordOneSpecialChar,
-  });
+    message: messages.passwordvalidation,
+  })
 
 export const validateNewPassword = z
   .string()
   .min(1, { message: messages.passwordRequired })
-  .min(8, { message: messages.passwordLengthMin })
+  .min(8, { message: messages.passwordvalidation })
   .regex(new RegExp('.*[A-Z].*'), {
-    message: messages.passwordOneUppercase,
+    message: messages.passwordvalidation,
   })
   .regex(new RegExp('.*[a-z].*'), {
-    message: messages.passwordOneLowercase,
+    message: messages.passwordvalidation,
   })
-  .regex(new RegExp('.*\\d.*'), { message: messages.passwordOneNumeric })
+  .regex(new RegExp('.*\\d.*'), { message: messages.passwordvalidation })
   .regex(new RegExp('.*[!@#$%^&*()_+\\-=\\[\\]{};:\'\\",.<>/?`~\\\\].*'), {
-    message: messages.passwordOneSpecialChar,
-  });
+    message: messages.passwordvalidation,
+  })
 
 export const validateConfirmPassword = z
   .string()
   .min(1, { message: messages.confirmPasswordRequired })
-  .min(8, { message: messages.passwordLengthMin })
+  .min(8, { message: messages.passwordvalidation })
   .regex(new RegExp('.*[A-Z].*'), {
-    message: messages.passwordOneUppercase,
+    message: messages.passwordvalidation,
   })
   .regex(new RegExp('.*[a-z].*'), {
-    message: messages.passwordOneLowercase,
+    message: messages.passwordvalidation,
   })
-  .regex(new RegExp('.*\\d.*'), { message: messages.passwordOneNumeric })
+  .regex(new RegExp('.*\\d.*'), { message: messages.passwordvalidation })
   .regex(new RegExp('.*[!@#$%^&*()_+\\-=\\[\\]{};:\'\\",.<>/?`~\\\\].*'), {
-    message: messages.passwordOneSpecialChar,
-  });
+    message: messages.passwordvalidation,
+  })
