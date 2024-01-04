@@ -15,7 +15,7 @@ const WithAuthPublic = (WrappedComponent: any) => {
 
       console.log("####" ,token)
       if (token) {
-        router.back()
+        router.replace('/admin/dashboard')
       } else {
         setLoading(false);
       }
