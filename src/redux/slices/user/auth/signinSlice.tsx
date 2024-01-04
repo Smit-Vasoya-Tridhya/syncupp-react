@@ -81,7 +81,7 @@ export const signinSlice: any = createSlice({
         }
         return{
           ...state,
-          // user: action.payload,
+          user: action.payload,
           loading: false,
           loginUserStatus: 'success'
         }

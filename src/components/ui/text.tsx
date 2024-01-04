@@ -1,3 +1,3 @@
 'use client';
 
-export { Text, Title } from 'rizzui';
+export { Text, Title, ActionIcon } from 'rizzui';

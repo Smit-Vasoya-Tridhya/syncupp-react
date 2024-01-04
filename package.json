@@ -6,12 +6,14 @@
   "scripts": {
     "clean": "rimraf -g \"{node_modules,.next,.cache}\"",
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && next export",
     "start": "next start",
     "lint": "next lint",
     "generate-icons": "node generate-icons-data.js",
     "format": "prettier --write .",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "export": "next export",
+    "deploy:local": "npm run build && npm run export"
   },
   "dependencies": {
     "@floating-ui/react": "^0.26.4",
@@ -48,6 +50,7 @@
     "fs-extra": "^11.2.0",
     "glob": "^10.3.10",
     "jotai": "2.6.0",
+    "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
     "next": "14.0.4",
     "next-auth": "^4.24.5",

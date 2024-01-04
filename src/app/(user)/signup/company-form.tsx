@@ -58,7 +58,7 @@ export default function CompanyForm(props: any) {
             if (signUpUser.fulfilled.match(result)) {
             //   console.log('resultt', result)
               if (result && result.payload.success === true ) {
-                router.replace(routes.dashboard);
+                router.replace(routes.signIn);
               } 
             }
           })
@@ -70,6 +70,9 @@ export default function CompanyForm(props: any) {
         dispatch(signUpUser({...signUpFormData})).then((result: any) => {
             if (signUpUser.fulfilled.match(result)) {
             //   console.log('resultt', result)
+              if (result && result.payload.success === true ) {
+                router.replace(routes.signIn);
+              } 
               setLoader(false)
             }
         })

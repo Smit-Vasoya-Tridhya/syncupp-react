@@ -2,6 +2,7 @@ import './src/env.mjs';
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
+  // output: 'export',
   images: {
     remotePatterns: [
       {
@@ -53,8 +54,18 @@ const nextConfig = {
   async redirects() {
     return [
       {
+        source: '/',
+        destination: '/signin',
+        permanent: false,
+      },
+      {
         source: '/home',
         destination: '/signin',
+        permanent: false,
+      },
+      {
+        source: '/admin',
+        destination: '/admin/signin',
         permanent: false,
       },
     ];

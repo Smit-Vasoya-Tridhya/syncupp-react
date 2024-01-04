@@ -54,7 +54,6 @@ export const resetPasswordSlice = createSlice({
         else {
           toast.error(action.payload.message)
         }
-        localStorage.clear();
       })
       .addCase(postResetPassword.rejected, (state) => {
         state.loading = false;

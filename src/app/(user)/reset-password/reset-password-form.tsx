@@ -26,9 +26,6 @@ export default function ResetPasswordForm() {
   const isMedium = useMedia('(max-width: 1200px)', false);
   const [reset, setReset] = useState({});
 
-  useEffect(() => {
-    localStorage.clear();
-  }, [])
   
   const dispatch = useDispatch();
 
