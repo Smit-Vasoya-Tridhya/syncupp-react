@@ -188,7 +188,7 @@ export function ToggleColumns<T>({
 }: ToggleColumnsTypes<T>) {
   return (
     <div className="">
-      <Popover
+      {/* <Popover
         content={() => (
           <div className="px-0.5 pt-2 text-left rtl:text-right">
             <Title as="h6" className="mb-1 px-0.5 text-sm font-semibold">
@@ -221,7 +221,7 @@ export function ToggleColumns<T>({
         <ActionIcon variant="outline" title={'Toggle Columns'}>
           <PiTextColumns strokeWidth={3} className=" h-6 w-6" />
         </ActionIcon>
-      </Popover>
+      </Popover> */}
     </div>
   );
 }

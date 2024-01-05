@@ -36,8 +36,8 @@ export default function HeliumSidebar({ className }: { className?: string }) {
           </Link>
         </div>
 
-        {/* <SimpleBar className="h-[calc(100%-80px)]">
-          <div className="mt-4 pb-3 3xl:mt-6">
+        <SimpleBar className="h-[calc(100%-80px)]">
+          {/* <div className="mt-4 pb-3 3xl:mt-6">
             {menuItems.map((item, index) => {
               const isActive = pathname === (item?.href as string);
               const pathnameExistInDropdowns: any = item?.dropdownItems?.filter(
@@ -164,8 +164,8 @@ export default function HeliumSidebar({ className }: { className?: string }) {
                 </Fragment>
               );
             })}
-          </div>
-        </SimpleBar> */}
+          </div> */}
+        </SimpleBar>
       </div>
     </aside>
   );
