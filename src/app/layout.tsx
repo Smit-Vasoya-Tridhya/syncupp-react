@@ -18,6 +18,7 @@ const NextProgress = dynamic(() => import('@/components/next-progress'), {
 import '@/app/globals.css';
 import { Providers } from '@/redux/provider';
 import { Persistor } from '@/redux/persistor';
+import { GoogleOAuthProviders } from '@/redux/google-clientid-provider';
 // import { authOptions } from '@/api/auth/[...nextauth]/auth-options';
 
 export const metadata = {
@@ -44,17 +45,19 @@ export default async function RootLayout({
         className={cn(inter.variable, lexendDeca.variable, 'font-inter')}
       >
         {/* <AuthProvider session={session}> */}
-        <Providers>
-          <Persistor>
-            <ThemeProvider>
-              <NextProgress />
-                {children}
-              <Toaster position='top-right' />
-              <GlobalDrawer />
-              <GlobalModal />
-            </ThemeProvider>
-          </Persistor>
-        </Providers>  
+        <GoogleOAuthProviders>
+          <Providers>
+            <Persistor>
+              <ThemeProvider>
+                <NextProgress />
+                  {children}
+                <Toaster position='top-right' />
+                <GlobalDrawer />
+                <GlobalModal />
+              </ThemeProvider>
+            </Persistor>
+          </Providers>  
+        </GoogleOAuthProviders>
         {/* </AuthProvider> */}
       </body>
     </html>

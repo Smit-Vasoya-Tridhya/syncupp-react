@@ -5,7 +5,7 @@ import Image from 'next/image';
 import logoImg from '@public/assets/svgs/syncupp-logo.svg';
 import starImg from '@public/auth/star.svg';
 import { Title, Text } from '@/components/ui/text';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { routes } from '@/config/routes';
 import cn from '@/utils/class-names';
 import {
@@ -24,6 +24,10 @@ import { FaFacebook } from "react-icons/fa";
 import { siteConfig } from '@/config/site.config';
 import { Button } from 'rizzui';
 import OrSeparation from './or-separation';
+import { GoogleLogin } from "@react-oauth/google";
+import { useDispatch } from 'react-redux';
+import { googleSignUpUser } from '@/redux/slices/user/auth/socialSignupSlice';
+import Facebook from './Facebook';
 
 export default function AuthWrapperTwo({
   children,
@@ -127,15 +131,54 @@ function SocialAuth({
 }: {
   isSignIn?: boolean;
 }) {
+
+  const dispatch = useDispatch();
+  const router = useRouter();
+
+  
   return (
-    <div className="grid grid-cols-1 gap-4 pb-7 md:grid-cols-2 xl:gap-5 xl:pb-8">
-      <Button variant="outline" className="h-11 w-full" rounded="pill">
+    <div className="grid grid-cols-1 gap-4 pb-7 md:grid-cols-1 lg:grid-cols-2 xl:gap-5 xl:pb-8">
+      {/* <Button variant="outline" className="h-11 w-full" rounded="pill">
         <FcGoogle className="me-2 h-4 w-4 shrink-0" />
         <span className="truncate">{`${isSignIn ? 'Login' : 'Sign up'} with Google`}</span>
-      </Button>
-      <Button variant="outline" className="h-11 w-full" rounded="pill">
-        <FaFacebook className="me-2 h-4 w-4 shrink-0 text-blue-700" />
-        <span className="truncate">{`${isSignIn ? 'Login' : 'Sign up'} with Facebook`}</span>
+      </Button> */}
+
+        <GoogleLogin
+            className="w-full shrink-0"
+            auto_select={false}
+            theme="outline"
+            size="large"
+            shape="pill"
+            logo_alignment="left"
+            text="continue_with"
+            width="auto"
+            onSuccess={(credentialResponse: any) => {
+              console.log("Google credentials....", credentialResponse)
+              const data = {
+                signupId: credentialResponse.credential
+              }
+              dispatch(googleSignUpUser(data)).then((result: any) => {
+                if (googleSignUpUser.fulfilled.match(result)) {
+                  // console.log('resultt', result)
+                  if (result && result.payload.success === true ) {
+                    router.replace(routes.dashboard);
+                  } 
+                }
+              });
+            }}
+            onError={() => {
+              console.log("Login Failed");
+            }}
+        />
+
+      <Button variant="outline" className="h-10 w-full" rounded="pill" >
+      {/* <a href={`https://www.facebook.com/v6.0/dialog/oauth?client_id=1123503825483323&redirect_uri=${encodeURIComponent(
+          'http://172.16.0.220:3001/api/v1/auth/facebook-signup'
+        )}`} target='_blank'>
+          <FaFacebook className="me-2 h-4 w-4 shrink-0 text-blue-700" />
+            <span className="truncate">{`${isSignIn ? 'Login' : 'Sign up'} with Facebook`}</span>
+        </a> */}
+        <Facebook />        
       </Button>
     </div>
   );
@@ -145,7 +188,7 @@ function IntroBannerBlock() {
   return (
     <div className="relative hidden w-[calc(50%-50px)] shrink-0 rounded-lg xl:-my-9 xl:block xl:w-[calc(50%-20px)] 2xl:-my-12 3xl:-my-14">
       <div className="absolute mx-auto h-full w-full overflow-hidden rounded-lg before:absolute before:start-0 before:top-0 before:z-10 before:h-full before:w-full before:bg-[#043ABA]/80 before:content-['']">
-        <Image
+        {/* <Image
           fill
           priority
           src={
@@ -154,7 +197,7 @@ function IntroBannerBlock() {
           alt="Sign Up Thumbnail"
           sizes="(max-width: 768px) 100vw"
           className="bg-primary object-cover"
-        />
+        /> */}
       </div>
       <div className="relative z-20 flex h-full flex-col justify-between px-10 py-24 xl:px-16 xl:py-28 2xl:px-24">
         <div className="text-white">
