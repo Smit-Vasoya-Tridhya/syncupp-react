@@ -76,10 +76,10 @@ export const messages = {
   startTimeIsRequired: 'Start Time is required',
   endDateIsRequired: 'End Date is required',
   endTimeIsRequired: 'End Time is required',
-  roleNameIsRequired: 'Role Name is Required',
+  roleNameIsRequired: 'Role Name is required',
   roleNameLengthMin: 'Role name must be at least 3 letters',
   errorSendingEmail: 'Error sending email',
   emailSentSuccessfully: 'Your email has been sent successfully.',
-  contactRequired: 'Contact must be number with maximum length is 13',
-  contactLengthMin: 'Contact must be at least 13 characters'
+  contactRequired: 'Contact is required',
+  contactLengthMin: 'Contact must be number with maximum length is 13'
 };
