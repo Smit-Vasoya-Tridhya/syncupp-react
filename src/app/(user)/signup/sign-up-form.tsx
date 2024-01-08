@@ -31,6 +31,13 @@ export default function SignUpForm(props: any) {
 
   // console.log(formData)
 
+  const handleKeyContactDown = (e: any) => {
+    // Check if the space key is pressed and it's the first character
+    if (!((e.key >= '0' && e.key <= '9') || e.key === 'Backspace' || e.key === '+')) {
+      e.preventDefault()
+    }
+}
+
 
   const onSubmit: SubmitHandler<SignUpSchema> = (data) => {
     setFormData(data);
@@ -94,7 +101,7 @@ export default function SignUpForm(props: any) {
                 error={errors.email?.message}
               />
               <Input
-                onKeyDown={handleKeyDown}
+                onKeyDown={handleKeyContactDown}
                 type="text"
                 size={isMedium ? 'lg' : 'xl'}
                 label="Contact Number"
