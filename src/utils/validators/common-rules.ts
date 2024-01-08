@@ -58,3 +58,11 @@ export const validateConfirmPassword = z
   .regex(new RegExp('.*[!@#$%^&*()_+\\-=\\[\\]{};:\'\\",.<>/?`~\\\\].*'), {
     message: messages.passwordvalidation,
   })
+
+  export const validateContactNumber = z 
+  .string()
+  .min(10, { message: messages.contactRequired })
+  .min(13, { message: messages.contactRequired })
+  .regex( new RegExp(/^\+?(\d{1,3})?[- ]?(\d{10})$/),{
+    message : messages.contactRequired,
+  })

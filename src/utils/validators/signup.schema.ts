@@ -4,6 +4,7 @@ import {
   validateEmail,
   validatePassword,
   validateConfirmPassword,
+  validateContactNumber,
 } from '@/utils/validators/common-rules';
 
 // form zod validation schema
@@ -11,7 +12,7 @@ export const signUpSchema = z.object({
   firstName: z.string().min(1, { message: messages.firstNameRequired }),
   lastName: z.string().min(1, { message: messages.lastNameRequired }),
   email: validateEmail,
-  contact: z.string().min(1, { message: messages.contactRequired }).min(10, { message: messages.contactLengthMin }),
+  contact: validateContactNumber,
   password: validatePassword,
   confirmPassword: validateConfirmPassword,
   // isAgreed: z.boolean(),
