@@ -7,6 +7,7 @@ import forgotPasswordSlice from "./slices/user/auth/forgotPasswordSlice";
 import adminSignInSlice from "./slices/admin/auth/signin/signinSlice";
 import adminForgotPasswordSlice from "./slices/admin/auth/forgotpassword/forgetPasswordSlice";
 import adminResetPasswordSlice from "./slices/admin/auth/resetpassword/resetPasswordSlice";
+import socialSignupSlice from "./slices/user/auth/socialSignupSlice";
 
 
  const combinedReducer = combineReducers({
@@ -15,6 +16,7 @@ import adminResetPasswordSlice from "./slices/admin/auth/resetpassword/resetPass
   forgotPassword: forgotPasswordSlice,
   resetPassword: resetPasswordSlice,
   changePassword: changePasswordSlice,
+  socialSignup: socialSignupSlice,
   adminSignIn: adminSignInSlice,
   adminForgotPassword: adminForgotPasswordSlice,
   adminResetPassword: adminResetPasswordSlice,

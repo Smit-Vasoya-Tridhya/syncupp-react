@@ -1207,3 +1207,16 @@ div[style='z-index: 1000001;'],
   span.swiper-pagination-bullet-active {
   @apply !w-4 !bg-gray-400;
 }
+
+
+.google-button > div:first-child  {
+    height: 50px !important;
+    position: absolute;
+    z-index: 40;
+    opacity: 0;
+ }
+
+
+.facebook-button{
+  background-color: white;
+}

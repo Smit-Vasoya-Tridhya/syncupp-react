@@ -41,6 +41,7 @@ function DropdownMenu() {
     console.log("signout clicked..")
     dispatch(logoutUser(''))
     dispatch(logoutUserSignUp(''))
+    localStorage.clear();
     router.replace('/signin');
   }
 

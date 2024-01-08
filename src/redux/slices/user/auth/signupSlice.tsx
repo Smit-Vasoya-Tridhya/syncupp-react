@@ -54,7 +54,7 @@ export const signUpUser: any = createAsyncThunk(
       const response: any = await PostSignup(apiData);
       // console.log("Signup response.....", response);
       // console.log("Tokenn....", response.data.token)
-      localStorage.setItem("token", response.data.token);
+      // localStorage.setItem("token", response.data.token);
       return response;
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as PostSignUpResponse;
