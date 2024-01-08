@@ -91,10 +91,10 @@ export default function ResetPasswordForm() {
               size="lg"
               color="info"
               rounded="pill"
-              // disabled={adminResetPassword.loading}
+              disabled={adminResetPassword.loading}
             >
               Reset Password
-              {/* {adminResetPassword.loading && <Spinner size="sm" tag='div' className='ms-3' />} */}
+              {adminResetPassword.loading && <Spinner size="sm" tag='div' className='ms-3' />}
             </Button>
           </div>
         )}
