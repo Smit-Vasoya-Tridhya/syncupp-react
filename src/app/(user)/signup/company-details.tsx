@@ -27,9 +27,19 @@ const industryOptions = [
   { name: 'Digital Marketing', value: 'Digital Marketing' },
 ]
 
-export default function CompanyDetailsForm() {
+export default function CompanyDetailsForm(props: any) {
+
+  const { fdata, setFdata } = props;
 
   const isMedium = useMedia('(max-width: 1200px)', false);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("handleChange..");
+    setFdata({
+      ...fdata,
+      [event.target.name]: event.target.value
+    });
+  };
 
   const {
     register,
@@ -50,7 +60,7 @@ export default function CompanyDetailsForm() {
             rounded="pill"
             color="info"
             className="[&>label>span]:font-medium"
-            {...register('companyName')}
+            {...register('companyName', { onChange: (e: any)=> handleChange(e)})}
             error={errors.companyName?.message as string}
           />
           <Input
@@ -62,7 +72,7 @@ export default function CompanyDetailsForm() {
             rounded="pill"
             color="info"
             className="[&>label>span]:font-medium"
-            {...register('companyWebsite')}
+            {...register('companyWebsite', { onChange: (e: any)=> handleChange(e)})}
             error={errors?.companyWebsite?.message as string}
           />
         </div>
@@ -79,7 +89,7 @@ export default function CompanyDetailsForm() {
                 label="How many people"
                 rounded="pill"
                 color="info"
-                getOptionValue={(option) => option.name}
+                getOptionValue={(option) => option.value}
                 dropdownClassName="p-1 border w-12 border-gray-100 shadow-lg"
                 className="font-medium"
                 error={errors?.peopleCount?.message as string}

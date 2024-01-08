@@ -237,7 +237,6 @@ function SocialAuth({
 
       <Button variant="outline" className="h-11 w-full relative" rounded="pill" disabled={loader} >
         <FaFacebook className="me-2 h-4 w-4 shrink-0 text-blue-700" />
-        {/* <Facebook isSignIn={isSignIn} />     */}
         <FacebookLogin
             textButton={`${isSignIn ? 'Login' : 'Sign up'} with Facebook`}
             appId="1123503825483323"

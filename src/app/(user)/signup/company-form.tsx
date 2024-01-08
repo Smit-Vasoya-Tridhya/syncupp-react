@@ -7,7 +7,7 @@ import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import useMedia from "react-use/lib/useMedia";
 import { Button } from "rizzui";
 import CompanyDetailsForm from "./company-details";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { signUpUser } from "@/redux/slices/user/auth/signupSlice";
 import { useRouter } from "next/navigation";
@@ -15,35 +15,34 @@ import Spinner from "@/components/ui/spinner";
 import { routes } from "@/config/routes";
 
 
-const initialValues = {
-    companyName: '',
-    companyWebsite: '',
-    peopleCount: '',
-    industry: ''
-};
+
 
 
 export default function CompanyForm(props: any) {
 
-    const { signUpFormData } = props;
+    const { signUpFormData, setNextBtn,  setTitle, setFdata, fdata } = props;
     console.log("Signupform data.......", signUpFormData);
 
-    const isMedium = useMedia('(max-width: 1200px)', false);
-    const [loader, setLoader] = useState(false)
+    console.log("fdataaaaaaaaaaaaa..........", fdata);
 
-    const dispatch = useDispatch();
 
-    const router = useRouter();
+
     const signUp = useSelector((state: any) => state?.root?.signUp)
     console.log("signUp state.....", signUp)
+
+
+    const initialValues = {
+        companyName: fdata?.companyName ?? '',
+        companyWebsite: fdata?.companyWebsite ?? '',
+        peopleCount: fdata?.peopleCount ?? '',
+        industry: fdata?.industry ?? ''
+    };
+
+    const isMedium = useMedia('(max-width: 1200px)', false);
+    const [loader, setLoader] = useState(false);
+    const dispatch = useDispatch();
+    const router = useRouter();
   
-    // useEffect(()=> {
-
-    //   if(signUp.user.status === false) {
-    //     setLoader(true);
-    //   }
-
-    // }, [router, signUp]);
 
     const methods = useForm<CompanyDetailsSchema>({
         resolver: zodResolver(companyDetailsSchema),
@@ -62,7 +61,6 @@ export default function CompanyForm(props: any) {
               } 
             }
           })
-        // methods.reset(initialValues);
     };
 
     const handleClick = () => {
@@ -79,6 +77,12 @@ export default function CompanyForm(props: any) {
         setLoader(true);
     };
 
+    const handlePrevClick = () => {
+        console.log("Previous click....")
+        setNextBtn(false);
+        setTitle('Sign Up!');
+    }
+
     return(
         <>
             <FormProvider {...methods}>
@@ -86,7 +90,7 @@ export default function CompanyForm(props: any) {
                     onSubmit={methods.handleSubmit(onSubmit)}
                     // className={cn('[&_label.block>span]:font-medium', className)}
                 >
-                    <CompanyDetailsForm />
+                    <CompanyDetailsForm fdata={fdata} setFdata={setFdata} />
                      { signUp.loading  && !loader ? (<Button
                         className="border-2 text-base font-bold float-right mt-8"
                         type="submit"
@@ -131,6 +135,16 @@ export default function CompanyForm(props: any) {
                 Skip & Save
             </Button>)
             }
+            <Button
+                className="border-2  text-base font-medium float-left me-3 mt-8"
+                type="submit"
+                size={isMedium ? 'lg' : 'xl'}
+                color="info"
+                rounded="pill"
+                onClick={handlePrevClick} 
+                >
+                Previous
+            </Button>
         </>
     );
 }
