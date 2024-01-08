@@ -1,12 +1,10 @@
 import Link from 'next/link';
-import { PiPlusBold } from 'react-icons/pi';
-import { routes } from '@/config/routes';
-import { Button } from '@/components/ui/button';
 import PageHeader from '@/app/shared/page-header';
 import ProductsTable from '@/app/(hydrogen)/team/table';
 import { productsData } from '@/data/products-data';
 import { metaObject } from '@/config/site.config';
-import ExportButton from '@/app/shared/export-button';
+import ModalButton from '@/app/shared/modal-button';
+import AddTeamMemberForm from '@/app/shared/(user)/forms/add-team-member-form';
 
 export const metadata = {
   ...metaObject('Products'),
@@ -43,13 +41,12 @@ export default function ProductsPage() {
             href={routes.eCommerce.createProduct}
             className="w-full @lg:w-auto"
           > */}
-            <Button
-              tag="span"
-              className="w-full @lg:w-auto dark:bg-gray-100 dark:text-white dark:active:bg-gray-100"
-            >
-              <PiPlusBold className="me-1.5 h-[17px] w-[17px]" />
-              Add Team
-            </Button>
+          <ModalButton
+          label="Add Team"
+          view={<AddTeamMemberForm />}
+          customSize="625px"
+          className="mt-0 w-full hover:bg-gray-700 @lg:w-auto dark:bg-gray-100 dark:text-white dark:hover:bg-gray-200 dark:active:bg-gray-100"
+        />
           {/* </Link> */}
         </div>
       </PageHeader>
