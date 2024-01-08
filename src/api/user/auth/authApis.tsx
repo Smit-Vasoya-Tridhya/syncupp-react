@@ -17,6 +17,10 @@ type SocialSignUpDataGoogle = {
   signupId: string;
 };
 
+type SocialSignUpDataFacebook = {
+  access_token: string;
+};
+
 type SignInData = {
   email: string;
   password: string;
@@ -58,6 +62,17 @@ export const PostSignup = async (data: SignUpData) => {
 export const PostSocialSignupGoogle = async (data: SocialSignUpDataGoogle) => {
   const response = await AxiosDefault({
     url: "/api/v1/auth/google-signup",
+    method: "POST",
+    data: data,
+    contentType: "application/json", 
+  });
+  const responseData = response.data;
+  return responseData;
+};
+
+export const PostSocialSignupFacebook = async (data: SocialSignUpDataFacebook) => {
+  const response = await AxiosDefault({
+    url: "/api/v1/auth/facebook-signup",
     method: "POST",
     data: data,
     contentType: "application/json", 
