@@ -1,7 +1,6 @@
 import { Metadata } from 'next';
-import logoImg from '@public/logo.svg';
 import { LAYOUT_OPTIONS } from '@/config/enums';
-import logoIconImg from '@public/logo-short.svg';
+import logoIconImg from '@public/assets/images/SyncUpp.png';
 import { OpenGraph } from 'next/dist/lib/metadata/types/opengraph-types';
 import syncuppLogo from '@public/assets/svgs/syncupp-logo.svg';
 
@@ -12,8 +11,8 @@ enum MODE {
 }
 
 export const siteConfig = {
-  title: 'SyncUpp - Agency Dashboard ',
-  description: `Isomorphic the ultimate React TypeScript Admin Template. Streamline your admin dashboard development with our feature-rich, responsive, and highly customizable solution. Boost productivity and create stunning admin interfaces effortlessly.`,
+  title: 'SyncUpp',
+  description: `SyncUpp`,
   logo: syncuppLogo,
   icon: logoIconImg,
   mode: MODE.LIGHT,
@@ -27,10 +26,10 @@ export const metaObject = (
   description: string = siteConfig.description
 ): Metadata => {
   return {
-    title: title ? `${title} - Isomorphic Furyroad` : siteConfig.title,
+    title: title ? `${title} | SyncUpp` : siteConfig.title,
     description,
     openGraph: openGraph ?? {
-      title: title ? `${title} - Isomorphic Furyroad` : title,
+      title: title ? `${title} | SyncUpp` : title,
       description,
       url: 'https://isomorphic-furyroad.vercel.app',
       siteName: 'Isomorphic Furyroad', // https://developers.google.com/search/docs/appearance/site-names

@@ -13,20 +13,21 @@ import { routes } from '@/config/routes';
 import { SignUpSchema, signUpSchema } from '@/utils/validators/signup.schema';
 import { handleKeyDown } from '@/utils/common-functions';
 
-const initialValues = {
-  firstName: '',
-  lastName: '',
-  email: '',
-  contact: '',
-  password: '',
-  confirmPassword: '',
-};
+
 
 export default function SignUpForm(props: any) {
   const isMedium = useMedia('(max-width: 1200px)', false);
-  const [reset, setReset] = useState({});
 
-  const { setTitle, setNextBtn, setFormData  } = props;
+  const { setTitle, setNextBtn, setFormData, formData } = props;
+
+  const initialValues = {
+    firstName: formData?.firstName ?? '',
+    lastName: formData?.lastName ?? '',
+    email: formData?.email ?? '',
+    contact: formData?.contact ?? '',
+    password: formData?.password ?? '',
+    confirmPassword: formData?.confirmPassword ?? '',
+  };
 
   // console.log(formData)
 
@@ -36,14 +37,16 @@ export default function SignUpForm(props: any) {
     setNextBtn(true);
     setTitle('Company Detail');
     console.log('sign up form data', data);
-    // setReset({ ...initialValues });
+    // setfdata({
+    //   ...data,
+    //   [name]: data
+    // });
   };
 
   return (
     <>
       <Form<SignUpSchema>
         validationSchema={signUpSchema}
-        // resetValues={reset}
         onSubmit={onSubmit}
         useFormProps={{
           defaultValues: initialValues,
