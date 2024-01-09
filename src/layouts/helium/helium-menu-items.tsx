@@ -1,6 +1,7 @@
 import { routes } from '@/config/routes';
 import {
   PiFolderNotchDuotone,
+  PiUser,
   PiUserListDuotone,
 } from 'react-icons/pi';
 
@@ -12,7 +13,12 @@ export const menuItems = [
     icon: <PiFolderNotchDuotone />,
   },
   {
-    name: 'Teams',
+    name: 'Client',
+    href: routes.client,
+    icon: <PiUser />,
+  },
+  {
+    name: 'Team',
     href: routes.team,
     icon: <PiUserListDuotone />,
   },
