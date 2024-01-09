@@ -29,8 +29,8 @@ role:''
 };
 
 const typeOption= [
-  { name: 'Team Member', value: 'Team Member' },
-  { name: 'Admin', value: 'Admin' },
+  { name: 'Team Member', value: 'team_member' },
+  { name: 'Admin', value: 'admin' },
   ]
 
 export default function AddTeamMemberForm({ className }: { className?: string }) {
@@ -85,7 +85,6 @@ export default function AddTeamMemberForm({ className }: { className?: string })
             <div className={cn('grid grid-cols-2 gap-4 pt-5')}>
               <Input
                 type="text"
-                size={isMedium ? 'lg' : 'xl'}
                 label="Name"
                 placeholder="Enter your Name"
                 color="info"
@@ -95,7 +94,6 @@ export default function AddTeamMemberForm({ className }: { className?: string })
               />
               <Input
                 type="email"
-                size={isMedium ? 'lg' : 'xl'}
                 label="Email ID"
                 placeholder="Enter your Email ID"
                 color="info"
@@ -105,7 +103,6 @@ export default function AddTeamMemberForm({ className }: { className?: string })
               />
               <Input
                 type="number"
-                size={isMedium ? 'lg' : 'xl'}
                 label="Phone"
                 placeholder="Enter your Phone"
                 color="info"
@@ -123,7 +120,7 @@ export default function AddTeamMemberForm({ className }: { className?: string })
                     onChange={onChange}
                     label="Product Type"
                     error={errors?.role?.message as string}
-                    getOptionValue={(option) => option.name}
+                    getOptionValue={(option) => option.value}
                   />
                 )}
               />

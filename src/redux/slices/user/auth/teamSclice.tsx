@@ -1,8 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { toast } from 'react-hot-toast';
-import { PostTeamEnroll } from "@/api/user/auth/teamApis";
+import { EditTeamMember, PostTeamEnroll } from "@/api/user/auth/teamApis";
 
 type TeamData = {
+  id:string;
   email: string;
   name: string;
   contact_number: string;
@@ -23,6 +24,7 @@ export const teamEnroll: any = createAsyncThunk(
   "team/teamEnroll",
   async (data: TeamData) => {
     const apiData={
+      id: data.id,
       email: data.email,
       name: data.name,
       contact_number: data.contact_number,
@@ -30,16 +32,51 @@ export const teamEnroll: any = createAsyncThunk(
     }
     try {
       const response: any = await PostTeamEnroll(apiData);
-      localStorage.setItem("token", response.data.token);
       return response;
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as TeamDataResponse;
     }
   }
 );
+export const editTeam: any = createAsyncThunk(
+  "team/editTeam",
+  async (data: TeamData) => {
+    const apiData={
+      id: data.id,
+      email: data.email,
+      name: data.name,
+      contact_number: data.contact_number,
+      role: data.role,
+    }
+    try {
+      const response: any = await EditTeamMember(apiData);
+      return response;
+    } catch (error: any) {
+      return { status: false, message: error.response.data.message } as TeamDataResponse;
+    }
+  }
+);
+// export const viewTeam: any = createAsyncThunk(
+//   "team/viewTeam",
+//   async (data: TeamData) => {
+//     const apiData={
+//       id: data.id,
+//       email: data.email,
+//       name: data.name,
+//       contact_number: data.contact_number,
+//       role: data.role,
+//     }
+//     try {
+//       const response: any = await ViewTeamMember(apiData);
+//       return response;
+//     } catch (error: any) {
+//       return { status: false, message: error.response.data.message } as TeamDataResponse;
+//     }
+//   }
+// );
 
 export const teamSlice = createSlice({
-  name: "Team",
+  name: "team",
   initialState,
   reducers: {
 
@@ -54,7 +91,7 @@ export const teamSlice = createSlice({
 
   },
   extraReducers: (builder) => {
-    builder
+      builder
       .addCase(teamEnroll.pending, (state) => {
           return{
             ...state,
@@ -80,6 +117,34 @@ export const teamSlice = createSlice({
           ...state,
           loading: false,
           teamEnrollStatus: 'error'
+        }
+      });
+      builder
+      .addCase(editTeam.pending, (state) => {
+          return{
+            ...state,
+            loading: true,
+            editTeamStatus: 'pending'
+          }
+      })
+      .addCase(editTeam.fulfilled, (state,action) => {
+        if(action.payload.success == true){
+          toast.success(action.payload.message)
+        } else {
+          toast.error(action.payload.message)
+        }
+        return{
+          ...state,
+          user: action.payload,
+          loading: false,
+          editTeamStatus: 'success'
+        }
+      })
+      .addCase(editTeam.rejected, (state) => {
+        return{
+          ...state,
+          loading: false,
+          editTeamStatus: 'error'
         }
       });
   },

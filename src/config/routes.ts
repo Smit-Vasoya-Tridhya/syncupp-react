@@ -10,7 +10,7 @@ export const routes = {
   dashboard: '/dashboard',
   client: '/client',
   team:'/team',
-  
+  viewTeam:'/team/view-team',
   // Admin panel
   admin:{
     signIn: '/admin/signin',
