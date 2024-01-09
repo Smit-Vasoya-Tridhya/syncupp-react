@@ -9,7 +9,7 @@ export const routes = {
   resetPassword: '/reset-password',
   dashboard: '/dashboard',
   team:'/team',
-  
+  viewTeam:'/team/view-team',
   // Admin panel
   admin:{
     signIn: '/admin/signin',

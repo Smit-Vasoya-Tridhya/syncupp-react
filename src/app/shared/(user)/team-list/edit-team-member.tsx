@@ -15,7 +15,8 @@ import { Input } from '@/components/ui/input';
 import dynamic from 'next/dynamic';
 import SelectLoader from '@/components/loader/select-loader';
 import { TeamMemberSchema } from '@/utils/validators/add-team-member.schema';
-import { editTeam, teamEnroll } from '@/redux/slices/user/auth/teamSclice';
+import { editTeam } from '@/redux/slices/user/auth/teamSclice';
+// import { editTeam, teamEnroll } from '@/redux/slices/user/auth/teamSclice';
 const Select = dynamic(() => import('@/components/ui/select'), {
   ssr: false,
   loading: () => <SelectLoader />,
@@ -85,7 +86,6 @@ export default function EditTeamMemberForm({ className }: { className?: string }
             <div className={cn('grid grid-cols-2 gap-4 pt-5')}>
               <Input
                 type="text"
-                size={isMedium ? 'lg' : 'xl'}
                 label="Name"
                 placeholder="Enter your Name"
                 color="info"
@@ -95,7 +95,6 @@ export default function EditTeamMemberForm({ className }: { className?: string }
               />
               <Input
                 type="email"
-                size={isMedium ? 'lg' : 'xl'}
                 label="Email ID"
                 placeholder="Enter your Email ID"
                 color="info"
@@ -105,7 +104,6 @@ export default function EditTeamMemberForm({ className }: { className?: string }
               />
               <Input
                 type="number"
-                size={isMedium ? 'lg' : 'xl'}
                 label="Phone"
                 placeholder="Enter your Phone"
                 color="info"
