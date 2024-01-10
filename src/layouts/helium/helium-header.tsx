@@ -17,6 +17,8 @@ import {
 } from 'react-icons/pi';
 import cn from '@/utils/class-names';
 import Sidebar from './helium-sidebar';
+import Image from 'next/image';
+import { siteConfig } from '@/config/site.config';
 
 function HeaderMenuRight() {
   return (
@@ -81,7 +83,14 @@ export default function Header() {
           aria-label="Site Logo"
           className="me-4 w-9 shrink-0 lg:me-5 xl:hidden"
         >
-          <Logo iconOnly={true} />
+          <Image
+              src={siteConfig.logo}
+              alt={siteConfig.title}
+              // className="dark:invert"
+              width={25}
+              height={25}
+              priority
+            />
         </Link>
         {/* <SearchWidget /> */}
       </div>

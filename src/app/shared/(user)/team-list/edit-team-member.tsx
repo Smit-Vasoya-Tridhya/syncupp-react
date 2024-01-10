@@ -2,7 +2,7 @@
 
 import { Title, ActionIcon } from '@/components/ui/text';
 import { Button } from '@/components/ui/button';
-import { Controller, SubmitHandler, useFormContext } from 'react-hook-form';
+import { Controller, SubmitHandler } from 'react-hook-form';
 import { Form } from '@/components/ui/form';
 import { useMedia } from '@/hooks/use-media';
 import { useDispatch, useSelector } from 'react-redux';
@@ -47,14 +47,14 @@ export default function EditTeamMemberForm({ className }: { className?: string }
 
   const onSubmit: SubmitHandler<TeamMemberSchema> = (data) => {
     console.log('Team member data---->', data);
-    dispatch(editTeam(data)).then((result: any) => {
-      if (editTeam.fulfilled.match(result)) {
-        if (result && result.payload.success === true) {
-          // router.replace(routes.dashboard);
-          closeModal();
-        }
-      }
-    });
+    // dispatch(editTeam(data)).then((result: any) => {
+    //   if (editTeam.fulfilled.match(result)) {
+    //     if (result && result.payload.success === true) {
+    //       // router.replace(routes.dashboard);
+    //       closeModal();
+    //     }
+    //   }
+    // });
   };
 
   return (

@@ -31,13 +31,6 @@ export const metaObject = (
     openGraph: openGraph ?? {
       title: title ? `${title} | SyncUpp` : title,
       description,
-      url: 'https://isomorphic-furyroad.vercel.app',
-      siteName: 'Isomorphic Furyroad', // https://developers.google.com/search/docs/appearance/site-names
-      images: {
-        url: 'https://s3.amazonaws.com/redqteam.com/isomorphic-furyroad/itemdep/isobanner.png',
-        width: 1200,
-        height: 630,
-      },
       locale: 'en_US',
       type: 'website',
     },

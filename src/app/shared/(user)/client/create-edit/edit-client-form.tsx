@@ -33,7 +33,9 @@ const typeOption= [
   { name: 'Admin', value: 'Admin' },
   ]
 
-export default function EditClientForm({ className }: { className?: string }) {
+export default function EditClientForm(props: any) {
+
+  console.log("Row dataaa....", props.data);
 
   const isMedium = useMedia('(max-width: 1200px)', false);
   const dispatch = useDispatch();

@@ -11,7 +11,7 @@ import { Text } from '@/components/ui/text';
 import { Form } from '@/components/ui/form';
 import { routes } from '@/config/routes';
 import { SignUpSchema, signUpSchema } from '@/utils/validators/signup.schema';
-import { handleKeyDown } from '@/utils/common-functions';
+import { handleKeyContactDown, handleKeyDown } from '@/utils/common-functions';
 
 
 
@@ -31,12 +31,6 @@ export default function SignUpForm(props: any) {
 
   // console.log(formData)
 
-  const handleKeyContactDown = (e: any) => {
-    // Check if the space key is pressed and it's the first character
-    if (!((e.key >= '0' && e.key <= '9') || e.key === 'Backspace' || e.key === '+')) {
-      e.preventDefault()
-    }
-}
 
 
   const onSubmit: SubmitHandler<SignUpSchema> = (data) => {
@@ -44,10 +38,6 @@ export default function SignUpForm(props: any) {
     setNextBtn(true);
     setTitle('Company Detail');
     console.log('sign up form data', data);
-    // setfdata({
-    //   ...data,
-    //   [name]: data
-    // });
   };
 
   return (

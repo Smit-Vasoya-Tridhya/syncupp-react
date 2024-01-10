@@ -1,6 +1,8 @@
 'use client';
 
+import { RemoveRegionalData } from '@/redux/slices/user/client/clientSlice';
 import { atom, useAtomValue, useSetAtom } from 'jotai';
+import { useDispatch } from 'react-redux';
 
 type ModalTypes = {
   view: React.ReactNode;
@@ -17,6 +19,7 @@ const modalAtom = atom<ModalTypes>({
 export function useModal() {
   const state = useAtomValue(modalAtom);
   const setState = useSetAtom(modalAtom);
+  const dispatch = useDispatch();
 
   const openModal = ({
     view,
@@ -34,6 +37,7 @@ export function useModal() {
   };
 
   const closeModal = () => {
+    dispatch(RemoveRegionalData())
     setState({
       ...state,
       isOpen: false,
