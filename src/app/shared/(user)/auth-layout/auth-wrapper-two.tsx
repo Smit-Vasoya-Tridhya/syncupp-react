@@ -23,7 +23,6 @@ import OrSeparation from './or-separation';
 import { GoogleLogin } from "@react-oauth/google";
 import { useDispatch } from 'react-redux';
 import { facebookSignUpUser, googleSignUpUser } from '@/redux/slices/user/auth/socialSignupSlice';
-import Facebook from './Facebook';
 import { useSelector } from 'react-redux';
 import Spinner from '@/components/ui/spinner';
 import FacebookLogin from 'react-facebook-login';
@@ -162,8 +161,8 @@ function SocialAuth({
             <div className="google-button relative flex content-start ">
               {/*original google button*/}
               <GoogleLogin
-                className="rouned_button_transparent
-          border-transparent bg-[#5F82E5] text-center mx-auto absulate h-[50px] mt-[20px] w-[50%] md:w-full"
+          //       className="rouned_button_transparent
+          // border-transparent bg-[#5F82E5] text-center mx-auto absulate h-[50px] mt-[20px] w-[50%] md:w-full"
                 auto_select={false}
                 // className="hidden"
                 theme="outline"
@@ -193,8 +192,8 @@ function SocialAuth({
 
               <div className="testinggs overflow-hidden w-[50%]">
                 <GoogleLogin
-                  className="absolute z-30 rouned_button_transparent
-          border-transparent bg-whtie text-center mx-auto  h-[50px] mt-[20px] w-[50%] md:w-full"
+          //         className="absolute z-30 rouned_button_transparent
+          // border-transparent bg-whtie text-center mx-auto  h-[50px] mt-[20px] w-[50%] md:w-full"
                   auto_select={false}
                   // className="hidden"
                   theme="outline"

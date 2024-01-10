@@ -36,7 +36,7 @@ export default function ModalButton({
       }
       {...rest}
     >
-      {/* {icon} */}
+      {icon}
       {label}
     </Button>
   );

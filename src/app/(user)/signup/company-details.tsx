@@ -99,7 +99,6 @@ export default function CompanyDetailsForm(props: any) {
           <Controller
             control={control}
             name="industry"
-            rules={{ required: 'How many people is required' }}
             render={({ field: { onChange, value } }) => (
               <Select
                 options={industryOptions}
@@ -109,7 +108,7 @@ export default function CompanyDetailsForm(props: any) {
                 label="Industry"
                 rounded="pill"
                 color="info"
-                getOptionValue={(option) => option.name}
+                getOptionValue={(option) => option.value}
                 dropdownClassName="p-1 border w-12 border-gray-100 shadow-lg"
                 className="font-medium"
                 error={errors?.industry?.message as string}

@@ -183,7 +183,7 @@ export type SelectBoxProps<Option> = Omit<
   'color'
 > & {
   /** Options for select */
-  options: SelectOption[];
+  options: Record<string, string>[];
   // options: Option[];
   /** Whether the select is disabled */
   disabled?: boolean;

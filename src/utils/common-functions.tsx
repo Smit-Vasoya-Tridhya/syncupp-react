@@ -8,3 +8,10 @@ export const handleKeyDown = (event: any) => {
       event.preventDefault()
     }
 }
+
+export const handleKeyContactDown = (e: any) => {
+  // Check if the space key is pressed and it's the first character
+  if (!((e.key >= '0' && e.key <= '9') || e.key === 'Backspace' || e.key === '+')) {
+    e.preventDefault()
+  }
+}

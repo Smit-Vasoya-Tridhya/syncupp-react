@@ -81,5 +81,6 @@ export const messages = {
   errorSendingEmail: 'Error sending email',
   emailSentSuccessfully: 'Your email has been sent successfully.',
   contactRequired: 'Contact is required',
-  contactLengthMin: 'Contact must be number with maximum length is 13'
+  contactLengthMin: 'Contact must be number with length between 10 to 13',
+  nameRequired: 'Name is required'
 };
