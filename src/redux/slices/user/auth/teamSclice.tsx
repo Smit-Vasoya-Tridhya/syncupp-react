@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { toast } from 'react-hot-toast';
-import { EditTeamMember, PostTeamEnroll } from "@/api/user/auth/teamApis";
+import { EditTeamMember, GetTeamMemberTableData, PostTeamEnroll } from "@/api/user/auth/teamApis";
 
 type TeamData = {
   id:string;
@@ -50,6 +50,24 @@ export const editTeam: any = createAsyncThunk(
     }
     try {
       const response: any = await EditTeamMember(apiData);
+      return response;
+    } catch (error: any) {
+      return { status: false, message: error.response.data.message } as TeamDataResponse;
+    }
+  }
+);
+export const getTeamdata: any = createAsyncThunk(
+  "team/getTeamdata",
+  async (data: TeamData) => {
+    const apiData={
+      id: data.id,
+      email: data.email,
+      name: data.name,
+      contact_number: data.contact_number,
+      role: data.role,
+    }
+    try {
+      const response: any = await GetTeamMemberTableData(apiData);
       return response;
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as TeamDataResponse;
@@ -145,6 +163,34 @@ export const teamSlice = createSlice({
           ...state,
           loading: false,
           editTeamStatus: 'error'
+        }
+      });
+      builder
+      .addCase(getTeamdata.pending, (state) => {
+          return{
+            ...state,
+            loading: true,
+            getTeamdataStatus: 'pending'
+          }
+      })
+      .addCase(getTeamdata.fulfilled, (state,action) => {
+        if(action.payload.success == true){
+          toast.success(action.payload.message)
+        } else {
+          toast.error(action.payload.message)
+        }
+        return{
+          ...state,
+          user: action.payload,
+          loading: false,
+          getTeamdataStatus: 'success'
+        }
+      })
+      .addCase(getTeamdata.rejected, (state) => {
+        return{
+          ...state,
+          loading: false,
+          getTeamdataStatus: 'error'
         }
       });
   },

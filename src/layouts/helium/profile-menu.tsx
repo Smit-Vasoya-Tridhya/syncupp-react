@@ -16,6 +16,8 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import "./style.css"
+import ViewProfileForm from '@/app/admin/(hydrogen)/profile/view-profile';
 
 const menuItems = [
   // {
@@ -61,27 +63,22 @@ function DropdownMenu() {
         </div>
       </div>
       <div className="grid px-3.5 py-3.5 font-medium text-gray-700">
-        {/* {menuItems.map((item) => (
-          <Link
-            key={item.name}
-            href={item.href}
-            className="group my-0.5 flex items-center rounded-md px-2.5 py-2 hover:bg-gray-100 focus:outline-none hover:dark:bg-gray-50/50"
-          >
-            {item.name}
-          </Link>
-        ))} */}
-
+        <ModalButton
+          label="View Profile"
+          view={<ViewProfileForm />}
+          customSize="625px"
+          className="mt-0 justify-start mb-3 text-gray-900 bg-white "
+        />
         <ModalButton
           label="Change Password"
           view={<ChangePasswordForm />}
           customSize="625px"
-          className="mt-0 w-full hover:bg-gray-700 @lg:w-auto dark:bg-gray-100 dark:text-white dark:hover:bg-gray-200 dark:active:bg-gray-100"
+          className="mt-0 justify-start text-gray-900 bg-white"
         />
-
       </div>
       <div className="border-t border-gray-300 px-6 pb-6 pt-5">
         <Button
-          className="h-auto w-full justify-start p-0 font-medium text-gray-700 outline-none focus-within:text-gray-600 hover:text-gray-900 focus-visible:ring-0"
+          className="h-auto w-full justify-start ml-2 p-0 font-medium text-gray-700 outline-none focus-within:text-gray-600 hover:text-gray-900 focus-visible:ring-0"
           variant="text"
           onClick={handleClick}
         >

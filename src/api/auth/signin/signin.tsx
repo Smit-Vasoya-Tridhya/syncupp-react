@@ -11,6 +11,11 @@ export type SignInData = {
   password: string,
 };
 
+export type ProfileData = {
+  first_name: string,
+  last_name: string,
+  contact_no: string
+};
 export type ForgotData = {
   email: string;
 };
@@ -63,6 +68,27 @@ export const PostChangePassword = async (data: ChangePasswordData): Promise<ApiR
   const response = await AxiosDefault({
     url: "/api/v1/admin/updatePassword",
     method: "POST",
+    data: data,
+    contentType: "application/json", 
+  });
+  const responseData: ApiResponse = response.data;
+  return responseData;
+};
+export const PostViewProfiles = async (): Promise<ApiResponse> => {
+  console.log('we are in view profile API')
+  const response = await AxiosDefault({
+    url: "/api/v1/admin/getProfile",
+    method: "GET",
+    // data: data,
+    contentType: "application/json", 
+  });
+  const responseData: ApiResponse = response.data;
+  return responseData;
+};
+export const PostEditProfile = async (data: ProfileData): Promise<ApiResponse> => {
+  const response = await AxiosDefault({
+    url: "/api/v1/admin/updateProfile",
+    method: "PUT",
     data: data,
     contentType: "application/json", 
   });

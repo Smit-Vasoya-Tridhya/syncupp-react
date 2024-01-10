@@ -1,29 +1,27 @@
 'use client';
 
 import ChangePasswordForm from '@/app/admin/(hydrogen)/change-password/change-password-form';
+import ViewProfileForm from '@/app/admin/(hydrogen)/profile/view-profile';
 import ModalButton from '@/app/shared/modal-button';
 import { Avatar } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Popover } from '@/components/ui/popover';
-import { Title, Text } from '@/components/ui/text';
+import { Title } from '@/components/ui/text';
 import { routes } from '@/config/routes';
 import { logoutUserAdmin } from '@/redux/slices/admin/auth/signin/signinSlice';
 import cn from '@/utils/class-names';
-import { signOut } from 'next-auth/react';
-import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import "../helium/style.css"
+import { postViewProfile } from '@/redux/slices/admin/auth/viewprofile/viewProfileSlice';
+
 
 const menuItems = [
   {
     name: 'My Profile',
     href: routes.admin.signIn,
   },
-  // {
-  //   name: 'Change Password',
-  //   // href: routes.admin.changePassword,
-  // },
 ];
 
 function DropdownMenu() {
@@ -36,6 +34,17 @@ function DropdownMenu() {
     dispatch(logoutUserAdmin(''));
     router.replace('/admin/signin');
   }
+  const [data, setData] = useState('');
+  useEffect(() => {
+    dispatch(postViewProfile()).then((result: any) => {
+      if (postViewProfile.fulfilled.match(result)) {
+        if (result && result.payload.success === true ) {
+          setData(result.payload.data);
+        } 
+      }
+    })
+  }, [dispatch])
+
 
   return (
     <div className="w-64 text-left rtl:text-right">
@@ -53,10 +62,17 @@ function DropdownMenu() {
         </div>
       </div>
       <ModalButton
+          label="View Profile"
+          view={<ViewProfileForm data={data} />}
+          customSize="625px"
+          className="mt-0 justify-start mb-3 text-gray-900 bg-white "
+        />
+      <ModalButton
           label="Change Password"
           view={<ChangePasswordForm />}
           customSize="625px"
-          className="mt-0 w-full hover:bg-gray-700 @lg:w-auto dark:bg-gray-100 dark:text-white dark:hover:bg-gray-200 dark:active:bg-gray-100"
+          className="mt-0 justify-start mb-3 text-gray-900 bg-white "
+
         />
       <div className="border-t border-gray-300 px-6 pb-6 pt-5">
         <Button

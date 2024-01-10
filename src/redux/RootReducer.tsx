@@ -8,6 +8,7 @@ import adminSignInSlice from "./slices/admin/auth/signin/signinSlice";
 import adminForgotPasswordSlice from "./slices/admin/auth/forgotpassword/forgetPasswordSlice";
 import adminResetPasswordSlice from "./slices/admin/auth/resetpassword/resetPasswordSlice";
 import socialSignupSlice from "./slices/user/auth/socialSignupSlice";
+import viewProfileSlice from "./slices/admin/auth/viewprofile/viewProfileSlice";
 
 
  const combinedReducer = combineReducers({
@@ -20,6 +21,7 @@ import socialSignupSlice from "./slices/user/auth/socialSignupSlice";
   adminSignIn: adminSignInSlice,
   adminForgotPassword: adminForgotPasswordSlice,
   adminResetPassword: adminResetPasswordSlice,
+  viewProfile: viewProfileSlice
 
 });
 
