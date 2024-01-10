@@ -3,9 +3,7 @@
 import { RadioGroup } from '@/components/ui/radio-group';
 import { useLayout } from '@/hooks/use-layout';
 import { LAYOUT_OPTIONS } from '@/config/enums';
-import HydrogenIcon from '@/layouts/hydrogen-icon';
 import HeliumIcon from '@/layouts/helium-icon';
-import LithiumIcon from '@/layouts/lithium-icon';
 import RadioBox from '@/components/settings/radio-box';
 import DrawerBlock from '@/components/settings/drawer-block';
 

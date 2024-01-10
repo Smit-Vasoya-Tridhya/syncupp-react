@@ -413,7 +413,7 @@ export default function SelectBox<OptionType extends SelectOption>({
                   ...(useContainerWidth && { width }),
                 }}
               >
-                <Listbox.Options>
+                {/* <Listbox.Options>
                   {isEmpty(options) ? (
                     <li
                       className={cn(
@@ -465,7 +465,7 @@ export default function SelectBox<OptionType extends SelectOption>({
                       </Listbox.Option>
                     ))
                   )}
-                </Listbox.Options>
+                </Listbox.Options> */}
               </Transition>
             </div>
           </>

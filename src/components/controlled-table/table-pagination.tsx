@@ -42,7 +42,7 @@ export default function TablePagination({
       ) : (
         <div className="hidden items-center sm:flex">
           Rows per page:{' '}
-          <Select
+          {/* <Select
             options={paginationLimitOptions}
             onChange={setPageSize}
             size="sm"
@@ -53,7 +53,7 @@ export default function TablePagination({
             useContainerWidth={false}
             dropdownClassName="p-1 border w-12 border-gray-100 shadow-lg"
             className="ms-1 [&_button]:font-medium"
-          />
+          /> */}
         </div>
       )}
       <Pagination
