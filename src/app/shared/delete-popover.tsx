@@ -49,14 +49,14 @@ export default function DeletePopover({
         </div>
       )}
     >
-      <ActionIcon
+      <Button
         size="sm"
         variant="outline"
         aria-label={'Delete Item'}
-        className="cursor-pointer hover:!border-gray-900 hover:text-gray-700"
+        className="cursor-pointer hover:!border-gray-900 hover:text-gray-700 bg-white text-black"
       >
         <TrashIcon className="h-4 w-4" />
-      </ActionIcon>
+      </Button>
     </Popover>
   );
 }

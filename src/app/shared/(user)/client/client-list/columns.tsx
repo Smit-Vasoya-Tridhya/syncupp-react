@@ -17,6 +17,8 @@ import { PiStarFill } from 'react-icons/pi';
 import DeletePopover from '@/app/shared/delete-popover';
 import EditClientForm from '@/app/shared/(user)/client/create-edit/edit-client-form';
 import CustomModalButton from '@/app/shared/custom-modal-button';
+import AddClientForm from '../create-edit/add-client-form';
+import { Button } from 'rizzui';
 
 type Columns = {
   data: any[];
@@ -50,7 +52,7 @@ export const getColumns = ({
     ),
     dataIndex: 'checked',
     key: 'checked',
-    width: 30,
+    width: 50,
     render: (_: any, row: any) => (
       <div className="inline-flex ps-3.5">
         <Checkbox
@@ -62,30 +64,40 @@ export const getColumns = ({
     ),
   },
   {
-    title: <HeaderCell title="Name" />,
-    dataIndex: 'product',
-    key: 'product',
-    width: 300,
-    hidden: 'customer',
-    render: (_: string, row: ProductType) => (
-      <AvatarCard
-        src={row.image}
-        name={row.name}
-        description={row.category}
-        avatarProps={{
-          name: row.name,
-          size: 'lg',
-          className: 'rounded-lg',
-        }}
+    title: (
+      <HeaderCell
+        title="Client Name"
+        sortable
+        ascending={
+          sortConfig?.direction === 'asc' && sortConfig?.key === 'name'
+        }
       />
+    ),
+    onHeaderCell: () => onHeaderCellClick('name'),
+    dataIndex: 'name',
+    key: 'name',
+    width: 200,
+    render: (value: string) => (
+      <Text className="font-medium text-gray-700">{value}</Text>
     ),
   },
   {
-    title: <HeaderCell title="Mobile Number" />,
-    dataIndex: 'sku',
-    key: 'sku',
-    width: 150,
-    render: (sku: string) => <Text className="text-sm">SKU-{sku}</Text>,
+    title: (
+      <HeaderCell
+        title="Mobile Number"
+        sortable
+        ascending={
+          sortConfig?.direction === 'asc' && sortConfig?.key === 'contact'
+        }
+      />
+    ),
+    onHeaderCell: () => onHeaderCellClick('contact'),
+    dataIndex: 'contact',
+    key: 'contact',
+    width: 200,
+    render: (value: string) => (
+      <Text className="font-medium text-gray-700">{value}</Text>
+    ),
   },
   {
     title: (
@@ -93,40 +105,71 @@ export const getColumns = ({
         title="Email ID"
         sortable
         ascending={
-          sortConfig?.direction === 'asc' && sortConfig?.key === 'stock'
+          sortConfig?.direction === 'asc' && sortConfig?.key === 'email'
         }
       />
     ),
-    onHeaderCell: () => onHeaderCellClick('stock'),
-    dataIndex: 'stock',
-    key: 'stock',
+    onHeaderCell: () => onHeaderCellClick('email'),
+    dataIndex: 'email',
+    key: 'email',
     width: 200,
-    // render: (stock: number) => getStockStatus(stock),
+    render: (value: string) => (
+      <Text className="font-medium text-gray-700">{value}</Text>
+    ),
   },
   {
     title: (
       <HeaderCell
-        title="Permission"
+        title="Company"
         sortable
         ascending={
-          sortConfig?.direction === 'asc' && sortConfig?.key === 'price'
+          sortConfig?.direction === 'asc' && sortConfig?.key === 'company'
         }
       />
     ),
-    onHeaderCell: () => onHeaderCellClick('price'),
-    dataIndex: 'price',
-    key: 'price',
-    width: 150,
+    onHeaderCell: () => onHeaderCellClick('company'),
+    dataIndex: 'company',
+    key: 'company',
+    width: 200,
     render: (value: string) => (
-      <Text className="font-medium text-gray-700">${value}</Text>
+      <Text className="font-medium text-gray-700">{value}</Text>
     ),
   },
   {
-    title: <HeaderCell title="Created" />,
-    dataIndex: 'rating',
-    key: 'rating',
+    title: (
+      <HeaderCell
+        title="Website"
+        sortable
+        ascending={
+          sortConfig?.direction === 'asc' && sortConfig?.key === 'website'
+        }
+      />
+    ),
+    onHeaderCell: () => onHeaderCellClick('website'),
+    dataIndex: 'website',
+    key: 'website',
     width: 200,
-    // render: (rating: number[]) => getRating(rating),
+    render: (value: string) => (
+      <Text className="font-medium text-gray-700">{value}</Text>
+    ),
+  },
+  {
+    title: (
+      <HeaderCell
+        title="Created"
+        sortable
+        ascending={
+          sortConfig?.direction === 'asc' && sortConfig?.key === 'created'
+        }
+      />
+    ),
+    onHeaderCell: () => onHeaderCellClick('created'),
+    dataIndex: 'created',
+    key: 'created',
+    width: 200,
+    render: (value: string) => (
+      <Text className="font-medium text-gray-700">{value}</Text>
+    ),
   },
   {
     // Need to avoid this issue -> <td> elements in a large <table> do not have table headers.
@@ -144,8 +187,9 @@ export const getColumns = ({
         >
           <CustomModalButton 
             icon={<PencilIcon className="h-4 w-4" />}
-            view={<EditClientForm/>}
-            customSize="625px"
+            // view={<EditClientForm data={row} />}
+            view={<AddClientForm title="Edit Client" /> }
+            customSize="800px"
           />
         </Tooltip>
         <Tooltip
@@ -154,11 +198,10 @@ export const getColumns = ({
           placement="top"
           color="invert"
         >
-          {/* <Link href={routes.editTeam.productDetails(row.id)}> */}
           {/* <Link href={routes.editTeam}> */}
-            <ActionIcon size="sm" variant="outline" aria-label={'View Member'}>
+            <Button size="sm" variant="outline" className='bg-white text-black' aria-label={'View Member'}>
               <EyeIcon className="h-4 w-4" />
-            </ActionIcon>
+            </Button>
           {/* </Link> */}
         </Tooltip>
         <DeletePopover
