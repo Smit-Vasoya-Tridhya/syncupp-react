@@ -16,5 +16,21 @@ export const productsData = [
       'abhayktridhyatech@gmail.com',
     role: 'Team Member',
   },
+  {
+    id: '0o02602724',
+    name: 'Abhay Kamothi',
+    contact_number: '+91-8849188597',
+    email:
+      'abhayktridhyatech@gmail.com',
+    role: 'Team Member',
+  },
+  {
+    id: '0o02602734',
+    name: 'Abhay Kamothi',
+    contact_number: '+91-8849188597',
+    email:
+      'abhayktridhyatech@gmail.com',
+    role: 'Team Member',
+  },
   
 ];

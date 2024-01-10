@@ -1,10 +1,9 @@
-import Link from 'next/link';
 import PageHeader from '@/app/shared/page-header';
-import ProductsTable from '@/app/(hydrogen)/team/table';
-import { productsData } from '@/data/products-data';
+import { productsData} from '@/data/products-data';
 import { metaObject } from '@/config/site.config';
 import ModalButton from '@/app/shared/modal-button';
 import AddTeamMemberForm from '@/app/shared/(user)/team-list/add-team-member-form';
+import TeamDataTable from '@/app/(hydrogen)/team/table';
 
 export const metadata = {
   ...metaObject('Products'),
@@ -14,7 +13,7 @@ const pageHeader = {
   title: 'Team',
 };
 
-export default function ProductsPage() {
+export default function TeamDataTablePage() {
   return (
     <>
       <PageHeader title={pageHeader.title}>
@@ -27,7 +26,7 @@ export default function ProductsPage() {
         />
         </div>
       </PageHeader>
-      <ProductsTable data={productsData} />
+      <TeamDataTable data={productsData} />
     </>
   );
 }

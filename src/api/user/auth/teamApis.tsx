@@ -56,4 +56,24 @@ export const DeleteTeamMember = async (data: TeamData) => {
   const responseData = response.data;
   return responseData;
 };
+export const GetTeamMemberDataByID = async (data: TeamData) => {
+  const response = await AxiosDefault({
+    url: `/api/v1/team-member/details/${data.id}`,
+    method: "PUT",
+    data: data,
+    contentType: "application/json", 
+  });
+  const responseData = response.data;
+  return responseData;
+};
+export const GetTeamMemberTableData = async (data: TeamData) => {
+  const response = await AxiosDefault({
+    url: `/api/v1/team-member/get-all`,
+    method: "GET",
+    data: data,
+    contentType: "application/json", 
+  });
+  const responseData = response.data;
+  return responseData;
+};
 

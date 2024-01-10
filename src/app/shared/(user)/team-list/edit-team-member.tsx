@@ -127,7 +127,7 @@ export default function EditTeamMemberForm({ className }: { className?: string }
               />
             </div>
             <div>
-            <div className={cn('grid grid-cols-3 gap-5 pt-5')}>
+            <div className={cn('grid grid-cols-2 gap-5 pt-5')}>
               <Button
                 variant="outline"
                 className="w-full @xl:w-auto dark:hover:border-gray-400"
@@ -135,16 +135,6 @@ export default function EditTeamMemberForm({ className }: { className?: string }
               >
                 Cancel
               </Button>
-              {/* <Button
-                type="submit"
-                className="hover:gray-700 w-full  @xl:w-auto dark:bg-gray-200 dark:text-white"
-                // disabled={TeamMember.loading}
-              >
-                Save & New
-                {TeamMember.loading && (
-                  <Spinner size="sm" tag="div" className="ms-3" />
-                )}
-              </Button> */}
               <Button
                 type="submit"
                 className="hover:gray-700 w-full  @xl:w-auto dark:bg-gray-200 dark:text-white"

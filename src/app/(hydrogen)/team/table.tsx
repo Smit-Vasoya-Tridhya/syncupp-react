@@ -1,16 +1,18 @@
 'use client';
 
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState,useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { useTable } from '@/hooks/use-table';
 import { useColumn } from '@/hooks/use-column';
 import { Button } from '@/components/ui/button';
 import ControlledTable from '@/components/controlled-table';
 import { getColumns } from '@/app/shared/columns';
-// const FilterElement = dynamic(
-//   () => import('@/app/shared/ecommerce/product/product-list/filter-element'),
-//   { ssr: false }
-// );
+import { getTeamdata } from '@/redux/slices/user/auth/teamSclice';
+import { routes } from '@/config/routes';
+import { useRouter } from 'next/navigation';
+import { useDispatch} from 'react-redux';
+
+
 const TableFooter = dynamic(() => import('@/app/shared/table-footer'), {
   ssr: false,
 });
@@ -21,9 +23,19 @@ const filterState = {
   status: '',
 };
 
-export default function ProductsTable({ data = [] }: { data: any[] }) {
+export default function TeamDataTable({ data = [] }: { data: any[] }) {
   const [pageSize, setPageSize] = useState(10);
-
+  const router = useRouter();
+  const dispatch = useDispatch();
+  useEffect(() => {
+  dispatch(getTeamdata()).then((result: any) => {
+    if (getTeamdata.fulfilled.match(result)) {
+      if (result && result.payload.success === true ) {
+        router.replace(routes.team);
+      } 
+    }
+  })
+})
   const onHeaderCellClick = (value: string) => ({
     onClick: () => {
       handleSort(value);
