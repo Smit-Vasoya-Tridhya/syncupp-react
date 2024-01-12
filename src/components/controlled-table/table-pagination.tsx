@@ -22,9 +22,12 @@ export default function TablePagination({
   paginatorClassName = 'mt-5 xs:mt-6 sm:mt-7',
   ...props
 }: TablePaginationProps) {
-  if (total && total < pageSize) {
-    return null;
-  }
+
+  // if (total && total < pageSize) {
+  //   return null;
+  // }
+  
+  console.log("pagination props options...", props, pageSize, total)
 
   return (
     <div
@@ -36,28 +39,28 @@ export default function TablePagination({
       {!setPageSize ? (
         total && (
           <div className="hidden text-gray-500 sm:inline-flex">
-            {props.current} of {Math.ceil(total / pageSize)} pages
+            {props.current} of {total} pages
           </div>
         )
       ) : (
         <div className="hidden items-center sm:flex">
           Rows per page:{' '}
-          {/* <Select
+          <Select
             options={paginationLimitOptions}
             onChange={setPageSize}
             size="sm"
             variant="flat"
             value={pageSize}
-            getOptionValue={({ value }) => value}
+            getOptionValue={(option) => option.value}
             suffix={<PiCaretDownBold />}
             useContainerWidth={false}
             dropdownClassName="p-1 border w-12 border-gray-100 shadow-lg"
             className="ms-1 [&_button]:font-medium"
-          /> */}
+          />
         </div>
       )}
       <Pagination
-        total={total}
+        total={total && total * pageSize} //solve this
         pageSize={pageSize}
         defaultCurrent={1}
         showLessItems={true}

@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import isString from 'lodash/isString';
+import { isArray } from 'lodash';
 
 interface AnyObject {
   [key: string]: any;
@@ -8,48 +9,99 @@ interface AnyObject {
 export function useTable<T extends AnyObject>(
   initialData: T[],
   countPerPage: number = 10,
-  initialFilterState?: Partial<Record<string, any>>
+  handleDeleteById: (id: string | string[]) => any,
+  handleChangePage?: (paginationParams: any) => Promise<any>,
+  pageSize?: any,
+  initialFilterState?: Partial<Record<string, any>>,
+  page?: any,
 ) {
+
+
   const [data, setData] = useState(initialData);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
+  const [sortConfig, setSortConfig] = useState<AnyObject>({
+    key: 'createdAt',
+    direction: 'desc',
+  });
+  const [filters, setFilters] = useState<Record<string, any>>(
+    initialFilterState ?? {}
+  );
+
+  useEffect(() => {
+    if (initialData) {
+      setData(initialData);
+    }
+    // if (page) {
+    //   setCurrentPage(+page);
+    // }
+  }, [initialData, page]);
+
+    // API call......
+    const handleAPICall = async (pageNumber?: any, pageSize?: any, searchTerm?: any, key?: any, direction?: any, filter?: any) => {
+      if (handleChangePage && typeof handleChangePage === 'function') {
+        try {
+          const response = await handleChangePage({
+            page: +pageNumber,
+            items_per_page: pageSize,
+            search: searchTerm,
+            sort_field: key,
+            sort_order: direction,
+            // status: filter,
+          });
+          response && setData(response);
+          setLoading(false);
+        } catch (error) {
+          console.error('API call error:', error);
+          setLoading(false);
+        }
+      } else {
+        console.error('handleChangePage is not a function');
+        setLoading(false);
+      }
+    };
 
   /*
    * Dummy loading state.
    */
-  const [isLoading, setLoading] = useState(true);
+
   useEffect(() => {
     setLoading(false);
-  }, []);
+    if (!searchTerm) {
+      handleAPICall(+currentPage, pageSize, '', sortConfig.key, sortConfig.direction);
+    }
+  }, [currentPage, pageSize, searchTerm, sortConfig]);
 
   /*
    * Handle row selection
    */
-  const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
   const handleRowSelect = (recordKey: string) => {
     const selectedKeys = [...selectedRowKeys];
-    if (selectedKeys.includes(recordKey)) {
-      setSelectedRowKeys(selectedKeys.filter((key) => key !== recordKey));
+    if (selectedKeys?.includes(recordKey)) {
+      setSelectedRowKeys(selectedKeys?.filter((key) => key !== recordKey));
     } else {
       setSelectedRowKeys([...selectedKeys, recordKey]);
     }
   };
   const handleSelectAll = () => {
-    if (selectedRowKeys.length === data.length) {
+    if (selectedRowKeys?.length === data?.length) {
       setSelectedRowKeys([]);
     } else {
-      setSelectedRowKeys(data.map((record) => record.id));
+      setSelectedRowKeys(data?.map((record) => record?.id));
     }
   };
 
   /*
    * Handle sorting
    */
-  const [sortConfig, setSortConfig] = useState<AnyObject>({
-    key: null,
-    direction: null,
-  });
+
 
   function sortData(data: T[], sortKey: string, sortDirection: string) {
-    return [...data].sort((a, b) => {
+    // console.log("use table data....", data)
+    
+    return data && [...data].length > 0 && [...data].sort((a, b) => {
       const aValue = a[sortKey];
       const bValue = b[sortKey];
 
@@ -60,6 +112,7 @@ export function useTable<T extends AnyObject>(
       }
       return 0;
     });
+      
   }
 
   const sortedData = useMemo(() => {
@@ -71,23 +124,23 @@ export function useTable<T extends AnyObject>(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sortConfig, data]);
 
-  function handleSort(key: string) {
+  const handleSort = async (key: string) => {
     let direction = 'asc';
     if (sortConfig.key === key && sortConfig.direction === 'asc') {
       direction = 'desc';
     }
     setSortConfig({ key, direction });
+    await handleAPICall(currentPage, pageSize, searchTerm, key, direction);
   }
 
   /*
    * Handle pagination
    */
-  const [currentPage, setCurrentPage] = useState(1);
-  function paginatedData(data: T[] = sortedData) {
+  function paginatedData(data: any = sortedData) {
     const start = (currentPage - 1) * countPerPage;
     const end = start + countPerPage;
 
-    if (data.length > start) return data.slice(start, end);
+    if ( data && data.length > start) return data && data.slice(start, end);
     return data;
   }
 
@@ -95,26 +148,31 @@ export function useTable<T extends AnyObject>(
     setCurrentPage(pageNumber);
   }
 
+
   /*
    * Handle delete
    */
-  function handleDelete(id: string | string[]) {
-    const updatedData = Array.isArray(id)
-      ? data.filter((item) => !id.includes(item.id))
-      : data.filter((item) => item.id !== id);
-
-    setData(updatedData);
+  const handleDelete = async (id: string | string[]) => {
+    let updatedData: [] = [];
+    // console.log("Id..", id)
+    if (handleDeleteById) {
+      try {
+        updatedData = await handleDeleteById(id);
+      } catch (error) {
+        console.error('An error occurred:', error);
+      }
+    }
+    if (updatedData && updatedData.length > 0) {
+      setData(updatedData);
+    }
   }
 
   /*
    * Handle Filters and searching
    */
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filters, setFilters] = useState<Record<string, any>>(
-    initialFilterState ?? {}
-  );
 
-  function updateFilter(columnId: string, filterValue: string | any[]) {
+
+  const updateFilter = async (columnId: string, filterValue: string | any[]) => {
     if (!Array.isArray(filterValue) && !isString(filterValue)) {
       throw new Error('filterValue data type should be string or array of any');
     }
@@ -127,88 +185,89 @@ export function useTable<T extends AnyObject>(
       ...prevFilters,
       [columnId]: filterValue,
     }));
+    await handleAPICall(+currentPage, pageSize, searchTerm, '', '', filterValue);
   }
 
   function applyFilters() {
     const searchTermLower = searchTerm.toLowerCase();
 
-    return (
-      sortedData
-        .filter((item) => {
-          const isMatchingItem = Object.entries(filters).some(
-            ([columnId, filterValue]) => {
-              if (
-                Array.isArray(filterValue) &&
-                typeof filterValue[1] === 'object'
-              ) {
-                const itemValue = new Date(item[columnId]);
-                return (
-                  // @ts-ignore
-                  itemValue >= filterValue[0] && itemValue <= filterValue[1]
-                );
-              }
-              if (
-                Array.isArray(filterValue) &&
-                typeof filterValue[1] === 'string'
-              ) {
-                const itemPrice = Math.ceil(Number(item[columnId]));
-                return (
-                  itemPrice >= Number(filterValue[0]) &&
-                  itemPrice <= Number(filterValue[1])
-                );
-              }
-              if (isString(filterValue) && !Array.isArray(filterValue)) {
-                const itemValue = item[columnId]?.toString().toLowerCase();
-                if (itemValue !== filterValue.toString().toLowerCase()) {
-                  return false;
-                }
-                return true;
-              }
-            }
-          );
-          return isMatchingItem;
-        })
-        // global search after running filters
-        .filter((item) =>
-          Object.values(item).some((value) =>
-            typeof value === 'object'
-              ? value &&
-                Object.values(value).some(
-                  (nestedItem) =>
-                    nestedItem &&
-                    String(nestedItem).toLowerCase().includes(searchTermLower)
-                )
-              : value && String(value).toLowerCase().includes(searchTermLower)
-          )
-        )
-    );
+    // return (
+    //   sortedData?.filter((item) => {
+    //       const isMatchingItem = Object.entries(filters).some(
+    //         ([columnId, filterValue]) => {
+    //           if (
+    //             Array.isArray(filterValue) &&
+    //             typeof filterValue[1] === 'object'
+    //           ) {
+    //             const itemValue = new Date(item[columnId]);
+    //             return (
+    //               // @ts-ignore
+    //               itemValue >= filterValue[0] && itemValue <= filterValue[1]
+    //             );
+    //           }
+    //           if (
+    //             Array.isArray(filterValue) &&
+    //             typeof filterValue[1] === 'string'
+    //           ) {
+    //             const itemPrice = Math.ceil(Number(item[columnId]));
+    //             return (
+    //               itemPrice >= Number(filterValue[0]) &&
+    //               itemPrice <= Number(filterValue[1])
+    //             );
+    //           }
+    //           if (isString(filterValue) && !Array.isArray(filterValue)) {
+    //             const itemValue = item[columnId]?.toString().toLowerCase();
+    //             if (itemValue !== filterValue.toString().toLowerCase()) {
+    //               return false;
+    //             }
+    //             return true;
+    //           }
+    //         }
+    //       );
+    //       return isMatchingItem;
+    //     })
+    //     // global search after running filters
+    //     ?.filter((item: any) =>
+    //       Object.values(item).some((value) =>
+    //         typeof value === 'object'
+    //           ? value &&
+    //             Object.values(value).some(
+    //               (nestedItem) =>
+    //                 nestedItem &&
+    //                 String(nestedItem).toLowerCase().includes(searchTermLower)
+    //             )
+    //           : value && String(value).toLowerCase().includes(searchTermLower)
+    //       )
+    //     )
+    // );
   }
 
   /*
    * Handle searching
    */
-  function handleSearch(searchValue: string) {
+  const handleSearch = async(searchValue: string) => {
     setSearchTerm(searchValue);
+    await handleAPICall(currentPage, pageSize, searchValue);
   }
 
-  function searchedData() {
-    if (!searchTerm) return sortedData;
+  // function searchedData() {
+  //   if (!searchTerm) return sortedData;
 
-    const searchTermLower = searchTerm.toLowerCase();
+  //   const searchTermLower = searchTerm.toLowerCase();
 
-    return sortedData.filter((item) =>
-      Object.values(item).some((value) =>
-        typeof value === 'object'
-          ? value &&
-            Object.values(value).some(
-              (nestedItem) =>
-                nestedItem &&
-                String(nestedItem).toLowerCase().includes(searchTermLower)
-            )
-          : value && String(value).toLowerCase().includes(searchTermLower)
-      )
-    );
-  }
+  //   return sortedData.filter((item) =>
+  //     Object.values(item).some((value) =>
+  //       typeof value === 'object'
+  //         ? value &&
+  //           Object.values(value).some(
+  //             (nestedItem) =>
+  //               nestedItem &&
+  //               String(nestedItem).toLowerCase().includes(searchTermLower)
+  //           )
+  //         : value && String(value).toLowerCase().includes(searchTermLower)
+  //     )
+  //   );
+  // }
 
   /*
    * Reset search and filters
@@ -222,18 +281,18 @@ export function useTable<T extends AnyObject>(
   /*
    * Set isFiltered and final filtered data
    */
-  const isFiltered = applyFilters().length > 0;
-  function calculateTotalItems() {
-    if (isFiltered) {
-      return applyFilters().length;
-    }
-    if (searchTerm) {
-      return searchedData().length;
-    }
-    return sortedData.length;
-  }
-  const filteredAndSearchedData = isFiltered ? applyFilters() : searchedData();
-  const tableData = paginatedData(filteredAndSearchedData);
+  const isFiltered = data && data.length > 0;
+  // function calculateTotalItems() {
+  //   if (isFiltered) {
+  //     return applyFilters().length;
+  //   }
+  //   if (searchTerm) {
+  //     return searchedData().length;
+  //   }
+  //   return sortedData.length;
+  // }
+  // const filteredAndSearchedData = isFiltered ? applyFilters() : searchedData();
+  const tableData = paginatedData(data);
 
   /*
    * Go to first page when data is filtered and searched
@@ -250,7 +309,7 @@ export function useTable<T extends AnyObject>(
     // pagination
     currentPage,
     handlePaginate,
-    totalItems: calculateTotalItems(),
+    // totalItems: calculateTotalItems(),
     // sorting
     sortConfig,
     handleSort,
