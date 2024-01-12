@@ -125,3 +125,41 @@ export interface FlightingCardProps {
   best?: boolean;
   quickest?: boolean;
 }
+ export interface GlobalResponse<T> {
+  meta: MetaDTO,
+  payload: PayloadDTO<T>,
+  type: string
+ }
+
+ interface MetaDTO {
+  arg: [],
+  requestId: string,
+  requestStatus: string
+ }
+ interface PayloadDTO<T> {
+  data: T;
+  message: string;
+  pagination: PaginationDTO;
+  status: number;
+  success: boolean
+ }
+ interface PaginationDTO {
+  current_page: number;
+  total_pages: number;
+ }
+
+ export type Columns = {
+  data: any[];
+  sortConfig?: any;
+  handleSelectAll: any;
+  checkedItems: string[];
+  onDeleteItem: (id: string) => void;
+  onHeaderCellClick: (value: string) => void;
+  onChecked?: (id: string) => void;
+};
+export type Pagination = {
+  sortField: string;
+  sortOrder: string,
+  page: any;
+  itemsPerPage: Number;
+}
