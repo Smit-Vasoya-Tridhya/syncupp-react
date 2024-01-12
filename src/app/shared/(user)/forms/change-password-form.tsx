@@ -22,7 +22,7 @@ import { PiXBold } from 'react-icons/pi';
 
 
 const initialValues: ChangePasswordSchema = {
-  currentPassword: '',
+  oldPassword: '',
   newPassword: '',
   confirmedPassword: ''
 };
@@ -39,7 +39,13 @@ export default function ChangePasswordForm() {
 
   const onSubmit: SubmitHandler<ChangePasswordSchema> = (data) => {
     console.log('Change password form data->', data);
-    dispatch(changePasswordUser(data)).then((result: any) => {
+
+    const formData = {
+      currentPassword: data?.oldPassword,
+      newPassword: data?.newPassword,
+      confirmedPassword: data?.confirmedPassword
+    }
+    dispatch(changePasswordUser(formData)).then((result: any) => {
       if (changePasswordUser.fulfilled.match(result)) {
         // console.log('resultt', result)
         if (result && result.payload.success === true ) {
@@ -82,8 +88,8 @@ export default function ChangePasswordForm() {
                 size={isMedium ? 'lg' : 'xl'}
                 color="info"
                 className="[&>label>span]:font-medium"
-                {...register('currentPassword')}
-                error={errors.currentPassword?.message}
+                {...register('oldPassword')}
+                error={errors.oldPassword?.message}
               />
             <Password
                 onKeyDown={handleKeyDown}

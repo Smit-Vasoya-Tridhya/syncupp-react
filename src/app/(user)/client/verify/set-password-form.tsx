@@ -38,7 +38,7 @@ export default function SetPasswordForm(props: any) {
   const initialValues = {
     firstName: '',
     lastName: '',
-    email: email,
+    email: email ?? '' ,
     password: '',
     confirmPassword: '',
   };

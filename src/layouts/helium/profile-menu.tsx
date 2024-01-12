@@ -1,23 +1,18 @@
 'use client';
 
-import ChangePasswordForm from '@/app/shared/(user)/forms/change-password-form';
 import ModalButton from '@/app/shared/modal-button';
 import { Avatar } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Popover } from '@/components/ui/popover';
 import { Title, Text } from '@/components/ui/text';
-import { routes } from '@/config/routes';
-import { logoutUserAdmin } from '@/redux/slices/admin/auth/signin/signinSlice';
 import { logoutUser } from '@/redux/slices/user/auth/signinSlice';
 import { logoutUserSignUp } from '@/redux/slices/user/auth/signupSlice';
 import cn from '@/utils/class-names';
-import { signOut } from 'next-auth/react';
-import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import "./style.css"
-import ViewProfileForm from '@/app/admin/(hydrogen)/profile/view-profile';
+import ChangePasswordForm from '@/app/shared/(user)/forms/change-password-form';
 
 const menuItems = [
   // {
@@ -63,12 +58,12 @@ function DropdownMenu() {
         </div>
       </div>
       <div className="grid px-3.5 py-3.5 font-medium text-gray-700">
-        <ModalButton
+        {/* <ModalButton
           label="View Profile"
           view={<ViewProfileForm />}
           customSize="625px"
           className="mt-0 justify-start mb-3 text-gray-900 bg-white "
-        />
+        /> */}
         <ModalButton
           label="Change Password"
           view={<ChangePasswordForm />}
