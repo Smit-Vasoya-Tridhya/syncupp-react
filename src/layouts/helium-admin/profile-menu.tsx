@@ -24,6 +24,19 @@ const menuItems = [
   },
 ];
 
+export interface UserProfileDTO {
+  createdAt: Date;
+  email: string;
+  first_name: string;
+  is_deleted: boolean;
+  last_name: string;
+  password: string;
+  remember_me: boolean;
+  updated_at: Date,
+  image: string;
+  _id: string;
+}
+
 function DropdownMenu() {
 
   const dispatch = useDispatch();
@@ -34,7 +47,7 @@ function DropdownMenu() {
     dispatch(logoutUserAdmin(''));
     router.replace('/admin/signin');
   }
-  const [data, setData] = useState('');
+  const [data, setData] = useState<UserProfileDTO>({} as UserProfileDTO);
   useEffect(() => {
     dispatch(postViewProfile()).then((result: any) => {
       if (postViewProfile.fulfilled.match(result)) {
@@ -44,7 +57,7 @@ function DropdownMenu() {
       }
     })
   }, [dispatch])
-
+console.log(data,'get profile data.........')
 
   return (
     <div className="w-64 text-left rtl:text-right">

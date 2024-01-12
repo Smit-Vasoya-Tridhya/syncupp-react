@@ -1,18 +1,16 @@
 'use client';
 
-import { useCallback, useMemo, useState,useEffect } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useTable } from '@/hooks/use-table';
 import { useColumn } from '@/hooks/use-column';
 import { Button } from '@/components/ui/button';
 import ControlledTable from '@/components/controlled-table';
-import { getColumns } from '@/app/shared/columns';
-import { getTeamdata } from '@/redux/slices/user/auth/teamSclice';
-import { routes } from '@/config/routes';
-import { useRouter } from 'next/navigation';
-import { useDispatch} from 'react-redux';
-
-
+import { getColumns } from '@/app/shared/(user)/team-list/columns';
+// const FilterElement = dynamic(
+//   () => import('@/app/shared/(user)/client/client-list/filter-element'),
+//   { ssr: false }
+// );
 const TableFooter = dynamic(() => import('@/app/shared/table-footer'), {
   ssr: false,
 });
@@ -23,27 +21,33 @@ const filterState = {
   status: '',
 };
 
-export default function TeamDataTable({ data = [] }: { data: any[] }) {
+const defaultDeleteFunction = (_id: string | string[]) => {};
+const emptyHandleChangePage = async (paginationParams?: any) => {
+  return Promise.resolve();
+};
+
+export default function TeamTable({ 
+  data = [],  
+  handleDeleteById = defaultDeleteFunction, 
+  handleChangePage = emptyHandleChangePage, 
+  total,
+}: { 
+  data: any[]; 
+  handleDeleteById?: (_id: string | string[]) => any; 
+  handleChangePage?: (paginationParams: any) => Promise<any>; 
+  total?: any;
+}) {
   const [pageSize, setPageSize] = useState(10);
-  const router = useRouter();
-  const dispatch = useDispatch();
-  useEffect(() => {
-  dispatch(getTeamdata()).then((result: any) => {
-    if (getTeamdata.fulfilled.match(result)) {
-      if (result && result.payload.success === true ) {
-        router.replace(routes.team);
-      } 
-    }
-  })
-})
+
   const onHeaderCellClick = (value: string) => ({
     onClick: () => {
       handleSort(value);
     },
   });
 
-  const onDeleteItem = useCallback((id: string) => {
-    handleDelete(id);
+  const onDeleteItem = useCallback((id: any) => {
+    console.log("Delete id...", id)
+    handleDelete([id]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -52,7 +56,7 @@ export default function TeamDataTable({ data = [] }: { data: any[] }) {
     isFiltered,
     tableData,
     currentPage,
-    totalItems,
+    // totalItems,
     handlePaginate,
     filters,
     updateFilter,
@@ -66,7 +70,7 @@ export default function TeamDataTable({ data = [] }: { data: any[] }) {
     handleSelectAll,
     handleDelete,
     handleReset,
-  } = useTable(data, pageSize, filterState);
+  } = useTable(data, pageSize, handleDeleteById, handleChangePage, pageSize, filterState);
 
   const columns = useMemo(
     () =>
@@ -106,9 +110,10 @@ export default function TeamDataTable({ data = [] }: { data: any[] }) {
         paginatorOptions={{
           pageSize,
           setPageSize,
-          total: totalItems,
+          total: total,
           current: currentPage,
-          onChange: (page: number) => handlePaginate(page),
+          onChange: (page: number) => handlePaginate(page)
+,
         }}
         filterOptions={{
           searchTerm,
