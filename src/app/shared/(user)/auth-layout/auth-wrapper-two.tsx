@@ -125,6 +125,7 @@ function SocialAuth({
   isSignIn?: boolean;
 }) {
 
+ 
   const dispatch = useDispatch();
   const router = useRouter();
   const socialSignup = useSelector((state: any) => state?.root?.socialSignup)
@@ -162,77 +163,15 @@ function SocialAuth({
   }
 
 
+  
   return (
-    <>
-      <div className="grid grid-cols-1 gap-4 pb-7 md:grid-cols-1 lg:grid-cols-2 xl:gap-5 xl:pb-8">
+    <div className="grid grid-cols-1 gap-4 pb-7 md:grid-cols-1 lg:grid-cols-2 xl:gap-5 xl:pb-8">
 
-        <div className="google-button relative flex content-start ">
-          {/*original google button*/}
-          <GoogleLogin
-            //       className="rouned_button_transparent
-            // border-transparent bg-[#5F82E5] text-center mx-auto absulate h-[50px] mt-[20px] w-[50%] md:w-full"
-            auto_select={false}
-            // className="hidden"
-            theme="outline"
-            size="large"
-            shape="pill"
-            logo_alignment="left"
-            text="continue_with"
-            width="261"
-            onSuccess={(credentialResponse: any) => {
-              console.log("Google credentials....", credentialResponse)
-              const data = {
-                signupId: credentialResponse.credential
-              }
-              dispatch(googleSignUpUser(data)).then((result: any) => {
-                if (googleSignUpUser.fulfilled.match(result)) {
-                  // console.log('resultt', result)
-                  if (result && result.payload.success === true) {
-                    router.replace(routes.dashboard);
-                  }
-                }
-              });
-            }}
-            onError={() => {
-              console.log("Login Failed");
-            }}
-          />
-
-          <div className="testinggs overflow-hidden w-[50%]">
-            <GoogleLogin
-              //         className="absolute z-30 rouned_button_transparent
-              // border-transparent bg-whtie text-center mx-auto  h-[50px] mt-[20px] w-[50%] md:w-full"
-              auto_select={false}
-              // className="hidden"
-              theme="outline"
-              size="large"
-              shape="pill"
-              logo_alignment="left"
-              text="continue_with"
-              width="400 | 200"
-              onSuccess={(credentialResponse: any) => {
-                console.log("Google credentials....", credentialResponse)
-                const data = {
-                  signupId: credentialResponse.credential
-                }
-                dispatch(googleSignUpUser(data)).then((result: any) => {
-                  if (googleSignUpUser.fulfilled.match(result)) {
-                    // console.log('resultt', result)
-                    if (result && result.payload.success === true) {
-                      router.replace(routes.dashboard);
-                    }
-                  }
-                });
-              }}
-              onError={() => {
-                console.log("Login Failed");
-              }}
-            />
-
-            <div className="testinggs overflow-hidden w-[50%]">
+            <div className="google-button relative flex content-start ">
+              {/*original google button*/}
               <GoogleLogin
-                //         className="absolute z-30 rouned_button_transparent
-                // border-transparent bg-whtie text-center mx-auto  h-[50px] mt-[20px] w-[50%] md:w-full"
+          //       className="rouned_button_transparent
+          // border-transparent bg-[#5F82E5] text-center mx-auto absulate h-[50px] mt-[20px] w-[50%] md:w-full"
                 auto_select={false}
                 // className="hidden"
                 theme="outline"
@@ -240,7 +179,7 @@ function SocialAuth({
                 shape="pill"
                 logo_alignment="left"
                 text="continue_with"
-                width="400 | 200"
+                width="261"
                 onSuccess={(credentialResponse: any) => {
                   console.log("Google credentials....", credentialResponse)
                   const data = {
@@ -249,9 +188,9 @@ function SocialAuth({
                   dispatch(googleSignUpUser(data)).then((result: any) => {
                     if (googleSignUpUser.fulfilled.match(result)) {
                       // console.log('resultt', result)
-                      if (result && result.payload.success === true) {
+                      if (result && result.payload.success === true ) {
                         router.replace(routes.dashboard);
-                      }
+                      } 
                     }
                   });
                 }}
@@ -259,46 +198,52 @@ function SocialAuth({
                   console.log("Login Failed");
                 }}
               />
+
+              <div className="testinggs overflow-hidden w-[50%]">
+                <GoogleLogin
+          //         className="absolute z-30 rouned_button_transparent
+          // border-transparent bg-whtie text-center mx-auto  h-[50px] mt-[20px] w-[50%] md:w-full"
+                  auto_select={false}
+                  // className="hidden"
+                  theme="outline"
+                  size="large"
+                  shape="pill"
+                  logo_alignment="left"
+                  text="continue_with"
+                  width="400 | 200"
+                  onSuccess={(credentialResponse: any) => {
+                    console.log("Google credentials....", credentialResponse)
+                    const data = {
+                      signupId: credentialResponse.credential
+                    }
+                    dispatch(googleSignUpUser(data)).then((result: any) => {
+                      if (googleSignUpUser.fulfilled.match(result)) {
+                        // console.log('resultt', result)
+                        if (result && result.payload.success === true ) {
+                          router.replace(routes.dashboard);
+                        } 
+                      }
+                    });
+                  }}
+                  onError={() => {
+                    console.log("Login Failed");
+                  }}
+                />
+              </div>    
+
+              {/*custom button to show*/}
+              <div className="absolute z-30 top-0 left-0 w-full cursor-pointer">
+                <Button variant="outline" className="h-11 w-full text-wrap bg-white facebook-button small" 
+                  rounded="pill" disabled={socialSignup.loading && !loader}>
+                  <FcGoogle className="me-2 h-4 w-4 shrink-0" />
+                  <span className="text-wrap">{`${isSignIn ? 'Login' : 'Sign up'} with Google`}</span>
+                  { socialSignup.loading && !loader && <Spinner size="sm" tag='div' className='ms-3' color='white' /> }    
+                </Button> 
+              </div>
             </div>
 
-            {/*custom button to show*/}
-            <div className="absolute z-30 top-0 left-0 w-full cursor-pointer">
-              <Button variant="outline" className="h-11 w-full text-wrap bg-white facebook-button small"
-                rounded="pill" disabled={socialSignup && socialSignup.loading && !loader}>
-                <FcGoogle className="me-2 h-4 w-4 shrink-0" />
-                <span className="text-wrap">{`${isSignIn ? 'Login' : 'Sign up'} with Google`}</span>
-                {socialSignup && socialSignup.loading && !loader && <Spinner size="sm" tag='div' className='ms-3' color='white' />}
-              </Button>
-            </div>
-          </div>
 
-
-          <Button variant="outline" className="h-11 w-full relative" rounded="pill" disabled={loader} >
-            <FaFacebook className="me-2 h-4 w-4 shrink-0 text-blue-700" />
-            <FacebookLogin
-              textButton={`${isSignIn ? 'Login' : 'Sign up'} with Facebook`}
-              appId="1123503825483323"
-              size='small'
-              autoLoad={true}
-              fields="name"
-              callback={responseFacebook}
-              onFailure={failureFacebook}
-              cssClass='facebook-button'
-            />
-        </div>
-
-        {/*custom button to show*/}
-        <div className="absolute z-30 top-0 left-0 w-full cursor-pointer">
-          <Button variant="outline" className="h-11 w-full text-wrap bg-white facebook-button small"
-            rounded="pill" disabled={socialSignup.loading && !loader}>
-            <FcGoogle className="me-2 h-4 w-4 shrink-0" />
-            <span className="text-wrap">{`${isSignIn ? 'Login' : 'Sign up'} with Google`}</span>
-            {socialSignup.loading && !loader && <Spinner size="sm" tag='div' className='ms-3' color='white' />}
-          </Button>
-        </div>
-      </div>
-
-
+      
       <Button variant="outline" className="h-11 w-full relative" rounded="pill" disabled={loader} onClick={handleFacebookClick}>
         <FaFacebook className="me-2 h-4 w-4 shrink-0 text-blue-700" />
         {facebookLogin && <FacebookLogin
@@ -314,7 +259,7 @@ function SocialAuth({
         {!facebookLogin && `${isSignIn ? 'Login' : 'Sign up'} with Facebook`}
         {loader && <Spinner size="sm" tag='div' className='ms-3' />}
       </Button>
-  </>
+    </div>
   );
 }
 

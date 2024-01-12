@@ -18,7 +18,7 @@ export default function ModalButton({
   className,
   customSize = '600px',
   view,
-  icon = <PiPlusBold className="me-1.5 h-[17px] w-[17px]" />,
+  icon ,
   ...rest
 }: ModalButtonProps) {
   const { openModal } = useModal();
