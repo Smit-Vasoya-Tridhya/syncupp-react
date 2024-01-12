@@ -12,18 +12,19 @@ import PencilIcon from '@/components/icons/pencil';
 import AvatarCard from '@/components/ui/avatar-card';
 import { ProductType } from '@/data/products-data';
 import DeletePopover from '@/app/shared/delete-popover';
-import EditTeamMemberForm from './(user)/team-list/edit-team-member';
-import CustomModalButton from './custom-modal-button';
+import EditTeamMemberForm from './edit-team-member';
+import CustomModalButton from '../../custom-modal-button';
+import { Columns } from '@/types';
 
-type Columns = {
-  data: any[];
-  sortConfig?: any;
-  handleSelectAll: any;
-  checkedItems: string[];
-  onDeleteItem: (id: string) => void;
-  onHeaderCellClick: (value: string) => void;
-  onChecked?: (id: string) => void;
-};
+// type Columns = {
+//   data: any[];
+//   sortConfig?: any;
+//   handleSelectAll: any;
+//   checkedItems: string[];
+//   onDeleteItem: (id: string) => void;
+//   onHeaderCellClick: (value: string) => void;
+//   onChecked?: (id: string) => void;
+// };
 
 export const getColumns = ({
   data,
@@ -47,7 +48,7 @@ export const getColumns = ({
     ),
     dataIndex: 'checked',
     key: 'checked',
-    width: 30,
+    width: 50,
     render: (_: any, row: any) => (
       <div className="inline-flex ps-3.5">
         <Checkbox
@@ -59,71 +60,89 @@ export const getColumns = ({
     ),
   },
   {
-    title: <HeaderCell title="Name" />,
-    dataIndex: 'product',
-    key: 'product',
-    width: 300,
-    hidden: 'customer',
-    render: (_: string, row: ProductType) => (
-      <AvatarCard
-        // src={row.image}
-        name={row.name}
-        // description={row.category}
-        avatarProps={{
-          name: row.name,
-          size: 'lg',
-          className: 'rounded-lg',
-        }}
-      />
+    title: (
+    <HeaderCell
+    title="Member Name"
+    sortable
+    ascending={
+      sortConfig?.direction === 'asc' && sortConfig?.key === 'first_name'
+    }
+    />),
+    onHeaderCell: () => onHeaderCellClick('first_name'),
+    dataIndex: 'first_name',
+    key: 'first_name',
+    width: 200,
+    render: (_: any, row: any) => (
+      <Text className="font-medium text-gray-700">{row.first_name}</Text>
     ),
-  },
-  {
-    title: <HeaderCell title="Mobile Number" />,
-    dataIndex: 'sku',
-    key: 'sku',
-    width: 150,
-    render: (sku: string) => <Text className="text-sm">SKU-{sku}</Text>,
   },
   {
     title: (
-      <HeaderCell
-        title="Email ID"
-        sortable
-        ascending={
-          sortConfig?.direction === 'asc' && sortConfig?.key === 'stock'
-        }
-      />
-    ),
-    onHeaderCell: () => onHeaderCellClick('stock'),
-    dataIndex: 'stock',
-    key: 'stock',
+    <HeaderCell
+    title="Email"
+    sortable
+    ascending={
+      sortConfig?.direction === 'asc' && sortConfig?.key === 'email'
+    }
+    />),
+    onHeaderCell: () => onHeaderCellClick('email'),
+    dataIndex: 'email',
+    key: 'email',
     width: 200,
-    // render: (stock: number) => getStockStatus(stock),
+    render: (_: any, row: any) => (
+      <Text className="font-medium text-gray-700">{row.email}</Text>
+    ),
   },
   {
     title: (
-      <HeaderCell
-        title="Permission"
-        sortable
-        ascending={
-          sortConfig?.direction === 'asc' && sortConfig?.key === 'price'
-        }
-      />
-    ),
-    onHeaderCell: () => onHeaderCellClick('price'),
-    dataIndex: 'price',
-    key: 'price',
-    width: 150,
-    render: (value: string) => (
-      <Text className="font-medium text-gray-700">${value}</Text>
+    <HeaderCell
+    title="Conact no"
+    sortable
+    ascending={
+      sortConfig?.direction === 'asc' && sortConfig?.key === 'contact_number'
+    }
+    />),
+    onHeaderCell: () => onHeaderCellClick('contact_number'),
+    dataIndex: 'contact_number',
+    key: 'contact_number',
+    width: 200,
+    render: (_: any, row: any) => (
+      <Text className="font-medium text-gray-700">{row.contact_number}</Text>
     ),
   },
   {
-    title: <HeaderCell title="Created" />,
-    dataIndex: 'rating',
-    key: 'rating',
+    title: (
+    <HeaderCell
+    title="Role"
+    sortable
+    ascending={
+      sortConfig?.direction === 'asc' && sortConfig?.key === 'member_role'
+    }
+    />),
+    onHeaderCell: () => onHeaderCellClick('member_role'),
+    dataIndex: 'member_role',
+    key: 'member_role',
     width: 200,
-    // render: (rating: number[]) => getRating(rating),
+    render: (_: any, row: any) => (
+      <Text className="font-medium text-gray-700">{row.member_role}</Text>
+    ),
+  },
+  {
+    title: (
+    <HeaderCell
+    title="status"
+    sortable
+    ascending={
+      sortConfig?.direction === 'asc' && sortConfig?.key === 'status'
+    }
+    />),
+    onHeaderCell: () => onHeaderCellClick('status'),
+    dataIndex: 'status',
+    key: 'status',
+    width: 200,
+    render: (_: any, row: any) => (
+      <Text className="font-medium text-gray-700">{row.status}</Text>
+    ),
   },
   {
     // Need to avoid this issue -> <td> elements in a large <table> do not have table headers.

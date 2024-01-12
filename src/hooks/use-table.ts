@@ -149,6 +149,7 @@ export function useTable<T extends AnyObject>(
   }
 
 
+
   /*
    * Handle delete
    */
@@ -297,9 +298,9 @@ export function useTable<T extends AnyObject>(
   /*
    * Go to first page when data is filtered and searched
    */
-  useEffect(() => {
-    handlePaginate(1);
-  }, [isFiltered, searchTerm]);
+  // useEffect(() => {
+  //   handlePaginate(1);
+  // }, [isFiltered, searchTerm]);
 
   // useTable returns
   return {

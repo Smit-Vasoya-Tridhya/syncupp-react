@@ -20,8 +20,8 @@ export type ForgotData = {
   email: string;
 };
 type ChangePasswordData = {
-  old_password: string;
-  new_password: string;
+  oldPassword: string;
+  newPassword: string;
 };
 
 type ApiResponse = {
@@ -67,7 +67,7 @@ export const PostResetPassword = async (data: RequestData): Promise<ApiResponse>
 export const PostChangePassword = async (data: ChangePasswordData): Promise<ApiResponse> => {
   const response = await AxiosDefault({
     url: "/api/v1/admin/updatePassword",
-    method: "POST",
+    method: "PUT",
     data: data,
     contentType: "application/json", 
   });
