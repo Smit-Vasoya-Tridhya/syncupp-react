@@ -15,8 +15,7 @@ import { Input } from '@/components/ui/input';
 import dynamic from 'next/dynamic';
 import SelectLoader from '@/components/loader/select-loader';
 import { TeamMemberSchema } from '@/utils/validators/add-team-member.schema';
-import { editTeam } from '@/redux/slices/user/auth/teamSclice';
-// import { editTeam, teamEnroll } from '@/redux/slices/user/auth/teamSclice';
+import { editTeam } from '@/redux/slices/user/auth/teamSlice';
 const Select = dynamic(() => import('@/components/ui/select'), {
   ssr: false,
   loading: () => <SelectLoader />,
@@ -47,14 +46,14 @@ export default function EditTeamMemberForm({ className }: { className?: string }
 
   const onSubmit: SubmitHandler<TeamMemberSchema> = (data) => {
     console.log('Team member data---->', data);
-    // dispatch(editTeam(data)).then((result: any) => {
-    //   if (editTeam.fulfilled.match(result)) {
-    //     if (result && result.payload.success === true) {
-    //       // router.replace(routes.dashboard);
-    //       closeModal();
-    //     }
-    //   }
-    // });
+    dispatch(editTeam(data)).then((result: any) => {
+      if (editTeam.fulfilled.match(result)) {
+        if (result && result.payload.success === true) {
+          // router.replace(routes.dashboard);
+          closeModal();
+        }
+      }
+    });
   };
 
   return (
