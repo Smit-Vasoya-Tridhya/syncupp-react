@@ -31,7 +31,7 @@ export function useTable<T extends AnyObject>(
   );
 
   useEffect(() => {
-    if (initialData?.length > 0) {
+    if (initialData) {
       setData(initialData);
     }
     // if (page) {
@@ -51,8 +51,7 @@ export function useTable<T extends AnyObject>(
             sort_order: direction,
             // status: filter,
           });
-          setData(response && response?.payload && response?.payload?.data);
-          console.log(response.payload.data,'response.payload.data...........')
+          response && setData(response);
           setLoading(false);
         } catch (error) {
           console.error('API call error:', error);
@@ -156,6 +155,7 @@ export function useTable<T extends AnyObject>(
    */
   const handleDelete = async (id: string | string[]) => {
     let updatedData: [] = [];
+    // console.log("Id..", id)
     if (handleDeleteById) {
       try {
         updatedData = await handleDeleteById(id);

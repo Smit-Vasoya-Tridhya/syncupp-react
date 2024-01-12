@@ -9,12 +9,13 @@ import adminForgotPasswordSlice from "./slices/admin/auth/forgotpassword/forgetP
 import adminResetPasswordSlice from "./slices/admin/auth/resetpassword/resetPasswordSlice";
 import socialSignupSlice from "./slices/user/auth/socialSignupSlice";
 import viewProfileSlice from "./slices/admin/auth/viewprofile/viewProfileSlice";
+import clientSlice from "./slices/user/client/clientSlice";
 import teamSlice from "./slices/user/auth/teamSlice";
 import adminChangePasswordSlice from "./slices/admin/auth/updatePassword/changePasswordSlice";
 
 
  const combinedReducer = combineReducers({
-  // signIn: signinSlice,
+  signIn: signinSlice,
   signUp: signupSlice,
   forgotPassword: forgotPasswordSlice,
   resetPassword: resetPasswordSlice,
@@ -23,8 +24,9 @@ import adminChangePasswordSlice from "./slices/admin/auth/updatePassword/changeP
   adminSignIn: adminSignInSlice,
   adminForgotPassword: adminForgotPasswordSlice,
   adminResetPassword: adminResetPasswordSlice,
-  adminChangePassword: adminChangePasswordSlice,
   viewProfile: viewProfileSlice,
+  client: clientSlice,
+  adminChangePassword: adminChangePasswordSlice,
   teamModule: teamSlice,
 });
 

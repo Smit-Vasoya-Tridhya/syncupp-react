@@ -21,8 +21,23 @@ const filterState = {
   status: '',
 };
 
-export default function ClientTable({ data = [] }: { data: any[] }) {
-  const [pageSize, setPageSize] = useState(10);
+const defaultDeleteFunction = (id: string | string[]) => { };
+const emptyHandleChangePage = async (paginationParams?: any) => {
+  return Promise.resolve();
+};
+
+export default function ClientTable({ 
+  data = [],  
+  handleDeleteById = defaultDeleteFunction, 
+  handleChangePage = emptyHandleChangePage, 
+  total,
+}: { 
+  data: any[]; 
+  handleDeleteById?: (id: string | string[]) => any; 
+  handleChangePage?: (paginationParams: any) => Promise<any>; 
+  total?: any;
+}) {
+  const [pageSize, setPageSize] = useState(5);
 
   const onHeaderCellClick = (value: string) => ({
     onClick: () => {
@@ -30,7 +45,8 @@ export default function ClientTable({ data = [] }: { data: any[] }) {
     },
   });
 
-  const onDeleteItem = useCallback((id: string) => {
+  const onDeleteItem = useCallback((id: any) => {
+    console.log("Delete id...", id)
     handleDelete(id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -40,7 +56,7 @@ export default function ClientTable({ data = [] }: { data: any[] }) {
     isFiltered,
     tableData,
     currentPage,
-    totalItems,
+    // totalItems,
     handlePaginate,
     filters,
     updateFilter,
@@ -54,7 +70,7 @@ export default function ClientTable({ data = [] }: { data: any[] }) {
     handleSelectAll,
     handleDelete,
     handleReset,
-  } = useTable(data, pageSize, filterState);
+  } = useTable(data, pageSize, handleDeleteById, handleChangePage, pageSize, filterState);
 
   const columns = useMemo(
     () =>
@@ -86,7 +102,7 @@ export default function ClientTable({ data = [] }: { data: any[] }) {
     <>
       <ControlledTable
         variant="modern"
-        isLoading={isLoading}
+        isLoading={false}
         showLoadingText={true}
         data={tableData}
         // @ts-ignore
@@ -94,7 +110,7 @@ export default function ClientTable({ data = [] }: { data: any[] }) {
         paginatorOptions={{
           pageSize,
           setPageSize,
-          total: totalItems,
+          total: total,
           current: currentPage,
           onChange: (page: number) => handlePaginate(page),
         }}
@@ -129,10 +145,10 @@ export default function ClientTable({ data = [] }: { data: any[] }) {
               handleDelete(ids);
             }}
           >
-            <Button size="sm" className="dark:bg-gray-300 dark:text-gray-800">
+            {/* <Button size="sm" className="dark:bg-gray-300 dark:text-gray-800">
               Download {selectedRowKeys.length}{' '}
               {selectedRowKeys.length > 1 ? 'Products' : 'Product'}
-            </Button>
+            </Button> */}
           </TableFooter>
         }
         className="overflow-hidden rounded-md border border-gray-200 text-sm shadow-sm [&_.rc-table-placeholder_.rc-table-expanded-row-fixed>div]:h-60 [&_.rc-table-placeholder_.rc-table-expanded-row-fixed>div]:justify-center [&_.rc-table-row:last-child_td.rc-table-cell]:border-b-0 [&_thead.rc-table-thead]:border-t-0"

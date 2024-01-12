@@ -183,7 +183,7 @@ export type SelectBoxProps<Option> = Omit<
   'color'
 > & {
   /** Options for select */
-  options: Record<string, string>[];
+  options: Record<string, string>[] | any;
   // options: Option[];
   /** Whether the select is disabled */
   disabled?: boolean;
@@ -413,7 +413,7 @@ export default function SelectBox<OptionType extends SelectOption>({
                   ...(useContainerWidth && { width }),
                 }}
               >
-                {/* <Listbox.Options>
+                <Listbox.Options>
                   {isEmpty(options) ? (
                     <li
                       className={cn(
@@ -425,7 +425,7 @@ export default function SelectBox<OptionType extends SelectOption>({
                       Nothing found.
                     </li>
                   ) : (
-                    options.map((option) => (
+                    options.map((option: any) => (
                       <Listbox.Option
                         key={option.value}
                         {...(option?.disabled && {
@@ -465,7 +465,7 @@ export default function SelectBox<OptionType extends SelectOption>({
                       </Listbox.Option>
                     ))
                   )}
-                </Listbox.Options> */}
+                </Listbox.Options>
               </Transition>
             </div>
           </>

@@ -40,18 +40,21 @@ export default function ControlledTable({
   className,
   ...tableProps
 }: ControlledTableProps) {
-  if (isLoading) {
-    return (
-      <div className="grid h-full min-h-[128px] flex-grow place-content-center items-center justify-center">
-        <Spinner size="xl" />
-        {showLoadingText ? (
-          <Title as="h6" className="-me-2 mt-4 font-medium text-gray-500">
-            Loading...
-          </Title>
-        ) : null}
-      </div>
-    );
-  }
+  
+  // if (isLoading) {
+  //   return (
+  //     <div className="grid h-full min-h-[128px] flex-grow place-content-center items-center justify-center">
+  //       <Spinner size="xl" />
+  //       {showLoadingText ? (
+  //         <Title as="h6" className="-me-2 mt-4 font-medium text-gray-500">
+  //           Loading...
+  //         </Title>
+  //       ) : null}
+  //     </div>
+  //   );
+  // }
+
+  console.log("pagination options...", paginatorOptions)
 
   return (
     <>
@@ -64,6 +67,7 @@ export default function ControlledTable({
           scroll={{ x: 1300 }}
           rowKey={(record) => record.id}
           className={cn(className)}
+          isLoading
           {...tableProps}
         />
 

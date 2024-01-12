@@ -21,9 +21,8 @@ import { siteConfig } from '@/config/site.config';
 import { Button } from 'rizzui';
 import OrSeparation from './or-separation';
 import { GoogleLogin } from "@react-oauth/google";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { facebookSignUpUser, googleSignUpUser } from '@/redux/slices/user/auth/socialSignupSlice';
-import { useSelector } from 'react-redux';
 import Spinner from '@/components/ui/spinner';
 import FacebookLogin from 'react-facebook-login';
 import { useState } from 'react';
@@ -43,7 +42,7 @@ export default function AuthWrapperTwo({
     <div className="min-h-screen items-center justify-center xl:flex xl:bg-gray-50 ">
       <div className="mx-auto w-full py-2 xl:py-14 2xl:w-[1720px]">
         <div className="rounded-xl bg-white dark:bg-transparent xl:flex dark:xl:bg-gray-100/50">
-          <AuthNavBar />
+          <AuthNavBar title={title} />
           <IntroBannerBlock />
           <div className="flex w-full items-center px-4 xl:px-0">
             <div className="mx-auto w-full max-w-sm shrink-0 py-16 md:max-w-md xl:px-8 xl:py-10 2xl:max-w-xl 2xl:py-14 3xl:py-20">
@@ -98,17 +97,19 @@ function AuthNavLink({
   );
 }
 
-function AuthNavBar() {
+function AuthNavBar(props: any) {
   return (
     <div className="flex shrink-0 justify-between rounded-bl-xl rounded-tl-xl bg-white px-4 py-4 dark:bg-transparent xl:sticky xl:top-0 xl:w-36 xl:flex-col xl:items-center xl:justify-start xl:px-0 xl:py-14 2xl:w-[184px]">
       <Link href="/" className="mb-1 inline-block max-w-[64px]">
         <Image src={siteConfig.logo} alt="Isomorphic" className="dark:invert" width={40} height={35} />
       </Link>
       <div className="flex space-x-6 xl:w-full xl:flex-col xl:space-x-0 xl:space-y-6 xl:pt-9 2xl:space-y-7 2xl:pt-12 3xl:pt-14">
-        <AuthNavLink href={routes.signUp}>
-          <PiUserCirclePlus className="h-6 w-6" />
-          Sign up
-        </AuthNavLink>
+        {props.title !== 'Set your password' &&
+          <AuthNavLink href={routes.signUp}>
+            <PiUserCirclePlus className="h-6 w-6" />
+            Sign up
+          </AuthNavLink>
+        }
         <AuthNavLink href={routes.signIn}>
           <PiArrowLineRight className="h-[22px] w-[22px]" />
           Login
@@ -129,6 +130,12 @@ function SocialAuth({
   const socialSignup = useSelector((state: any) => state?.root?.socialSignup)
   // console.log("socialSignup state.....", socialSignup)
   const [loader, setLoader] = useState(false)
+  const [facebookLogin, setFacebookLogin] = useState(false);
+
+  const handleFacebookClick = () => {
+    console.log("Facebook login click")
+    setFacebookLogin(true);
+  }
 
   const responseFacebook = async (response: any) => {
     setLoader(true)
@@ -141,9 +148,9 @@ function SocialAuth({
     dispatch(facebookSignUpUser(data)).then((result: any) => {
       if (facebookSignUpUser.fulfilled.match(result)) {
         // console.log('resultt', result)
-        if (result && result.payload.success === true ) {
+        if (result && result.payload.success === true) {
           router.replace(routes.dashboard);
-        } 
+        }
         setLoader(false);
       }
     });
@@ -154,15 +161,78 @@ function SocialAuth({
     console.log(response, 'failureFacebook');
   }
 
-  
-  return (
-    <div className="grid grid-cols-1 gap-4 pb-7 md:grid-cols-1 lg:grid-cols-2 xl:gap-5 xl:pb-8">
 
-            <div className="google-button relative flex content-start ">
-              {/*original google button*/}
+  return (
+    <>
+      <div className="grid grid-cols-1 gap-4 pb-7 md:grid-cols-1 lg:grid-cols-2 xl:gap-5 xl:pb-8">
+
+        <div className="google-button relative flex content-start ">
+          {/*original google button*/}
+          <GoogleLogin
+            //       className="rouned_button_transparent
+            // border-transparent bg-[#5F82E5] text-center mx-auto absulate h-[50px] mt-[20px] w-[50%] md:w-full"
+            auto_select={false}
+            // className="hidden"
+            theme="outline"
+            size="large"
+            shape="pill"
+            logo_alignment="left"
+            text="continue_with"
+            width="261"
+            onSuccess={(credentialResponse: any) => {
+              console.log("Google credentials....", credentialResponse)
+              const data = {
+                signupId: credentialResponse.credential
+              }
+              dispatch(googleSignUpUser(data)).then((result: any) => {
+                if (googleSignUpUser.fulfilled.match(result)) {
+                  // console.log('resultt', result)
+                  if (result && result.payload.success === true) {
+                    router.replace(routes.dashboard);
+                  }
+                }
+              });
+            }}
+            onError={() => {
+              console.log("Login Failed");
+            }}
+          />
+
+          <div className="testinggs overflow-hidden w-[50%]">
+            <GoogleLogin
+              //         className="absolute z-30 rouned_button_transparent
+              // border-transparent bg-whtie text-center mx-auto  h-[50px] mt-[20px] w-[50%] md:w-full"
+              auto_select={false}
+              // className="hidden"
+              theme="outline"
+              size="large"
+              shape="pill"
+              logo_alignment="left"
+              text="continue_with"
+              width="400 | 200"
+              onSuccess={(credentialResponse: any) => {
+                console.log("Google credentials....", credentialResponse)
+                const data = {
+                  signupId: credentialResponse.credential
+                }
+                dispatch(googleSignUpUser(data)).then((result: any) => {
+                  if (googleSignUpUser.fulfilled.match(result)) {
+                    // console.log('resultt', result)
+                    if (result && result.payload.success === true) {
+                      router.replace(routes.dashboard);
+                    }
+                  }
+                });
+              }}
+              onError={() => {
+                console.log("Login Failed");
+              }}
+            />
+
+            <div className="testinggs overflow-hidden w-[50%]">
               <GoogleLogin
-          //       className="rouned_button_transparent
-          // border-transparent bg-[#5F82E5] text-center mx-auto absulate h-[50px] mt-[20px] w-[50%] md:w-full"
+                //         className="absolute z-30 rouned_button_transparent
+                // border-transparent bg-whtie text-center mx-auto  h-[50px] mt-[20px] w-[50%] md:w-full"
                 auto_select={false}
                 // className="hidden"
                 theme="outline"
@@ -170,7 +240,7 @@ function SocialAuth({
                 shape="pill"
                 logo_alignment="left"
                 text="continue_with"
-                width="261"
+                width="400 | 200"
                 onSuccess={(credentialResponse: any) => {
                   console.log("Google credentials....", credentialResponse)
                   const data = {
@@ -179,9 +249,9 @@ function SocialAuth({
                   dispatch(googleSignUpUser(data)).then((result: any) => {
                     if (googleSignUpUser.fulfilled.match(result)) {
                       // console.log('resultt', result)
-                      if (result && result.payload.success === true ) {
+                      if (result && result.payload.success === true) {
                         router.replace(routes.dashboard);
-                      } 
+                      }
                     }
                   });
                 }}
@@ -189,66 +259,62 @@ function SocialAuth({
                   console.log("Login Failed");
                 }}
               />
-
-              <div className="testinggs overflow-hidden w-[50%]">
-                <GoogleLogin
-          //         className="absolute z-30 rouned_button_transparent
-          // border-transparent bg-whtie text-center mx-auto  h-[50px] mt-[20px] w-[50%] md:w-full"
-                  auto_select={false}
-                  // className="hidden"
-                  theme="outline"
-                  size="large"
-                  shape="pill"
-                  logo_alignment="left"
-                  text="continue_with"
-                  width="400 | 200"
-                  onSuccess={(credentialResponse: any) => {
-                    console.log("Google credentials....", credentialResponse)
-                    const data = {
-                      signupId: credentialResponse.credential
-                    }
-                    dispatch(googleSignUpUser(data)).then((result: any) => {
-                      if (googleSignUpUser.fulfilled.match(result)) {
-                        // console.log('resultt', result)
-                        if (result && result.payload.success === true ) {
-                          router.replace(routes.dashboard);
-                        } 
-                      }
-                    });
-                  }}
-                  onError={() => {
-                    console.log("Login Failed");
-                  }}
-                />
-              </div>    
-
-              {/*custom button to show*/}
-              <div className="absolute z-30 top-0 left-0 w-full cursor-pointer">
-                <Button variant="outline" className="h-11 w-full text-wrap bg-white facebook-button small" 
-                  rounded="pill" disabled={socialSignup&& socialSignup.loading && !loader}>
-                  <FcGoogle className="me-2 h-4 w-4 shrink-0" />
-                  <span className="text-wrap">{`${isSignIn ? 'Login' : 'Sign up'} with Google`}</span>
-                  { socialSignup && socialSignup.loading && !loader && <Spinner size="sm" tag='div' className='ms-3' color='white' /> }    
-                </Button> 
-              </div>
             </div>
 
+            {/*custom button to show*/}
+            <div className="absolute z-30 top-0 left-0 w-full cursor-pointer">
+              <Button variant="outline" className="h-11 w-full text-wrap bg-white facebook-button small"
+                rounded="pill" disabled={socialSignup && socialSignup.loading && !loader}>
+                <FcGoogle className="me-2 h-4 w-4 shrink-0" />
+                <span className="text-wrap">{`${isSignIn ? 'Login' : 'Sign up'} with Google`}</span>
+                {socialSignup && socialSignup.loading && !loader && <Spinner size="sm" tag='div' className='ms-3' color='white' />}
+              </Button>
+            </div>
+          </div>
 
-      <Button variant="outline" className="h-11 w-full relative" rounded="pill" disabled={loader} >
+
+          <Button variant="outline" className="h-11 w-full relative" rounded="pill" disabled={loader} >
+            <FaFacebook className="me-2 h-4 w-4 shrink-0 text-blue-700" />
+            <FacebookLogin
+              textButton={`${isSignIn ? 'Login' : 'Sign up'} with Facebook`}
+              appId="1123503825483323"
+              size='small'
+              autoLoad={true}
+              fields="name"
+              callback={responseFacebook}
+              onFailure={failureFacebook}
+              cssClass='facebook-button'
+            />
+        </div>
+
+        {/*custom button to show*/}
+        <div className="absolute z-30 top-0 left-0 w-full cursor-pointer">
+          <Button variant="outline" className="h-11 w-full text-wrap bg-white facebook-button small"
+            rounded="pill" disabled={socialSignup.loading && !loader}>
+            <FcGoogle className="me-2 h-4 w-4 shrink-0" />
+            <span className="text-wrap">{`${isSignIn ? 'Login' : 'Sign up'} with Google`}</span>
+            {socialSignup.loading && !loader && <Spinner size="sm" tag='div' className='ms-3' color='white' />}
+          </Button>
+        </div>
+      </div>
+
+
+      <Button variant="outline" className="h-11 w-full relative" rounded="pill" disabled={loader} onClick={handleFacebookClick}>
         <FaFacebook className="me-2 h-4 w-4 shrink-0 text-blue-700" />
-        <FacebookLogin
-            textButton={`${isSignIn ? 'Login' : 'Sign up'} with Facebook`}
-            appId="1123503825483323"
-            size='small'
-            autoLoad={true}
-            fields="name"
-            callback={responseFacebook}
-            onFailure={failureFacebook}
-            cssClass='facebook-button'
-          />
-        { loader && <Spinner size="sm" tag='div' className='ms-3' color='white' /> }    
+        {facebookLogin && <FacebookLogin
+          textButton={`${isSignIn ? 'Login' : 'Sign up'} with Facebook`}
+          appId="1123503825483323"
+          size='small'
+          autoLoad={true}
+          fields="name"
+          callback={responseFacebook}
+          onFailure={failureFacebook}
+          cssClass='facebook-button'
+        />}
+        {!facebookLogin && `${isSignIn ? 'Login' : 'Sign up'} with Facebook`}
+        {loader && <Spinner size="sm" tag='div' className='ms-3' />}
       </Button>
-    </div>
+  </>
   );
 }
 
