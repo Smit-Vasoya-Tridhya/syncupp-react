@@ -3,7 +3,7 @@ import { PostChangePassword } from "../../../../../api/auth/signin/signin";
 import { toast } from 'react-hot-toast';
 
 type ChangePasswordData = {
-  currentPassword: string;
+  oldPassword: string;
   newPassword: string;
   confirmedPassword?: string;
 };
@@ -33,8 +33,8 @@ export const changePasswordAdmin : any = createAsyncThunk(
         console.log("We are in changePassword slice.........", data)
         try {
             const ApiData = {
-              old_password: data.currentPassword,
-              new_password: data.newPassword
+              oldPassword: data.oldPassword,
+              newPassword: data.newPassword
             }
             const response = await PostChangePassword(ApiData);
             console.log("Change password response......", response);
@@ -45,32 +45,22 @@ export const changePasswordAdmin : any = createAsyncThunk(
     }
 );
 
-export const changePasswordSlice = createSlice({
+export const adminChangePasswordSlice = createSlice({
   name: "changePassword",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(changePasswordAdmin.pending, (state) => {
-        return{
-            ...state,
-            loading: true,
-            changePasswordUserStatus: 'pending'
-        }
+            state.loading=true;
       })
       .addCase(changePasswordAdmin.fulfilled, (state,action) => {
-        // console.log(action.payload);
         if(action.payload.success == true){
           toast.success(action.payload.message)
         } else {
           toast.error(action.payload.message)
         }
-        return{
-          ...state,
-          // user: action.payload,
-          loading: false,
-          changePasswordUserStatus: 'success'
-        }
+          state.loading=false;
       })
       .addCase(changePasswordAdmin.rejected, (state) => {
         return{
@@ -82,4 +72,4 @@ export const changePasswordSlice = createSlice({
   },
 });
 
-export default changePasswordSlice.reducer;
+export default adminChangePasswordSlice.reducer;

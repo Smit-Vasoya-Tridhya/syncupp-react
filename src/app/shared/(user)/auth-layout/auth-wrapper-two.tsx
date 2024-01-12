@@ -225,10 +225,10 @@ function SocialAuth({
               {/*custom button to show*/}
               <div className="absolute z-30 top-0 left-0 w-full cursor-pointer">
                 <Button variant="outline" className="h-11 w-full text-wrap bg-white facebook-button small" 
-                  rounded="pill" disabled={socialSignup.loading && !loader}>
+                  rounded="pill" disabled={socialSignup&& socialSignup.loading && !loader}>
                   <FcGoogle className="me-2 h-4 w-4 shrink-0" />
                   <span className="text-wrap">{`${isSignIn ? 'Login' : 'Sign up'} with Google`}</span>
-                  { socialSignup.loading && !loader && <Spinner size="sm" tag='div' className='ms-3' color='white' /> }    
+                  { socialSignup && socialSignup.loading && !loader && <Spinner size="sm" tag='div' className='ms-3' color='white' /> }    
                 </Button> 
               </div>
             </div>

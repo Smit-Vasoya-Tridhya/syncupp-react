@@ -23,7 +23,7 @@ import { ActionIcon } from 'rizzui';
 import cn from '@/utils/class-names';
 
 const initialValues: ChangePasswordSchema = {
-  currentPassword: '',
+  oldPassword: '',
   newPassword: '',
   confirmedPassword: ''
 };
@@ -35,7 +35,7 @@ export default function ChangePasswordForm() {
   const dispatch = useDispatch();
 
   const router = useRouter();
-  const changePassword = useSelector((state: any) => state?.root?.changePassword)
+  const changePassword = useSelector((state: any) => state?.root?.adminChangePassword)
   console.log("changePassword state.....", changePassword)
 
 
@@ -45,7 +45,7 @@ export default function ChangePasswordForm() {
       if (changePasswordAdmin.fulfilled.match(result)) {
         // console.log('resultt', result)/
         if (result && result.payload.success === true ) {
-          router.replace(routes.dashboard);
+          router.replace(routes.admin.dashboard);
         } 
       }
     })
@@ -85,8 +85,8 @@ export default function ChangePasswordForm() {
                 size={isMedium ? 'lg' : 'xl'}
                 color="info"
                 className="[&>label>span]:font-medium"
-                {...register('currentPassword')}
-                error={errors.currentPassword?.message}
+                {...register('oldPassword')}
+                error={errors.oldPassword?.message}
               />
             <Password
                 onKeyDown={handleKeyDown}
@@ -117,8 +117,8 @@ export default function ChangePasswordForm() {
                   Cancel
                 </Button>
                 <Button
-                  type="submit"
                   className="hover:gray-700 w-full  @xl:w-auto dark:bg-gray-200 dark:text-white"
+                  type="submit"
                   disabled={changePassword.loading}
                 >
                   Save

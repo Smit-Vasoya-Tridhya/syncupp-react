@@ -98,7 +98,7 @@ export default function SignInForm() {
                 Forgot Password?
               </Link>
             </div>
-            { signIn.loading ? (<Button
+            { signIn && signIn.loading ? (<Button
               className="w-full border-2 text-base font-bold"
               type="submit"
               size={isMedium ? 'lg' : 'xl'}
