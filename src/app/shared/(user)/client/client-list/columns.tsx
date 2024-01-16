@@ -173,21 +173,15 @@ export const getColumns = ({
     width: 120,
     render: (_: string, row: Record<string, string>) => (
       <div className="flex items-center justify-end gap-3 pe-4">
+        <CustomModalButton 
+          title="Edit Client"
+          icon={<PencilIcon className="h-4 w-4" />}
+          view={<AddClientForm title="Edit Client" row={row} /> }
+          customSize="800px"
+        />
         <Tooltip
           size="sm"
-          content={() => 'Edit Client'}
-          placement="top"
-          color="invert"
-        >
-          <CustomModalButton 
-            icon={<PencilIcon className="h-4 w-4" />}
-            view={<AddClientForm title="Edit Client" row={row} /> }
-            customSize="800px"
-          />
-        </Tooltip>
-        <Tooltip
-          size="sm"
-          content={() => 'View Member'}
+          content={() => 'View Client'}
           placement="top"
           color="invert"
         >

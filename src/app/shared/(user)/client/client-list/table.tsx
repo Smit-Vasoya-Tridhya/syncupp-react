@@ -21,7 +21,7 @@ const filterState = {
   status: '',
 };
 
-const defaultDeleteFunction = (id: string | string[]) => { };
+const defaultDeleteFunction = (id: string | string[], currentPage?: number, countPerPage?: number) => { };
 const emptyHandleChangePage = async (paginationParams?: any) => {
   return Promise.resolve();
 };
@@ -33,7 +33,7 @@ export default function ClientTable({
   total,
 }: { 
   data: any[]; 
-  handleDeleteById?: (id: string | string[]) => any; 
+  handleDeleteById?: (id: string | string[], currentPage?: number, countPerPage?: number) => any; 
   handleChangePage?: (paginationParams: any) => Promise<any>; 
   total?: any;
 }) {
@@ -51,11 +51,13 @@ export default function ClientTable({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const [currentPage, setCurrentPage] = useState(1);
+
   const {
     isLoading,
     isFiltered,
     tableData,
-    currentPage,
+    // currentPage,
     // totalItems,
     handlePaginate,
     filters,
@@ -70,7 +72,7 @@ export default function ClientTable({
     handleSelectAll,
     handleDelete,
     handleReset,
-  } = useTable(data, pageSize, handleDeleteById, handleChangePage, pageSize, filterState);
+  } = useTable(data, pageSize, handleDeleteById, handleChangePage, pageSize, filterState, currentPage, setCurrentPage);
 
   const columns = useMemo(
     () =>

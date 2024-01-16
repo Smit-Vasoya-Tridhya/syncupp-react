@@ -1,15 +1,12 @@
-import AuthWrapperTwo from '@/app/shared/(user)/auth-layout/auth-wrapper-two';
 import { metaObject } from '@/config/site.config';
-import SetPasswordForm from './set-password-form';
+import MainPage from './main-page';
 
 export const metadata = {
-  ...metaObject('SetPassword'),
+  ...metaObject('SetPassword - Team member'),
 };
 
 export default function Page() {
   return (
-    <AuthWrapperTwo title="Set your password" isSocialLoginActive={false}>
-      <SetPasswordForm />
-    </AuthWrapperTwo>
+    <MainPage />
   );
 }

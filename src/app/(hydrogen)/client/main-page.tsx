@@ -39,12 +39,13 @@ export default function ClientPage() {
   
       if (page > maxPage) {
         page = maxPage > 0 ? maxPage : 1;
+        await dispatch(getAllClient({ page, items_per_page, sort_field, sort_order, search }));
+        return data?.client
       }
-      // return await dispatch(getAllClient({ page, items_per_page, sort_field, sort_order, search }));
       return data?.client
     };
     
-    const handleDeleteById = async (id: string | string[]) => {
+    const handleDeleteById = async (id: string | string[], currentPage?: number, countPerPage?: number) => {
 
       // console.log("delete id in main page....", id)
 
@@ -55,7 +56,7 @@ export default function ClientPage() {
           // toast.error(res.payload.message);
         } else {
           closeModal();
-          await dispatch(getAllClient({ sort_field: 'createdAt', sort_order: 'desc' }));
+          await dispatch(getAllClient({ items_per_page: countPerPage, sort_field: 'createdAt', sort_order: 'desc' }));
           // toast.success(res.payload.message);
         }
       } catch (error) {

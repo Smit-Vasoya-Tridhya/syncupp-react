@@ -27,12 +27,12 @@ export default function SetPasswordForm(props: any) {
   const clientSliceData = useSelector((state: any) => state?.root?.client);
 
   const searchParams = useSearchParams();
-  console.log("search Params....", searchParams.get("email"))
+  // console.log("search Params....", searchParams.get("email"))
   
   const email = searchParams.get("email");
   const agency = searchParams.get("agency");
   let redirectt = searchParams.get("redirect");
-  console.log("redirect....", redirectt)
+  // console.log("redirect....", redirectt)
   let redirect = (redirectt === 'true');
   
   const initialValues = {
