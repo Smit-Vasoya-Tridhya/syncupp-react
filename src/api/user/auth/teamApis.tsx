@@ -41,7 +41,7 @@ export const EditTeamMember = async (data: EditTeamData) => {
 export const DeleteTeamMember = async (data: TeamData) => {
   const response = await AxiosDefault({
     url: `/api/v1/agency/team-member/delete/${data._id}`,
-    method: "PUT",
+    method: "DELETE",
     data: data,
     contentType: "application/json", 
   });

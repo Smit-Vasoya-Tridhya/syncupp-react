@@ -38,6 +38,7 @@ export default function TeamTable({
   total?: any;
 }) {
   const [pageSize, setPageSize] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const onHeaderCellClick = (value: string) => ({
     onClick: () => {
@@ -45,9 +46,8 @@ export default function TeamTable({
     },
   });
 
-  const onDeleteItem = useCallback((id: any) => {
-    console.log("Delete id...", id)
-    handleDelete([id]);
+  const onDeleteItem = useCallback((_id: any) => {
+    handleDelete([_id]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -55,8 +55,6 @@ export default function TeamTable({
     isLoading,
     isFiltered,
     tableData,
-    currentPage,
-    // totalItems,
     handlePaginate,
     filters,
     updateFilter,
@@ -70,7 +68,7 @@ export default function TeamTable({
     handleSelectAll,
     handleDelete,
     handleReset,
-  } = useTable(data, pageSize, handleDeleteById, handleChangePage, pageSize, filterState);
+  } = useTable(data, pageSize, handleDeleteById, handleChangePage, pageSize, filterState, currentPage, setCurrentPage);
 
   const columns = useMemo(
     () =>

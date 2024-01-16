@@ -16,8 +16,6 @@ export function useTable<T extends AnyObject>(
   currentPage?: any,
   setCurrentPage?: any,
 ) {
-
-
   const [data, setData] = useState(initialData);
   // const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setLoading] = useState(true);
@@ -52,6 +50,7 @@ export function useTable<T extends AnyObject>(
             sort_order: direction,
             // status: filter,
           });
+          setLoading(false);
           response && setData(response);
           setLoading(false);
         } catch (error) {

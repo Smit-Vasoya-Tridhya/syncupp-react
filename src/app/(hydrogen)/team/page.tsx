@@ -29,8 +29,7 @@ export default function TeamDataTablePage() {
   const dispatch = useDispatch();
   const [pageSize, setPageSize] = useState(10);
   // const moduleData = useSelector((state: any) => state.teamModule.tempData);
-  const moduleData = useSelector((state: any) => state.teamModule);
-  // console.log(moduleData.tempData,'moduleDatsa////////////////////////')
+  const moduleData = useSelector((state: any) => state.root.teamModule);
   // const [data, setData] = useState<TeamDTO[]>([]);
 
   useEffect(() => {
@@ -44,7 +43,6 @@ export default function TeamDataTablePage() {
   },[])
   
   const handleDeleteById = async (_id: string | string[]) => {
-    console.log(_id,'_id..........')
     try {
       const res = await dispatch(deleteTeamMember({ _id: [_id] }));
       if (res.payload.status === false ) {
@@ -59,18 +57,18 @@ export default function TeamDataTablePage() {
     }
   };
 
-  const handleChangePage = async (paginationParams: Pagination) => {
-    let { page, sortOrder} = paginationParams;
-    const response = await dispatch(getTeamdata({ page, pageSize, sortOrder }));
-    const { total } = response.payload;
-    const maxPage: number = Math.ceil(total / pageSize);
+  const handleChangePage = async (paginationParams: any) => {
+    let { page, sort_order,sort_field,search} = paginationParams;
+    await dispatch(getTeamdata({ page, pageSize, sortField: sort_field, sortOrder: sort_order, search }));
+    // const { total } = response.payload;
+    // const maxPage: number = Math.ceil(total / pageSize);
 
-    if (page > maxPage) {
-      page = maxPage > 0 ? maxPage : 1;
-    }
-    // const adjustedResponse = await dispatch(getTeamdata({ page, pageSize, sortOrder }));
+    // if (page > maxPage) {
+    //   page = maxPage > 0 ? maxPage : 1;
+    // }
+    // // const adjustedResponse = await dispatch(getTeamdata({ page, pageSize, sortOrder }));
 
-    return response;
+    // return response;
   };
   const filterState = {
     status: '',

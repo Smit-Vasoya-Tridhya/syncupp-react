@@ -12,6 +12,7 @@ type TeamData = {
   sortOrder?: string,
   page?: any;
   itemsPerPage?: Number;
+  search?: string;
 }
 
 interface TeamDataResponse {
@@ -68,6 +69,7 @@ export const getTeamdata: any = createAsyncThunk(
     const apiData :any ={
       sortField: data.sortField,
       sortOrder: data.sortOrder,
+      search: data.search,
       page: data.page,
       itemsPerPage: data.itemsPerPage
     }

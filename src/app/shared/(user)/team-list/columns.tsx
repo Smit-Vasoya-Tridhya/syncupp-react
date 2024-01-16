@@ -10,7 +10,7 @@ import { routes } from '@/config/routes';
 import EyeIcon from '@/components/icons/eye';
 import PencilIcon from '@/components/icons/pencil';
 import AvatarCard from '@/components/ui/avatar-card';
-import { ProductType } from '@/data/products-data';
+import {TeamMemberType } from '@/data/products-data';
 import DeletePopover from '@/app/shared/delete-popover';
 import EditTeamMemberForm from './edit-team-member';
 import CustomModalButton from '../../custom-modal-button';
@@ -150,7 +150,7 @@ export const getColumns = ({
     dataIndex: 'action',
     key: 'action',
     width: 120,
-    render: (_: string, row: ProductType) => (
+    render: (_: string, row: TeamMemberType) => (
       <div className="flex items-center justify-end gap-3 pe-4">
         <Tooltip
           size="sm"
@@ -160,7 +160,7 @@ export const getColumns = ({
         >
           <CustomModalButton 
             icon={<PencilIcon className="h-4 w-4" />}
-            view={<EditTeamMemberForm/>}
+            view={<EditTeamMemberForm row={row}/>}
             customSize="625px"
           />
         </Tooltip>
@@ -170,7 +170,6 @@ export const getColumns = ({
           placement="top"
           color="invert"
         >
-          {/* <Link href={routes.editTeam.productDetails(row.id)}> */}
           <Link href={routes.viewTeam}>
             <ActionIcon size="sm" variant="outline" aria-label={'View Member'}>
               <EyeIcon className="h-4 w-4" />
@@ -180,7 +179,7 @@ export const getColumns = ({
         <DeletePopover
           title={`Delete the product`}
           description={`Are you sure you want to delete?`}
-          onDelete={() => onDeleteItem(row.id)}
+          onDelete={() => onDeleteItem(row._id)}
         />
       </div>
     ),

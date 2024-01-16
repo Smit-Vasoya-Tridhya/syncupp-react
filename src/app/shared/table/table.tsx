@@ -38,6 +38,7 @@ export default function ClientTable({
   total?: any;
 }) {
   const [pageSize, setPageSize] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const onHeaderCellClick = (value: string) => ({
     onClick: () => {
@@ -55,7 +56,7 @@ export default function ClientTable({
     isLoading,
     isFiltered,
     tableData,
-    currentPage,
+    // currentPage,
     // totalItems,
     handlePaginate,
     filters,
@@ -70,7 +71,7 @@ export default function ClientTable({
     handleSelectAll,
     handleDelete,
     handleReset,
-  } = useTable(data, pageSize, handleDeleteById, handleChangePage, pageSize, filterState);
+  } = useTable(data, pageSize, handleDeleteById, handleChangePage, pageSize, filterState, currentPage, setCurrentPage);
 
   const columns = useMemo(
     () =>
