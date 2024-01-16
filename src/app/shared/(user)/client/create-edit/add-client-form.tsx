@@ -31,6 +31,8 @@ export default function AddClientForm(props: any) {
   const { title, row } = props;
 
   // console.log("row data...", row)
+  const clientSliceData = useSelector((state: any) => state?.root?.client);
+  
   
   const dispatch = useDispatch();
   const { closeModal } = useModal();
@@ -38,10 +40,10 @@ export default function AddClientForm(props: any) {
   
   const [save, setSave] = useState(false)
   const [reset, setReset] = useState({})
-  const [loader, setLoader] = useState(false);
   
   
-  const clientSliceData = useSelector((state: any) => state?.root?.client);
+
+  // let data = row;
 
   let initialValues: ClientSchema = {
     name: "",
@@ -57,6 +59,7 @@ export default function AddClientForm(props: any) {
     contact_number: ""
   };  
 
+  
   useEffect(() => {
     dispatch(getCountry());
   }, [dispatch]);
@@ -66,6 +69,23 @@ export default function AddClientForm(props: any) {
   }, [row, dispatch]); 
 
   let data = clientSliceData?.client;
+  
+  let defaultValuess = {
+    name: data?.name,
+    email: data?.email,
+    company_name: data?.client?.company_name,
+    company_website: data?.client?.company_website,
+    address: data?.client?.address,
+    city: data?.client?.city?.name,
+    state: data?.client?.state?.name,
+    country: data?.client?.country?.name,
+    pincode: data?.client?.pincode,
+    title: data?.client?.title,
+    contact_number: data?.contact_number
+  };
+
+  // console.log("defaultValues...", defaultValuess);
+
   
   // useEffect(() => {
 
@@ -97,9 +117,9 @@ export default function AddClientForm(props: any) {
 
 
   const [regionalData, setRegionalData] = useState({
-    city: data?.city?.id ?? undefined,
-    state: data?.state?.id ?? undefined,
-    country: data?.country?.id ?? undefined
+    city: data?.client?.city?.id,
+    state: data?.client?.state?.id,
+    country: data?.client?.country?.id
   });  
   // console.log("Regional Data....", regionalData)
 
@@ -138,18 +158,15 @@ export default function AddClientForm(props: any) {
     setRegionalData({...regionalData, city: cityObj._id})
   };
 
-  const handleSaveAndNewClick = () => {
-    console.log("save & new button clicked")
-    setLoader(true)
-  }
+
 
   const handleSaveClick = () => {
-    console.log("save button clicked")
+    // console.log("save button clicked")
     setSave(true);
   }
 
   const onSubmit: SubmitHandler<ClientSchema> = (dataa) => {
-    console.log('Add client dataa---->', dataa);
+    // console.log('Add client dataa---->', dataa);
 
     const formData = {
       name: dataa?.name ?? '',
@@ -196,10 +213,16 @@ export default function AddClientForm(props: any) {
       });
     }
 
-
+    
   };
-
-
+  
+  if(!clientSliceData?.client && title === 'Edit Client') {
+    return (
+      <div className='p-10 flex items-center justify-center'>
+        <Spinner size="xl" tag='div' className='ms-3' />
+      </div>
+    )
+  } else {
   return (
     <>
       <Form<ClientSchema>
@@ -208,7 +231,7 @@ export default function AddClientForm(props: any) {
         resetValues={reset}
         useFormProps={{
           mode: 'onChange',
-          defaultValues: initialValues,
+          defaultValues: defaultValuess,
         }}
         className=" p-10 [&_label]:font-medium"
       >
@@ -403,21 +426,20 @@ export default function AddClientForm(props: any) {
                   <Button
                     type="submit"
                     className="hover:gray-700 @xl:w-auto dark:bg-gray-200 dark:text-white"
-                    disabled={loader}
-                    // onClick={handleSaveAndNewClick}
+                    // disabled={clientSliceData?.addClientStatus === 'pending'}
                   >
                     Save & New
-                    { loader && <Spinner size="sm" tag='div' className='ms-3' color='white' /> }
+                    {/* { clientSliceData?.loading && <Spinner size="sm" tag='div' className='ms-3' color='white' /> } */}
                   </Button>
                 }
                 <Button
                   type="submit"
                   className="hover:gray-700 ms-3 @xl:w-auto dark:bg-gray-200 dark:text-white"
-                  disabled={clientSliceData?.loading}
+                  disabled={(clientSliceData?.addClientStatus === 'pending' || clientSliceData?.editClientStatus === 'pending') && save}
                   onClick={handleSaveClick}
                 >
                   Save
-                  { clientSliceData?.loading && <Spinner size="sm" tag='div' className='ms-3' color='white' /> }
+                  { (clientSliceData?.addClientStatus === 'pending' || clientSliceData?.editClientStatus === 'pending') && save && (<Spinner size="sm" tag='div' className='ms-3' color='white' />)  }
                 </Button>
               </div>
             </div>
@@ -427,4 +449,5 @@ export default function AddClientForm(props: any) {
       </Form>
     </>
   );
+  }
 }

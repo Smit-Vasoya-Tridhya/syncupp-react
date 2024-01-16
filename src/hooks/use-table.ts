@@ -9,16 +9,17 @@ interface AnyObject {
 export function useTable<T extends AnyObject>(
   initialData: T[],
   countPerPage: number = 10,
-  handleDeleteById: (id: string | string[]) => any,
+  handleDeleteById: (id: string | string[], currentPage?: number, countPerPage?: number) => any,
   handleChangePage?: (paginationParams: any) => Promise<any>,
   pageSize?: any,
   initialFilterState?: Partial<Record<string, any>>,
-  page?: any,
+  currentPage?: any,
+  setCurrentPage?: any,
 ) {
 
 
   const [data, setData] = useState(initialData);
-  const [currentPage, setCurrentPage] = useState(1);
+  // const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
@@ -34,13 +35,13 @@ export function useTable<T extends AnyObject>(
     if (initialData) {
       setData(initialData);
     }
-    // if (page) {
-    //   setCurrentPage(+page);
-    // }
-  }, [initialData, page]);
+    if (currentPage) {
+      setCurrentPage(+currentPage);
+    }
+  }, [initialData, currentPage]);
 
     // API call......
-    const handleAPICall = async (pageNumber?: any, pageSize?: any, searchTerm?: any, key?: any, direction?: any, filter?: any) => {
+    const handleAPICall = async (pageNumber?: any, pageSize?: any, searchTerm?: string, key?: string, direction?: string, filter?: any) => {
       if (handleChangePage && typeof handleChangePage === 'function') {
         try {
           const response = await handleChangePage({
@@ -70,7 +71,10 @@ export function useTable<T extends AnyObject>(
   useEffect(() => {
     setLoading(false);
     if (!searchTerm) {
+      console.log("current page..", currentPage);
       handleAPICall(+currentPage, pageSize, '', sortConfig.key, sortConfig.direction);
+    } else {
+      handleAPICall(+currentPage, pageSize, searchTerm, sortConfig.key, sortConfig.direction);
     }
   }, [currentPage, pageSize, searchTerm, sortConfig]);
 
@@ -86,10 +90,12 @@ export function useTable<T extends AnyObject>(
     }
   };
   const handleSelectAll = () => {
+    // console.log("selected row keys...", selectedRowKeys)
+    // console.log("data in row...", data)
     if (selectedRowKeys?.length === data?.length) {
       setSelectedRowKeys([]);
     } else {
-      setSelectedRowKeys(data?.map((record) => record?.id));
+      setSelectedRowKeys(data?.map((record) => record?._id));
     }
   };
 
@@ -130,7 +136,7 @@ export function useTable<T extends AnyObject>(
       direction = 'desc';
     }
     setSortConfig({ key, direction });
-    await handleAPICall(currentPage, pageSize, searchTerm, key, direction);
+    await handleAPICall(+currentPage, pageSize, searchTerm, key, direction);
   }
 
   /*
@@ -156,9 +162,13 @@ export function useTable<T extends AnyObject>(
   const handleDelete = async (id: string | string[]) => {
     let updatedData: [] = [];
     // console.log("Id..", id)
+    console.log("currentpage", currentPage);
+    console.log("count per page", countPerPage);
+
     if (handleDeleteById) {
       try {
-        updatedData = await handleDeleteById(id);
+        updatedData = await handleDeleteById(id, currentPage, countPerPage);
+        // handlePaginate(currentPage);
       } catch (error) {
         console.error('An error occurred:', error);
       }
@@ -298,9 +308,9 @@ export function useTable<T extends AnyObject>(
   /*
    * Go to first page when data is filtered and searched
    */
-  // useEffect(() => {
-  //   handlePaginate(1);
-  // }, [isFiltered, searchTerm]);
+  useEffect(() => {
+    handlePaginate(1);
+  }, [isFiltered, searchTerm]);
 
   // useTable returns
   return {

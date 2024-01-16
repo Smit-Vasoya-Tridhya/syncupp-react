@@ -14,13 +14,13 @@ import {
 export const clientSchema = z.object({
     name: z.string().min(1, { message: messages.nameRequired }),
     email: validateEmail,
-    contact_number: z .string().trim().nullable().refine(value => {
+    contact_number: z.string().trim().nullable().refine(value => {
         return !value || /^[0-9]{10,13}$/.test(value);
     }, {
         message: messages.contactLengthMin,
     }),
     company_name: z.string().min(1, { message: messages.companyNameRequired }),
-    company_website: z .string().trim().nullable().refine(value => {
+    company_website: z.string().trim().nullable().refine(value => {
         return !value || /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d{1,5})?(\/[^\s]*)?$/.test(value);
     }, {
         message: messages.companyUrlInvalid,
@@ -29,8 +29,12 @@ export const clientSchema = z.object({
     city: z.string().optional(),
     state: z.string().optional(),
     country: z.string().optional(),
-    pincode: z.string().optional(),
     title: z.string().optional(),
+    pincode: z.string().trim().nullable().refine(value => {
+        return !value || /^[0-9]{0,6}$/.test(value);
+    }, {
+        message: 'Pin code must be a numeric value with a maximum length of 6.',
+    }),
   })
   
   // generate form types from zod validation schema
