@@ -27,7 +27,7 @@ export default function TablePagination({
   //   return null;
   // }
   
-  console.log("pagination props options...", props, pageSize, total)
+  // console.log("pagination props options...", props, pageSize, total)
 
   return (
     <div

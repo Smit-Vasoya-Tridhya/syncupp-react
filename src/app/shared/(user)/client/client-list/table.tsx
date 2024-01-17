@@ -31,13 +31,16 @@ export default function ClientTable({
   handleDeleteById = defaultDeleteFunction, 
   handleChangePage = emptyHandleChangePage, 
   total,
+  page
 }: { 
   data: any[]; 
   handleDeleteById?: (id: string | string[], currentPage?: number, countPerPage?: number) => any; 
   handleChangePage?: (paginationParams: any) => Promise<any>; 
-  total?: any;
+  total?: number;
+  page?: number;
 }) {
   const [pageSize, setPageSize] = useState(5);
+  const [currentPage, setCurrentPage] = useState<number>(page as number);
 
   const onHeaderCellClick = (value: string) => ({
     onClick: () => {
@@ -51,7 +54,6 @@ export default function ClientTable({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const [currentPage, setCurrentPage] = useState(1);
 
   const {
     isLoading,
