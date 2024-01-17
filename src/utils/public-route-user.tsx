@@ -13,14 +13,14 @@ const WithAuthPublic = (WrappedComponent: any) => {
     const signIn = useSelector((state: any) => state?.root?.signIn);
     const socialSignup = useSelector((state: any) => state?.root?.socialSignup);
     const token = localStorage.getItem('token');
+    // console.log("signin slice data",signIn)
 
 
     useEffect(() => {
 
       // console.log("####" ,token)
       if (token) {
-
-        if(signIn?.user?.data?.user?.role?.name === "agency" || socialSignup?.user?.data?.user?.role?.name === "agency" || socialSignup?.user?.data?.user?.role?.name === "client"  ){
+        if(signIn?.user?.data?.user?.role?.name === "agency" || signIn?.user?.data?.user?.role?.name === "client"  || socialSignup?.user?.data?.user?.role?.name === "agency" || socialSignup?.user?.data?.user?.role?.name === "client"  ){
           router.replace(routes.dashboard)
         } else {
           router.replace(routes.admin.dashboard)
