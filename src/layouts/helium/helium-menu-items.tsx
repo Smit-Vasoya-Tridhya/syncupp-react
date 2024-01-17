@@ -50,6 +50,11 @@ export const MenuItems = () => {
         href: routes.dashboard,
         icon: <PiFolderNotchDuotone />,
       },
+      {
+        name: 'Team',
+        href: routes.team,
+        icon: <PiUserListDuotone />,
+      }
     ];
     
   }

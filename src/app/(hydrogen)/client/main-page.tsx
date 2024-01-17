@@ -20,9 +20,12 @@ export default function ClientPage() {
 
     const dispatch = useDispatch();
     const { closeModal } = useModal();
+    const [currentPagee, setCurrentPagee] = useState(1);
     const router = useRouter();
     const clientSliceData = useSelector((state: any) => state?.root?.client);
-    console.log("Client data....", clientSliceData);
+    // console.log("Client data....", clientSliceData);
+
+    // console.log("current page in main file...", currentPagee);
 
     // useEffect(() => {
     //   dispatch(getAllClient({page: 1, items_per_page: 5, sort_order: 'desc', sort_field: 'name', search: undefined}))
@@ -31,9 +34,10 @@ export default function ClientPage() {
 
     const handleChangePage = async (paginationParams: any) => {
       let { page, items_per_page, sort_field, sort_order, search } = paginationParams;
-      console.log("Items per page...", items_per_page);
+      // console.log("Items per page...", items_per_page);
+      setCurrentPagee(page);
       const response = await dispatch(getAllClient({ page, items_per_page, sort_field, sort_order, search }));
-      console.log("handleChange response....", response.payload)
+      // console.log("handleChange response....", response.payload)
       const { data } = response?.payload;
       const maxPage:number = data?.page_count;
   
@@ -45,20 +49,19 @@ export default function ClientPage() {
       return data?.client
     };
     
-    const handleDeleteById = async (id: string | string[], currentPage?: number, countPerPage?: number) => {
+    const handleDeleteById = async (id: string | string[], countPerPage?: number, currentPage?: number) => {
 
       // console.log("delete id in main page....", id)
 
       try {
         const res = await dispatch(deleteClient({ client_ids: id }));
         // console.log("delete response....", res)
-        if (res.payload.status === false ) {
-          // toast.error(res.payload.message);
-        } else {
+        if (res.payload.success === true ) {
           closeModal();
-          await dispatch(getAllClient({ items_per_page: countPerPage, sort_field: 'createdAt', sort_order: 'desc' }));
-          // toast.success(res.payload.message);
-        }
+          console.log("currentpage before get and after delete....", currentPagee)
+          const reponse = await dispatch(getAllClient({ page: currentPagee, items_per_page: countPerPage, sort_field: 'createdAt', sort_order: 'desc' }));
+          console.log("response after delete...", reponse)
+        } 
       } catch (error) {
         console.error(error);
       }
@@ -79,7 +82,7 @@ export default function ClientPage() {
         />
         </div>
       </PageHeader>
-      <ClientTable total={clientSliceData?.data?.page_count} handleDeleteById={handleDeleteById} handleChangePage={handleChangePage} data={clientSliceData?.data?.client} />
+      <ClientTable total={clientSliceData?.data?.page_count} page={currentPagee} handleDeleteById={handleDeleteById} handleChangePage={handleChangePage} data={clientSliceData?.data?.client} />
     </>
   );
 }
