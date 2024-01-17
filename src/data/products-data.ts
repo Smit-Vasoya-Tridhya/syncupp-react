@@ -1,5 +1,6 @@
-export type ProductType = {
-  id: string;
+
+export type TeamMemberType = {
+  _id: string;
   name: string;
   contact_number: string;
   email: string;
@@ -7,7 +8,7 @@ export type ProductType = {
 };
 
 export const productsData = [
- 
+
   {
     id: '0o02602714',
     name: 'Abhay Kamothi',

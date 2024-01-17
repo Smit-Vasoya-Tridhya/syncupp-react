@@ -4,6 +4,7 @@ import { PiPlusBold } from 'react-icons/pi';
 import { useModal } from '@/app/shared/modal-views/use-modal';
 import { Button, type ButtonProps } from '@/components/ui/button';
 import cn from '@/utils/class-names';
+import { Tooltip } from 'rizzui';
 
 interface ModalButtonProps extends ButtonProps {
   className?: string;
@@ -13,6 +14,7 @@ interface ModalButtonProps extends ButtonProps {
 }
 
 export default function CustomModalButton({
+  title,
   className,
   customSize = '600px',
   view,
@@ -21,6 +23,12 @@ export default function CustomModalButton({
 }: ModalButtonProps) {
   const { openModal } = useModal();
   return (
+    <Tooltip
+          size="sm"
+          content={() => title}
+          placement="top"
+          color="invert"
+        >
     <Button 
       className={cn(
         'bg-white text-black',
@@ -38,5 +46,6 @@ export default function CustomModalButton({
     >
       {icon}
     </Button>
+    </Tooltip>
   );
 }

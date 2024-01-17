@@ -9,6 +9,9 @@ import adminForgotPasswordSlice from "./slices/admin/auth/forgotpassword/forgetP
 import adminResetPasswordSlice from "./slices/admin/auth/resetpassword/resetPasswordSlice";
 import socialSignupSlice from "./slices/user/auth/socialSignupSlice";
 import viewProfileSlice from "./slices/admin/auth/viewprofile/viewProfileSlice";
+import clientSlice from "./slices/user/client/clientSlice";
+import teamSlice from "./slices/user/auth/teamSlice";
+import adminChangePasswordSlice from "./slices/admin/auth/updatePassword/changePasswordSlice";
 
 
  const combinedReducer = combineReducers({
@@ -21,8 +24,10 @@ import viewProfileSlice from "./slices/admin/auth/viewprofile/viewProfileSlice";
   adminSignIn: adminSignInSlice,
   adminForgotPassword: adminForgotPasswordSlice,
   adminResetPassword: adminResetPasswordSlice,
-  viewProfile: viewProfileSlice
-
+  viewProfile: viewProfileSlice,
+  client: clientSlice,
+  adminChangePassword: adminChangePasswordSlice,
+  teamModule: teamSlice,
 });
 
  const rootReducer = (state: any, action: any) => {

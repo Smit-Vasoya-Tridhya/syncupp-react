@@ -12,9 +12,19 @@ type PostAddClientApiData = {
     pincode?: string;
     title?: string;
     contact_number?: string;
-}
+  }
 
+  type PostVerifyClientApiData = {
+      email: string;
+      agency_id: string;
+      password?: string;
+      first_name?: string;
+      last_name?: string;
+      redirect: boolean;
+  }
+  
 type PatchEditClientApiData = {
+    clientId: string,
     name: string;
     email: string;
     company_name: string;
@@ -29,25 +39,21 @@ type PatchEditClientApiData = {
 }
 
 type DeleteClientApiData = {
-  clientId: string;
+  client_ids: string[];
 }
 
 type GetAllClientApiData = {
-  page: number;
-  items_per_page: number;
-  sort_order: string;
-  sort_field: string;
-  search: string;
+  page?: number;
+  items_per_page?: number;
+  sort_order?: string;
+  sort_field?: string;
+  search?: string;
 }
 
-type PostVerifyClientApiData = {
-    email: string;
-    agency_id: string;
-    password?: string;
-    first_name?: string;
-    last_name?: string;
-    redirect: boolean;
+type GetClientByIdApiData = {
+  clientId: string;
 }
+
 
 type MasterApiData = {
   search?: string;
@@ -72,11 +78,22 @@ export const PostAddClientApi = async (data: PostAddClientApiData) => {
   return responseData;
 };
 
+export const PostVerifyClientApi = async (data: PostVerifyClientApiData) => {
+  const response = await AxiosDefault({
+    url: "/api/v1/client/verify-client",
+    method: "POST",
+    data: data,
+    contentType: "application/json", 
+  });
+  const responseData = response.data;
+  return responseData;
+};
+
 
 export const PatchEditClientApi = async (data: PatchEditClientApiData) => {
     const response = await AxiosDefault({
-      url: "/api/v1/agency/create-client",
-      method: "POST",
+      url: `/api/v1/agency/update-client/${data.clientId}`,
+      method: "PATCH",
       data: data,
       contentType: "application/json", 
     });
@@ -95,11 +112,22 @@ export const GetAllClientApi = async (data: GetAllClientApiData) => {
   return responseData;
 };
 
-export const DeleteClientApi = async (clientId: DeleteClientApiData) => {
+export const GetClientByIdApi = async (data: GetClientByIdApiData) => {
   const response = await AxiosDefault({
-    url: `/api/v1/agency/delete-client/${clientId}`,
-    method: "DELETE",
+    url: `/api/v1/agency/get-client/${data.clientId}`,
+    method: "GET",
     // data: data,
+    contentType: "application/json", 
+  });
+  const responseData = response.data;
+  return responseData;
+};
+
+export const DeleteClientApi = async (data: DeleteClientApiData) => {
+  const response = await AxiosDefault({
+    url: `/api/v1/agency/delete-client`,
+    method: "DELETE",
+    data: data,
     contentType: "application/json", 
   });
   const responseData = response.data;

@@ -1,4 +1,4 @@
-import { DeleteClientApi, GetAllCityApi, GetAllClientApi, GetAllCountryApi, GetAllStateApi, PatchEditClientApi, PostAddClientApi } from "@/api/user/client/clientApis";
+import { DeleteClientApi, GetAllCityApi, GetAllClientApi, GetAllCountryApi, GetAllStateApi, GetClientByIdApi, PatchEditClientApi, PostAddClientApi, PostVerifyClientApi } from "@/api/user/client/clientApis";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { toast } from 'react-hot-toast';
 
@@ -17,6 +17,7 @@ type AddClientData = {
 }
 
 type EditClientData = {
+    clientId: string,
     name: string;
     email: string;
     company_name: string;
@@ -40,15 +41,19 @@ type VerifyClientData = {
 }
 
 type GetAllClientData = {
-  page: number;
-  items_per_page: number;
-  sort_order: string;
-  sort_field: string;
-  search: string;
+  page?: number;
+  items_per_page?: number;
+  sort_order?: string;
+  sort_field?: string;
+  search?: string;
+}
+
+type GetClientByIdData = {
+  clientId: string;
 }
 
 type DeleteClientData = {
-  clientId: string;
+  client_ids: string[];
 }
 
 type MasterData = {
@@ -67,12 +72,13 @@ interface ClientInitialState {
   loading: boolean;
   data: any;
   client: any;
-  countries: any,
-  states: any,
-  cities: any,
+  countries: any;
+  states: any;
+  cities: any;
   addClientStatus: string;
   verifyClientStatus: string;
   getAllClientStatus: string;
+  getClientStatus: string;
   editClientStatus: string;
   deleteClientStatus: string;
   getClientProfileStatus: string;
@@ -80,14 +86,15 @@ interface ClientInitialState {
 
 const initialState:ClientInitialState = {
   loading: false,
-  data: {},
-  client: {},
+  data: '',
+  client: '',
   countries: '',
   states: '',
   cities: '',
   addClientStatus: '',
   verifyClientStatus: '',
   getAllClientStatus: '',
+  getClientStatus: '',
   editClientStatus: '',
   deleteClientStatus: '',
   getClientProfileStatus: ''
@@ -100,6 +107,20 @@ export const postAddClient: any = createAsyncThunk(
     try {
       const response: any = await PostAddClientApi(data);
       console.log("add client response....", response);
+      return response;
+    } catch (error: any) {
+      return { status: false, message: error.response.data.message } as PostAPIResponse;
+    }
+  }
+);
+
+export const postVerifyClient: any = createAsyncThunk(
+  "client/postVerifyClient",
+  async (data: VerifyClientData) => {
+    console.log("We are in client slice.........", data)
+    try {
+      const response: any = await PostVerifyClientApi(data);
+      console.log("verify client response....", response);
       return response;
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as PostAPIResponse;
@@ -127,7 +148,21 @@ export const getAllClient: any = createAsyncThunk(
     console.log("We are in client slice.........", data)
     try {
       const response: any = await GetAllClientApi(data);
-      console.log("get client response....", response);
+      console.log("get all client response....", response);
+      return response;
+    } catch (error: any) {
+      return { status: false, message: error.response.data.message } as PostAPIResponse;
+    }
+  }
+);
+
+export const getClientById: any = createAsyncThunk(
+  "client/getClientById",
+  async (data: GetClientByIdData) => {
+    console.log("We are in client slice.........", data)
+    try {
+      const response: any = await GetClientByIdApi(data);
+      console.log("get client by id response....", response);
       return response;
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as PostAPIResponse;
@@ -198,9 +233,15 @@ export const clientSlice = createSlice({
     RemoveRegionalData(state) {
       return {
         ...state,
-        countries: '',
+        // countries: '',
         states: '',
         cities: '',
+      }
+    },
+    RemoveClientData(state) {
+      return {
+        ...state,
+        client: ''
       }
     }
   },
@@ -234,6 +275,36 @@ export const clientSlice = createSlice({
           addClientStatus: 'error'
         }
       }); 
+      // new cases for Verify client
+      builder
+      .addCase(postVerifyClient.pending, (state) => {
+          return{
+            ...state,
+            loading: true,
+            verifyClientStatus: 'pending'
+          }
+      })
+      .addCase(postVerifyClient.fulfilled, (state,action) => {
+        // console.log(action.payload);
+        if(action.payload.status == false){
+            toast.error(action.payload.message)
+        } else {
+            toast.success(action.payload.message)
+        }
+        return{
+          ...state,
+        //   data: action.payload,
+          loading: false,
+          verifyClientStatus: 'success'
+        }
+      })
+      .addCase(postVerifyClient.rejected, (state) => {
+        return {
+          ...state,
+          loading: false,
+          verifyClientStatus: 'error'
+        }
+      });
       // new cases for Edit client
       builder
       .addCase(patchEditClient.pending, (state) => {
@@ -275,14 +346,14 @@ export const clientSlice = createSlice({
       })
       .addCase(getAllClient.fulfilled, (state,action) => {
         // console.log(action.payload);
-        if(action.payload.status == false){
-            toast.error(action.payload.message)
-        } else {
-            toast.success(action.payload.message)
-        }
+        // if(action.payload.status == false){
+        //     toast.error(action.payload.message)
+        // } else {
+        //     toast.success(action.payload.message)
+        // }
         return{
           ...state,
-        //   data: action.payload,
+          data: action?.payload?.data,
           loading: false,
           getAllClientStatus: 'success'
         }
@@ -292,6 +363,36 @@ export const clientSlice = createSlice({
           ...state,
           loading: false,
           getAllClientStatus: 'error'
+        }
+      });
+      // new cases for get client
+      builder
+      .addCase(getClientById.pending, (state) => {
+          return{
+            ...state,
+            loading: true,
+            getClientStatus: 'pending'
+          }
+      })
+      .addCase(getClientById.fulfilled, (state,action) => {
+        // console.log(action.payload);
+        // if(action.payload.status == false){
+        //     toast.error(action.payload.message)
+        // } else {
+        //     toast.success(action.payload.message)
+        // }
+        return{
+          ...state,
+          client: action?.payload?.data,
+          loading: false,
+          getClientStatus: 'success'
+        }
+      })
+      .addCase(getClientById.rejected, (state) => {
+        return {
+          ...state,
+          loading: false,
+          getClientStatus: 'error'
         }
       });
       // new cases for delete client
@@ -307,14 +408,20 @@ export const clientSlice = createSlice({
         // console.log(action.payload);
         if(action.payload.status == false){
             toast.error(action.payload.message)
+            return{
+              ...state,
+            //   data: action.payload,
+              loading: false,
+              deleteClientStatus: 'error'
+            }
         } else {
             toast.success(action.payload.message)
-        }
-        return{
-          ...state,
-        //   data: action.payload,
-          loading: false,
-          deleteClientStatus: 'success'
+            return{
+              ...state,
+            //   data: action.payload,
+              loading: false,
+              deleteClientStatus: 'success'
+            }
         }
       })
       .addCase(deleteClient.rejected, (state) => {
@@ -351,5 +458,5 @@ export const clientSlice = createSlice({
   },
 });
 
-export const { RemoveRegionalData } = clientSlice.actions;
+export const { RemoveRegionalData, RemoveClientData } = clientSlice.actions;
 export default clientSlice.reducer;

@@ -15,46 +15,44 @@ import { Input } from '@/components/ui/input';
 import dynamic from 'next/dynamic';
 import SelectLoader from '@/components/loader/select-loader';
 import { TeamMemberSchema } from '@/utils/validators/add-team-member.schema';
-import { editTeam } from '@/redux/slices/user/auth/teamSclice';
-// import { editTeam, teamEnroll } from '@/redux/slices/user/auth/teamSclice';
+import { editTeam } from '@/redux/slices/user/auth/teamSlice';
 const Select = dynamic(() => import('@/components/ui/select'), {
   ssr: false,
   loading: () => <SelectLoader />,
 });
-
-const initialValues: TeamMemberSchema = {
-email: '',
-name:'',
-contact_number:'',
-role:''
-};
 
 const typeOption= [
   { name: 'Team Member', value: 'Team Member' },
   { name: 'Admin', value: 'Admin' },
   ]
 
-export default function EditTeamMemberForm({ className }: { className?: string }) {
-
+export default function EditTeamMemberForm({ className,row }: { className?: string , row:any }) {
+  const initialValues: TeamMemberSchema = {
+    email: row.email,
+    name:row.name,
+    contact_number:row.contact_number,
+    role:row.member_role,
+    };
   const isMedium = useMedia('(max-width: 1200px)', false);
   const dispatch = useDispatch();
   const { closeModal } = useModal();
   const router = useRouter();
   
-  const TeamMember = useSelector(
-    (state: any) => state?.root?.TeamMember
+  const teamModule = useSelector(
+    (state: any) => state?.root?.teamModule
   );
 
-  const onSubmit: SubmitHandler<TeamMemberSchema> = (data) => {
+  const onSubmit: SubmitHandler<TeamMemberSchema> = (data: any) => {
+    data._id= row._id
     console.log('Team member data---->', data);
-    // dispatch(editTeam(data)).then((result: any) => {
-    //   if (editTeam.fulfilled.match(result)) {
-    //     if (result && result.payload.success === true) {
-    //       // router.replace(routes.dashboard);
-    //       closeModal();
-    //     }
-    //   }
-    // });
+    dispatch(editTeam(data)).then((result: any) => {
+      if (editTeam.fulfilled.match(result)) {
+        if (result && result.payload.success === true) {
+          // router.replace(routes.dashboard);
+          closeModal();
+        }
+      }
+    });
   };
 
   return (
@@ -119,9 +117,10 @@ export default function EditTeamMemberForm({ className }: { className?: string }
                     options={typeOption}
                     value={value}
                     onChange={onChange}
-                    label="Product Type"
+                    label="Role"
                     error={errors?.role?.message as string}
                     getOptionValue={(option) => option.name}
+                    disabled={true}
                   />
                 )}
               />
@@ -138,12 +137,11 @@ export default function EditTeamMemberForm({ className }: { className?: string }
               <Button
                 type="submit"
                 className="hover:gray-700 w-full  @xl:w-auto dark:bg-gray-200 dark:text-white"
-                // disabled={TeamMember.loading}
               >
                 Save
-                {/* {TeamMember.loading && (
+                {teamModule.loading && (
                   <Spinner size="sm" tag="div" className="ms-3" />
-                )} */}
+                )}
               </Button>
             </div>
           </div>

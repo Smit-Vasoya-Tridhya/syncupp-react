@@ -15,7 +15,7 @@ import { Input } from '@/components/ui/input';
 import dynamic from 'next/dynamic';
 import SelectLoader from '@/components/loader/select-loader';
 import { TeamMemberSchema } from '@/utils/validators/add-team-member.schema';
-import { teamEnroll } from '@/redux/slices/user/auth/teamSclice';
+import { teamEnroll } from '@/redux/slices/user/auth/teamSlice';
 const Select = dynamic(() => import('@/components/ui/select'), {
   ssr: false,
   loading: () => <SelectLoader />,

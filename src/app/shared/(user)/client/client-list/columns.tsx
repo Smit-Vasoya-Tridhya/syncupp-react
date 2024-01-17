@@ -2,20 +2,14 @@
 
 import Link from 'next/link';
 import { HeaderCell } from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
-import { Title, Text } from '@/components/ui/text';
+import { Text } from '@/components/ui/text';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Progressbar } from '@/components/ui/progressbar';
 import { Tooltip } from '@/components/ui/tooltip';
-import { ActionIcon } from '@/components/ui/action-icon';
 import { routes } from '@/config/routes';
 import EyeIcon from '@/components/icons/eye';
 import PencilIcon from '@/components/icons/pencil';
-import AvatarCard from '@/components/ui/avatar-card';
 import { ProductType } from '@/data/products-data';
-import { PiStarFill } from 'react-icons/pi';
 import DeletePopover from '@/app/shared/delete-popover';
-import EditClientForm from '@/app/shared/(user)/client/create-edit/edit-client-form';
 import CustomModalButton from '@/app/shared/custom-modal-button';
 import AddClientForm from '../create-edit/add-client-form';
 import { Button } from 'rizzui';
@@ -57,8 +51,8 @@ export const getColumns = ({
       <div className="inline-flex ps-3.5">
         <Checkbox
           className="cursor-pointer"
-          checked={checkedItems.includes(row.id)}
-          {...(onChecked && { onChange: () => onChecked(row.id) })}
+          checked={checkedItems.includes(row._id)}
+          {...(onChecked && { onChange: () => onChecked(row._id) })}
         />
       </div>
     ),
@@ -87,13 +81,13 @@ export const getColumns = ({
         title="Mobile Number"
         sortable
         ascending={
-          sortConfig?.direction === 'asc' && sortConfig?.key === 'contact'
+          sortConfig?.direction === 'asc' && sortConfig?.key === 'contact_number'
         }
       />
     ),
-    onHeaderCell: () => onHeaderCellClick('contact'),
-    dataIndex: 'contact',
-    key: 'contact',
+    onHeaderCell: () => onHeaderCellClick('contact_number'),
+    dataIndex: 'contact_number',
+    key: 'contact_number',
     width: 200,
     render: (value: string) => (
       <Text className="font-medium text-gray-700">{value}</Text>
@@ -123,17 +117,17 @@ export const getColumns = ({
         title="Company"
         sortable
         ascending={
-          sortConfig?.direction === 'asc' && sortConfig?.key === 'company'
+          sortConfig?.direction === 'asc' && sortConfig?.key === 'reference_id'
         }
       />
     ),
-    onHeaderCell: () => onHeaderCellClick('company'),
-    dataIndex: 'company',
-    key: 'company',
+    onHeaderCell: () => onHeaderCellClick('reference_id'),
+    dataIndex: 'reference_id',
+    key: 'reference_id',
     width: 200,
-    render: (value: string) => (
-      <Text className="font-medium text-gray-700">{value}</Text>
-    ),
+    render: (value: Record<string, string>) => {
+      return <Text className="font-medium text-gray-700">{value?.company_name}</Text>
+    },
   },
   {
     title: (
@@ -141,16 +135,16 @@ export const getColumns = ({
         title="Website"
         sortable
         ascending={
-          sortConfig?.direction === 'asc' && sortConfig?.key === 'website'
+          sortConfig?.direction === 'asc' && sortConfig?.key === 'reference_id'
         }
       />
     ),
-    onHeaderCell: () => onHeaderCellClick('website'),
-    dataIndex: 'website',
-    key: 'website',
+    onHeaderCell: () => onHeaderCellClick('reference_id'),
+    dataIndex: 'reference_id',
+    key: 'reference_id',
     width: 200,
-    render: (value: string) => (
-      <Text className="font-medium text-gray-700">{value}</Text>
+    render: (value: Record<string, string>) => (
+      <Text className="font-medium text-gray-700">{value?.company_website}</Text>
     ),
   },
   {
@@ -159,13 +153,13 @@ export const getColumns = ({
         title="Created"
         sortable
         ascending={
-          sortConfig?.direction === 'asc' && sortConfig?.key === 'created'
+          sortConfig?.direction === 'asc' && sortConfig?.key === 'createdAt'
         }
       />
     ),
-    onHeaderCell: () => onHeaderCellClick('created'),
-    dataIndex: 'created',
-    key: 'created',
+    onHeaderCell: () => onHeaderCellClick('createdAt'),
+    dataIndex: 'createdAt',
+    key: 'createdAt',
     width: 200,
     render: (value: string) => (
       <Text className="font-medium text-gray-700">{value}</Text>
@@ -177,24 +171,17 @@ export const getColumns = ({
     dataIndex: 'action',
     key: 'action',
     width: 120,
-    render: (_: string, row: ProductType) => (
+    render: (_: string, row: Record<string, string>) => (
       <div className="flex items-center justify-end gap-3 pe-4">
+        <CustomModalButton 
+          title="Edit Client"
+          icon={<PencilIcon className="h-4 w-4" />}
+          view={<AddClientForm title="Edit Client" row={row} /> }
+          customSize="800px"
+        />
         <Tooltip
           size="sm"
-          content={() => 'Edit Team member'}
-          placement="top"
-          color="invert"
-        >
-          <CustomModalButton 
-            icon={<PencilIcon className="h-4 w-4" />}
-            // view={<EditClientForm data={row} />}
-            view={<AddClientForm title="Edit Client" /> }
-            customSize="800px"
-          />
-        </Tooltip>
-        <Tooltip
-          size="sm"
-          content={() => 'View Member'}
+          content={() => 'View Client'}
           placement="top"
           color="invert"
         >
@@ -205,9 +192,9 @@ export const getColumns = ({
           {/* </Link> */}
         </Tooltip>
         <DeletePopover
-          title={`Delete the product`}
+          title={`Delete the client`}
           description={`Are you sure you want to delete?`}
-          onDelete={() => onDeleteItem(row.id)}
+          onDelete={() => onDeleteItem(row._id)}
         />
       </div>
     ),

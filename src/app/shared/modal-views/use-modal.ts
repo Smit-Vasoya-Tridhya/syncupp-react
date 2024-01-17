@@ -1,6 +1,6 @@
 'use client';
 
-import { RemoveRegionalData } from '@/redux/slices/user/client/clientSlice';
+import { RemoveClientData, RemoveRegionalData } from '@/redux/slices/user/client/clientSlice';
 import { atom, useAtomValue, useSetAtom } from 'jotai';
 import { useDispatch } from 'react-redux';
 
@@ -38,6 +38,7 @@ export function useModal() {
 
   const closeModal = () => {
     dispatch(RemoveRegionalData())
+    dispatch(RemoveClientData())
     setState({
       ...state,
       isOpen: false,

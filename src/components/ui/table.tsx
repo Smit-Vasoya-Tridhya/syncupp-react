@@ -11,6 +11,7 @@ import { Title, Text } from '@/components/ui/text';
 import { PiTextColumns } from 'react-icons/pi';
 
 import cn from '@/utils/class-names';
+import Spinner from './spinner';
 
 export type ExtractProps<T> = T extends React.ComponentType<infer P> ? P : T;
 
@@ -49,6 +50,7 @@ export interface TableProps
   striped?: boolean;
   /** Add custom classes for extra style */
   className?: string;
+  isLoading?: boolean;
 }
 
 /**
@@ -60,6 +62,7 @@ export default function Table({
   variant = 'classic',
   emptyText,
   className,
+  isLoading,
   ...props
 }: TableProps) {
   return (
@@ -75,7 +78,16 @@ export default function Table({
       emptyText={
         emptyText || (
           <div className="py-5 text-center lg:py-8">
-            <Empty /> <Text className="mt-3">No Data</Text>
+            { isLoading ? (
+                <div className="grid h-full min-h-[128px] flex-grow place-content-center items-center justify-center">
+                  <Spinner size="xl" />
+                </div> ) : (
+                  <>
+                    <Empty /> <Text className="mt-3">No Data</Text>
+                  </>
+                )
+            }
+            
           </div>
         )
       }

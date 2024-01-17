@@ -3,17 +3,13 @@
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import { ActionIcon } from '@/components/ui/action-icon';
-import SearchWidget from '@/components/search/search';
 import MessagesDropdown from '@/layouts/helium/messages-dropdown';
 import NotificationDropdown from '@/layouts/helium/notification-dropdown';
 import ProfileMenu from '@/layouts/helium/profile-menu';
-import SettingsButton from '@/components/settings/settings-button';
 import HamburgerButton from '@/layouts/hamburger-button';
-import Logo from '@/components/logo';
 import {
   PiChatCircleDotsFill,
   PiBellSimpleRingingFill,
-  PiGearFill,
 } from 'react-icons/pi';
 import cn from '@/utils/class-names';
 import Sidebar from './helium-sidebar';
