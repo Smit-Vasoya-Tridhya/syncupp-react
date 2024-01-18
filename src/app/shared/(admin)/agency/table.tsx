@@ -6,7 +6,7 @@ import { useTable } from '@/hooks/use-table';
 import { useColumn } from '@/hooks/use-column';
 import { Button } from '@/components/ui/button';
 import ControlledTable from '@/components/controlled-table';
-import { getColumns } from './columns';
+import { GetColumns } from './columns';
 
 // const FilterElement = dynamic(
 //   () => import('@/app/shared/(user)/client/client-list/filter-element'),
@@ -83,7 +83,7 @@ export default function AgencyTable({
 
     const columns = useMemo(
         () =>
-            getColumns({
+            GetColumns({
                 data,
                 sortConfig,
                 checkedItems: selectedRowKeys,

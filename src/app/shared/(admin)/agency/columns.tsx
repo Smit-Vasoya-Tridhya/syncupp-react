@@ -28,7 +28,7 @@ type Columns = {
 };
 
 
-export const getColumns = ({
+export const GetColumns = ({
     data,
     sortConfig,
     checkedItems,
