@@ -29,7 +29,7 @@ import agencySlice from "./slices/admin/agency/agencySlice";
   client: clientSlice,
   adminChangePassword: adminChangePasswordSlice,
   teamModule: teamSlice,
-  adminAgency: agencySlice
+  adminAgency: agencySlice,
 });
 
  const rootReducer = (state: any, action: any) => {
