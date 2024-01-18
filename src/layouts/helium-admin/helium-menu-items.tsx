@@ -1,7 +1,7 @@
 import { routes } from '@/config/routes';
 import {
   PiFolderNotchDuotone,
-  PiUserPlusDuotone,
+  PiQuestionLight,
 } from 'react-icons/pi';
 
 // Note: do not add href in the label object, it is rendering as label
@@ -12,8 +12,8 @@ export const menuItems = [
     icon: <PiFolderNotchDuotone />,
   },
   {
-    name: 'Authentication',
-    href: routes.signIn,
-    icon: <PiUserPlusDuotone />,
+    name: 'FAQ',
+    href: routes.admin.faq,
+    icon: <PiQuestionLight />,
   },
 ];

@@ -25,7 +25,8 @@ export const routes = {
     signUp: '/admin/signup',
     forgotPassword:'/admin/forgot-password',
     resetPassword:'/admin/reset-password',
-    dashboard: '/admin/dashboard'
+    dashboard: '/admin/dashboard',
+    faq:'/admin/faq',
   },
   
 };
