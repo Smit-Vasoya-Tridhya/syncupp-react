@@ -158,7 +158,7 @@ export function useTable<T extends AnyObject>(
   /*
    * Handle delete 
    */
-  const handleDelete = async (id: string | string[], currentPage?: any, Islastitem?: boolean) => {
+  const handleDelete = async (id: string | string[], currentPage?: any, countPerPage?: number, Islastitem?: boolean, sortConfig?: Record<string, string>, searchTerm?: string) => {
     let updatedData: [] = [];
     // console.log("Id..", id)
     console.log("currentpage", currentPage);

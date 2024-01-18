@@ -30,7 +30,7 @@ export default function CustomTable({
     setPageSize
 }: {
     data: any[];
-    handleDeleteById?: (id: string | string[], currentPage?: number, countPerPage?: number) => any;
+    handleDeleteById?: (id: string | string[], currentPage?: any, countPerPage?: number, sortConfig?: Record<string, string>, searchTerm?: string) => any;
     handleChangePage?: (paginationParams: any) => Promise<any>;
     total?: number;
     loading?: boolean;
@@ -50,8 +50,8 @@ export default function CustomTable({
     });
 
     // Table button delete Handler
-    const onDeleteItem = useCallback((id: string, currentPage?: number, Islastitem?: boolean) => {
-        handleDelete(id, currentPage, Islastitem);
+    const onDeleteItem = useCallback((id: string | string[], currentPage?: any, countPerPage?: number, Islastitem?: boolean, sortConfig?: Record<string, string>, searchTerm?: string) => {
+        handleDelete(id, currentPage, countPerPage, Islastitem, sortConfig, searchTerm);
     }, []);
 
 
@@ -84,8 +84,8 @@ export default function CustomTable({
                 onChecked: handleRowSelect,
                 handleSelectAll,
                 currentPage,
-                pageSize
-
+                pageSize,
+                searchTerm
             }),
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [
@@ -97,7 +97,8 @@ export default function CustomTable({
             handleRowSelect,
             handleSelectAll,
             currentPage,
-            pageSize
+            pageSize,
+            searchTerm
         ]
     );
 
@@ -140,7 +141,7 @@ export default function CustomTable({
                         checkedItems={selectedRowKeys}
                         handleDelete={(ids: string[]) => {
                             setSelectedRowKeys([]);
-                            handleDelete(ids, currentPage, data?.length <= 1 ? true : false);
+                            handleDelete(ids, currentPage, pageSize, data?.length <= 1 ? true : false, sortConfig, searchTerm);
                         }}
                     >
                     </TableFooter>

@@ -54,9 +54,9 @@ export default function AgencyTable({
         },
     });
 
-    const onDeleteItem = useCallback((id: string, currentPage?: number, Islastitem?: boolean) => {
+    const onDeleteItem = useCallback((id: string | string[], currentPage?: any, countPerPage?: number, Islastitem?: boolean, sortConfig?: Record<string, string>, searchTerm?: string) => {
         console.log("Delete id...", id)
-        handleDelete(id, currentPage, Islastitem);
+        handleDelete(id, currentPage, countPerPage, Islastitem, sortConfig, searchTerm);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -92,7 +92,8 @@ export default function AgencyTable({
                 onChecked: handleRowSelect,
                 handleSelectAll,
                 currentPage,
-                pageSize
+                pageSize,
+                searchTerm
 
             }),
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -105,7 +106,8 @@ export default function AgencyTable({
             handleRowSelect,
             handleSelectAll,
             currentPage,
-            pageSize
+            pageSize,
+            searchTerm,
         ]
     );
 
@@ -158,7 +160,7 @@ export default function AgencyTable({
                         checkedItems={selectedRowKeys}
                         handleDelete={(ids: string[]) => {
                             setSelectedRowKeys([]);
-                            handleDelete(ids, currentPage, data?.length <= 1 ? true : false);
+                            handleDelete(ids, currentPage, pageSize, data?.length <= 1 ? true : false, sortConfig, searchTerm);
                         }}
                     >
                         {/* <Button size="sm" className="dark:bg-gray-300 dark:text-gray-800">

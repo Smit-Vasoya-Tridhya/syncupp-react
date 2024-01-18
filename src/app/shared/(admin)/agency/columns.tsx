@@ -18,12 +18,12 @@ type Columns = {
     sortConfig?: any;
     handleSelectAll: any;
     checkedItems: string[];
-    onDeleteItem: (id: string, currentPage?: number, Islastitem?: boolean) => void;
+    onDeleteItem: (id: string | string[], currentPage?: any, countPerPage?: number, Islastitem?: boolean, sortConfig?: Record<string, string>, searchTerm?: string) => void;
     onHeaderCellClick: (value: string) => void;
     onChecked?: (id: string) => void;
     currentPage?: number;
-    pageSize?: number
-
+    pageSize?: number;
+    searchTerm?: string;
 };
 
 
@@ -36,7 +36,8 @@ export const getColumns = ({
     handleSelectAll,
     onChecked,
     currentPage,
-    pageSize
+    pageSize,
+    searchTerm
 }: Columns) => {
 
     const dispatch = useDispatch();
@@ -254,7 +255,7 @@ export const getColumns = ({
                     <DeletePopover
                         title={`Delete the client`}
                         description={`Are you sure you want to delete?`}
-                        onDelete={() => onDeleteItem(row._id, currentPage, data?.length <= 1 ? true : false)}
+                        onDelete={() => onDeleteItem(row._id, currentPage, pageSize, data?.length <= 1 ? true : false, sortConfig, searchTerm)}
                     />
                 </div>
             ),
