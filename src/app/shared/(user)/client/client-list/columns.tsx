@@ -18,7 +18,7 @@ type Columns = {
   sortConfig?: any;
   handleSelectAll: any;
   checkedItems: string[];
-  onDeleteItem: (id: string, currentPage?: number) => void;
+  onDeleteItem: (id: string, currentPage?: number, Islastitem?: boolean) => void;
   onHeaderCellClick: (value: string) => void;
   onChecked?: (id: string) => void;
   currentPage?: number;
@@ -195,7 +195,7 @@ export const getColumns = ({
         <DeletePopover
           title={`Delete the client`}
           description={`Are you sure you want to delete?`}
-          onDelete={() => onDeleteItem(row._id, currentPage)}
+          onDelete={() => onDeleteItem(row._id, currentPage, data?.length <= 1 ? true : false)}
         />
       </div>
     ),
