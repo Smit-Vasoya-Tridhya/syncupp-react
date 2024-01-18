@@ -41,6 +41,7 @@ export default function ControlledTable({
   ...tableProps
 }: ControlledTableProps) {
   
+  console.log(isLoading, '44444444444444')
   // if (isLoading) {
   //   return (
   //     <div className="grid h-full min-h-[128px] flex-grow place-content-center items-center justify-center">
@@ -54,7 +55,6 @@ export default function ControlledTable({
   //   );
   // }
 
-  console.log("pagination options...", paginatorOptions)
 
   return (
     <>
@@ -67,7 +67,7 @@ export default function ControlledTable({
           scroll={{ x: 1300 }}
           rowKey={(record) => record.id}
           className={cn(className)}
-          isLoading
+          isLoading={isLoading}
           {...tableProps}
         />
 

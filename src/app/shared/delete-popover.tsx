@@ -29,9 +29,7 @@ export default function DeletePopover({
 
         const handleButtonClick = () => {
           onDelete();
-          if(clientSliceData?.deleteClientStatus === 'success') {
-            setOpen(false);
-          }
+          setOpen(false)
         }
 
         return (

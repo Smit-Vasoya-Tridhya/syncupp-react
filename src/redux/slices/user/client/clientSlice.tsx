@@ -335,6 +335,7 @@ export const clientSlice = createSlice({
           editClientStatus: 'error'
         }
       });
+      
       // new cases for get all client
       builder
       .addCase(getAllClient.pending, (state) => {
