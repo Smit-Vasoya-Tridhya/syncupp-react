@@ -8,7 +8,6 @@ import { Tooltip } from '@/components/ui/tooltip';
 import { routes } from '@/config/routes';
 import EyeIcon from '@/components/icons/eye';
 import PencilIcon from '@/components/icons/pencil';
-import { ProductType } from '@/data/products-data';
 import DeletePopover from '@/app/shared/delete-popover';
 import CustomModalButton from '@/app/shared/custom-modal-button';
 import AddClientForm from '../create-edit/add-client-form';
@@ -19,9 +18,10 @@ type Columns = {
   sortConfig?: any;
   handleSelectAll: any;
   checkedItems: string[];
-  onDeleteItem: (id: string) => void;
+  onDeleteItem: (id: string, currentPage?: number) => void;
   onHeaderCellClick: (value: string) => void;
   onChecked?: (id: string) => void;
+  currentPage?: number;
 };
 
 export const getColumns = ({
@@ -32,6 +32,7 @@ export const getColumns = ({
   onHeaderCellClick,
   handleSelectAll,
   onChecked,
+  currentPage
 }: Columns) => [
   {
     title: (
@@ -194,7 +195,7 @@ export const getColumns = ({
         <DeletePopover
           title={`Delete the client`}
           description={`Are you sure you want to delete?`}
-          onDelete={() => onDeleteItem(row._id)}
+          onDelete={() => onDeleteItem(row._id, currentPage)}
         />
       </div>
     ),

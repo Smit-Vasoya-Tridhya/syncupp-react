@@ -26,6 +26,7 @@ export const PostTeamEnroll = async (data: TeamData) => {
   const responseData = response.data;
   return responseData;
 };
+
 // Edit team member API
 export const EditTeamMember = async (data: EditTeamData) => {
   const response = await AxiosDefault({
@@ -37,6 +38,7 @@ export const EditTeamMember = async (data: EditTeamData) => {
   const responseData = response.data;
   return responseData;
 };
+
 // delete Team member API
 export const DeleteTeamMember = async (data: TeamData) => {
   const response = await AxiosDefault({
@@ -48,6 +50,7 @@ export const DeleteTeamMember = async (data: TeamData) => {
   const responseData = response.data;
   return responseData;
 };
+
 // view team member by ID
 export const GetTeamMemberDataByID = async (data: TeamData) => {
   const response = await AxiosDefault({
@@ -59,6 +62,7 @@ export const GetTeamMemberDataByID = async (data: TeamData) => {
   const responseData = response.data;
   return responseData;
 };
+
 // Team data table API
 export const GetTeamMemberTableData = async (data: TeamData) => {
   const response = await AxiosDefault({

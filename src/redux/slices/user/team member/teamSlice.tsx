@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { toast } from 'react-hot-toast';
-import { DeleteTeamMember, EditTeamMember, GetTeamMemberDataByID, GetTeamMemberTableData, PostTeamEnroll } from "@/api/user/auth/teamApis";
+import { DeleteTeamMember, EditTeamMember, GetTeamMemberDataByID, GetTeamMemberTableData, PostTeamEnroll } from "@/api/user/team-member/teamApis";
 
 type TeamData = {
   _id:string;
@@ -247,7 +247,7 @@ export const teamSlice = createSlice({
       .addCase(deleteTeamMember.fulfilled, (state,action) => {
         return{
           ...state,
-          data: action.payload.data,
+          // data: action.payload.data,
           loading: false,
           deleteTeamMemberStatus: 'success'
         }
