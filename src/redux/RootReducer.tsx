@@ -10,7 +10,7 @@ import adminResetPasswordSlice from "./slices/admin/auth/resetpassword/resetPass
 import socialSignupSlice from "./slices/user/auth/socialSignupSlice";
 import viewProfileSlice from "./slices/admin/auth/viewprofile/viewProfileSlice";
 import clientSlice from "./slices/user/client/clientSlice";
-import teamSlice from "./slices/user/auth/teamSlice";
+import teamSlice from "./slices/user/team member/teamSlice";
 import adminChangePasswordSlice from "./slices/admin/auth/updatePassword/changePasswordSlice";
 
 
