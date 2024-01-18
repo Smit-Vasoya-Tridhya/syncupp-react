@@ -4,60 +4,54 @@ import { useCallback, useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useTable } from '@/hooks/use-table';
 import { useColumn } from '@/hooks/use-column';
-import { Button } from '@/components/ui/button';
 import ControlledTable from '@/components/controlled-table';
-import { getColumns } from './columns';
 
-// const FilterElement = dynamic(
-//   () => import('@/app/shared/(user)/client/client-list/filter-element'),
-//   { ssr: false }
-// );
+
+
 
 const TableFooter = dynamic(() => import('@/app/shared/table-footer'), {
     ssr: false,
 });
 
-const filterState = {
-    price: ['', ''],
-    createdAt: [null, null],
-    status: '',
-};
 
 const defaultDeleteFunction = (id: string | string[], currentPage?: number, countPerPage?: number) => { };
 const emptyHandleChangePage = async (paginationParams?: any) => {
     return Promise.resolve();
 };
 
-export default function AgencyTable({
+export default function CustomTable({
     data = [],
     handleDeleteById = defaultDeleteFunction,
     handleChangePage = emptyHandleChangePage,
     total,
-    page,
-    loading
+    loading,
+    getColumns,
+    pageSize,
+    setPageSize
 }: {
     data: any[];
     handleDeleteById?: (id: string | string[], currentPage?: number, countPerPage?: number) => any;
     handleChangePage?: (paginationParams: any) => Promise<any>;
     total?: number;
-    page?: number;
-    loading?: boolean
+    loading?: boolean;
+    getColumns?: any;
+    pageSize?: any;
+    setPageSize?: any
 }) {
 
-    console.log(loading, '47')
-    const [pageSize, setPageSize] = useState(5);
-    const [currentPage, setCurrentPage] = useState<number>(page as number);
+    const [currentPage, setCurrentPage] = useState<number>(1);
 
+
+    //Sorting handler
     const onHeaderCellClick = (value: string) => ({
         onClick: () => {
             handleSort(value);
         },
     });
 
+    // Table button delete Handler
     const onDeleteItem = useCallback((id: string, currentPage?: number, Islastitem?: boolean) => {
-        console.log("Delete id...", id)
         handleDelete(id, currentPage, Islastitem);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
 
@@ -65,8 +59,6 @@ export default function AgencyTable({
         isLoading,
         isFiltered,
         tableData,
-        // currentPage,
-        // totalItems,
         handlePaginate,
         updateFilter,
         searchTerm,
@@ -112,8 +104,6 @@ export default function AgencyTable({
     const { visibleColumns, checkedColumns, setCheckedColumns } =
         useColumn(columns);
 
-
-
     return (
         <>
             <ControlledTable
@@ -145,14 +135,6 @@ export default function AgencyTable({
                     setCheckedColumns,
                     enableDrawerFilter: true,
                 }}
-                // filterElement={
-                //   <FilterElement
-                //     filters={filters}
-                //     isFiltered={isFiltered}
-                //     updateFilter={updateFilter}
-                //     handleReset={handleReset}
-                //   />
-                // }
                 tableFooter={
                     <TableFooter
                         checkedItems={selectedRowKeys}
@@ -161,10 +143,6 @@ export default function AgencyTable({
                             handleDelete(ids, currentPage, data?.length <= 1 ? true : false);
                         }}
                     >
-                        {/* <Button size="sm" className="dark:bg-gray-300 dark:text-gray-800">
-              Download {selectedRowKeys.length}{' '}
-              {selectedRowKeys.length > 1 ? 'Products' : 'Product'}
-            </Button> */}
                     </TableFooter>
                 }
                 className="overflow-hidden rounded-md border border-gray-200 text-sm shadow-sm [&_.rc-table-placeholder_.rc-table-expanded-row-fixed>div]:h-60 [&_.rc-table-placeholder_.rc-table-expanded-row-fixed>div]:justify-center [&_.rc-table-row:last-child_td.rc-table-cell]:border-b-0 [&_thead.rc-table-thead]:border-t-0"

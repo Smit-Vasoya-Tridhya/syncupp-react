@@ -13,7 +13,6 @@ export function useTable<T extends AnyObject>(
   handleDeleteById: (id: string | string[], currentPage?: any, countPerPage?: number) => any,
   handleChangePage?: (paginationParams: any) => Promise<any>,
   pageSize?: any,
-  initialFilterState?: Partial<Record<string, any>>,
   currentPage?: any,
   setCurrentPage?: any,
 ) {
@@ -26,9 +25,6 @@ export function useTable<T extends AnyObject>(
     key: 'createdAt',
     direction: 'desc',
   });
-  const [filters, setFilters] = useState<Record<string, any>>(
-    initialFilterState ?? {}
-  );
 
   useEffect(() => {
     if (initialData) {
@@ -196,11 +192,6 @@ export function useTable<T extends AnyObject>(
     if (Array.isArray(filterValue) && filterValue.length !== 2) {
       throw new Error('filterValue data must be an array of length 2');
     }
-
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      [columnId]: filterValue,
-    }));
     await handleAPICall(+currentPage, pageSize, searchTerm, '', '', filterValue);
   }
 
@@ -291,7 +282,6 @@ export function useTable<T extends AnyObject>(
   function handleReset() {
     setData(() => initialData);
     handleSearch('');
-    if (initialFilterState) return setFilters(initialFilterState);
   }
 
   /*
@@ -337,8 +327,6 @@ export function useTable<T extends AnyObject>(
     // searching
     searchTerm,
     handleSearch,
-    // filters
-    filters,
     updateFilter,
     applyFilters,
     handleDelete,
