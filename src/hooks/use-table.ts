@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import isString from 'lodash/isString';
 import { isArray } from 'lodash';
+import { useDebouncedValue } from './use-debounce';
 
 interface AnyObject {
   [key: string]: any;
@@ -9,7 +10,7 @@ interface AnyObject {
 export function useTable<T extends AnyObject>(
   initialData: T[],
   countPerPage: number = 10,
-  handleDeleteById: (id: string | string[], currentPage?: number, countPerPage?: number) => any,
+  handleDeleteById: (id: string | string[], currentPage?: any, countPerPage?: number) => any,
   handleChangePage?: (paginationParams: any) => Promise<any>,
   pageSize?: any,
   initialFilterState?: Partial<Record<string, any>>,
@@ -67,15 +68,18 @@ export function useTable<T extends AnyObject>(
    * Dummy loading state.
    */
 
+   const debouncedValue = useDebouncedValue<string>(searchTerm, 1000);
+
   useEffect(() => {
     setLoading(false);
-    if (!searchTerm) {
-      console.log("current page..", currentPage);
-      handleAPICall(+currentPage, pageSize, '', sortConfig.key, sortConfig.direction);
-    } else {
-      handleAPICall(+currentPage, pageSize, searchTerm, sortConfig.key, sortConfig.direction);
-    }
-  }, [currentPage, pageSize, searchTerm, sortConfig]);
+    // if (!searchTerm) {
+    //   console.log("current page..", currentPage);
+    //   handleAPICall(+currentPage, pageSize, '', sortConfig.key, sortConfig.direction);
+    // } else {
+    //   handleAPICall(+currentPage, pageSize, searchTerm, sortConfig.key, sortConfig.direction);
+    // }
+    handleAPICall(+currentPage, pageSize, searchTerm, sortConfig.key, sortConfig.direction);
+  }, [currentPage, pageSize, debouncedValue, sortConfig]);
 
   /*
    * Handle row selection
@@ -135,7 +139,7 @@ export function useTable<T extends AnyObject>(
       direction = 'desc';
     }
     setSortConfig({ key, direction });
-    await handleAPICall(+currentPage, pageSize, searchTerm, key, direction);
+    // await handleAPICall(+currentPage, pageSize, searchTerm, key, direction);  
   }
 
   /*
@@ -156,17 +160,19 @@ export function useTable<T extends AnyObject>(
 
 
   /*
-   * Handle delete
+   * Handle delete 
    */
-  const handleDelete = async (id: string | string[]) => {
+  const handleDelete = async (id: string | string[],currentPage?:any, Islastitem?: boolean) => {
     let updatedData: [] = [];
     // console.log("Id..", id)
     console.log("currentpage", currentPage);
     console.log("count per page", countPerPage);
 
     if (handleDeleteById) {
+     Islastitem && setCurrentPage(currentPage-1)
+      
       try {
-        updatedData = await handleDeleteById(id, currentPage, countPerPage);
+        updatedData = await handleDeleteById(id, Islastitem ? currentPage - 1 : currentPage,countPerPage);
         // handlePaginate(currentPage);
       } catch (error) {
         console.error('An error occurred:', error);
@@ -257,7 +263,7 @@ export function useTable<T extends AnyObject>(
    */
   const handleSearch = async(searchValue: string) => {
     setSearchTerm(searchValue);
-    await handleAPICall(currentPage, pageSize, searchValue);
+    // await handleAPICall(currentPage, pageSize, searchValue);
   }
 
   // function searchedData() {

@@ -12,6 +12,7 @@ import viewProfileSlice from "./slices/admin/auth/viewprofile/viewProfileSlice";
 import clientSlice from "./slices/user/client/clientSlice";
 import teamSlice from "./slices/user/auth/teamSlice";
 import adminChangePasswordSlice from "./slices/admin/auth/updatePassword/changePasswordSlice";
+import agencySlice from "./slices/admin/agency/agencySlice";
 
 
  const combinedReducer = combineReducers({
@@ -28,6 +29,7 @@ import adminChangePasswordSlice from "./slices/admin/auth/updatePassword/changeP
   client: clientSlice,
   adminChangePassword: adminChangePasswordSlice,
   teamModule: teamSlice,
+  adminAgency: agencySlice
 });
 
  const rootReducer = (state: any, action: any) => {

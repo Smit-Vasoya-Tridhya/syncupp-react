@@ -65,6 +65,8 @@ export default function Table({
   isLoading,
   ...props
 }: TableProps) {
+
+  console.log(isLoading, 'isLoading',75384758734)
   return (
     <RcTable
       className={cn(
@@ -76,25 +78,22 @@ export default function Table({
         className
       )}
       emptyText={
-        emptyText || (
-          <div className="py-5 text-center lg:py-8">
-            { isLoading ? (
-                <div className="grid h-full min-h-[128px] flex-grow place-content-center items-center justify-center">
-                  <Spinner size="xl" />
-                </div> ) : (
-                  <>
-                    <Empty /> <Text className="mt-3">No Data</Text>
-                  </>
-                )
-            }
-            
-          </div>
+        isLoading ? (
+          <div className="grid h-full min-h-[128px] flex-grow place-content-center items-center justify-center">
+            <Spinner size="xl" />
+          </div>) : (
+          emptyText || (
+            <div className="py-5 text-center lg:py-8">
+              <Empty /> <Text className="mt-3">No Data</Text>
+            </div>
+          )
         )
-      }
+      }      
       {...props}
     />
   );
 }
+
 
 // Table Header Cell Component
 type TextAlign = 'left' | 'center' | 'right';
