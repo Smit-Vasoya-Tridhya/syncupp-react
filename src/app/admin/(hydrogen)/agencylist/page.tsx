@@ -29,9 +29,9 @@ export default function ClientPage() {
     console.log("agencylistDetails", agencylistDetails, loading);
 
 
-    useEffect(() => {
-        dispatch(getAllAgency({ page: 1, items_per_page: 5, sort_order: 'desc', sort_field: 'createdAt', search: undefined }))
-    }, [dispatch])
+    // useEffect(() => {
+    //     dispatch(getAllAgency({ page: 1, items_per_page: 5, sort_order: 'desc', sort_field: 'createdAt', search: undefined }))
+    // }, [dispatch])
 
 
     const handleChangePage = async (paginationParams: any) => {
@@ -51,13 +51,13 @@ export default function ClientPage() {
         return data?.client
     };
 
-    const handleDeleteById = async (id: string | string[], currentPage?: any, countPerPage?: number) => {
+    const handleDeleteById = async (id: string | string[], currentPage?: any, countPerPage?: number, sortConfig?: Record<string, string>, searchTerm?: string) => {
         try {
             const res = await dispatch(deleteAgency({ agencies: id, is_deleted: true }));
             if (res.payload.success === true) {
                 closeModal();
                 console.log("currentpage before get and after delete....", currentPagee)
-                const reponse = await dispatch(getAllAgency({ page: currentPage, items_per_page: countPerPage, sort_field: 'createdAt', sort_order: 'desc' }));
+                const reponse = await dispatch(getAllAgency({ page: currentPage, items_per_page: countPerPage, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm }));
                 console.log("response after delete...", reponse)
             }
         } catch (error) {

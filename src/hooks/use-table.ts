@@ -10,7 +10,7 @@ interface AnyObject {
 export function useTable<T extends AnyObject>(
   initialData: T[],
   countPerPage: number = 10,
-  handleDeleteById: (id: string | string[], currentPage?: any, countPerPage?: number) => any,
+  handleDeleteById: (id: string | string[], currentPage?: any, countPerPage?: number, sortConfig?: Record<string, string>, searchTerm?: string) => any,
   handleChangePage?: (paginationParams: any) => Promise<any>,
   pageSize?: any,
   currentPage?: any,
@@ -35,36 +35,36 @@ export function useTable<T extends AnyObject>(
     }
   }, [initialData, currentPage]);
 
-    // API call......
-    const handleAPICall = async (pageNumber?: any, pageSize?: any, searchTerm?: string, key?: string, direction?: string, filter?: any) => {
-      if (handleChangePage && typeof handleChangePage === 'function') {
-        try {
-          const response = await handleChangePage({
-            page: +pageNumber,
-            items_per_page: pageSize,
-            search: searchTerm,
-            sort_field: key,
-            sort_order: direction,
-            // status: filter,
-          });
-          setLoading(false);
-          response && setData(response);
-          setLoading(false);
-        } catch (error) {
-          console.error('API call error:', error);
-          setLoading(false);
-        }
-      } else {
-        console.error('handleChangePage is not a function');
+  // API call......
+  const handleAPICall = async (pageNumber?: any, pageSize?: any, searchTerm?: string, key?: string, direction?: string, filter?: any) => {
+    if (handleChangePage && typeof handleChangePage === 'function') {
+      try {
+        const response = await handleChangePage({
+          page: +pageNumber,
+          items_per_page: pageSize,
+          search: searchTerm,
+          sort_field: key,
+          sort_order: direction,
+          // status: filter,
+        });
+        setLoading(false);
+        response && setData(response);
+        setLoading(false);
+      } catch (error) {
+        console.error('API call error:', error);
         setLoading(false);
       }
-    };
+    } else {
+      console.error('handleChangePage is not a function');
+      setLoading(false);
+    }
+  };
 
   /*
    * Dummy loading state.
    */
 
-   const debouncedValue = useDebouncedValue<string>(searchTerm, 1000);
+  const debouncedValue = useDebouncedValue<string>(searchTerm, 1000);
 
   useEffect(() => {
     setLoading(false);
@@ -105,7 +105,7 @@ export function useTable<T extends AnyObject>(
 
   function sortData(data: T[], sortKey: string, sortDirection: string) {
     // console.log("use table data....", data)
-    
+
     return data && [...data].length > 0 && [...data].sort((a, b) => {
       const aValue = a[sortKey];
       const bValue = b[sortKey];
@@ -117,7 +117,7 @@ export function useTable<T extends AnyObject>(
       }
       return 0;
     });
-      
+
   }
 
   const sortedData = useMemo(() => {
@@ -145,7 +145,7 @@ export function useTable<T extends AnyObject>(
     const start = (currentPage - 1) * countPerPage;
     const end = start + countPerPage;
 
-    if ( data && data.length > start) return data && data.slice(start, end);
+    if (data && data.length > start) return data && data.slice(start, end);
     return data;
   }
 
@@ -158,17 +158,17 @@ export function useTable<T extends AnyObject>(
   /*
    * Handle delete 
    */
-  const handleDelete = async (id: string | string[],currentPage?:any, Islastitem?: boolean) => {
+  const handleDelete = async (id: string | string[], currentPage?: any, Islastitem?: boolean) => {
     let updatedData: [] = [];
     // console.log("Id..", id)
     console.log("currentpage", currentPage);
     console.log("count per page", countPerPage);
 
     if (handleDeleteById) {
-     Islastitem && setCurrentPage(currentPage-1)
-      
+      Islastitem && setCurrentPage(currentPage - 1)
+
       try {
-        updatedData = await handleDeleteById(id, Islastitem ? currentPage - 1 : currentPage,countPerPage);
+        updatedData = await handleDeleteById(id, Islastitem ? currentPage - 1 : currentPage, countPerPage, sortConfig, searchTerm);
         // handlePaginate(currentPage);
       } catch (error) {
         console.error('An error occurred:', error);
@@ -252,7 +252,7 @@ export function useTable<T extends AnyObject>(
   /*
    * Handle searching
    */
-  const handleSearch = async(searchValue: string) => {
+  const handleSearch = async (searchValue: string) => {
     setSearchTerm(searchValue);
     // await handleAPICall(currentPage, pageSize, searchValue);
   }
