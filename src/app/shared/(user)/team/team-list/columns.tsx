@@ -12,8 +12,8 @@ import PencilIcon from '@/components/icons/pencil';
 import AvatarCard from '@/components/ui/avatar-card';
 import {TeamMemberType } from '@/data/products-data';
 import DeletePopover from '@/app/shared/delete-popover';
-import EditTeamMemberForm from './edit-team-member';
-import CustomModalButton from '../../custom-modal-button';
+import EditTeamMemberForm from '../create-edit/edit-team-member';
+import CustomModalButton from '../../../custom-modal-button';
 import { Columns } from '@/types';
 
 // type Columns = {

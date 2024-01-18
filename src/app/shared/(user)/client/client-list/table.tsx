@@ -42,15 +42,17 @@ export default function ClientTable({
   const [pageSize, setPageSize] = useState(5);
   const [currentPage, setCurrentPage] = useState<number>(page as number);
 
+
   const onHeaderCellClick = (value: string) => ({
     onClick: () => {
       handleSort(value);
     },
   });
 
-  const onDeleteItem = useCallback((id: any) => {
-    console.log("Delete id...", id)
-    handleDelete(id);
+  const onDeleteItem = useCallback((id: any, currentPagee = currentPage) => {
+    // console.log("Delete id...", id)
+    // console.log("current page in onDeleteItem....................", currentPagee)
+    handleDelete(id, currentPagee);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -86,6 +88,7 @@ export default function ClientTable({
         onDeleteItem,
         onChecked: handleRowSelect,
         handleSelectAll,
+        currentPage
       }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [
@@ -146,7 +149,7 @@ export default function ClientTable({
             checkedItems={selectedRowKeys}
             handleDelete={(ids: string[]) => {
               setSelectedRowKeys([]);
-              handleDelete(ids);
+              handleDelete(ids, currentPage);
             }}
           >
             {/* <Button size="sm" className="dark:bg-gray-300 dark:text-gray-800">

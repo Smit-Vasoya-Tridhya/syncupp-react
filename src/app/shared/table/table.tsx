@@ -6,7 +6,7 @@ import { useTable } from '@/hooks/use-table';
 import { useColumn } from '@/hooks/use-column';
 import { Button } from '@/components/ui/button';
 import ControlledTable from '@/components/controlled-table';
-import { getColumns } from '@/app/shared/(user)/team-list/columns';
+import { getColumns } from '@/app/shared/(user)/team/team-list/columns';
 // const FilterElement = dynamic(
 //   () => import('@/app/shared/(user)/client/client-list/filter-element'),
 //   { ssr: false }

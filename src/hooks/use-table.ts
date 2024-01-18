@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import isString from 'lodash/isString';
 import { isArray } from 'lodash';
+import { useDebouncedValue } from './use-debounce';
 
 interface AnyObject {
   [key: string]: any;
@@ -9,10 +10,9 @@ interface AnyObject {
 export function useTable<T extends AnyObject>(
   initialData: T[],
   countPerPage: number = 10,
-  handleDeleteById: (id: string | string[], currentPage?: number, countPerPage?: number) => any,
+  handleDeleteById: (id: string | string[], currentPage?: any, countPerPage?: number, sortConfig?: Record<string, string>, searchTerm?: string) => any,
   handleChangePage?: (paginationParams: any) => Promise<any>,
   pageSize?: any,
-  initialFilterState?: Partial<Record<string, any>>,
   currentPage?: any,
   setCurrentPage?: any,
 ) {
@@ -25,9 +25,6 @@ export function useTable<T extends AnyObject>(
     key: 'createdAt',
     direction: 'desc',
   });
-  const [filters, setFilters] = useState<Record<string, any>>(
-    initialFilterState ?? {}
-  );
 
   useEffect(() => {
     if (initialData) {
@@ -38,44 +35,47 @@ export function useTable<T extends AnyObject>(
     }
   }, [initialData, currentPage]);
 
-    // API call......
-    const handleAPICall = async (pageNumber?: any, pageSize?: any, searchTerm?: string, key?: string, direction?: string, filter?: any) => {
-      if (handleChangePage && typeof handleChangePage === 'function') {
-        try {
-          const response = await handleChangePage({
-            page: +pageNumber,
-            items_per_page: pageSize,
-            search: searchTerm,
-            sort_field: key,
-            sort_order: direction,
-            // status: filter,
-          });
-          setLoading(false);
-          response && setData(response);
-          setLoading(false);
-        } catch (error) {
-          console.error('API call error:', error);
-          setLoading(false);
-        }
-      } else {
-        console.error('handleChangePage is not a function');
+  // API call......
+  const handleAPICall = async (pageNumber?: any, pageSize?: any, searchTerm?: string, key?: string, direction?: string, filter?: any) => {
+    if (handleChangePage && typeof handleChangePage === 'function') {
+      try {
+        const response = await handleChangePage({
+          page: +pageNumber,
+          items_per_page: pageSize,
+          search: searchTerm,
+          sort_field: key,
+          sort_order: direction,
+          // status: filter,
+        });
+        setLoading(false);
+        response && setData(response);
+        setLoading(false);
+      } catch (error) {
+        console.error('API call error:', error);
         setLoading(false);
       }
-    };
+    } else {
+      console.error('handleChangePage is not a function');
+      setLoading(false);
+    }
+  };
 
   /*
    * Dummy loading state.
    */
 
+  const debouncedValue = useDebouncedValue<string>(searchTerm, 1000);
+
   useEffect(() => {
     setLoading(false);
-    if (!searchTerm) {
-      console.log("current page..", currentPage);
-      handleAPICall(+currentPage, pageSize, '', sortConfig.key, sortConfig.direction);
-    } else {
-      handleAPICall(+currentPage, pageSize, searchTerm, sortConfig.key, sortConfig.direction);
-    }
-  }, [currentPage, pageSize, searchTerm, sortConfig]);
+    // if (!searchTerm) {
+    //   console.log("current page..", currentPage);
+    //   handleAPICall(+currentPage, pageSize, '', sortConfig.key, sortConfig.direction);
+    // } else {
+    //   handleAPICall(+currentPage, pageSize, searchTerm, sortConfig.key, sortConfig.direction);
+    // }
+    handleAPICall(+currentPage, pageSize, searchTerm, sortConfig.key, sortConfig.direction);
+  }, [currentPage, pageSize, debouncedValue, sortConfig]);
 
   /*
    * Handle row selection
@@ -105,7 +105,7 @@ export function useTable<T extends AnyObject>(
 
   function sortData(data: T[], sortKey: string, sortDirection: string) {
     // console.log("use table data....", data)
-    
+
     return data && [...data].length > 0 && [...data].sort((a, b) => {
       const aValue = a[sortKey];
       const bValue = b[sortKey];
@@ -117,7 +117,7 @@ export function useTable<T extends AnyObject>(
       }
       return 0;
     });
-      
+
   }
 
   const sortedData = useMemo(() => {
@@ -135,7 +135,7 @@ export function useTable<T extends AnyObject>(
       direction = 'desc';
     }
     setSortConfig({ key, direction });
-    await handleAPICall(+currentPage, pageSize, searchTerm, key, direction);
+    // await handleAPICall(+currentPage, pageSize, searchTerm, key, direction);  
   }
 
   /*
@@ -145,7 +145,7 @@ export function useTable<T extends AnyObject>(
     const start = (currentPage - 1) * countPerPage;
     const end = start + countPerPage;
 
-    if ( data && data.length > start) return data && data.slice(start, end);
+    if (data && data.length > start) return data && data.slice(start, end);
     return data;
   }
 
@@ -156,17 +156,19 @@ export function useTable<T extends AnyObject>(
 
 
   /*
-   * Handle delete
+   * Handle delete 
    */
-  const handleDelete = async (id: string | string[]) => {
+  const handleDelete = async (id: string | string[], currentPage?: any, countPerPage?: number, Islastitem?: boolean, sortConfig?: Record<string, string>, searchTerm?: string) => {
     let updatedData: [] = [];
     // console.log("Id..", id)
     console.log("currentpage", currentPage);
     console.log("count per page", countPerPage);
 
     if (handleDeleteById) {
+      Islastitem && setCurrentPage(currentPage - 1)
+
       try {
-        updatedData = await handleDeleteById(id, currentPage, countPerPage);
+        updatedData = await handleDeleteById(id, Islastitem ? currentPage - 1 : currentPage, countPerPage, sortConfig, searchTerm);
         // handlePaginate(currentPage);
       } catch (error) {
         console.error('An error occurred:', error);
@@ -190,11 +192,6 @@ export function useTable<T extends AnyObject>(
     if (Array.isArray(filterValue) && filterValue.length !== 2) {
       throw new Error('filterValue data must be an array of length 2');
     }
-
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      [columnId]: filterValue,
-    }));
     await handleAPICall(+currentPage, pageSize, searchTerm, '', '', filterValue);
   }
 
@@ -255,9 +252,9 @@ export function useTable<T extends AnyObject>(
   /*
    * Handle searching
    */
-  const handleSearch = async(searchValue: string) => {
+  const handleSearch = async (searchValue: string) => {
     setSearchTerm(searchValue);
-    await handleAPICall(currentPage, pageSize, searchValue);
+    // await handleAPICall(currentPage, pageSize, searchValue);
   }
 
   // function searchedData() {
@@ -285,7 +282,6 @@ export function useTable<T extends AnyObject>(
   function handleReset() {
     setData(() => initialData);
     handleSearch('');
-    if (initialFilterState) return setFilters(initialFilterState);
   }
 
   /*
@@ -331,8 +327,6 @@ export function useTable<T extends AnyObject>(
     // searching
     searchTerm,
     handleSearch,
-    // filters
-    filters,
     updateFilter,
     applyFilters,
     handleDelete,

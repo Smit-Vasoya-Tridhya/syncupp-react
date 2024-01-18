@@ -15,25 +15,27 @@ import { Input } from '@/components/ui/input';
 import dynamic from 'next/dynamic';
 import SelectLoader from '@/components/loader/select-loader';
 import { TeamMemberSchema } from '@/utils/validators/add-team-member.schema';
-import { teamEnroll } from '@/redux/slices/user/auth/teamSlice';
+import { teamEnroll } from '@/redux/slices/user/team member/teamSlice';
 const Select = dynamic(() => import('@/components/ui/select'), {
   ssr: false,
   loading: () => <SelectLoader />,
 });
 
 const initialValues: TeamMemberSchema = {
-email: '',
-name:'',
-contact_number:'',
-role:''
+  email: '',
+  name:'',
+  contact_number:'',
+  role:''
 };
 
 const typeOption= [
   { name: 'Team Member', value: 'team_member' },
   { name: 'Admin', value: 'admin' },
-  ]
+]
 
-export default function AddTeamMemberForm({ className }: { className?: string }) {
+export default function AddTeamMemberForm(props: any) {
+
+  const { title, row } = props;
 
   const isMedium = useMedia('(max-width: 1200px)', false);
   const dispatch = useDispatch();
@@ -71,7 +73,7 @@ export default function AddTeamMemberForm({ className }: { className?: string })
           <div className="space-y-5">
             <div className="mb-6 flex items-center justify-between">
               <Title as="h3" className="text-xl xl:text-2xl">
-                New Team Member
+                {title}
               </Title>
               <ActionIcon
                 size="sm"

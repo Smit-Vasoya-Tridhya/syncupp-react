@@ -1,5 +1,5 @@
 "use client";
-import Link from 'next/link';
+// import Link from 'next/link';
 import PageHeader from '@/app/shared/page-header';
 import ModalButton from '@/app/shared/modal-button';
 import AddClientForm from '@/app/shared/(user)/client/create-edit/add-client-form';
@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteClient, getAllClient } from '@/redux/slices/user/client/clientSlice';
 import { useRouter } from 'next/navigation';
-import toast from 'react-hot-toast';
+// import toast from 'react-hot-toast';
 import { useModal } from '@/app/shared/modal-views/use-modal';
 
 
@@ -49,7 +49,7 @@ export default function ClientPage() {
       return data?.client
     };
     
-    const handleDeleteById = async (id: string | string[], countPerPage?: number, currentPage?: number) => {
+    const handleDeleteById = async (id: string | string[], currentPage?: number, countPerPage?: number) => {
 
       // console.log("delete id in main page....", id)
 
@@ -58,9 +58,9 @@ export default function ClientPage() {
         // console.log("delete response....", res)
         if (res.payload.success === true ) {
           closeModal();
-          console.log("currentpage before get and after delete....", currentPagee)
-          const reponse = await dispatch(getAllClient({ page: currentPagee, items_per_page: countPerPage, sort_field: 'createdAt', sort_order: 'desc' }));
-          console.log("response after delete...", reponse)
+          // console.log("currentpage before get and after delete....", currentPage)
+          const reponse = await dispatch(getAllClient({ page: currentPage, items_per_page: countPerPage, sort_field: 'createdAt', sort_order: 'desc' }));
+          // console.log("response after delete...", reponse)
         } 
       } catch (error) {
         console.error(error);
