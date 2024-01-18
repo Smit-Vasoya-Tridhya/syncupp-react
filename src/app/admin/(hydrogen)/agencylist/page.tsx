@@ -52,6 +52,7 @@ export default function ClientPage() {
     };
 
     const handleDeleteById = async (id: string | string[], currentPage?: any, countPerPage?: number, sortConfig?: Record<string, string>, searchTerm?: string) => {
+        console.log(searchTerm,'searchTerm')
         try {
             const res = await dispatch(deleteAgency({ agencies: id, is_deleted: true }));
             if (res.payload.success === true) {
