@@ -9,7 +9,6 @@ import NotificationDropdown from '@/layouts/helium-admin/notification-dropdown';
 import ProfileMenu from '@/layouts/helium-admin/profile-menu';
 // import SettingsButton from '@/components/settings/settings-button';
 import HamburgerButton from '@/layouts/hamburger-button';
-import Logo from '@/components/logo';
 import {
   PiChatCircleDotsFill,
   PiBellSimpleRingingFill,
@@ -17,6 +16,8 @@ import {
 } from 'react-icons/pi';
 import cn from '@/utils/class-names';
 import Sidebar from './helium-sidebar';
+import Image from 'next/image';
+import { siteConfig } from '@/config/site.config';
 
 function HeaderMenuRight() {
   return (
@@ -81,7 +82,14 @@ export default function Header() {
           aria-label="Site Logo"
           className="me-4 w-9 shrink-0 lg:me-5 xl:hidden"
         >
-          <Logo iconOnly={true} />
+           <Image
+              src={siteConfig.logo}
+              alt={siteConfig.title}
+              // className="dark:invert"
+              width={20}
+              height={20}
+              priority
+            />
         </Link>
         {/* <SearchWidget /> */}
       </div>

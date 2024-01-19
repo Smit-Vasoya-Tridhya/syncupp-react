@@ -12,6 +12,7 @@ import viewProfileSlice from "./slices/admin/auth/viewprofile/viewProfileSlice";
 import clientSlice from "./slices/user/client/clientSlice";
 import teamSlice from "./slices/user/team-member/teamSlice";
 import adminChangePasswordSlice from "./slices/admin/auth/updatePassword/changePasswordSlice";
+import adminfaqSlice from "./slices/admin/faq/faqSlice";
 import agencySlice from "./slices/admin/agency/agencySlice";
 
 
@@ -28,6 +29,8 @@ import agencySlice from "./slices/admin/agency/agencySlice";
   viewProfile: viewProfileSlice,
   client: clientSlice,
   adminChangePassword: adminChangePasswordSlice,
+  teamModule: teamSlice,
+  adminFaq:adminfaqSlice,
   teamMember: teamSlice,
   adminAgency: agencySlice
 });

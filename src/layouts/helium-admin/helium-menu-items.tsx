@@ -1,6 +1,7 @@
 import { routes } from '@/config/routes';
 import {
   PiFolderNotchDuotone,
+  PiQuestionLight,
   PiUserPlusDuotone,
 } from 'react-icons/pi';
 
