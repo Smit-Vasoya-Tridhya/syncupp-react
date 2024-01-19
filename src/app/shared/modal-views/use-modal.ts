@@ -2,6 +2,7 @@
 
 import { RemoveFaqData } from '@/redux/slices/admin/faq/faqSlice';
 import { RemoveClientData, RemoveRegionalData } from '@/redux/slices/user/client/clientSlice';
+import { RemoveTeamMemberData } from '@/redux/slices/user/team-member/teamSlice';
 import { atom, useAtomValue, useSetAtom } from 'jotai';
 import { useDispatch } from 'react-redux';
 
@@ -41,6 +42,7 @@ export function useModal() {
     dispatch(RemoveRegionalData())
     dispatch(RemoveClientData())
     dispatch(RemoveFaqData())
+    dispatch(RemoveTeamMemberData())
     setState({
       ...state,
       isOpen: false,

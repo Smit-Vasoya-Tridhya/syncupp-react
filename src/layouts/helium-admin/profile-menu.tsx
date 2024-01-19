@@ -28,7 +28,7 @@ export interface UserProfileDTO {
   createdAt: Date;
   email: string;
   first_name: string;
-  is_deleted: boolean;
+  delete: boolean;
   last_name: string;
   password: string;
   remember_me: boolean;

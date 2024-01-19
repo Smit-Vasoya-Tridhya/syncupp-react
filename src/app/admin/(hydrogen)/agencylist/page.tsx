@@ -1,17 +1,11 @@
 "use client";
-import Link from 'next/link';
 import PageHeader from '@/app/shared/page-header';
-import ModalButton from '@/app/shared/modal-button';
-import AddClientForm from '@/app/shared/(user)/client/create-edit/add-client-form';
-import ClientTable from '@/app/shared/(user)/client/client-list/table';
-import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteClient, getAllClient } from '@/redux/slices/user/client/clientSlice';
 import { useRouter } from 'next/navigation';
-import toast from 'react-hot-toast';
 import { useModal } from '@/app/shared/modal-views/use-modal';
 import AgencyTable from '@/app/shared/(admin)/agency/table';
 import { deleteAgency, getAllAgency } from '@/redux/slices/admin/agency/agencySlice';
+import { useState } from 'react';
 
 
 const pageHeader = {
@@ -54,7 +48,7 @@ export default function ClientPage() {
     const handleDeleteById = async (id: string | string[], currentPage?: any, countPerPage?: number, sortConfig?: Record<string, string>, searchTerm?: string) => {
         console.log(searchTerm,'searchTerm')
         try {
-            const res = await dispatch(deleteAgency({ agencies: id, is_deleted: true }));
+            const res = await dispatch(deleteAgency({ agencies: id, delete: true }));
             if (res.payload.success === true) {
                 closeModal();
                 console.log("currentpage before get and after delete....", currentPagee)

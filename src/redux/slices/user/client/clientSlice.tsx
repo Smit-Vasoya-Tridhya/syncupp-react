@@ -347,11 +347,9 @@ export const clientSlice = createSlice({
       })
       .addCase(getAllClient.fulfilled, (state,action) => {
         // console.log(action.payload);
-        // if(action.payload.status == false){
-        //     toast.error(action.payload.message)
-        // } else {
-        //     toast.success(action.payload.message)
-        // }
+        if(action.payload.status == false){
+            toast.error(action.payload.message)
+        } 
         return{
           ...state,
           data: action?.payload?.data,

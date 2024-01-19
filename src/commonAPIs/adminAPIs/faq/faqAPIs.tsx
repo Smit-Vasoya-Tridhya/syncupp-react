@@ -1,8 +1,8 @@
 import AxiosDefault from "@/services/AxiosDefault";
 
 
-// Agency List
-type GetAllAgencylistApiData = {
+// faq List
+type GetAllfaqlistApiData = {
     page?: number;
     items_per_page?: number;
     sort_order?: string;
@@ -10,9 +10,9 @@ type GetAllAgencylistApiData = {
     search?: string;
 }
 
-export const GetAllAgencyApi = async (data: GetAllAgencylistApiData) => {
+export const GetAllfaqApi = async (data: GetAllfaqlistApiData) => {
     const response = await AxiosDefault({
-        url: "/api/v1/admin/agencies",
+        url: "/api/v1/admin/get-all-faq",
         method: "POST",
         data: data,
         contentType: "application/json",
@@ -23,7 +23,7 @@ export const GetAllAgencyApi = async (data: GetAllAgencylistApiData) => {
 
 
 
-//Delete Agency list
+//Delete faq list
 
 type DeleteAgency = {
     agencies: string[];

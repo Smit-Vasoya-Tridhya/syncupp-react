@@ -12,6 +12,7 @@ import DeletePopover from '@/app/shared/delete-popover';
 import { Button, Switch } from 'rizzui';
 import { useDispatch } from 'react-redux';
 import { deleteAgency, getAllAgency } from '@/redux/slices/admin/agency/agencySlice';
+import { LuExternalLink } from "react-icons/lu";
 
 type Columns = {
     data: any[];
@@ -27,7 +28,7 @@ type Columns = {
 };
 
 
-export const getColumns = ({
+export const GetColumns = ({
     data,
     sortConfig,
     checkedItems,
@@ -96,7 +97,7 @@ export const getColumns = ({
             key: 'first_name',
             width: 200,
             render: (value: string) => (
-                <Text className="font-medium text-gray-700">{value}</Text>
+                <Text className="font-medium text-gray-700">{value && value != "" ? value : "-"}</Text>
             ),
         },
         {
@@ -114,7 +115,7 @@ export const getColumns = ({
             key: 'last_name',
             width: 200,
             render: (value: string) => (
-                <Text className="font-medium text-gray-700">{value}</Text>
+                <Text className="font-medium text-gray-700">{value && value != "" ? value : "-"}</Text>
             ),
         },
         {
@@ -132,7 +133,7 @@ export const getColumns = ({
             key: 'contact_number',
             width: 200,
             render: (value: string) => (
-                <Text className="font-medium text-gray-700">93453486578</Text>
+                <Text className="font-medium text-gray-700">{value && value != "" ? value : "-"}</Text>
             ),
         },
         {
@@ -150,7 +151,7 @@ export const getColumns = ({
             key: 'email',
             width: 200,
             render: (value: string) => {
-                return <Text className="font-medium text-gray-700">{value}</Text>
+                return <Text className="font-medium text-gray-700">{value && value != "" ? value : "-"}</Text>
             },
         },
         {
@@ -159,16 +160,17 @@ export const getColumns = ({
                     title="Company"
                     sortable
                     ascending={
-                        sortConfig?.direction === 'asc' && sortConfig?.key === 'company'
+                        sortConfig?.direction === 'asc' && sortConfig?.key === 'company_name'
                     }
                 />
             ),
-            onHeaderCell: () => onHeaderCellClick('company'),
-            dataIndex: 'company',
-            key: 'company',
+            onHeaderCell: () => onHeaderCellClick('company_name'),
+            dataIndex: 'reference_id',
+            key: 'reference_id',
             width: 200,
             render: (value: Record<string, string>) => (
-                <Text className="font-medium text-gray-700">Company</Text>
+                console.log(value, '189'),
+                <Text className="font-medium text-gray-700">{value?.company_name && value?.company_name != "" ? value?.company_name : "-"}</Text>
             ),
         },
         {
@@ -177,16 +179,18 @@ export const getColumns = ({
                     title="Website"
                     sortable
                     ascending={
-                        sortConfig?.direction === 'asc' && sortConfig?.key === 'website'
+                        sortConfig?.direction === 'asc' && sortConfig?.key === 'company_website'
                     }
                 />
             ),
-            onHeaderCell: () => onHeaderCellClick('website'),
-            dataIndex: 'website',
-            key: 'website',
+            onHeaderCell: () => onHeaderCellClick('company_website'),
+            dataIndex: 'reference_id',
+            key: 'reference_id',
             width: 200,
-            render: (value: string) => (
-                <Text className="font-medium text-gray-700">Website</Text>
+            render: (value: Record<string, string>) => (
+                <>
+                    {value?.company_website && value?.company_website != "" ? <Link href={value?.company_website} target='_blank' className="font-medium text-gray-700" ><LuExternalLink size={25} /></Link> : <Text className="font-medium text-gray-700">-</Text>}
+                </>
             ),
         },
         {
@@ -195,16 +199,16 @@ export const getColumns = ({
                     title="Industry"
                     sortable
                     ascending={
-                        sortConfig?.direction === 'asc' && sortConfig?.key === 'Industry'
+                        sortConfig?.direction === 'asc' && sortConfig?.key === 'industry'
                     }
                 />
             ),
-            onHeaderCell: () => onHeaderCellClick('Industry'),
-            dataIndex: 'Industry',
-            key: 'Industry',
+            onHeaderCell: () => onHeaderCellClick('industry'),
+            dataIndex: 'reference_id',
+            key: 'reference_id',
             width: 200,
-            render: (value: string) => (
-                <Text className="font-medium text-gray-700">Industry</Text>
+            render: (value: Record<string, string>) => (
+                <Text className="font-medium text-gray-700">{value?.industry && value?.industry != "" ? value?.industry : "-"}</Text>
             ),
         },
         {
@@ -223,7 +227,7 @@ export const getColumns = ({
             width: 200,
             render: (value: string, row: Record<string, string>) => (
                 // <Text className="font-medium text-gray-700">{value}</Text>
-                <Switch className="[&>label>span.transition]:shrink-0 [&>label>span]:font-medium" variant='active' onChange={(event) => handleSwitchChange(row._id, event)} disabled={value == "pending"} defaultChecked={!!value} />
+                <Switch className="[&>label>span.transition]:shrink-0 [&>label>span]:font-medium" variant='active' onChange={(event) => handleSwitchChange(row._id, event)} disabled={value == "payment_pending"} defaultChecked={value == "payment_pending" ? false : true} />
             ),
         },
         {
@@ -232,16 +236,16 @@ export const getColumns = ({
                     title="# Of employees"
                     sortable
                     ascending={
-                        sortConfig?.direction === 'asc' && sortConfig?.key === '# Of employees'
+                        sortConfig?.direction === 'asc' && sortConfig?.key === 'no_of_people'
                     }
                 />
             ),
-            onHeaderCell: () => onHeaderCellClick('# Of employees'),
-            dataIndex: '# Of employees',
-            key: '# Of employees',
+            onHeaderCell: () => onHeaderCellClick('no_of_people'),
+            dataIndex: 'reference_id',
+            key: 'reference_id',
             width: 200,
-            render: (value: string) => (
-                <Text className="font-medium text-gray-700"># Of employees</Text>
+            render: (value: Record<string, string>) => (
+                <Text className="font-medium text-gray-700">{value?.no_of_people && value?.no_of_people != "" ? value?.no_of_people : "-"}</Text>
             ),
         },
         {
