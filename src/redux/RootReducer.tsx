@@ -13,9 +13,10 @@ import clientSlice from "./slices/user/client/clientSlice";
 import teamSlice from "./slices/user/team-member/teamSlice";
 import adminChangePasswordSlice from "./slices/admin/auth/updatePassword/changePasswordSlice";
 import agencySlice from "./slices/admin/agency/agencySlice";
+import  agencyAgreementSlice from "./slices/user/agreement/agreementSlice";
 
 
- const combinedReducer = combineReducers({
+const combinedReducer = combineReducers({
   signIn: signinSlice,
   signUp: signupSlice,
   forgotPassword: forgotPasswordSlice,
@@ -29,10 +30,11 @@ import agencySlice from "./slices/admin/agency/agencySlice";
   client: clientSlice,
   adminChangePassword: adminChangePasswordSlice,
   teamMember: teamSlice,
-  adminAgency: agencySlice
+  adminAgency: agencySlice,
+  agreement: agencyAgreementSlice
 });
 
- const rootReducer = (state: any, action: any) => {
+const rootReducer = (state: any, action: any) => {
   // if (action.type === "auth/Logout") {
   //   state = undefined;
   // }

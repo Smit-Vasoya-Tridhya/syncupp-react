@@ -9,8 +9,8 @@ export const routes = {
   resetPassword: '/reset-password',
   dashboard: '/dashboard',
   client: '/client',
-  team:'/team',
-  viewTeam:'/team/view-team',
+  team: '/team',
+  viewTeam: '/team/view-team',
 
   teams: {
     verify: '/team/verify'
@@ -18,14 +18,15 @@ export const routes = {
   clients: {
     verify: '/client/verify'
   },
+  agreement: '/agreement',
 
   // Admin panel
-  admin:{
+  admin: {
     signIn: '/admin/signin',
     signUp: '/admin/signup',
-    forgotPassword:'/admin/forgot-password',
-    resetPassword:'/admin/reset-password',
+    forgotPassword: '/admin/forgot-password',
+    resetPassword: '/admin/reset-password',
     dashboard: '/admin/dashboard'
   },
-  
+
 };

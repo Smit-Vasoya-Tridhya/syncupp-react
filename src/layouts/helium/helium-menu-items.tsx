@@ -41,6 +41,11 @@ export const MenuItems = () => {
         href: routes.team,
         icon: <PiUserListDuotone />,
       },
+      {
+        name: 'Agreement',
+        href: routes.agreement,
+        icon: <PiUserListDuotone />,
+      },
     ];
     
   } else if(signIn?.user?.data?.user?.role?.name === "client") {
