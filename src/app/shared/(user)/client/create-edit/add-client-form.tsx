@@ -29,7 +29,6 @@ const Select = dynamic(() => import('@/components/ui/select'), {
 export default function AddClientForm(props: any) {
 
   const { title, row } = props;
-
   // console.log("row data...", row)
   const clientSliceData = useSelector((state: any) => state?.root?.client);
   
@@ -39,8 +38,9 @@ export default function AddClientForm(props: any) {
   const router = useRouter();
   
   const [save, setSave] = useState(false)
+  const [loader, setLoader] = useState(false);
   const [reset, setReset] = useState({})
-  
+  const saveAndNew = false;
   
 
   // let data = row;
@@ -83,37 +83,6 @@ export default function AddClientForm(props: any) {
     title: data?.client?.title,
     contact_number: data?.contact_number
   };
-
-  // console.log("defaultValues...", defaultValuess);
-
-  
-  // useEffect(() => {
-
-  //   if(title === 'Edit Client' && clientSliceData?.client){
-
-  //      initialValues = {
-  //       name: data?.name ?? "",
-  //       email: data?.email ?? "",
-  //       company_name: data?.client?.company_name ?? "",
-  //       company_website: data?.client?.company_website ?? "",
-  //       address: data?.address ?? "",
-  //       city: data?.city ?? undefined,
-  //       state: data?.state ?? undefined,
-  //       country: data?.country ?? undefined,
-  //       pincode: data?.pincode ?? "",
-  //       title: data?.title ?? "",
-  //       contact_number: data?.contact_number ?? ""
-  //     }; 
-      
-  //     Object?.entries(initialValues)?.forEach(([key, value]) => {
-  //       setValue(key, value);
-  //     });
-  //   }
-
-  // }, [clientSliceData, title]);
-  
-  // let data = clientSliceData?.client;
-
 
 
   const [regionalData, setRegionalData] = useState({
@@ -158,15 +127,11 @@ export default function AddClientForm(props: any) {
     setRegionalData({...regionalData, city: cityObj._id})
   };
 
-
-
-  const handleSaveClick = () => {
-    // console.log("save button clicked")
-    setSave(true);
-  }
-
+  
   const onSubmit: SubmitHandler<ClientSchema> = (dataa) => {
     // console.log('Add client dataa---->', dataa);
+
+    console.log("save and new submit button.....")
 
     const formData = {
       name: dataa?.name ?? '',
@@ -186,13 +151,16 @@ export default function AddClientForm(props: any) {
 
     const filteredRegionalData = Object.fromEntries(
       Object.entries(regionalData).filter(([_, value]) => value !== undefined && value !== '')
-    );
+      );
 
     const fullData = { ...filteredRegionalData, ...filteredFormData }
 
     if(title === 'New Client') {
       dispatch(postAddClient(fullData)).then((result: any) => {
         if(postAddClient.fulfilled.match(result)) {
+          setLoader(false);
+          setSave(false);
+
           if (result && result.payload.success === true) {
             save && closeModal();
             setReset({...initialValues})
@@ -211,10 +179,22 @@ export default function AddClientForm(props: any) {
           }
         }
       });
-    }
-
+    } 
     
   };
+
+  const handleSaveAndNewClick = (handleSubmit: any, errors: any) => {
+    handleSubmit(onSubmit)();
+
+    console.log("save & new button clicked", errors)
+
+    errors && setLoader(true)
+  }
+
+  const handleSaveClick = () => {
+    // console.log("save button clicked")
+    setSave(true);
+  }
   
   if(!clientSliceData?.client && title === 'Edit Client') {
     return (
@@ -235,7 +215,7 @@ export default function AddClientForm(props: any) {
         }}
         className=" p-10 [&_label]:font-medium"
       >
-        {({ register, control, formState: { errors }, setValue }) => (
+        {({ register, control, formState: { errors , isSubmitSuccessful }, handleSubmit }) => (
           <div className="space-y-5">
             <div className="mb-6 flex items-center justify-between">
               <Title as="h3" className="text-xl xl:text-2xl">
@@ -424,12 +404,13 @@ export default function AddClientForm(props: any) {
               <div className='float-right text-right'>
                 { title === 'New Client' &&
                   <Button
-                    type="submit"
+                    // type='submit'
                     className="hover:gray-700 @xl:w-auto dark:bg-gray-200 dark:text-white"
-                    // disabled={clientSliceData?.addClientStatus === 'pending'}
+                    disabled={loader && !save}
+                    onClick={() => handleSaveAndNewClick(handleSubmit , isSubmitSuccessful)}
                   >
                     Save & New
-                    {/* { clientSliceData?.loading && <Spinner size="sm" tag='div' className='ms-3' color='white' /> } */}
+                    { loader && !save && <Spinner size="sm" tag='div' className='ms-3' color='white' /> }
                   </Button>
                 }
                 <Button
@@ -437,6 +418,7 @@ export default function AddClientForm(props: any) {
                   className="hover:gray-700 ms-3 @xl:w-auto dark:bg-gray-200 dark:text-white"
                   disabled={(clientSliceData?.addClientStatus === 'pending' || clientSliceData?.editClientStatus === 'pending') && save}
                   onClick={handleSaveClick}
+
                 >
                   Save
                   { (clientSliceData?.addClientStatus === 'pending' || clientSliceData?.editClientStatus === 'pending') && save && (<Spinner size="sm" tag='div' className='ms-3' color='white' />)  }
