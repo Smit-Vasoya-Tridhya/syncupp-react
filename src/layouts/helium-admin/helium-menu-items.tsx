@@ -17,4 +17,9 @@ export const menuItems = [
     href: '/admin/agencylist',
     icon: <PiUserPlusDuotone />,
   },
+  {
+    name: 'FAQ',
+    href: routes.admin.faq,
+    icon: <PiQuestionLight />,
+  },
 ];
