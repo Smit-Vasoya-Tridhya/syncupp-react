@@ -2,7 +2,7 @@
 
 import { Title, ActionIcon } from '@/components/ui/text';
 import { Button } from '@/components/ui/button';
-import { Controller, SubmitHandler } from 'react-hook-form';
+import { SubmitHandler } from 'react-hook-form';
 import { Form } from '@/components/ui/form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
@@ -13,15 +13,10 @@ import { PiXBold } from 'react-icons/pi';
 import { Input } from '@/components/ui/input';
 import dynamic from 'next/dynamic';
 import SelectLoader from '@/components/loader/select-loader';
-import { handleKeyContactDown, handleKeyDown } from '@/utils/common-functions';
-import { ClientSchema, clientSchema } from '@/utils/client-schema';
-import { RemoveRegionalData, getAllClient, getCities, getClientById, getCountry, getState, patchEditClient, postAddClient } from '@/redux/slices/user/client/clientSlice';
 import { useEffect, useState } from 'react';
 import { FaqSchema, faqSchema } from '@/utils/validators/faq.schema';
-import QuillEditor from '@/components/ui/quill-editor';
 import { Textarea } from 'rizzui';
-import { PostFaqEnroll } from '@/api/auth/faq/faqApis';
-import { postAddFaq } from '@/redux/slices/admin/faq/faqSlice';
+import { getAllFaq, getFaqDataByID, postAddFaq, updateFaqDataByID } from '@/redux/slices/admin/faq/faqSlice';
 
 const Select = dynamic(() => import('@/components/ui/select'), {
   ssr: false,
@@ -32,125 +27,36 @@ const Select = dynamic(() => import('@/components/ui/select'), {
 export default function AddFaqForm(props: any) {
 
   const { title, row } = props;
-  // console.log("row data...", row)
   const dispatch = useDispatch();
   const { closeModal } = useModal();
-  const router = useRouter();
   const adminFaq = useSelector((state: any) => state?.root?.adminFaq);
   
-  const [save, setSave] = useState(false)
-  const [reset, setReset] = useState({})
-
   // let data = row;
   let initialValues: FaqSchema = {
     title: "",
     description: "",
   }; 
-   
 
+  useEffect(() => {
+    row && dispatch(getFaqDataByID({ _id: row?._id }))
+  }, [row, dispatch]); 
 
-  // useEffect(() => {
-  //   row && dispatch(getClientById({ clientId: row?._id }))
-  // }, [row, dispatch]); 
-
-  let data = adminFaq?.adminFaq;
+  let data = adminFaq?.faqData;
   
   let defaultValuess = {
     title: data?.title,
     description: data?.description,
   };
 
-  // console.log("defaultValues...", defaultValuess);
+  const onSubmit: SubmitHandler<FaqSchema> = (data) => {
 
-  
-  // useEffect(() => {
-
-  //   if(title === 'Edit Client' && clientSliceData?.client){
-
-  //      initialValues = {
-  //       name: data?.name ?? "",
-  //       email: data?.email ?? "",
-  //       company_name: data?.client?.company_name ?? "",
-  //       company_website: data?.client?.company_website ?? "",
-  //       address: data?.address ?? "",
-  //       city: data?.city ?? undefined,
-  //       state: data?.state ?? undefined,
-  //       country: data?.country ?? undefined,
-  //       pincode: data?.pincode ?? "",
-  //       title: data?.title ?? "",
-  //       contact_number: data?.contact_number ?? ""
-  //     }; 
-      
-  //     Object?.entries(initialValues)?.forEach(([key, value]) => {
-  //       setValue(key, value);
-  //     });
-  //   }
-
-  // }, [clientSliceData, title]);
-  
-  // let data = clientSliceData?.client;
-
-
-
-  // const [regionalData, setRegionalData] = useState({
-  //   city: data?.client?.city?.id,
-  //   state: data?.client?.state?.id,
-  //   country: data?.client?.country?.id
-  // });  
-  // console.log("Regional Data....", regionalData)
-
-  // let countryOptions: Record<string, string>[] = [];
-
-  // clientSliceData?.countries !== '' && clientSliceData?.countries?.map((country: Record<string, string>) => {
-  //   countryOptions.push({ name: country?.name, value: country?.name }) 
-  // })
-  
-  // const countryHandleChange = (selectedOption: string) => {
-  //   const [ countryObj ] = clientSliceData?.countries?.filter((country: Record<string, string>) => country?.name === selectedOption )
-  //   dispatch(getState({ countryId: countryObj._id }))
-  //   setRegionalData({...regionalData, country: countryObj._id})
-  // };
-
-  // let stateOptions: Record<string, string>[] = [];
-
-  // clientSliceData?.states !== '' && clientSliceData?.states?.map((state: Record<string, string>) => {
-  //   stateOptions.push({ name: state?.name, value: state?.name }) 
-  // })
-
-  // const stateHandleChange = (selectedOption: string) => {
-  //   const [ stateObj ] = clientSliceData?.states?.filter((state: Record<string, string>) => state?.name === selectedOption )
-  //   dispatch(getCities({ stateId: stateObj._id }))
-  //   setRegionalData({...regionalData, state: stateObj._id})
-  // };
-
-  // let cityOptions: Record<string, string>[] = [];
-
-  // clientSliceData?.cities !== '' && clientSliceData?.cities?.map((city: Record<string, string>) => {
-  //   cityOptions.push({ name: city?.name, value: city?.name }) 
-  // })
-
-  // const cityHandleChange = (selectedOption: string) => {
-  //   const [ cityObj ] = clientSliceData?.cities?.filter((city: Record<string, string>) => city?.name === selectedOption )
-  //   setRegionalData({...regionalData, city: cityObj._id})
-  // };
-
-
-
-  const handleSaveClick = () => {
-    // console.log("save button clicked")
-    setSave(true);
-  }
-
-  const onSubmit: SubmitHandler<FaqSchema> = (dataa) => {
-    // console.log('Add client dataa---->', dataa);
-
-    const formData = {
-      description: dataa?.description ?? '',
-      title: dataa?.title ?? '',
-    }
+    // const formData = {
+    //   description: dataa?.description ?? '',
+    //   title: dataa?.title ?? '',
+    // }
 
     const filteredFormData = Object.fromEntries(
-      Object.entries(formData).filter(([_, value]) => value !== undefined && value !== '')
+      Object.entries(data).filter(([_, value]) => value !== undefined && value !== '')
     );
 
 
@@ -160,32 +66,28 @@ export default function AddFaqForm(props: any) {
 
     // const fullData = { ...filteredRegionalData, ...filteredFormData }
 
-    if(title === 'New FAQ') {
-      // dispatch(postAddClient(fullData)).then((result: any) => {
-        dispatch(postAddFaq()).then((result: any) => {
+    if(title === 'FAQ') {
+        dispatch(postAddFaq(filteredFormData)).then((result: any) => {
           if(postAddFaq.fulfilled.match(result)) {
             if (result && result.payload.success === true) {
-              save && closeModal();
-              setSave(false);
+              closeModal();
+              dispatch(getAllFaq({ sortField: 'title', sortOrder: 'desc' }));
             }
           }
         });
     } else {
-      // dispatch(patchEditClient({ ...fullData, clientId: data._id })).then((result: any) => {
-      dispatch(patchEditClient()).then((result: any) => {
-        if(patchEditClient.fulfilled.match(result)) {
+      dispatch(updateFaqDataByID({...filteredFormData,_id:row._id})).then((result: any) => {
+        if(updateFaqDataByID.fulfilled.match(result)) {
           if (result && result.payload.success === true) {
-            save && closeModal();
-            setSave(false);
+            closeModal();  
+            dispatch(getAllFaq({ sortField: 'title', sortOrder: 'desc' }));
           }
         }
       });
     }
-
-    
   };
   
-  if(!adminFaq?.client && title === 'Edit Client') {
+  if(!adminFaq?.faqData && title === 'Edit FAQ') {
     return (
       <div className='p-10 flex items-center justify-center'>
         <Spinner size="xl" tag='div' className='ms-3' />
@@ -197,7 +99,6 @@ export default function AddFaqForm(props: any) {
       <Form<FaqSchema>
         validationSchema={faqSchema}
         onSubmit={onSubmit}
-        resetValues={reset}
         useFormProps={{
           mode: 'onChange',
           defaultValues: defaultValuess,
@@ -258,17 +159,10 @@ export default function AddFaqForm(props: any) {
                   <Button
                     type="submit"
                     className="hover:gray-700 ms-3 @xl:w-auto dark:bg-gray-200 dark:text-white"
-                    disabled={
-                      (adminFaq?.addFaqStatus === 'pending' ||
-                        adminFaq?.editFaqStatus === 'pending') &&
-                      save
-                    }
-                    onClick={handleSaveClick}
+                    disabled={adminFaq?.loading}
                   >
                     Save
-                    {(adminFaq?.addFaqStatus === 'pending' ||
-                      adminFaq?.editFaqStatus === 'pending') &&
-                      save && (
+                    {adminFaq?.loading && (
                         <Spinner
                           size="sm"
                           tag="div"

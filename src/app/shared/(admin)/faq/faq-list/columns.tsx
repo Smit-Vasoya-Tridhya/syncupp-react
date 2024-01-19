@@ -4,14 +4,10 @@ import Link from 'next/link';
 import { HeaderCell } from '@/components/ui/table';
 import { Text } from '@/components/ui/text';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Tooltip } from '@/components/ui/tooltip';
-import { routes } from '@/config/routes';
 import EyeIcon from '@/components/icons/eye';
 import PencilIcon from '@/components/icons/pencil';
-// import { ProductType } from '@/data/products-data';
 import DeletePopover from '@/app/shared/delete-popover';
 import CustomModalButton from '@/app/shared/custom-modal-button';
-import { Button } from 'rizzui';
 import AddFaqForm from '../create-edit/add-edit-faq-form';
 
 type Columns = {
