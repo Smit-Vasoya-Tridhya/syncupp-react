@@ -28,7 +28,7 @@ export const GetAllfaqApi = async (data: GetAllfaqlistApiData) => {
 type DeleteAgency = {
     agencies: string[];
     status?: string | boolean
-    is_deleted?: boolean
+    delete?: boolean
 }
 
 export const DeleteAgencysApi = async (data: DeleteAgency) => {

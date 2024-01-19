@@ -38,7 +38,7 @@ export const getAllAgency: any = createAsyncThunk(
 type DeleteAgency = {
     agencies: string[];
     status?: string | boolean
-    is_deleted?: boolean
+    delete?: boolean
 }
 
 

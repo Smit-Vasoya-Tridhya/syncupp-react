@@ -28,7 +28,7 @@ export const GetAllAgencyApi = async (data: GetAllAgencylistApiData) => {
 type DeleteAgency = {
     agencies: string[];
     status?: string | boolean
-    is_deleted?: boolean
+    delete?: boolean
 }
 
 export const DeleteAgencysApi = async (data: DeleteAgency) => {
