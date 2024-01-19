@@ -16,9 +16,4 @@ export const menuItems = [
     href: '/admin/agencylist',
     icon: <PiUserPlusDuotone />,
   },
-  {
-    name: 'FAQ',
-    href: '/admin/faq',
-    icon: <PiUserPlusDuotone />,
-  },
 ];

@@ -54,7 +54,7 @@ export default function ClientPage() {
     const handleDeleteById = async (id: string | string[], currentPage?: any, countPerPage?: number, sortConfig?: Record<string, string>, searchTerm?: string) => {
         console.log(searchTerm,'searchTerm')
         try {
-            const res = await dispatch(deleteAgency({ agencies: id, is_deleted: true }));
+            const res = await dispatch(deleteAgency({ agencies: id, delete: true }));
             if (res.payload.success === true) {
                 closeModal();
                 console.log("currentpage before get and after delete....", currentPagee)

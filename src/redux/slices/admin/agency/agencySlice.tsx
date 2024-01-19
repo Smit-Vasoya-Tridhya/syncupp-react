@@ -38,7 +38,7 @@ export const getAllAgency: any = createAsyncThunk(
 type DeleteAgency = {
     agencies: string[];
     status?: string | boolean
-    is_deleted?: boolean
+    delete?: boolean
 }
 
 
@@ -91,7 +91,7 @@ export const agencySlice = createSlice({
                         loading: false,
                     }
                 } else {
-                    toast.success(action.payload.message)
+                    // toast.success(action.payload.message)
                     return {
                         ...state,
                         loading: false
