@@ -1,22 +1,48 @@
 import AxiosDefault from "../../../services/AxiosDefault";
 
-type TeamData = {
-  _id:string;
+type PostAddTeamMemberApiData = {
     email: string;
     name: string;
-    contact_number: string;
+    contact_number?: string;
     role?: string;
   }
 
-type EditTeamData = {
-    _id:string;
-    email: string;
-    name: string;
-    contact_number: string;
+type PostTeamMemberVerifyApiData = {
+  email: string;
+  agency_id: string;
+  password?: string;
+  first_name?: string;
+  last_name?: string;
+  redirect: boolean;
+}
+
+type PutEditTeamMemberApiData = {
+    id:string;
+    name?: string;
+    email?: string;
+    contact_number?: string;
     role?: string;
   }
+
+  type DeleteTeamMemberApiData = {
+    id: string;
+  }
+
+  type GetAllTeamMemberApiData = {
+    page?: number;
+    itemsPerPage?: number;
+    sortOrder?: string;
+    sortField?: string;
+    search?: string;
+  }
+
+  type GetTeamMemberProfileApiData = {
+    id: string;
+  }
+
+
 // Add new team member API
-export const PostTeamEnroll = async (data: TeamData) => {
+export const PostAddTeamMemberApi = async (data: PostAddTeamMemberApiData) => {
   const response = await AxiosDefault({
     url: "/api/v1/agency/team-member/add",
     method: "POST",
@@ -27,10 +53,22 @@ export const PostTeamEnroll = async (data: TeamData) => {
   return responseData;
 };
 
-// Edit team member API
-export const EditTeamMember = async (data: EditTeamData) => {
+// Verify team member API
+export const PostTeamMemberVerifyApi = async (data: PostTeamMemberVerifyApiData) => {
   const response = await AxiosDefault({
-    url: `/api/v1/agency/team-member/edit/${data._id}`,
+    url: "/api/v1/team-member/verify",
+    method: "POST",
+    data: data,
+    contentType: "application/json", 
+  });
+  const responseData = response.data;
+  return responseData;
+};
+
+// Edit team member API
+export const PutEditTeamMemberApi = async (data: PutEditTeamMemberApiData) => {
+  const response = await AxiosDefault({
+    url: `/api/v1/agency/team-member/edit/${data.id}`,
     method: "PUT",
     data: data,
     contentType: "application/json", 
@@ -40,9 +78,9 @@ export const EditTeamMember = async (data: EditTeamData) => {
 };
 
 // delete Team member API
-export const DeleteTeamMember = async (data: TeamData) => {
+export const DeleteTeamMemberApi = async (data: DeleteTeamMemberApiData) => {
   const response = await AxiosDefault({
-    url: `/api/v1/agency/team-member/delete/${data._id}`,
+    url: `/api/v1/agency/team-member/delete/${data.id}`,
     method: "DELETE",
     data: data,
     contentType: "application/json", 
@@ -51,20 +89,9 @@ export const DeleteTeamMember = async (data: TeamData) => {
   return responseData;
 };
 
-// view team member by ID
-export const GetTeamMemberDataByID = async (data: TeamData) => {
-  const response = await AxiosDefault({
-    url: `/api/v1/agency/team-member/details/${data._id}`,
-    method: "PUT",
-    data: data,
-    contentType: "application/json", 
-  });
-  const responseData = response.data;
-  return responseData;
-};
 
-// Team data table API
-export const GetTeamMemberTableData = async (data: TeamData) => {
+// Get all team member
+export const GetAllTeamMemberApi= async (data: GetAllTeamMemberApiData) => {
   const response = await AxiosDefault({
     url: `/api/v1/agency/team-member/get-all`,
     method: "POST",
@@ -74,3 +101,16 @@ export const GetTeamMemberTableData = async (data: TeamData) => {
   const responseData = response.data;
   return responseData;
 };
+
+
+  // get team member profile
+  export const GetTeamMemberProfileApi = async (data: GetTeamMemberProfileApiData ) => {
+    const response = await AxiosDefault({
+      url: `/api/v1/agency/team-member/details/${data.id}`,
+      method: "GET",
+      data: data,
+      contentType: "application/json", 
+    });
+    const responseData = response.data;
+    return responseData;
+  };

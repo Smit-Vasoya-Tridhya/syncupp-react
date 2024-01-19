@@ -3,14 +3,15 @@
 import PageHeader from '@/app/shared/page-header';
 import ModalButton from '@/app/shared/modal-button';
 import AddClientForm from '@/app/shared/(user)/client/create-edit/add-client-form';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteClient, getAllClient } from '@/redux/slices/user/client/clientSlice';
 import { useRouter } from 'next/navigation';
 // import toast from 'react-hot-toast';
 import { useModal } from '@/app/shared/modal-views/use-modal';
-import CommonTable from '@/components/common-tables/table';
 import { getColumns } from '@/app/shared/(user)/client/client-list/columns';
+import CustomTable from '@/components/common-tables/table';
+import { PiPlusBold } from 'react-icons/pi';
 
 const pageHeader = {
   title: 'Client',
@@ -47,7 +48,7 @@ export default function ClientPage() {
     return data?.client
   };
 
-  const handleDeleteById = async (id: string | string[], currentPage?: number, countPerPage?: number) => {
+  const handleDeleteById = async (id: string | string[], currentPage?: any, countPerPage?: number, sortConfig?: Record<string, string>, searchTerm?: string) => {
 
     // console.log("delete id in main page....", id)
 
@@ -57,7 +58,7 @@ export default function ClientPage() {
       if (res.payload.success === true) {
         closeModal();
         // console.log("currentpage before get and after delete....", currentPage)
-        const reponse = await dispatch(getAllClient({ page: currentPage, items_per_page: countPerPage, sort_field: 'createdAt', sort_order: 'desc' }));
+        const reponse = await dispatch(getAllClient({ page: currentPage, items_per_page: countPerPage, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm }));
         // console.log("response after delete...", reponse)
       }
     } catch (error) {
@@ -77,10 +78,11 @@ export default function ClientPage() {
             view={<AddClientForm title="New Client" />}
             customSize="800px"
             className="mt-0 w-full hover:bg-gray-700 @lg:w-auto dark:bg-gray-100 dark:text-white dark:hover:bg-gray-200 dark:active:bg-gray-100"
+            icon={<PiPlusBold className="me-1.5 h-[17px] w-[17px]" />}
           />
         </div>
       </PageHeader>
-      <CommonTable
+      <CustomTable
         data={clientSliceData?.data?.client}
         total={clientSliceData?.data?.page_count}
         loading={clientSliceData?.loading}

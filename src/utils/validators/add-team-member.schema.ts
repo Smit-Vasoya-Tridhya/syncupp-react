@@ -3,19 +3,19 @@ import { validateEmail} from './common-rules';
 import { messages } from '@/config/messages';
 
 // form zod validation schema
-export const TeamMemberSchema = z.object({
+export const teamMemberSchema = z.object({
   email: validateEmail,
-  name: z.string().nonempty(),
-  contact_number:  z
-    .string({
-      required_error: messages.phoneNumberIsRequired,
-    })
-    .min(2, { message: messages.phoneNumberIsRequired }),
-  role: z
-    .string()
-    .min(1, { message: messages.roleNameIsRequired })
-    .min(3, { message: messages.roleNameLengthMin }),
+  name: z.string().min(1, { message: messages.nameRequired }),
+  contact_number: z.string().trim().nullable().refine(value => {
+    return !value || /^[0-9]{10,13}$/.test(value);
+  }, {
+      message: messages.contactLengthMin,
+  }),
+  role: z.string().optional()
+  // role: z
+  //   .string()
+  //   .min(1, { message: messages.roleNameIsRequired })
 });
 
 // generate form types from zod validation schema
-export type TeamMemberSchema = z.infer<typeof TeamMemberSchema>;
+export type TeamMemberSchema = z.infer<typeof teamMemberSchema>;

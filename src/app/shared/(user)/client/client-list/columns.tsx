@@ -5,23 +5,25 @@ import { HeaderCell } from '@/components/ui/table';
 import { Text } from '@/components/ui/text';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Tooltip } from '@/components/ui/tooltip';
-import { routes } from '@/config/routes';
 import EyeIcon from '@/components/icons/eye';
 import PencilIcon from '@/components/icons/pencil';
 import DeletePopover from '@/app/shared/delete-popover';
 import CustomModalButton from '@/app/shared/custom-modal-button';
 import AddClientForm from '../create-edit/add-client-form';
 import { Button } from 'rizzui';
+import { LuExternalLink } from "react-icons/lu";
 
 type Columns = {
   data: any[];
   sortConfig?: any;
   handleSelectAll: any;
   checkedItems: string[];
-  onDeleteItem: (id: string, currentPage?: number, Islastitem?: boolean) => void;
+  onDeleteItem: (id: string | string[], currentPage?: any, countPerPage?: number, Islastitem?: boolean, sortConfig?: Record<string, string>, searchTerm?: string) => void;
   onHeaderCellClick: (value: string) => void;
   onChecked?: (id: string) => void;
   currentPage?: number;
+  pageSize?: number;
+  searchTerm?: string;
 };
 
 export const getColumns = ({
@@ -32,7 +34,9 @@ export const getColumns = ({
   onHeaderCellClick,
   handleSelectAll,
   onChecked,
-  currentPage
+  currentPage,
+  pageSize,
+  searchTerm
 }: Columns) => [
   {
     title: (
@@ -91,7 +95,9 @@ export const getColumns = ({
     key: 'contact_number',
     width: 200,
     render: (value: string) => (
-      <Text className="font-medium text-gray-700">{value}</Text>
+      <>
+      {value && value != "" ? <Text className="font-medium text-gray-700">{value}</Text> : <Text className="font-medium text-gray-700">-</Text>}
+      </>
     ),
   },
   {
@@ -118,11 +124,11 @@ export const getColumns = ({
         title="Company"
         sortable
         ascending={
-          sortConfig?.direction === 'asc' && sortConfig?.key === 'reference_id'
+          sortConfig?.direction === 'asc' && sortConfig?.key === 'company_name'
         }
       />
     ),
-    onHeaderCell: () => onHeaderCellClick('reference_id'),
+    onHeaderCell: () => onHeaderCellClick('company_name'),
     dataIndex: 'reference_id',
     key: 'reference_id',
     width: 200,
@@ -136,16 +142,18 @@ export const getColumns = ({
         title="Website"
         sortable
         ascending={
-          sortConfig?.direction === 'asc' && sortConfig?.key === 'reference_id'
+          sortConfig?.direction === 'asc' && sortConfig?.key === 'company_website'
         }
       />
     ),
-    onHeaderCell: () => onHeaderCellClick('reference_id'),
+    onHeaderCell: () => onHeaderCellClick('company_website'),
     dataIndex: 'reference_id',
     key: 'reference_id',
     width: 200,
     render: (value: Record<string, string>) => (
-      <Text className="font-medium text-gray-700">{value?.company_website}</Text>
+      <>
+       {value?.company_website && value?.company_website != "" ? <Link href={value?.company_website} target='_blank' className="font-medium text-gray-700" ><LuExternalLink size={25} /></Link> : <Text className="font-medium text-gray-700">-</Text>}
+      </>
     ),
   },
   {
@@ -195,7 +203,7 @@ export const getColumns = ({
         <DeletePopover
           title={`Delete the client`}
           description={`Are you sure you want to delete?`}
-          onDelete={() => onDeleteItem(row._id, currentPage, data?.length <= 1 ? true : false)}
+          onDelete={() => onDeleteItem(row._id, currentPage, pageSize, data?.length <= 1 ? true : false, sortConfig, searchTerm)}
         />
       </div>
     ),
