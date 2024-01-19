@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { SubmitHandler } from 'react-hook-form';
 import { Form } from '@/components/ui/form';
 import { useDispatch, useSelector } from 'react-redux';
-import { useRouter } from 'next/navigation';
 import Spinner from '@/components/ui/spinner';
 import { useModal } from '@/app/shared/modal-views/use-modal';
 import cn from '@/utils/class-names';
@@ -13,7 +12,7 @@ import { PiXBold } from 'react-icons/pi';
 import { Input } from '@/components/ui/input';
 import dynamic from 'next/dynamic';
 import SelectLoader from '@/components/loader/select-loader';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { FaqSchema, faqSchema } from '@/utils/validators/faq.schema';
 import { Textarea } from 'rizzui';
 import { getAllFaq, getFaqDataByID, postAddFaq, updateFaqDataByID } from '@/redux/slices/admin/faq/faqSlice';
@@ -50,21 +49,9 @@ export default function AddFaqForm(props: any) {
 
   const onSubmit: SubmitHandler<FaqSchema> = (data) => {
 
-    // const formData = {
-    //   description: dataa?.description ?? '',
-    //   title: dataa?.title ?? '',
-    // }
-
     const filteredFormData = Object.fromEntries(
       Object.entries(data).filter(([_, value]) => value !== undefined && value !== '')
     );
-
-
-    // const filteredRegionalData = Object.fromEntries(
-    //   Object.entries(regionalData).filter(([_, value]) => value !== undefined && value !== '')
-    // );
-
-    // const fullData = { ...filteredRegionalData, ...filteredFormData }
 
     if(title === 'FAQ') {
         dispatch(postAddFaq(filteredFormData)).then((result: any) => {
@@ -126,7 +113,6 @@ export default function AddFaqForm(props: any) {
               )}
             >
               <Input
-                // onKeyDown={handleKeyDown}
                 type="text"
                 label="Title"
                 placeholder="Enter your Title here....."

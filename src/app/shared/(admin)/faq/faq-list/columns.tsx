@@ -104,18 +104,6 @@ export const getColumns = ({
           view={<AddFaqForm title="Edit FAQ" row={row} /> }
           customSize="800px"
         />
-        {/* <Tooltip
-          size="sm"
-          content={() => 'View FAQ'}
-          placement="top"
-          color="invert"
-        >
-          <Link href={routes.editTeam}>
-            <Button size="sm" variant="outline" className='bg-white text-black' aria-label={'View Member'}>
-              <EyeIcon className="h-4 w-4" />
-            </Button>
-          </Link>
-        </Tooltip> */}
         <DeletePopover
           title={`Delete the FAQ`}
           description={`Are you sure you want to delete?`}
