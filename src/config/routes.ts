@@ -11,6 +11,7 @@ export const routes = {
   client: '/client',
   team:'/team',
   viewTeam:'/team/view-team',
+  task: '/task',
 
   teams: {
     verify: '/team/verify'

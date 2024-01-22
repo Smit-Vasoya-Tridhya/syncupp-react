@@ -5,8 +5,10 @@ import { Fragment } from 'react';
 import {
   PiFolderNotchDuotone,
   PiUser,
-  PiUserListDuotone,
+  PiUsersThree,
 } from 'react-icons/pi';
+import { FaTasks } from "react-icons/fa";
+// import { IoIosPeople } from "react-icons/io";
 import { useSelector } from 'react-redux';
 import { Title } from '@/components/ui/text';
 import { usePathname } from 'next/navigation';
@@ -39,7 +41,12 @@ export const MenuItems = () => {
       {
         name: 'Team',
         href: routes.team,
-        icon: <PiUserListDuotone />,
+        icon: <PiUsersThree />,
+      },
+      {
+        name: 'Task',
+        href: routes.task,
+        icon: <FaTasks />,
       },
     ];
     
@@ -53,7 +60,7 @@ export const MenuItems = () => {
       {
         name: 'Team',
         href: routes.team,
-        icon: <PiUserListDuotone />,
+        icon: <PiUsersThree />,
       }
     ];
     
