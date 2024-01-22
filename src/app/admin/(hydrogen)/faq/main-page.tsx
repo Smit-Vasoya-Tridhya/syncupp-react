@@ -64,7 +64,7 @@ export default function FaqPage() {
         </div>
       </PageHeader>
             <CustomTable
-                data={adminFaqData?.data.faqs}
+                data={adminFaqData?.data?.faqs}
                 total={adminFaqData?.data?.pagination?.total_pages}
                 loading={adminFaqData?.loading}
                 pageSize={pageSize}
