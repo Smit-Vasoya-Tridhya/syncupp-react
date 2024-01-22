@@ -41,6 +41,20 @@ export default function CompanyDetailsForm(props: any) {
     });
   };
 
+  const peopleCountChange = (selectedOption: string) => {
+    setFdata({
+      ...fdata,
+      peopleCount: selectedOption
+    });
+  };
+
+  const industryChange = (selectedOption: string) => {
+    setFdata({
+      ...fdata,
+      industry: selectedOption
+    });
+  };
+
   const {
     register,
     control,
@@ -83,7 +97,10 @@ export default function CompanyDetailsForm(props: any) {
             render={({ field: { onChange, value } }) => (
               <Select
                 options={peopleCountOptions}
-                onChange={onChange}
+                onChange={(selectedOption: string) => {
+                  onChange(selectedOption);
+                  peopleCountChange(selectedOption);
+                }}
                 value={value}
                 size={isMedium ? 'lg' : 'xl'}
                 label="How many people"
@@ -102,7 +119,10 @@ export default function CompanyDetailsForm(props: any) {
             render={({ field: { onChange, value } }) => (
               <Select
                 options={industryOptions}
-                onChange={onChange}
+                onChange={(selectedOption: string) => {
+                  onChange(selectedOption);
+                  industryChange(selectedOption);
+                }}
                 value={value}
                 size={isMedium ? 'lg' : 'xl'}
                 label="Industry"

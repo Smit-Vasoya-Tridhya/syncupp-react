@@ -175,6 +175,7 @@ export default function AddClientForm(props: any) {
         if(patchEditClient.fulfilled.match(result)) {
           if (result && result.payload.success === true) {
             save && closeModal();
+            dispatch(getAllClient({ sort_field: 'createdAt', sort_order: 'desc' }));
             setSave(false);
           }
         }

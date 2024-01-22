@@ -27,10 +27,6 @@ export default function ClientPage() {
   
   const [pageSize, setPageSize] = useState<number>(5);
 
-  // console.log("Client data....", clientSliceData);
-
-  // console.log("current page in main file...", currentPagee);
-
 
 
   const handleChangePage = async (paginationParams: any) => {
@@ -45,7 +41,9 @@ export default function ClientPage() {
       await dispatch(getAllClient({ page, items_per_page, sort_field, sort_order, search }));
       return data?.client
     }
-    return data?.client
+    if(data && data?.client && data?.client?.length !== 0 ) {
+      return data?.client
+    }
   };
 
   const handleDeleteById = async (id: string | string[], currentPage?: any, countPerPage?: number, sortConfig?: Record<string, string>, searchTerm?: string) => {
@@ -54,12 +52,9 @@ export default function ClientPage() {
 
     try {
       const res = await dispatch(deleteClient({ client_ids: id }));
-      // console.log("delete response....", res)
       if (res.payload.success === true) {
         closeModal();
-        // console.log("currentpage before get and after delete....", currentPage)
         const reponse = await dispatch(getAllClient({ page: currentPage, items_per_page: countPerPage, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm }));
-        // console.log("response after delete...", reponse)
       }
     } catch (error) {
       console.error(error);

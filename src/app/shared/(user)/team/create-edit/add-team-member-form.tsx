@@ -18,10 +18,11 @@ import { TeamMemberSchema, teamMemberSchema } from '@/utils/validators/add-team-
 import { addTeamMember, editTeamMember, getAllTeamMember, getTeamMemberProfile } from '@/redux/slices/user/team-member/teamSlice';
 import { useEffect, useState } from 'react';
 import { handleKeyContactDown, handleKeyDown } from '@/utils/common-functions';
-const Select = dynamic(() => import('@/components/ui/select'), {
-  ssr: false,
-  loading: () => <SelectLoader />,
-});
+import SelectBox from '@/components/ui/select';
+// const Select = dynamic(() => import('@/components/ui/select'), {
+//   ssr: false,
+//   loading: () => <SelectLoader />,
+// });
 
 
 
@@ -79,16 +80,26 @@ export default function AddTeamMemberForm(props: any) {
 
   
   const onSubmit: SubmitHandler<TeamMemberSchema> = (dataa) => {
-    // console.log('Add client dataa---->', dataa);
-
-    console.log("save and new submit button.....")
-
-    const formData = {
-      name: dataa?.name ?? '',
-      email: dataa?.email ?? '',
-      contact_number: dataa?.contact_number ?? '',
-      role: dataa?.role
+    console.log('Add team member dataa---->', dataa);
+    let formData = {};
+    if(title === 'New Team Member') {
+      formData = {
+        name: dataa?.name ?? '',
+        email: dataa?.email ?? '',
+        contact_number: dataa?.contact_number ?? '',
+        role: dataa?.role === 'Team Member' ? 'team_member' : 'admin'
+      }
+    } else {
+      console.log("role in edit...", dataa?.role)
+      formData = {
+        name: dataa?.name ?? '',
+        email: dataa?.email ?? '',
+        contact_number: dataa?.contact_number ?? '',
+        role: dataa?.role === 'Team Member' || dataa?.role === 'team_member' ? 'team_member' : 'admin'
+      }
     }
+    console.log('Add team member formData---->', formData);
+
 
     const filteredFormData = Object.fromEntries(
       Object.entries(formData).filter(([_, value]) => value !== undefined && value !== '')
@@ -112,11 +123,12 @@ export default function AddTeamMemberForm(props: any) {
         }
       });
     } else {
-      dispatch(editTeamMember({ ...fullData, clientId: data._id })).then((result: any) => {
+      dispatch(editTeamMember({ ...fullData, _id: data._id })).then((result: any) => {
         if(editTeamMember.fulfilled.match(result)) {
           if (result && result.payload.success === true) {
             save && closeModal();
             setSave(false);
+            dispatch(getAllTeamMember({ sort_field: 'createdAt', sort_order: 'desc' }));
           }
         }
       });
@@ -127,7 +139,7 @@ export default function AddTeamMemberForm(props: any) {
   const handleSaveAndNewClick = (handleSubmit: any, errors: any) => {
     handleSubmit(onSubmit)();
 
-    console.log("save & new button clicked", errors)
+    // console.log("save & new button clicked", errors)
 
     errors && setLoader(true)
   }
@@ -175,7 +187,7 @@ export default function AddTeamMemberForm(props: any) {
             <Input
             type="text"
             onKeyDown={handleKeyDown}
-            label="Name"
+            label="Name *"
             placeholder="Enter your Name"
             color="info"
             className="[&>label>span]:font-medium"
@@ -185,10 +197,11 @@ export default function AddTeamMemberForm(props: any) {
           <Input
             type="email"
             onKeyDown={handleKeyDown}
-            label="Email ID"
+            label="Email ID *"
             placeholder="Enter your Email ID"
             color="info"
             className="[&>label>span]:font-medium"
+            disabled={title === 'Edit Team Member'}
             {...register('email')}
             error={errors.email?.message}
           />
@@ -206,13 +219,13 @@ export default function AddTeamMemberForm(props: any) {
             name="role"
             control={control}
             render={({ field: { onChange, value } }) => (
-              <Select
+              <SelectBox
                 options={typeOption}
                 value={value}
                 onChange={onChange}
-                label="Product Type"
+                label="Permisson *"
                 error={errors?.role?.message as string}
-                getOptionValue={(option) => option.value}
+                getOptionValue={(option) => option?.name}
               />
             )}
           />

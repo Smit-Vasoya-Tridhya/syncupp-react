@@ -44,7 +44,7 @@ type PutEditTeamMemberApiData = {
 // Add new team member API
 export const PostAddTeamMemberApi = async (data: PostAddTeamMemberApiData) => {
   const response = await AxiosDefault({
-    url: "/api/v1/agency/team-member/add",
+    url: "/api/v1/team-member/add",
     method: "POST",
     data: data,
     contentType: "application/json", 
@@ -67,8 +67,9 @@ export const PostTeamMemberVerifyApi = async (data: PostTeamMemberVerifyApiData)
 
 // Edit team member API
 export const PutEditTeamMemberApi = async (data: PutEditTeamMemberApiData) => {
+  console.log("id in edit team api", data)
   const response = await AxiosDefault({
-    url: `/api/v1/agency/team-member/edit/${data.id}`,
+    url: `/api/v1/team-member/edit/${data.id}`,
     method: "PUT",
     data: data,
     contentType: "application/json", 
@@ -80,7 +81,7 @@ export const PutEditTeamMemberApi = async (data: PutEditTeamMemberApiData) => {
 // delete Team member API
 export const DeleteTeamMemberApi = async (data: DeleteTeamMemberApiData) => {
   const response = await AxiosDefault({
-    url: `/api/v1/agency/team-member/delete/${data.id}`,
+    url: `/api/v1/team-member/delete/${data.id}`,
     method: "DELETE",
     data: data,
     contentType: "application/json", 
@@ -93,7 +94,7 @@ export const DeleteTeamMemberApi = async (data: DeleteTeamMemberApiData) => {
 // Get all team member
 export const GetAllTeamMemberApi= async (data: GetAllTeamMemberApiData) => {
   const response = await AxiosDefault({
-    url: `/api/v1/agency/team-member/get-all`,
+    url: `/api/v1/team-member/get-all`,
     method: "POST",
     data: data,
     contentType: "application/json", 
@@ -106,7 +107,7 @@ export const GetAllTeamMemberApi= async (data: GetAllTeamMemberApiData) => {
   // get team member profile
   export const GetTeamMemberProfileApi = async (data: GetTeamMemberProfileApiData ) => {
     const response = await AxiosDefault({
-      url: `/api/v1/agency/team-member/details/${data.id}`,
+      url: `/api/v1/team-member/details/${data.id}`,
       method: "GET",
       data: data,
       contentType: "application/json", 

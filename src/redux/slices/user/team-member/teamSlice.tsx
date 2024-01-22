@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { toast } from 'react-hot-toast';
-import { DeleteTeamMemberApi, GetAllTeamMemberApi, GetTeamMemberProfileApi, PostAddTeamMemberApi, PutEditTeamMemberApi } from "@/api/user/team-member/teamApis";
+import { DeleteTeamMemberApi, GetAllTeamMemberApi, GetTeamMemberProfileApi, PostAddTeamMemberApi, PostTeamMemberVerifyApi, PutEditTeamMemberApi } from "@/api/user/team-member/teamApis";
 
 type TeamData = {
   _id:string;
@@ -13,6 +13,15 @@ type TeamData = {
   page?: any;
   items_per_page?: number;
   search?: string;
+}
+
+type PostTeamMemberVerifyData = {
+  email: string;
+  agency_id: string;
+  password?: string;
+  first_name?: string;
+  last_name?: string;
+  redirect: boolean;
 }
 
 interface TeamMemberDataResponse {
@@ -54,16 +63,9 @@ export const addTeamMember: any = createAsyncThunk(
 
 export const verifyTeamMember: any = createAsyncThunk(
   "team/verifyTeamMember",
-  async (data: TeamData) => {
-    const apiData={
-      id: data._id,
-      email: data.email,
-      name: data.name,
-      contact_number: data.contact_number,
-      role: data.role,
-    }
+  async (data: PostTeamMemberVerifyData) => {
     try {
-      const response: any = await PostAddTeamMemberApi(apiData);
+      const response: any = await PostTeamMemberVerifyApi(data);
       return response;
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as TeamMemberDataResponse;
