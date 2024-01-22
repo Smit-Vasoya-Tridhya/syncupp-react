@@ -3,8 +3,8 @@ import { messages } from '@/config/messages';
 
 // form zod validation schema
 export const faqSchema = z.object({
-  title: z.string().min(1, { message: messages.titleIsRequired }),
-  description: z.string().min(5, { message: messages.descriptionIsRequired }),
+  title: z.string().min(1, { message: messages.titleIsRequired }).max(50, { message: messages.titleLength }),
+  description: z.string().min(5, { message: messages.descriptionIsRequired }).max(400, { message:messages.descriptionLength }),
 });
 
 // generate form types from zod validation schema
