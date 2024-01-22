@@ -26,16 +26,18 @@ export default function TeamDataTablePage() {
     let { page, items_per_page, sort_field, sort_order, search } = paginationParams;
 
     const response = await dispatch(getAllTeamMember({ page, items_per_page, sort_field, sort_order, search }));
-    console.log(response, "Response.....")
+    // console.log(response, "Response.....")
     const { data } = response?.payload;
     const maxPage: number = data?.page_count;
 
     if (page > maxPage) {
       page = maxPage > 0 ? maxPage : 1;
       await dispatch(getAllTeamMember({ page, items_per_page, sort_field, sort_order, search }));
-      return data
+      return data?.teamMemberList;
     }
-    return data && data?.teamMemberList.length !== 0 && data?.teamMemberList
+    if(data && data?.teamMemberList && data?.teamMemberList.length !== 0 ) {
+      return data?.teamMemberList
+    }
   };
 
   const handleDeleteById = async (id: string | string[], currentPage?: any, countPerPage?: number, sortConfig?: Record<string, string>, searchTerm?: string) => {
