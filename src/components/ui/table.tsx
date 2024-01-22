@@ -66,7 +66,6 @@ export default function Table({
   ...props
 }: TableProps) {
 
-  console.log(isLoading, 'isLoading',75384758734)
   return (
     <RcTable
       className={cn(
