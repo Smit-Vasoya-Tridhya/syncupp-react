@@ -331,6 +331,7 @@ export default function AddClientForm(props: any) {
                         countryHandleChange(selectedOption);
                       }}
                       label="Country"
+                      color="info"
                       error={errors?.country?.message as string}
                       getOptionValue={(option) => option.name}
                       dropdownClassName="p-1 border w-12 border-gray-100 shadow-lg"
@@ -352,6 +353,7 @@ export default function AddClientForm(props: any) {
                         stateHandleChange(selectedOption);
                       }}
                       label="State"
+                      color="info"
                       disabled={stateOptions.length === 0}
                       error={errors?.state?.message as string}
                       getOptionValue={(option) => option.name}
@@ -373,6 +375,7 @@ export default function AddClientForm(props: any) {
                       }}
                       disabled={cityOptions.length === 0}
                       label="City"
+                      color="info"
                       error={errors?.city?.message as string}
                       getOptionValue={(option) => option.name}
                       dropdownClassName="p-1 border w-12 border-gray-100 shadow-lg"

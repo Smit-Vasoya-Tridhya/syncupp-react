@@ -18,6 +18,7 @@ export default function MainPage() {
   
     const email = searchParams.get("email");
     const agency = searchParams.get("agency");
+    const token = searchParams.get("token");
     let redirectt = searchParams.get("redirect");
     // console.log("redirect....", redirectt)
     let redirect = (redirectt === 'true');
@@ -25,7 +26,7 @@ export default function MainPage() {
     // console.log("token....", token)
 
     useEffect(() => { redirect &&
-        dispatch(verifyTeamMember({email: email, agency_id: agency, redirect: redirect })).then((result: any) => {
+        dispatch(verifyTeamMember({email: email, agency_id: agency, redirect: redirect, token: token })).then((result: any) => {
           if (verifyTeamMember.fulfilled.match(result)) {
             // console.log('resultt', result)
             if (result && result.payload.success === true ) {
@@ -33,7 +34,7 @@ export default function MainPage() {
             } 
           }
         })
-      }, [dispatch, router, agency, email, redirect]);
+      }, [dispatch, router, agency, email, token, redirect]);
 
   return (
     <>

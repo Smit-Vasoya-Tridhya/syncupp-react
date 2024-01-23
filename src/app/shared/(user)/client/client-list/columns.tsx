@@ -12,6 +12,7 @@ import CustomModalButton from '@/app/shared/custom-modal-button';
 import AddClientForm from '../create-edit/add-client-form';
 import { Button } from 'rizzui';
 import { LuExternalLink } from "react-icons/lu";
+import moment from 'moment'
 
 type Columns = {
   data: any[];
@@ -170,9 +171,10 @@ export const getColumns = ({
     dataIndex: 'createdAt',
     key: 'createdAt',
     width: 200,
-    render: (value: string) => (
-      <Text className="font-medium text-gray-700">{value}</Text>
-    ),
+    render: (value: string) => {
+      const date = moment(value).fromNow();
+      return <Text className="font-medium text-gray-700">{date}</Text>
+    },
   },
   {
     // Need to avoid this issue -> <td> elements in a large <table> do not have table headers.

@@ -2,7 +2,7 @@
 
 import { Title, ActionIcon } from '@/components/ui/text';
 import { Button } from '@/components/ui/button';
-import { Controller, SubmitHandler, useFormContext } from 'react-hook-form';
+import { Controller, SubmitHandler } from 'react-hook-form';
 import { Form } from '@/components/ui/form';
 import { useMedia } from '@/hooks/use-media';
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,11 +18,10 @@ import { TeamMemberSchema, teamMemberSchema } from '@/utils/validators/add-team-
 import { addTeamMember, editTeamMember, getAllTeamMember, getTeamMemberProfile } from '@/redux/slices/user/team-member/teamSlice';
 import { useEffect, useState } from 'react';
 import { handleKeyContactDown, handleKeyDown } from '@/utils/common-functions';
-import SelectBox from '@/components/ui/select';
-// const Select = dynamic(() => import('@/components/ui/select'), {
-//   ssr: false,
-//   loading: () => <SelectLoader />,
-// });
+const Select = dynamic(() => import('@/components/ui/select'), {
+  ssr: false,
+  loading: () => <SelectLoader />,
+});
 
 
 
@@ -35,7 +34,6 @@ const typeOption= [
 export default function AddTeamMemberForm(props: any) {
 
   const { title, row } = props;
-  console.log("row data....", row);
 
   const isMedium = useMedia('(max-width: 1200px)', false);
   const dispatch = useDispatch();
@@ -67,20 +65,29 @@ export default function AddTeamMemberForm(props: any) {
   }, [row, dispatch]); 
 
   let [ data ] = teamMemberData?.teamMember;
-  console.log(data, "dataaaa")
   
-  let defaultValuess = {
-    name: data?.name,
-    email: data?.email,
-    contact_number: data?.contact_number,
-    role: data?.member_role
-  };
+  let defaultValuess = {};
+
+  if(data) {
+    defaultValuess = {
+      name: data?.name,
+      email: data?.email,
+      contact_number: data?.contact_number,
+      role: data?.member_role === 'team_member' ? 'Team Member' : 'Admin' 
+    };
+  } else {
+    defaultValuess = {
+      name: '',
+      email: '',
+      contact_number: '',
+      role: '' 
+    };
+  }
 
 
 
   
   const onSubmit: SubmitHandler<TeamMemberSchema> = (dataa) => {
-    console.log('Add team member dataa---->', dataa);
     let formData = {};
     if(title === 'New Team Member') {
       formData = {
@@ -90,7 +97,6 @@ export default function AddTeamMemberForm(props: any) {
         role: dataa?.role === 'Team Member' ? 'team_member' : 'admin'
       }
     } else {
-      console.log("role in edit...", dataa?.role)
       formData = {
         name: dataa?.name ?? '',
         email: dataa?.email ?? '',
@@ -98,7 +104,6 @@ export default function AddTeamMemberForm(props: any) {
         role: dataa?.role === 'Team Member' || dataa?.role === 'team_member' ? 'team_member' : 'admin'
       }
     }
-    console.log('Add team member formData---->', formData);
 
 
     const filteredFormData = Object.fromEntries(
@@ -138,14 +143,10 @@ export default function AddTeamMemberForm(props: any) {
 
   const handleSaveAndNewClick = (handleSubmit: any, errors: any) => {
     handleSubmit(onSubmit)();
-
-    // console.log("save & new button clicked", errors)
-
-    errors && setLoader(true)
+    errors && setLoader(true);
   }
 
   const handleSaveClick = () => {
-    // console.log("save button clicked")
     setSave(true);
   }
   
@@ -188,42 +189,43 @@ export default function AddTeamMemberForm(props: any) {
             type="text"
             onKeyDown={handleKeyDown}
             label="Name *"
-            placeholder="Enter your Name"
             color="info"
+            placeholder="Enter your Name"
             className="[&>label>span]:font-medium"
             {...register('name')}
-            error={errors.name?.message}
+            error={errors.name?.message as string}
           />
           <Input
             type="email"
             onKeyDown={handleKeyDown}
             label="Email ID *"
-            placeholder="Enter your Email ID"
             color="info"
+            placeholder="Enter your Email ID"
             className="[&>label>span]:font-medium"
             disabled={title === 'Edit Team Member'}
             {...register('email')}
-            error={errors.email?.message}
+            error={errors.email?.message as string}
           />
           <Input
             type="number"
             onKeyDown={handleKeyContactDown}
             label="Phone"
-            placeholder="Enter your Phone"
             color="info"
+            placeholder="Enter your Phone"
             className="[&>label>span]:font-medium"
             {...register('contact_number')}
-            error={errors.contact_number?.message}
+            error={errors.contact_number?.message as string}
           />
           <Controller
             name="role"
             control={control}
             render={({ field: { onChange, value } }) => (
-              <SelectBox
+              <Select
                 options={typeOption}
                 value={value}
                 onChange={onChange}
                 label="Permisson *"
+                color="info"
                 error={errors?.role?.message as string}
                 getOptionValue={(option) => option?.name}
               />
@@ -258,7 +260,6 @@ export default function AddTeamMemberForm(props: any) {
                   className="hover:gray-700 ms-3 @xl:w-auto dark:bg-gray-200 dark:text-white"
                   disabled={(teamMemberData?.addTeamMemberStatus === 'pending' || teamMemberData?.editTeamMemberStatus === 'pending') && save}
                   onClick={handleSaveClick}
-
                 >
                   Save
                   { (teamMemberData?.addTeamMemberStatus === 'pending' || teamMemberData?.editTeamMemberStatus === 'pending') && save && (<Spinner size="sm" tag='div' className='ms-3' color='white' />)  }
