@@ -18,10 +18,12 @@ type TeamData = {
 type PostTeamMemberVerifyData = {
   email: string;
   agency_id: string;
+  redirect: boolean;
+  token?: string;
+  client_id?: string;
   password?: string;
   first_name?: string;
   last_name?: string;
-  redirect: boolean;
 }
 
 interface TeamMemberDataResponse {

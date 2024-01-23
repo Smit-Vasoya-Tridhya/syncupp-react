@@ -32,6 +32,7 @@ export default function SetPasswordForm(props: any) {
   const email = searchParams.get("email");
   const agency = searchParams.get("agency");
   let redirectt = searchParams.get("redirect");
+  const token = searchParams.get("token");
   // console.log("redirect....", redirectt)
   let redirect = (redirectt === 'true');
   
@@ -49,6 +50,7 @@ export default function SetPasswordForm(props: any) {
     const apiData = {
       email: email,
       agency_id: agency,
+      token: token,
       password: data?.password,
       first_name: data?.firstName,
       last_name: data?.lastName,
