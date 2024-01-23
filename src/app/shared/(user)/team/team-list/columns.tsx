@@ -84,8 +84,8 @@ export const getColumns = ({
       <div className="inline-flex ps-3.5">
         <Checkbox
           className="cursor-pointer"
-          checked={checkedItems.includes(row.id)}
-          {...(onChecked && { onChange: () => onChecked(row.id) })}
+          checked={checkedItems.includes(row._id)}
+          {...(onChecked && { onChange: () => onChecked(row._id) })}
         />
       </div>
     ),

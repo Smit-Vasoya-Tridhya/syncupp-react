@@ -104,7 +104,6 @@ export function useTable<T extends AnyObject>(
 
 
   function sortData(data: T[], sortKey: string, sortDirection: string) {
-    console.log("use table data....", data)
 
     return data && data.length > 0 && [...data].length > 0 && [...data].sort((a, b) => {
       const aValue = a[sortKey];
