@@ -14,6 +14,7 @@ import teamSlice from "./slices/user/team-member/teamSlice";
 import adminChangePasswordSlice from "./slices/admin/auth/updatePassword/changePasswordSlice";
 import agencySlice from "./slices/admin/agency/agencySlice";
 import  agencyAgreementSlice from "./slices/user/agreement/agreementSlice";
+import clientAgreementSlice from "./slices/user/client/agreement/clientAgreementSlice";
 
 
 const combinedReducer = combineReducers({
@@ -31,7 +32,8 @@ const combinedReducer = combineReducers({
   adminChangePassword: adminChangePasswordSlice,
   teamMember: teamSlice,
   adminAgency: agencySlice,
-  agreement: agencyAgreementSlice
+  agreement: agencyAgreementSlice,
+  clienAgreement: clientAgreementSlice
 });
 
 const rootReducer = (state: any, action: any) => {

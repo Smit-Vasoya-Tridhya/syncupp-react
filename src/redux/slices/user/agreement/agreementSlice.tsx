@@ -1,4 +1,4 @@
-import { DeleteAgencyAgreementsApi, GetAllAgreementApi } from "@/commonAPIs/userAPIs/agreement/agencyAgreementAPIs";
+import { DeleteAgencyAgreementsApi, DownloadAgreement, GetAllAgreementApi, GetSingleAgreementByIdApi, SendAgreement } from "@/commonAPIs/userAPIs/agency-apis/agreement/agencyAgreementAPIs";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { toast } from 'react-hot-toast';
 
@@ -41,10 +41,69 @@ type DeleteAgencyAgreement = {
 }
 
 export const deleteAgencyAgreement: any = createAsyncThunk(
-    "adminAgency/deleteAgencyAgreement",
+    "agreement/deleteAgencyAgreement",
     async (data: DeleteAgencyAgreement) => {
         try {
             const response: any = await DeleteAgencyAgreementsApi(data);
+            return response;
+        } catch (error: any) {
+            return { status: false, message: error.response.data.message } as APIErrorResponse;
+        }
+    }
+);
+
+
+// Send Agreement list API types
+type SendAgreementApiData = {
+    agreementId: string;
+}
+
+// Send Agreement list api Call
+export const sendAgreement: any = createAsyncThunk(
+    "agreement/sendAgreement",
+    async (data: SendAgreementApiData) => {
+        try {
+            const response: any = await SendAgreement(data);
+            return response;
+        } catch (error: any) {
+            return { status: false, message: error.response.data.message } as APIErrorResponse;
+        }
+    }
+);
+
+
+// Download Agreement
+
+// Download Agreement list API types
+type DownloadAgreementApiData = {
+    id: string;
+}
+
+
+export const downloadAgreement: any = createAsyncThunk(
+    "agreement/downloadAgreement",
+    async (data: DownloadAgreementApiData) => {
+        try {
+            const response: any = await DownloadAgreement(data);
+            return response;
+        } catch (error: any) {
+            return { status: false, message: error.response.data.message } as APIErrorResponse;
+        }
+    }
+);
+
+
+// get A Single Aggrement By Id
+
+type GetAgreementByIdApiData = {
+    id: string;
+}
+
+export const getSingleagreement: any = createAsyncThunk(
+    "agreement/getSingleagreement",
+    async (data: GetAgreementByIdApiData) => {
+        try {
+            const response: any = await GetSingleAgreementByIdApi(data);
             return response;
         } catch (error: any) {
             return { status: false, message: error.response.data.message } as APIErrorResponse;
@@ -57,12 +116,14 @@ export const deleteAgencyAgreement: any = createAsyncThunk(
 interface AgencyAgreementInitialState {
     loading: boolean;
     agreementDetails: any;
+    singleAgreementdetails: any
 }
 
 // Slice initial States
 const initialState: AgencyAgreementInitialState = {
     loading: false,
-    agreementDetails: {}
+    agreementDetails: {},
+    singleAgreementdetails: {}
 };
 
 
@@ -117,6 +178,88 @@ export const agencyAgreementSlice = createSlice({
                 }
             })
             .addCase(deleteAgencyAgreement.rejected, (state) => {
+                return {
+                    ...state,
+                    loading: false,
+                }
+            });
+
+
+        // Send Agreement
+
+        builder
+            .addCase(sendAgreement.pending, (state) => {
+                return {
+                    ...state,
+                    loading: true,
+                }
+            })
+            .addCase(sendAgreement.fulfilled, (state, action) => {
+                if (action.payload.status == true) {
+                    toast.success(action.payload.message)
+                } else {
+                    toast.error(action.payload.message)
+                }
+                return {
+                    ...state,
+                    loading: false,
+                }
+            })
+            .addCase(sendAgreement.rejected, (state) => {
+                return {
+                    ...state,
+                    loading: false,
+                }
+            });
+
+
+        // Download Agreement
+
+        builder
+            .addCase(downloadAgreement.pending, (state) => {
+                return {
+                    ...state,
+                    loading: true,
+                }
+            })
+            .addCase(downloadAgreement.fulfilled, (state, action) => {
+                if (action.payload.status == true) {
+                    toast.success(action.payload.message)
+                } else {
+                    toast.error(action.payload.message)
+                }
+                return {
+                    ...state,
+                    loading: false,
+                }
+            })
+            .addCase(downloadAgreement.rejected, (state) => {
+                return {
+                    ...state,
+                    loading: false,
+                }
+            });
+
+        // Get Single Agreement Details
+
+        builder
+            .addCase(getSingleagreement.pending, (state) => {
+                return {
+                    ...state,
+                    loading: true,
+                }
+            })
+            .addCase(getSingleagreement.fulfilled, (state, action) => {
+                if (action.payload.status == false) {
+                    toast.error(action.payload.message)
+                }
+                return {
+                    ...state,
+                    singleAgreementdetails: action.payload,
+                    loading: false,
+                }
+            })
+            .addCase(getSingleagreement.rejected, (state) => {
                 return {
                     ...state,
                     loading: false,
