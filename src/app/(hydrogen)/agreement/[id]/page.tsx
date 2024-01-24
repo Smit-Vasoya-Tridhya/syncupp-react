@@ -11,7 +11,7 @@ export default function AgreementDetailsPage({ params }: { params: { id: string 
 
     const { singleAgreementdetails, loading } = useSelector((state: any) => state?.root?.agreement);
 
-    console.log("singleAgreementdetails", singleAgreementdetails?.data, loading);
+
 
     useEffect(() => {
         dispatch(getSingleagreement(params?.id))
@@ -19,7 +19,7 @@ export default function AgreementDetailsPage({ params }: { params: { id: string 
 
     return (
         <>
-            <h1>Introduction</h1>
+            <h3 className='border-2 rounded border-solid border-gray-300 bg-gray-100 p-3'>Introduction</h3>
             <div className='mt-5' dangerouslySetInnerHTML={{ __html: singleAgreementdetails?.data?.agreement_content }} />
         </>
     )

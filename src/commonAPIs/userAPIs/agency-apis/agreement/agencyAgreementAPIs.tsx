@@ -1,4 +1,5 @@
 import AxiosDefault from "@/services/AxiosDefault";
+import { string } from "prop-types";
 
 // Agency Agreement List
 type GetAllAgreementlistApiData = {
@@ -118,6 +119,76 @@ export const DownloadAgreement = async (data: DownloadAgreementApiData) => {
     link.download = contentDisposition.split('=')[1].replace(/"/g, '');
     link.click();
 
-    const responseData = response?.data?.data?.data;
+    const responseData = response?.data;
+    return responseData;
+};
+
+
+// Create Agreement
+type CreateAgencyAgreement = {
+    client_id: string,
+    title: string,
+    receiver: string,
+    due_date: string,
+    agreement_content: string
+}
+
+export const CreateAgencyAgreementsApi = async (data: CreateAgencyAgreement) => {
+    const response = await AxiosDefault({
+        url: `/api/v1/agency/agreement/add-agreement`,
+        method: "POST",
+        data: data,
+        contentType: "application/json",
+    });
+    const responseData = response.data;
+    return responseData;
+};
+
+// Edit Agreement
+type EditAgencyAgreement = {
+    client_id: string,
+    title: string,
+    receiver: string,
+    due_date: string,
+    agreement_content: string
+}
+
+export const EditAgencyAgreementsApi = async (data: EditAgencyAgreement, id: string) => {
+    const response = await AxiosDefault({
+        url: `/api/v1/agency/agreement/update-agreement/${id}`,
+        method: "PUT",
+        data: data,
+        contentType: "application/json",
+    });
+    const responseData = response.data;
+    return responseData;
+};
+
+// Edit Status of Agreement
+
+type EditStatusAgreement = {
+    status: string
+}
+
+export const EditAgreementStatus = async (data: EditStatusAgreement, id: string) => {
+    const response = await AxiosDefault({
+        url: `/api/v1/agency/agreement/update-agreement-status/${id}`,
+        method: "PUT",
+        data: data,
+        contentType: "application/json",
+    });
+    const responseData = response.data;
+    return responseData;
+};
+
+//Get Dropdown Client list
+export const GetDropdownClienlist = async (data:any) => {
+    const response = await AxiosDefault({
+        url: `/api/v1/agency/clients`,
+        method: "POST",
+        data: data,
+        contentType: "application/json",
+    });
+    const responseData = response.data;
     return responseData;
 };

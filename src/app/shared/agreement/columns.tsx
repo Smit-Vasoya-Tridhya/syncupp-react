@@ -19,7 +19,8 @@ import { RiDraftLine } from "react-icons/ri";
 import { FiSend } from "react-icons/fi";
 import { FaRegCheckCircle } from "react-icons/fa";
 import moment from 'moment';
-import { downloadAgreement, sendAgreement } from '@/redux/slices/user/agreement/agreementSlice';
+import { downloadAgreement, getAllAgencyagreement, sendAgreement, updateagreementStatus } from '@/redux/slices/user/agreement/agreementSlice';
+import { useSelector } from 'react-redux';
 
 
 
@@ -47,11 +48,25 @@ export const AgreementColumns = ({
     onChecked,
     currentPage,
     pageSize,
-    searchTerm
+    searchTerm,
 }: Columns) => {
 
     const dispatch = useDispatch();
-  
+    const { agreementDetails, loading } = useSelector((state: any) => state?.root?.agreement);
+
+
+    const StatusHandler = (status: string, id: string, setOpen: any) => {
+        setOpen(false)
+        dispatch(updateagreementStatus({ data: { status: status }, id: id })).then((result: any) => {
+            if (updateagreementStatus.fulfilled.match(result)) {
+                // console.log('resultt', result)
+                if (result && result.payload.success === true) {
+                    dispatch(getAllAgencyagreement({ page: currentPage, items_per_page: pageSize, sort_field: sortConfig?.key, sort_order: sortConfig?.direction }));
+                }
+            }
+        })
+    }
+
 
     return [
         {
@@ -146,7 +161,7 @@ export const AgreementColumns = ({
             key: 'status',
             width: 120,
             render: (_: string, row: Record<string, string>) => (
-                <div className="flex items-center justify-end gap-3 pe-4">
+                <div className="flex items-center justify-start gap-3 text-center">
                     <Popover
                         placement="left"
                         className="z-50 min-w-[140px] px-0"
@@ -155,7 +170,8 @@ export const AgreementColumns = ({
                                 <Button
                                     variant="text"
                                     className="flex w-full items-center justify-start px-4 py-2.5 focus:outline-none"
-                                    onClick={() => setOpen(false)}
+                                    onClick={() => { StatusHandler("draft", row?._id, setOpen) }}
+                                    disabled={row?.status === "draft"}
                                 >
                                     <RiDraftLine className="me-2 h-[18px] w-[18px] text-gray-500" />
                                     Draft
@@ -163,7 +179,8 @@ export const AgreementColumns = ({
                                 <Button
                                     variant="text"
                                     className="flex w-full items-center justify-start px-4 py-2.5 focus:outline-none"
-                                    onClick={() => setOpen(false)}
+                                    onClick={() => { StatusHandler("sent", row?._id, setOpen) }}
+                                    disabled={row?.status === "sent"}
                                 >
                                     <FiSend className="me-2 h-[18px] w-[18px] text-gray-500" />
                                     Sent
@@ -171,7 +188,9 @@ export const AgreementColumns = ({
                                 <Button
                                     variant="text"
                                     className="flex w-full items-center justify-start px-4 py-2.5 focus:outline-none"
-                                    onClick={() => setOpen(false)}
+                                    // onClick={() => { StatusHandler("agreed", row?._id,setOpen) }}
+                                    // disabled={row?.status === "agreed"}
+                                    disabled
                                 >
                                     <FaRegCheckCircle className="me-2 h-[18px] w-[18px] text-gray-500" />
                                     Agreed
@@ -179,8 +198,8 @@ export const AgreementColumns = ({
                             </div>
                         )}
                     >
-                        <ActionIcon variant="text" className='text-center'>
-                            <Button type='button'>{row?.status}</Button>
+                        <ActionIcon variant="text" className=''>
+                            <Button type='button' className='capitalize'>{row?.status}</Button>
                         </ActionIcon>
                     </Popover>
                 </div>
@@ -194,13 +213,19 @@ export const AgreementColumns = ({
             key: 'action',
             width: 120,
             render: (_: string, row: Record<string, string>) => (
-                <div className="flex items-center justify-end gap-3 pe-4">
-                    <CustomModalButton
-                        title="Edit Agreement"
-                        icon={<PencilIcon className="h-4 w-4" />}
-                        view={<AddClientForm title="Edit Agreement" row={row} />}
-                        customSize="800px"
-                    />
+                <div className="flex items-center justify-start gap-3 pe-4">
+                    <Tooltip
+                        size="sm"
+                        content={() => 'Edit Agreement'}
+                        placement="top"
+                        color="invert"
+                    >
+                        <Link href={`/agreement/edit-agreement/${row?._id}`}>
+                            <Button type='button' size="sm" variant="outline" className='bg-white text-black' aria-label={'View Agreement'}>
+                                <PencilIcon className="h-4 w-4" />
+                            </Button>
+                        </Link>
+                    </Tooltip>
                     <Tooltip
                         size="sm"
                         content={() => 'View Agreement'}
@@ -219,7 +244,7 @@ export const AgreementColumns = ({
                         placement="top"
                         color="invert"
                     >
-                        <Button size="sm" type='button' onClick={() => { dispatch(downloadAgreement(row?._id)) }} variant="outline" className='bg-white text-black' aria-label={'Download PDF'}>
+                        <Button disabled={loading} size="sm" type='button' onClick={() => { dispatch(downloadAgreement(row?._id)) }} variant="outline" className='bg-white text-black' aria-label={'Download PDF'}>
                             <AiOutlineFilePdf className="h-4 w-4" />
                         </Button>
                     </Tooltip>
@@ -230,7 +255,7 @@ export const AgreementColumns = ({
                         color="invert"
                     >
                         {/* <Link href={routes.editTeam}> */}
-                        <Button type='button' onClick={() => { dispatch(sendAgreement(row?._id)) }} size="sm" variant="outline" className='bg-white text-black' aria-label={'Send Email'}>
+                        <Button disabled={loading} type='button' onClick={() => { dispatch(sendAgreement(row?._id)) }} size="sm" variant="outline" className='bg-white text-black' aria-label={'Send Email'}>
                             <HiOutlineMail className="h-4 w-4" />
                         </Button>
                         {/* </Link> */}

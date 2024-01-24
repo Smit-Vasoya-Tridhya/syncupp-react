@@ -4,7 +4,7 @@ import { Title, Text, ActionIcon } from '@/components/ui/text';
 import { Button } from '@/components/ui/button';
 import { Controller, SubmitHandler } from 'react-hook-form';
 import { Form } from '@/components/ui/form';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { routes } from '@/config/routes';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
@@ -22,7 +22,7 @@ import dynamic from 'next/dynamic';
 import QuillLoader from '@/components/loader/quill-loader';
 import PageHeader from '@/app/shared/page-header';
 import EyeIcon from '@/components/icons/eye';
-import { createagreement, getDropdownclientlist } from '@/redux/slices/user/agreement/agreementSlice';
+import { createagreement, getDropdownclientlist, getSingleagreement, updateagreement } from '@/redux/slices/user/agreement/agreementSlice';
 
 const Select = dynamic(() => import('@/components/ui/select'), {
     ssr: false,
@@ -42,15 +42,34 @@ const peopleCountOptions = [
 ]
 
 
-export default function ChangePasswordForm() {
 
+
+export default function ChangePasswordForm({ params }: { params: { id: string } }) {
     const isMedium = useMedia('(max-width: 1200px)', false);
     const dispatch = useDispatch();
     const router = useRouter();
 
     const { user } = useSelector((state: any) => state?.root?.signIn?.user?.data);
-    const { clientlistDetails, loading } = useSelector((state: any) => state?.root?.agreement);
-    console.log(clientlistDetails?.data?.client, 'clientlistDetails')
+    const { singleAgreementdetails, loading, clientlistDetails } = useSelector((state: any) => state?.root?.agreement);
+
+
+    const [preview, setpreview] = useState(false);
+    const [previewmodeData, setpreviewmodeData] = useState<String>("")
+    const [selectedClient, setselectedClient] = useState<any>(null)
+    const [formdata, setformData] = useState({
+        title: singleAgreementdetails?.data?.title || "",
+        recipient: singleAgreementdetails?.data?.receiver || "",
+        due_date: singleAgreementdetails?.data?.due_date, // Replace with the actual date in string format
+        description: singleAgreementdetails?.data?.agreement_content || "",
+    })
+
+    console.log(singleAgreementdetails, 'singleAgreementdetails')
+
+    const today = new Date();
+
+    const [dueDate, setDueDate] = useState<Date | null>(new Date(singleAgreementdetails?.data?.due_date));
+
+    console.log(singleAgreementdetails?.data?.receiver, 'singleAgreementdetails?.data?.recipient')
 
     const clientOptions =
         clientlistDetails?.data?.client && clientlistDetails?.data?.client?.length > 0 ? clientlistDetails?.data?.client?.map((client: any) => ({
@@ -58,50 +77,42 @@ export default function ChangePasswordForm() {
             value: client,
         })) : [];
 
+    const initialValues: AgrementFormTypes = {
+        title: formdata?.title || "",
+        recipient: formdata?.recipient || "",
+        due_date: formdata?.due_date, // Replace with the actual date in string format
+        description: formdata?.description || "",
 
-    // Get Today date
-    const today = new Date();
-
-    const [dueDate, setDueDate] = useState<Date | null>(null);
-    const [preview, setpreview] = useState(false);
-    const [previewmodeData, setpreviewmodeData] = useState<String>("")
-    const [selectedClient, setselectedClient] = useState<any>(null)
-    const [formdata, setformData] = useState({
-        title: '',
-        recipient: '',
-        due_date: '',
-        description: '',
-    })
+    };
+    console.log("params?.id", params?.id);
 
     useEffect(() => {
         dispatch(getDropdownclientlist())
     }, [])
 
-    // initial value State
-    const initialValues: AgrementFormTypes = {
-        title: formdata?.title,
-        recipient: formdata?.recipient,
-        due_date: formdata?.due_date,
-        description: formdata?.description,
-    };
+    useEffect(() => {
+        dispatch(getSingleagreement(params?.id))
+    }, [params?.id])
 
-
-    // onSubmit Handler
     const onSubmit: SubmitHandler<AgrementFormTypes> = (data) => {
+        console.log(' form data->', data);
+
         const agreementData = {
             client_id: user?._id,
             title: data?.title,
             receiver: data?.recipient,
             due_date: data?.due_date,
-            agreement_content: data?.description,
-        };
+            agreement_content: data?.description
+        }
 
-        // If in preview mode, dispatch the API call
-        dispatch(createagreement(agreementData)).then((result: any) => {
-            if (createagreement.fulfilled.match(result) && result.payload.success === true) {
-                router.replace(`/agreement`);
+        dispatch(updateagreement({ data: agreementData, id: params?.id })).then((result: any) => {
+            if (updateagreement.fulfilled.match(result)) {
+                // console.log('resultt', result)
+                if (result && result.payload.success === true) {
+                    router.replace('/agreement');
+                }
             }
-        });
+        })
 
     };
 
@@ -111,13 +122,9 @@ export default function ChangePasswordForm() {
         setpreview(!preview);
         setformData(watch())
     };
-
-    console.log(preview,'preview')
-
+    console.log(preview, 'preview')
     return (
         <>
-
-            {/* Agreement forms */}
             {!preview && <>
                 <PageHeader title="Agreement" />
                 <Form<AgrementFormTypes>
@@ -130,9 +137,8 @@ export default function ChangePasswordForm() {
                     className=" [&_label]:font-medium p-10"
                 >
                     {({ register, control, formState: { errors }, watch }) => (
-
-                        console.log(watch(), 'watch'),
                         <div className="space-y-5">
+
                             <div className="grid grid-cols-1 gap-4 md:grid-cols-3 xl:gap-5 xl:pb-2 items-start">
                                 <Input
                                     onKeyDown={handleKeyDown}
@@ -218,12 +224,12 @@ export default function ChangePasswordForm() {
                             </div>
 
 
-                            <div className="flex justify-end space-x-4 mt-90">
+                            <div className="flex justify-end space-x-4 mt-20">
                                 <Button type="button" onClick={() => { handlePreview(watch) }} variant="outline" className="bg-none text-xs sm:text-sm">
                                     <EyeIcon className="h-5 w-5 mr-2" />
                                     Preview
                                 </Button>
-                                <Button disabled={loading} type="submit" className="bg-none text-xs sm:text-sm">
+                                <Button type="submit" className="bg-none text-xs sm:text-sm">
                                     Save
                                 </Button>
                                 <Button type="button" variant="outline" className="bg-none text-xs sm:text-sm">
@@ -231,11 +237,12 @@ export default function ChangePasswordForm() {
                                 </Button>
                                 {/* Add your disabled button here if needed */}
                             </div>
-
                         </div>
                     )}
                 </Form>
             </>}
+
+
 
             {/* Priview of Agreement */}
             {preview && <>

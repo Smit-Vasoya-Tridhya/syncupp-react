@@ -14,17 +14,7 @@ const pageHeader = {
     title: 'Aggrement',
 };
 
-const Dummy_Data = [{
-    "title": "test title",
-    "receiver": "receiver Data",
-    "due_date": "18th Dec. ‘23"
 
-}, {
-    "title": "test title",
-    "receiver": "receiver Data",
-    "due_date": "18th Dec. ‘23"
-
-}]
 
 
 export default function AgreementPage() {
