@@ -9,13 +9,14 @@ type UserData = {
 }
 
 interface PostSigninResponse {
-  status : boolean;
-  message : string
+  status: boolean;
+  message: string
 }
 
 interface SigninState {
   loading: boolean;
   user: any;
+  role: string;
   loginUserStatus: string;
   loginUserError: string;
 }
@@ -24,8 +25,9 @@ interface SigninState {
 const initialState: SigninState = {
   loading: false,
   user: {},
+  role: '',
   loginUserStatus: '',
-  loginUserError: '', 
+  loginUserError: '',
 };
 
 export const signInUser: any = createAsyncThunk(
@@ -36,7 +38,7 @@ export const signInUser: any = createAsyncThunk(
       const response: any = await PostSignin(data);
       // console.log("signin response......", response);
       // console.log("Tokenn....", response.data.token)
-      
+
       return response;
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as PostSigninResponse;
@@ -54,11 +56,12 @@ export const signinSlice: any = createSlice({
       localStorage.clear();
       sessionStorage.clear();
       return {
-          ...state,
-          loading: false,
-          user: {},
-          loginUserStatus: '',
-          loginUserError: '',
+        ...state,
+        loading: false,
+        user: {},
+        role: '',
+        loginUserStatus: '',
+        loginUserError: '',
       };
     },
 
@@ -66,28 +69,29 @@ export const signinSlice: any = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(signInUser.pending, (state) => {
-          return{
-            ...state,
-            loading: true,
-            loginUserStatus: 'pending'
-          }
+        return {
+          ...state,
+          loading: true,
+          loginUserStatus: 'pending'
+        }
       })
       .addCase(signInUser.fulfilled, (state, action) => {
         // console.log(action.payload);
-        if(action.payload.status == false){
+        if (action.payload.status == false) {
           toast.error(action.payload.message)
         } else {
           localStorage.setItem("token", action.payload.data.token);
         }
-        return{
+        return {
           ...state,
-          user: action.payload,
+          user: action?.payload,
+          role: action?.payload?.data?.user?.role?.name,
           loading: false,
           loginUserStatus: 'success'
         }
       })
       .addCase(signInUser.rejected, (state) => {
-        return{
+        return {
           ...state,
           loading: false,
           loginUserStatus: 'error'

@@ -15,10 +15,19 @@ import cn from '@/utils/class-names';
 import Sidebar from './helium-sidebar';
 import Image from 'next/image';
 import { siteConfig } from '@/config/site.config';
+import AgencySelectionForm from '@/app/shared/(user)/forms/agency-selection-form';
+import { useSelector } from 'react-redux';
 
 function HeaderMenuRight() {
+  
+  const signIn = useSelector((state: any) => state?.root?.signIn)
+
   return (
-    <div className="ms-auto grid shrink-0 grid-cols-3 items-center gap-2 text-gray-700 xs:gap-3 xl:gap-4">
+    <div className="ms-auto grid shrink-0 grid-cols-2 items-center gap-2 text-gray-700 xs:gap-3 xl:gap-4">
+      <div>
+      { signIn?.role === 'client' && <AgencySelectionForm /> }
+      </div>
+      <div className="ms-auto grid shrink-0 grid-cols-3 items-center gap-2 text-gray-700 xs:gap-3 xl:gap-4">
       <MessagesDropdown>
         <ActionIcon
           aria-label="Messages"
@@ -57,6 +66,7 @@ function HeaderMenuRight() {
         <PiGearFill className="h-[22px] w-auto animate-spin-slow" />
       </SettingsButton> */}
       <ProfileMenu />
+      </div>
     </div>
   );
 }
