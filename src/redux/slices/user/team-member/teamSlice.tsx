@@ -13,6 +13,7 @@ type TeamData = {
   page?: any;
   items_per_page?: number;
   search?: string;
+  agencyId?: string;
 }
 
 type PostTeamMemberVerifyData = {
@@ -102,7 +103,8 @@ export const getAllTeamMember: any = createAsyncThunk(
       sortOrder: data?.sort_order,
       search: data?.search,
       page: data?.page,
-      itemsPerPage: data?.items_per_page
+      itemsPerPage: data?.items_per_page,
+      agency_id: data?.agencyId
     }
     try {
       const response: any = await GetAllTeamMemberApi(apiData);

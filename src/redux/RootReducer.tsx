@@ -36,9 +36,11 @@ import agencySlice from "./slices/admin/agency/agencySlice";
 });
 
  const rootReducer = (state: any, action: any) => {
-  // if (action.type === "auth/Logout") {
-  //   state = undefined;
-  // }
+  if (action.type === "signin/logoutUser") {
+    state = undefined;
+  } else if(action.type === "signup/lologoutUserSignUp") {
+    state = undefined;
+  }
   return combinedReducer(state, action);
 };
 

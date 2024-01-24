@@ -166,3 +166,13 @@ export const GetAllCityApi = async (data: MasterApiData) => {
   const responseData = response.data;
   return responseData;
 };
+
+export const GetClientAgenciesApi = async () => {
+  const response = await AxiosDefault({
+    url: '/api/v1/client/get-agencies',
+    method: "GET",
+    contentType: "application/json", 
+  });
+  const responseData = response.data;
+  return responseData;
+};
