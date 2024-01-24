@@ -19,6 +19,7 @@ import { handleKeyContactDown, handleKeyDown } from '@/utils/common-functions';
 import { AddTaskSchema, addTaskSchema } from '@/utils/validators/add-task.schema';
 import QuillLoader from '@/components/loader/quill-loader';
 import { DatePicker } from '@/components/ui/datepicker';
+import EventCalendarView from './calendar';
 
 const Select = dynamic(() => import('@/components/ui/select'), {
   ssr: false,
@@ -177,7 +178,11 @@ export default function AddTaskForm(props: any) {
                   render={({ field: { value, onChange } }) => (
                     <DatePicker
                       selected={value}
-                      placeholderText='Due Date & Time'
+                      inputProps={{
+                        label: 'Due Date & Time',
+                        color: 'info'
+                      }}
+                      placeholderText='Select Date & Time'
                       onChange={onChange}
                       selectsStart
                       startDate={value}
@@ -196,21 +201,30 @@ export default function AddTaskForm(props: any) {
                       value={value}
                       onChange={onChange}
                       label="Client"
+                      color= 'info'
                       error={errors?.client?.message as string}
                       getOptionValue={(option) => option?.name}
                     />
                   )}
                 />
-                <Input
-                  type="text"
-                  onKeyDown={handleKeyDown}
-                  label="Assigned"
-                  placeholder="Enter name"
-                  color="info"
-                  className="[&>label>span]:font-medium"
-                  {...register('assigned')}
-                  error={errors.assigned?.message}
+                <Controller
+                  name="assigned"
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
+                    <Select
+                      options={typeOption}
+                      value={value}
+                      onChange={onChange}
+                      label="Assigned"
+                      color= 'info'
+                      error={errors?.assigned?.message as string}
+                      getOptionValue={(option) => option?.name}
+                    />
+                  )}
                 />
+              </div>
+              <div className='grid gap-4'>
+                <EventCalendarView />
               </div>
             </div>
             <div>
