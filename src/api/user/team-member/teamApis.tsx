@@ -36,6 +36,7 @@ type PutEditTeamMemberApiData = {
     sortOrder?: string;
     sortField?: string;
     search?: string;
+    agency_id?: string;
   }
 
   type GetTeamMemberProfileApiData = {

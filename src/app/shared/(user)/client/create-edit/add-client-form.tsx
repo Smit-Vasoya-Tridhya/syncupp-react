@@ -40,7 +40,6 @@ export default function AddClientForm(props: any) {
   const [save, setSave] = useState(false)
   const [loader, setLoader] = useState(false);
   const [reset, setReset] = useState({})
-  const saveAndNew = false;
   
 
   // let data = row;
@@ -131,8 +130,6 @@ export default function AddClientForm(props: any) {
   const onSubmit: SubmitHandler<ClientSchema> = (dataa) => {
     // console.log('Add client dataa---->', dataa);
 
-    console.log("save and new submit button.....")
-
     const formData = {
       name: dataa?.name ?? '',
       email: dataa?.email ?? '',
@@ -184,16 +181,7 @@ export default function AddClientForm(props: any) {
     
   };
 
-  const handleSaveAndNewClick = (handleSubmit: any, errors: any) => {
-    handleSubmit(onSubmit)();
-
-    console.log("save & new button clicked", errors)
-
-    errors && setLoader(true)
-  }
-
   const handleSaveClick = () => {
-    // console.log("save button clicked")
     setSave(true);
   }
   
@@ -211,7 +199,7 @@ export default function AddClientForm(props: any) {
         onSubmit={onSubmit}
         resetValues={reset}
         useFormProps={{
-          mode: 'onChange',
+          mode: 'all',
           defaultValues: defaultValuess,
         }}
         className=" p-10 [&_label]:font-medium"
@@ -410,11 +398,15 @@ export default function AddClientForm(props: any) {
                   <Button
                     // type='submit'
                     className="hover:gray-700 @xl:w-auto dark:bg-gray-200 dark:text-white"
-                    disabled={loader && !save}
-                    onClick={() => handleSaveAndNewClick(handleSubmit , isSubmitSuccessful)}
+                    disabled={Object.keys(errors).length === 0 && loader && isSubmitSuccessful && !save}
+                    onClick={() => {
+                      handleSubmit(onSubmit)();
+                      // console.log(errors, "errors....")
+                      setLoader(true)
+                    }}
                   >
                     Save & New
-                    { loader && !save && <Spinner size="sm" tag='div' className='ms-3' color='white' /> }
+                    {Object.keys(errors).length === 0 && loader && isSubmitSuccessful && !save && <Spinner size="sm" tag='div' className='ms-3' color='white' />}
                   </Button>
                 }
                 <Button
