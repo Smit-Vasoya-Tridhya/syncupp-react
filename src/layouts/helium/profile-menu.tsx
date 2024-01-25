@@ -13,21 +13,8 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import "./style.css"
 import ChangePasswordForm from '@/app/shared/(user)/forms/change-password-form';
-
-const menuItems = [
-  // {
-  //   name: 'My Profile',
-  //   href: routes.signIn,
-  // },
-  // {
-  //   name: 'Change Password',
-  //   href: routes.changePassword,
-  // },
-  // {
-  //   name: 'Activity Log',
-  //   href: routes.signIn,
-  // },
-];
+import { routes } from '@/config/routes';
+import Link from 'next/link';
 
 function DropdownMenu() {
 
@@ -57,22 +44,25 @@ function DropdownMenu() {
         </div>
       </div>
       <div className="grid px-3.5 py-3.5 font-medium text-gray-700">
-        {/* <ModalButton
-          label="View Profile"
-          view={<ViewProfileForm />}
-          customSize="625px"
-          className="mt-0 justify-start mb-3 text-gray-900 bg-white "
-        /> */}
+        <Link
+          className="mt-0 justify-start bg-white text-gray-900"
+          href={routes.viewProfile}
+        >
+          <Button variant="text">
+            View Profile
+          </Button>
+        </Link>
+
         <ModalButton
           label="Change Password"
           view={<ChangePasswordForm />}
           customSize="625px"
-          className="mt-0 justify-start text-gray-900 bg-white"
+          className="mt-0 justify-start bg-white text-gray-900"
         />
       </div>
       <div className="border-t border-gray-300 px-6 pb-6 pt-5">
         <Button
-          className="h-auto w-full justify-start ml-2 p-0 font-medium text-gray-700 outline-none focus-within:text-gray-600 hover:text-gray-900 focus-visible:ring-0"
+          className="ml-2 h-auto w-full justify-start p-0 font-medium text-gray-700 outline-none focus-within:text-gray-600 hover:text-gray-900 focus-visible:ring-0"
           variant="text"
           onClick={handleClick}
         >
