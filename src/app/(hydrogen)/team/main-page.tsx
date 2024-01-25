@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import CustomTable from '@/components/common-tables/table';
 import { getColumns } from '@/app/shared/(user)/team/team-list/columns';
+import { getClientTeamColumns } from '@/app/shared/(user)/team/team-list/client-team-columns';
 import { deleteTeamMember, getAllTeamMember } from '@/redux/slices/user/team-member/teamSlice';
 import { PiPlusBold } from 'react-icons/pi';
 
@@ -21,6 +22,7 @@ export default function TeamDataTablePage() {
   const [pageSize, setPageSize] = useState(5);
   const teamMemberData = useSelector((state: any) => state?.root?.teamMember);
   const clientSliceData = useSelector((state: any) => state?.root?.client);
+  const signIn = useSelector((state: any) => state?.root?.signIn)
 
   
   const handleChangePage = async (paginationParams: any) => {
@@ -44,7 +46,7 @@ export default function TeamDataTablePage() {
   const handleDeleteById = async (id: string | string[], currentPage?: any, countPerPage?: number, sortConfig?: Record<string, string>, searchTerm?: string) => {
 
     try {
-      const res = await dispatch(deleteTeamMember({ _id: id }));
+      const res = await dispatch(deleteTeamMember({ teamMemberIds: id, agencyId: clientSliceData?.agencyId }));
       if (res.payload.success === true) {
         const reponse = await dispatch(getAllTeamMember({ page: currentPage, items_per_page: countPerPage, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm, agencyId: clientSliceData?.agencyId }));
       }
@@ -76,7 +78,7 @@ export default function TeamDataTablePage() {
         setPageSize={setPageSize}
         handleDeleteById={handleDeleteById}
         handleChangePage={handleChangePage}
-        getColumns={getColumns}
+        getColumns={signIn?.role === 'client' ? getClientTeamColumns : getColumns}
       />
     </>
   );
