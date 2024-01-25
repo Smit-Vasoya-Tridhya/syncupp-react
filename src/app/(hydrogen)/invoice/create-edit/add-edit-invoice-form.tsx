@@ -103,29 +103,60 @@ export default function CreateInvoice({
     setIsOpenEditMode(!isOpenEditMode);
     setIsUploadFileOpen(true);
   };
-  const handleFileChange = (event:any) => {
-    const file = event.target.files[0];
-    setValue('fileInputName', file);
+  // const handleFileChange = (event:any) => {
+  //   const file = event.target.files[0];
+  //   setValue('fileInputName', file);
+  //     const reader = new FileReader();
+  //     const files = event.target.files;
+    
+  //     if (files.length > 0) {
+  //       const file = files[0];
+    
+  //       if (file.size <= 100 * 1024 * 5000000) {
+  //         setValue('fileInputName', file);
+    
+  //         reader.onload = function () {
+  //           setAvatar(reader.result);
+  //         };
+    
+  //         reader.readAsDataURL(file);
+  //       } else {
+  //         toast.error('File size exceeds the allowed limit (100 KB). Please select a smaller file.')
+  //         event.target.value = null;
+  //       }
+  //     }
+  //   }; 
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+  
+    if (file) {
       const reader = new FileReader();
-      const files = event.target.files;
-    
-      if (files.length > 0) {
-        const file = files[0];
-    
-        if (file.size <= 100 * 1024 * 5000000) {
-          setValue('fileInputName', file);
-    
-          reader.onload = function () {
-            setAvatar(reader.result);
-          };
-    
-          reader.readAsDataURL(file);
-        } else {
-          toast.error('File size exceeds the allowed limit (100 KB). Please select a smaller file.')
-          event.target.value = null;
-        }
-      }
-    }; 
+  
+      reader.onload = function () {
+        const image = new Image();
+        image.src = reader.result as string;
+  
+        image.onload = function () {
+          const maxWidth = 100;
+          const maxHeight = 100;
+  
+          if (image.width > maxWidth || image.height > maxHeight) {
+            toast.error('Image dimensions exceed the allowed limit (100x100 pixels). Please select a smaller image.');
+            event.target.value = ''; // Clear the file input
+          } else if (file.size > 1024 * 1024) {
+            toast.error('File size exceeds the allowed limit (1 MB). Please select a smaller file.');
+            event.target.value = ''; // Clear the file input
+          } else {
+            setValue('fileInputName', file);
+            setAvatar(reader.result as string);
+          }
+        };
+      };
+  
+      reader.readAsDataURL(file);
+    }
+  };
+  
   const handleInputChange = (index: number, field: string, value: string) => {
     setTableData((prevData) => {
       const newData = [...prevData];
@@ -309,9 +340,9 @@ export default function CreateInvoice({
                         size="sm"
                         variant="text"
                         onClick={handleEditClick}
-                        className="p-0 text-gray-500 hover:!text-gray-900"
+                        className="p-0 text-gray-500 hover:!text-gray-900 cursor-pointer"
                       >
-                        <PiNotePencilDuotone className="h-[18px] w-[18px]" />
+                        <PiNotePencilDuotone className="h-[18px] w-[18px] cursor-pointer" />
                       </ActionIcon>
                       <input
                         type="file"
