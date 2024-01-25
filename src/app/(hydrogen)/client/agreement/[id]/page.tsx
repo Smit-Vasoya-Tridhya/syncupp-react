@@ -12,8 +12,6 @@ export default function AgreementDetailsPage({ params }: { params: { id: string 
 
     const { singleAgreementdetails, loading } = useSelector((state: any) => state?.root?.clienAgreement);
 
-    console.log("singleAgreementdetails", singleAgreementdetails?.data, loading);
-
     useEffect(() => {
         dispatch(getSingleClientAgreement(params?.id))
     }, [params?.id])
