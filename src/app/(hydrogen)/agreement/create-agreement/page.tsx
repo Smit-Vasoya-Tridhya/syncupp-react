@@ -55,7 +55,8 @@ export default function ChangePasswordForm() {
     const clientOptions =
         clientlistDetails?.data?.client && clientlistDetails?.data?.client?.length > 0 ? clientlistDetails?.data?.client?.map((client: any) => ({
             name: client?.name,
-            value: client,
+            value: client?._id,
+            key: client
         })) : [];
 
 
@@ -64,7 +65,7 @@ export default function ChangePasswordForm() {
 
     const [dueDate, setDueDate] = useState<Date | null>(null);
     const [preview, setpreview] = useState(false);
-    const [previewmodeData, setpreviewmodeData] = useState<String>("")
+    const [sendbuttonflag, setsendbuttonflag] = useState<boolean>(false)
     const [selectedClient, setselectedClient] = useState<any>(null)
     const [formdata, setformData] = useState({
         title: '',
@@ -91,19 +92,27 @@ export default function ChangePasswordForm() {
         const agreementData = {
             client_id: user?._id,
             title: data?.title,
-            receiver: data?.recipient,
+            receiver: selectedClient?.value,
             due_date: data?.due_date,
             agreement_content: data?.description,
+            send: sendbuttonflag
         };
 
         // If in preview mode, dispatch the API call
         dispatch(createagreement(agreementData)).then((result: any) => {
             if (createagreement.fulfilled.match(result) && result.payload.success === true) {
                 router.replace(`/agreement`);
+
             }
         });
+        setsendbuttonflag(false)
+
 
     };
+
+    const SendHandler = () => {
+        setsendbuttonflag(true)
+    }
 
     //Preview mode Handler
     const handlePreview = (watch: any) => {
@@ -112,7 +121,7 @@ export default function ChangePasswordForm() {
         setformData(watch())
     };
 
-    console.log(preview,'preview')
+    console.log(preview, 'preview')
 
     return (
         <>
@@ -129,7 +138,7 @@ export default function ChangePasswordForm() {
                     }}
                     className=" [&_label]:font-medium p-10"
                 >
-                    {({ register, control, formState: { errors }, watch }) => (
+                    {({ register, control, formState: { errors }, watch, handleSubmit }) => (
 
                         console.log(watch(), 'watch'),
                         <div className="space-y-5">
@@ -146,7 +155,7 @@ export default function ChangePasswordForm() {
                                     {...register('title')}
                                     error={errors.title?.message}
                                 />
-                                <Controller
+                                {/* <Controller
                                     control={control}
                                     name="recipient"
                                     render={({ field: { onChange, value } }) => (
@@ -163,6 +172,27 @@ export default function ChangePasswordForm() {
                                             // rounded="pill"
                                             color="info"
                                             getOptionValue={(option) => option.value}
+                                            dropdownClassName="p-1 border w-12 border-gray-100 shadow-lg"
+                                            className="font-medium"
+                                            error={errors?.recipient?.message}
+                                        />
+                                    )}
+                                /> */}
+                                <Controller
+                                    control={control}
+                                    name="recipient"
+                                    render={({ field: { onChange, value } }) => (
+                                        <Select
+                                            options={clientOptions}
+                                            onChange={(selectedOption: any) => {
+                                                console.log(selectedOption, 'selectedOption', value)
+                                                setselectedClient(selectedOption);
+                                                onChange(selectedOption?.name);
+                                            }}
+                                            value={value}
+                                            label="Recipient*"
+                                            color="info"
+                                            // Remove getOptionLabel and getOptionValue props
                                             dropdownClassName="p-1 border w-12 border-gray-100 shadow-lg"
                                             className="font-medium"
                                             error={errors?.recipient?.message}
@@ -211,9 +241,9 @@ export default function ChangePasswordForm() {
                                     <li>{user?.contact_number}</li>
                                 </ul>
                                 <ul>
-                                    <li>{selectedClient?.name && selectedClient?.name != "" ? selectedClient?.name : "-"}</li>
-                                    <li>{selectedClient?.email && selectedClient?.email != "" ? selectedClient?.email : "-"}</li>
-                                    <li>{selectedClient?.contact_number && selectedClient?.contact_number != "" ? selectedClient?.contact_number : "-"}</li>
+                                    <li>{selectedClient?.key?.name && selectedClient?.key?.name != "" ? selectedClient?.key?.name : "[Receiver Name]"}</li>
+                                    <li>{selectedClient?.key?.email && selectedClient?.key?.email != "" ? selectedClient?.key?.email : "[Receiver Email]"}</li>
+                                    <li>{selectedClient?.key?.contact_number && selectedClient?.key?.contact_number != "" ? selectedClient?.key?.contact_number : "[Receiver Phone]"}</li>
                                 </ul>
                             </div>
 
@@ -226,7 +256,7 @@ export default function ChangePasswordForm() {
                                 <Button disabled={loading} type="submit" className="bg-none text-xs sm:text-sm">
                                     Save
                                 </Button>
-                                <Button type="button" variant="outline" className="bg-none text-xs sm:text-sm">
+                                <Button type="submit" onClick={SendHandler} variant="outline" className="bg-none text-xs sm:text-sm">
                                     Send
                                 </Button>
                                 {/* Add your disabled button here if needed */}
@@ -239,7 +269,12 @@ export default function ChangePasswordForm() {
 
             {/* Priview of Agreement */}
             {preview && <>
-                <h3 className='border-2 rounded border-solid border-gray-300 bg-gray-100 p-3'>Introduction</h3>
+                <h3 className='flex justify-between items-center border-2 rounded border-solid border-gray-300 bg-gray-100 p-3'>
+                    <span>Introduction</span>
+                    <Button type="button" onClick={() => { setpreview(false) }} className="bg-none text-xs sm:text-sm">
+                        Back
+                    </Button>
+                </h3>
                 <div className='mt-5' dangerouslySetInnerHTML={{ __html: formdata?.description }} />
                 <div className='flex justify-between mt-5 font-medium text-gray-700 dark:text-gray-600 mb-1.5'>
                     <ul>
@@ -248,15 +283,10 @@ export default function ChangePasswordForm() {
                         <li>{user?.contact_number}</li>
                     </ul>
                     <ul>
-                        <li>{selectedClient?.name && selectedClient?.name != "" ? selectedClient?.name : "-"}</li>
-                        <li>{selectedClient?.email && selectedClient?.email != "" ? selectedClient?.email : "-"}</li>
-                        <li>{selectedClient?.contact_number && selectedClient?.contact_number != "" ? selectedClient?.contact_number : "-"}</li>
+                        <li>{selectedClient?.key?.name && selectedClient?.key?.name != "" ? selectedClient?.key?.name : "[Receiver Name]"}</li>
+                        <li>{selectedClient?.key?.email && selectedClient?.key?.email != "" ? selectedClient?.key?.email : "[Receiver Email]"}</li>
+                        <li>{selectedClient?.key?.contact_number && selectedClient?.key?.contact_number != "" ? selectedClient?.key?.contact_number : "[Receiver Phone]"}</li>
                     </ul>
-                </div>
-                <div className="flex justify-end space-x-4 mt-5">
-                    <Button type="button" onClick={() => { setpreview(false) }} className="bg-none text-xs sm:text-sm">
-                        Back
-                    </Button>
                 </div>
             </>}
         </>

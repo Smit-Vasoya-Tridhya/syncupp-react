@@ -118,8 +118,8 @@ type CreateAgencyAgreement = {
     title: string,
     receiver: string,
     due_date: string,
-    // status: string,
-    agreement_content: string
+    agreement_content: string,
+    send?: boolean
 }
 
 export const createagreement: any = createAsyncThunk(
@@ -143,6 +143,7 @@ type EditAgencyAgreement = {
     receiver: string,
     due_date: string,
     agreement_content: string,
+    send?: boolean
 }
 
 export const updateagreement: any = createAsyncThunk(

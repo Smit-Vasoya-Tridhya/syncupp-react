@@ -131,6 +131,7 @@ type CreateAgencyAgreement = {
     receiver: string,
     due_date: string,
     agreement_content: string
+    send?: boolean
 }
 
 export const CreateAgencyAgreementsApi = async (data: CreateAgencyAgreement) => {
@@ -150,7 +151,8 @@ type EditAgencyAgreement = {
     title: string,
     receiver: string,
     due_date: string,
-    agreement_content: string
+    agreement_content: string,
+    send?: boolean
 }
 
 export const EditAgencyAgreementsApi = async (data: EditAgencyAgreement, id: string) => {
@@ -182,7 +184,7 @@ export const EditAgreementStatus = async (data: EditStatusAgreement, id: string)
 };
 
 //Get Dropdown Client list
-export const GetDropdownClienlist = async (data:any) => {
+export const GetDropdownClienlist = async (data: any) => {
     const response = await AxiosDefault({
         url: `/api/v1/agency/clients`,
         method: "POST",
