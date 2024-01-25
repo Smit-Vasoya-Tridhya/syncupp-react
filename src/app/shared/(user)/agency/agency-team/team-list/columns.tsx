@@ -10,7 +10,7 @@ import EyeIcon from '@/components/icons/eye';
 import PencilIcon from '@/components/icons/pencil';
 import {TeamMemberType } from '@/data/products-data';
 import DeletePopover from '@/app/shared/delete-popover';
-import CustomModalButton from '../../../custom-modal-button';
+import CustomModalButton from '@/app/shared/custom-modal-button';
 import AddTeamMemberForm from '../create-edit/add-team-member-form';
 import { Badge, Button } from 'rizzui';
 import moment from 'moment';
@@ -54,7 +54,7 @@ function getStatusBadge(status: string) {
   }
 }
 
-export const getClientTeamColumns = ({
+export const getColumns = ({
   data,
   sortConfig,
   checkedItems,
@@ -139,6 +139,23 @@ export const getClientTeamColumns = ({
     width: 200,
     render: (_: any, row: any) => (
       <Text className="font-medium text-gray-700">{row.email}</Text>
+    ),
+  },
+  {
+    title: (
+    <HeaderCell
+    title="Permission"
+    sortable
+    ascending={
+      sortConfig?.direction === 'asc' && sortConfig?.key === 'member_role'
+    }
+    />),
+    onHeaderCell: () => onHeaderCellClick('member_role'),
+    dataIndex: 'member_role',
+    key: 'member_role',
+    width: 200,
+    render: (_: any, row: any) => (
+      <Text className="font-medium text-gray-700">{row.member_role}</Text>
     ),
   },
   {

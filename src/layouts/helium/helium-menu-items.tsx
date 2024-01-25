@@ -7,7 +7,8 @@ import {
   PiUser,
   PiUsersThree,
 } from 'react-icons/pi';
-import { FaTasks } from "react-icons/fa";
+import { FaTasks, FaFileInvoiceDollar } from "react-icons/fa";
+import { FaFilePen } from "react-icons/fa6";
 // import { IoIosPeople } from "react-icons/io";
 import { useSelector } from 'react-redux';
 import { Title } from '@/components/ui/text';
@@ -40,14 +41,29 @@ export const MenuItems = () => {
           icon: <PiUser />,
         },
         {
-          name: 'Team',
-          href: routes.team,
+          name: 'Agency Team',
+          href: routes.agency_team,
+          icon: <PiUsersThree />,
+        },
+        {
+          name: 'Client Team',
+          href: routes.client_team,
           icon: <PiUsersThree />,
         },
         {
           name: 'Task',
           href: routes.task,
           icon: <FaTasks />,
+        },
+        {
+          name: 'Invoice',
+          href: routes.invoice,
+          icon: <FaFileInvoiceDollar />,
+        },
+        {
+          name: 'Agreement',
+          href: routes.agreement,
+          icon: <FaFilePen />,
         },
       ];
       break;

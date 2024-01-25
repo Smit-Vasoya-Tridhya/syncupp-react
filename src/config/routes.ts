@@ -7,9 +7,14 @@ export const routes = {
   signUp: '/signup',
   forgotPassword: '/forgot-password',
   resetPassword: '/reset-password',
+  viewProfile:'/view-profile',
   dashboard: '/dashboard',
   client: '/client',
-  team:'/team',
+  team: '/team',
+  agency_team: '/agency-team',
+  client_team: '/client-team',
+  invoice:'/invoice',
+  invoiceForm:'/invoice/create-edit',
   viewTeam:'/team/view-team',
   task: '/task',
 
@@ -19,9 +24,10 @@ export const routes = {
   clients: {
     verify: '/client/verify'
   },
+  agreement: '/agreement',
 
   // Admin panel
-  admin:{
+  admin: {
     signIn: '/admin/signin',
     signUp: '/admin/signup',
     forgotPassword:'/admin/forgot-password',
@@ -29,5 +35,5 @@ export const routes = {
     dashboard: '/admin/dashboard',
     faq:'/admin/faq',
   },
-  
+
 };

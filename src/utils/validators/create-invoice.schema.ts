@@ -3,6 +3,7 @@ import { messages } from '@/config/messages';
 
 export const invoiceFormSchema = z.object({
   fromName: z.string().min(1, { message: messages.nameIsRequired }),
+  invoice_number: z.string().min(2, { message: messages.InvoiceNumberIsRequired }).max(10, { message: messages.InvoiceNumberMaxLength }),
   fromAddress: z.string().min(1, { message: messages.addressIsRequired }),
   fromPhone: z.string().optional(),
   toName: z.string().min(1, { message: messages.nameIsRequired }),
@@ -13,6 +14,9 @@ export const invoiceFormSchema = z.object({
   }),
   createDate: z.date({
     required_error: messages.createDateIsRequired,
+  }),
+  Recipient: z.date({
+    required_error: messages.RecipientIsRequired,
   }),
   dueDate: z.date({
     required_error: messages.dueDateIsRequired,

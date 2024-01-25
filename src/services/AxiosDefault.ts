@@ -6,18 +6,21 @@ const AxiosDefaultSetting = async ({
   data,
   url,
   contentType,
+  customHeaders, // New parameter for additional headers
 }: {
   method?: string;
   data?: any;
   url?: string;
   contentType?: string;
-}): Promise<any> => {  
+  customHeaders?: Record<string, string>; // Additional headers
+}): Promise<any> => {
   const AxiosDefault = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API,
     timeout: 10000,
     headers: {
       "Content-Type": isEmpty(contentType) ? "application/json" : contentType,
       Accept: "application/json",
+      ...customHeaders, // Merge custom headers
     },
   });
 
