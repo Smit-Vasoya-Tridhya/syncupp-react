@@ -52,7 +52,7 @@ export const signinSlice: any = createSlice({
   initialState,
   reducers: {
 
-    logoutUser(state, action) {
+    logoutUser(state) {
       localStorage.clear();
       sessionStorage.clear();
       return {

@@ -38,8 +38,13 @@ export const MenuItems = () => {
           icon: <PiUser />,
         },
         {
-          name: 'Team',
-          href: routes.team,
+          name: 'Agency Team',
+          href: routes.agency_team,
+          icon: <PiUserListDuotone />,
+        },
+        {
+          name: 'Client Team',
+          href: routes.client_team,
           icon: <PiUserListDuotone />,
         },
       ];

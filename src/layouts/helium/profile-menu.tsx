@@ -35,11 +35,10 @@ function DropdownMenu() {
   const router = useRouter();
 
   const handleClick = () => {
-    console.log("signout clicked..")
-    dispatch(logoutUser(''))
-    dispatch(logoutUserSignUp(''))
-    localStorage.clear();
     router.replace('/signin');
+    dispatch(logoutUser())
+    dispatch(logoutUserSignUp())
+    localStorage.clear();
   }
 
   return (

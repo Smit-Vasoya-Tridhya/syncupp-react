@@ -1,18 +1,15 @@
 'use client';
 
 import PageHeader from '@/app/shared/page-header';
-import ModalButton from '@/app/shared/modal-button';
-import AddTeamMemberForm from '@/app/shared/(user)/client/team/create-edit/add-team-member-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import CustomTable from '@/components/common-tables/table';
-import { getColumns } from '@/app/shared/(user)/client/team/team-list/columns';
+import { getColumns } from '@/app/shared/(user)/agency/client-team/team-list/columns';
 import { deleteTeamMember, getAllTeamMember } from '@/redux/slices/user/team-member/teamSlice';
-import { PiPlusBold } from 'react-icons/pi';
 
 
 const pageHeader = {
-  title: 'Team',
+  title: 'Client Team',
 };
 
 
@@ -59,13 +56,7 @@ export default function TeamDataTablePage() {
     <>
       <PageHeader title={pageHeader.title}>
         <div className="mt-4 flex items-center gap-3 @lg:mt-0">
-          <ModalButton
-          label="Add Team Member"
-          view={<AddTeamMemberForm title="New Team Member" />}
-          customSize="625px"
-          className="mt-0 w-full hover:bg-gray-700 @lg:w-auto dark:bg-gray-100 dark:text-white dark:hover:bg-gray-200 dark:active:bg-gray-100"
-          icon={<PiPlusBold className="me-1.5 h-[17px] w-[17px]" />}
-        />
+          
         </div>
       </PageHeader>
       <CustomTable
