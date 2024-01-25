@@ -482,7 +482,7 @@ export const clientSlice = createSlice({
          return{
            ...state,
            agencies: action?.payload?.data,
-           agencyId: action?.payload?.data[0]?.agency_id
+          agencyId: action?.payload?.data[0]?.reference_id
          }
        });
   },
