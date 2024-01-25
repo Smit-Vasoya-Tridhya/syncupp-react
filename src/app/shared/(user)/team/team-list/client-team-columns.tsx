@@ -54,7 +54,7 @@ function getStatusBadge(status: string) {
   }
 }
 
-export const getColumns = ({
+export const getClientTeamColumns = ({
   data,
   sortConfig,
   checkedItems,
@@ -139,23 +139,6 @@ export const getColumns = ({
     width: 200,
     render: (_: any, row: any) => (
       <Text className="font-medium text-gray-700">{row.email}</Text>
-    ),
-  },
-  {
-    title: (
-    <HeaderCell
-    title="Permission"
-    sortable
-    ascending={
-      sortConfig?.direction === 'asc' && sortConfig?.key === 'member_role'
-    }
-    />),
-    onHeaderCell: () => onHeaderCellClick('member_role'),
-    dataIndex: 'member_role',
-    key: 'member_role',
-    width: 200,
-    render: (_: any, row: any) => (
-      <Text className="font-medium text-gray-700">{row.member_role}</Text>
     ),
   },
   {

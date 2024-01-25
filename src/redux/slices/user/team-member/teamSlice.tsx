@@ -16,6 +16,11 @@ type TeamData = {
   agencyId?: string;
 }
 
+type DeleteTeamMemberData = {
+  teamMemberIds: string[];
+  agencyId?: string;
+}
+
 type PostTeamMemberVerifyData = {
   email: string;
   agency_id: string;
@@ -54,6 +59,7 @@ export const addTeamMember: any = createAsyncThunk(
       name: data.name,
       contact_number: data.contact_number,
       role: data.role,
+      agency_id: data?.agencyId
     }
     try {
       const response: any = await PostAddTeamMemberApi(apiData);
@@ -85,6 +91,7 @@ export const editTeamMember: any = createAsyncThunk(
       name: data.name,
       contact_number: data.contact_number,
       role: data.role,
+      agency_id: data?.agencyId
     }
     try {
       const response: any = await PutEditTeamMemberApi(apiData);
@@ -130,12 +137,13 @@ export const getTeamMemberProfile: any = createAsyncThunk(
 );
 export const deleteTeamMember: any = createAsyncThunk(
   "teamMember/deleteTeamMember",
-  async (data: TeamData) => {
-    const apiData={
-      id: data._id
-    }
+  async (data: DeleteTeamMemberData) => {
     try {
-      const response: any = await DeleteTeamMemberApi(apiData);
+      const apiData = {
+        teamMemberIds: data.teamMemberIds,
+        agency_id: data?.agencyId
+      }
+      const response: any = await DeleteTeamMemberApi(data);
       return response;
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as TeamMemberDataResponse;
