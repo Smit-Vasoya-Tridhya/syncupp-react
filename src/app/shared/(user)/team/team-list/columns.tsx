@@ -13,6 +13,7 @@ import DeletePopover from '@/app/shared/delete-popover';
 import CustomModalButton from '../../../custom-modal-button';
 import AddTeamMemberForm from '../create-edit/add-team-member-form';
 import { Badge, Button } from 'rizzui';
+import moment from 'moment';
 
 type Columns = {
   data: any[];
@@ -40,7 +41,7 @@ function getStatusBadge(status: string) {
       return (
         <div className="flex items-center">
           <Badge color="success" renderAsDot />
-          <Text className="ms-2 font-medium text-green-dark">{status}</Text>
+          <Text className="ms-2 font-medium text-green-dark">Active</Text>
         </div>
       );
     default:
@@ -83,8 +84,8 @@ export const getColumns = ({
       <div className="inline-flex ps-3.5">
         <Checkbox
           className="cursor-pointer"
-          checked={checkedItems.includes(row.id)}
-          {...(onChecked && { onChange: () => onChecked(row.id) })}
+          checked={checkedItems.includes(row._id)}
+          {...(onChecked && { onChange: () => onChecked(row._id) })}
         />
       </div>
     ),
@@ -189,9 +190,10 @@ export const getColumns = ({
     dataIndex: 'createdAt',
     key: 'createdAt',
     width: 200,
-    render: (value: string) => (
-      <Text className="font-medium text-gray-700">{value}</Text>
-    ),
+    render: (value: string) => {
+      const date = moment(value).fromNow();
+      return <Text className="font-medium text-gray-700">{date}</Text>
+    },
   },
   {
     // Need to avoid this issue -> <td> elements in a large <table> do not have table headers.

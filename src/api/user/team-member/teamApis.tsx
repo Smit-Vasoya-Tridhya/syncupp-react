@@ -5,15 +5,18 @@ type PostAddTeamMemberApiData = {
     name: string;
     contact_number?: string;
     role?: string;
+    agency_id?: string;
   }
 
 type PostTeamMemberVerifyApiData = {
   email: string;
   agency_id: string;
+  redirect: boolean;
+  token?: string;
+  client_id?: string;
   password?: string;
   first_name?: string;
   last_name?: string;
-  redirect: boolean;
 }
 
 type PutEditTeamMemberApiData = {
@@ -22,10 +25,12 @@ type PutEditTeamMemberApiData = {
     email?: string;
     contact_number?: string;
     role?: string;
+    agency_id?: string;
   }
 
   type DeleteTeamMemberApiData = {
-    id: string;
+    teamMemberIds: string[];
+    agency_id?: string;
   }
 
   type GetAllTeamMemberApiData = {
@@ -34,6 +39,7 @@ type PutEditTeamMemberApiData = {
     sortOrder?: string;
     sortField?: string;
     search?: string;
+    agency_id?: string;
   }
 
   type GetTeamMemberProfileApiData = {
@@ -67,7 +73,7 @@ export const PostTeamMemberVerifyApi = async (data: PostTeamMemberVerifyApiData)
 
 // Edit team member API
 export const PutEditTeamMemberApi = async (data: PutEditTeamMemberApiData) => {
-  console.log("id in edit team api", data)
+  // console.log("id in edit team api", data)
   const response = await AxiosDefault({
     url: `/api/v1/team-member/edit/${data.id}`,
     method: "PUT",
@@ -81,7 +87,7 @@ export const PutEditTeamMemberApi = async (data: PutEditTeamMemberApiData) => {
 // delete Team member API
 export const DeleteTeamMemberApi = async (data: DeleteTeamMemberApiData) => {
   const response = await AxiosDefault({
-    url: `/api/v1/team-member/delete/${data.id}`,
+    url: `/api/v1/team-member/delete`,
     method: "DELETE",
     data: data,
     contentType: "application/json", 

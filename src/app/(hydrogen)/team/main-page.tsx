@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import CustomTable from '@/components/common-tables/table';
 import { getColumns } from '@/app/shared/(user)/team/team-list/columns';
+import { getClientTeamColumns } from '@/app/shared/(user)/team/team-list/client-team-columns';
 import { deleteTeamMember, getAllTeamMember } from '@/redux/slices/user/team-member/teamSlice';
 import { PiPlusBold } from 'react-icons/pi';
 
@@ -20,19 +21,21 @@ export default function TeamDataTablePage() {
   const dispatch = useDispatch();
   const [pageSize, setPageSize] = useState(5);
   const teamMemberData = useSelector((state: any) => state?.root?.teamMember);
+  const clientSliceData = useSelector((state: any) => state?.root?.client);
+  const signIn = useSelector((state: any) => state?.root?.signIn)
 
   
   const handleChangePage = async (paginationParams: any) => {
     let { page, items_per_page, sort_field, sort_order, search } = paginationParams;
 
-    const response = await dispatch(getAllTeamMember({ page, items_per_page, sort_field, sort_order, search }));
+    const response = await dispatch(getAllTeamMember({ page, items_per_page, sort_field, sort_order, search, agencyId: clientSliceData?.agencyId }));
     // console.log(response, "Response.....")
     const { data } = response?.payload;
     const maxPage: number = data?.page_count;
 
     if (page > maxPage) {
       page = maxPage > 0 ? maxPage : 1;
-      await dispatch(getAllTeamMember({ page, items_per_page, sort_field, sort_order, search }));
+      await dispatch(getAllTeamMember({ page, items_per_page, sort_field, sort_order, search, agencyId: clientSliceData?.agencyId }));
       return data?.teamMemberList;
     }
     if(data && data?.teamMemberList && data?.teamMemberList.length !== 0 ) {
@@ -43,9 +46,9 @@ export default function TeamDataTablePage() {
   const handleDeleteById = async (id: string | string[], currentPage?: any, countPerPage?: number, sortConfig?: Record<string, string>, searchTerm?: string) => {
 
     try {
-      const res = await dispatch(deleteTeamMember({ _id: id }));
+      const res = await dispatch(deleteTeamMember({ teamMemberIds: id, agencyId: clientSliceData?.agencyId }));
       if (res.payload.success === true) {
-        const reponse = await dispatch(getAllTeamMember({ page: currentPage, items_per_page: countPerPage, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm }));
+        const reponse = await dispatch(getAllTeamMember({ page: currentPage, items_per_page: countPerPage, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm, agencyId: clientSliceData?.agencyId }));
       }
     } catch (error) {
       console.error(error);
@@ -75,7 +78,7 @@ export default function TeamDataTablePage() {
         setPageSize={setPageSize}
         handleDeleteById={handleDeleteById}
         handleChangePage={handleChangePage}
-        getColumns={getColumns}
+        getColumns={signIn?.role === 'client' ? getClientTeamColumns : getColumns}
       />
     </>
   );

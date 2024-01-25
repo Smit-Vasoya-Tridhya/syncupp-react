@@ -1,4 +1,4 @@
-import { DeleteClientApi, GetAllCityApi, GetAllClientApi, GetAllCountryApi, GetAllStateApi, GetClientByIdApi, PatchEditClientApi, PostAddClientApi, PostVerifyClientApi } from "@/api/user/client/clientApis";
+import { DeleteClientApi, GetAllCityApi, GetAllClientApi, GetAllCountryApi, GetAllStateApi, GetClientAgenciesApi, GetClientByIdApi, PatchEditClientApi, PostAddClientApi, PostVerifyClientApi } from "@/api/user/client/clientApis";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { toast } from 'react-hot-toast';
 
@@ -75,6 +75,8 @@ interface ClientInitialState {
   countries: any;
   states: any;
   cities: any;
+  agencies: any;
+  agencyId: string;
   addClientStatus: string;
   verifyClientStatus: string;
   getAllClientStatus: string;
@@ -91,13 +93,15 @@ const initialState:ClientInitialState = {
   countries: '',
   states: '',
   cities: '',
+  agencies: '',
+  agencyId: '',
   addClientStatus: '',
   verifyClientStatus: '',
   getAllClientStatus: '',
   getClientStatus: '',
   editClientStatus: '',
   deleteClientStatus: '',
-  getClientProfileStatus: ''
+  getClientProfileStatus: '',
 };
 
 export const postAddClient: any = createAsyncThunk(
@@ -226,6 +230,18 @@ export const getCities: any = createAsyncThunk(
   }
 );
 
+export const getClientAgencies: any = createAsyncThunk(
+  "client/getClientAgencies",
+  async () => {
+    try {
+      const response: any = await GetClientAgenciesApi();
+      return response;
+    } catch (error: any) {
+      return { status: false, message: error.response.data.message } as PostAPIResponse;
+    }
+  }
+);
+
 export const clientSlice = createSlice({
   name: "client",
   initialState,
@@ -242,6 +258,12 @@ export const clientSlice = createSlice({
       return {
         ...state,
         client: ''
+      }
+    },
+    setAgencyId(state, action) {
+      return {
+        ...state,
+        agencyId: action.payload
       }
     }
   },
@@ -454,8 +476,17 @@ export const clientSlice = createSlice({
            cities: action.payload.data,
          }
        });
+       // new cases for get agencies
+       builder
+       .addCase(getClientAgencies.fulfilled, (state,action) => {
+         return{
+           ...state,
+           agencies: action?.payload?.data,
+          agencyId: action?.payload?.data[0]?.reference_id
+         }
+       });
   },
 });
 
-export const { RemoveRegionalData, RemoveClientData } = clientSlice.actions;
+export const { RemoveRegionalData, RemoveClientData, setAgencyId } = clientSlice.actions;
 export default clientSlice.reducer;

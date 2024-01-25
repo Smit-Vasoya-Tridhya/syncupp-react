@@ -2,17 +2,18 @@
 
 import Link from 'next/link';
 import { HeaderCell } from '@/components/ui/table';
-import { Text } from '@/components/ui/text';
+import {Text } from '@/components/ui/text';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Tooltip } from '@/components/ui/tooltip';
+import { routes } from '@/config/routes';
 import EyeIcon from '@/components/icons/eye';
 import PencilIcon from '@/components/icons/pencil';
+import {TeamMemberType } from '@/data/products-data';
 import DeletePopover from '@/app/shared/delete-popover';
-import CustomModalButton from '@/app/shared/custom-modal-button';
-import AddClientForm from '../create-edit/add-client-form';
-import { Button } from 'rizzui';
-import { LuExternalLink } from "react-icons/lu";
-import moment from 'moment'
+import CustomModalButton from '../../../custom-modal-button';
+import AddTeamMemberForm from '../create-edit/add-team-member-form';
+import { Badge, Button } from 'rizzui';
+import moment from 'moment';
 
 type Columns = {
   data: any[];
@@ -27,7 +28,33 @@ type Columns = {
   searchTerm?: string;
 };
 
-export const getColumns = ({
+function getStatusBadge(status: string) {
+  switch (status.toLowerCase()) {
+    case 'pending':
+      return (
+        <div className="flex items-center">
+          <Badge color="warning" renderAsDot />
+          <Text className="ms-2 font-medium text-orange-dark">{status}</Text>
+        </div>
+      );
+    case 'confirmed':
+      return (
+        <div className="flex items-center">
+          <Badge color="success" renderAsDot />
+          <Text className="ms-2 font-medium text-green-dark">Active</Text>
+        </div>
+      );
+    default:
+      return (
+        <div className="flex items-center">
+          <Badge renderAsDot className="bg-gray-400" />
+          <Text className="ms-2 font-medium text-gray-600">{status}</Text>
+        </div>
+      );
+  }
+}
+
+export const getClientTeamColumns = ({
   data,
   sortConfig,
   checkedItems,
@@ -65,14 +92,13 @@ export const getColumns = ({
   },
   {
     title: (
-      <HeaderCell
-        title="Client Name"
-        sortable
-        ascending={
-          sortConfig?.direction === 'asc' && sortConfig?.key === 'name'
-        }
-      />
-    ),
+    <HeaderCell
+    title="Name"
+    sortable
+    ascending={
+      sortConfig?.direction === 'asc' && sortConfig?.key === 'name'
+    }
+    />),
     onHeaderCell: () => onHeaderCellClick('name'),
     dataIndex: 'name',
     key: 'name',
@@ -83,79 +109,55 @@ export const getColumns = ({
   },
   {
     title: (
-      <HeaderCell
-        title="Mobile Number"
-        sortable
-        ascending={
-          sortConfig?.direction === 'asc' && sortConfig?.key === 'contact_number'
-        }
-      />
-    ),
+    <HeaderCell
+    title="Mobile Number"
+    sortable
+    ascending={
+      sortConfig?.direction === 'asc' && sortConfig?.key === 'contact_number'
+    }
+    />),
     onHeaderCell: () => onHeaderCellClick('contact_number'),
     dataIndex: 'contact_number',
     key: 'contact_number',
     width: 200,
-    render: (value: string) => (
-      <>
-      {value && value != "" ? <Text className="font-medium text-gray-700">{value}</Text> : <Text className="font-medium text-gray-700">-</Text>}
-      </>
+    render: (_: any, row: any) => (
+      <Text className="font-medium text-gray-700">{row.contact_number}</Text>
     ),
   },
   {
     title: (
-      <HeaderCell
-        title="Email ID"
-        sortable
-        ascending={
-          sortConfig?.direction === 'asc' && sortConfig?.key === 'email'
-        }
-      />
-    ),
+    <HeaderCell
+    title="Email ID"
+    sortable
+    ascending={
+      sortConfig?.direction === 'asc' && sortConfig?.key === 'email'
+    }
+    />),
     onHeaderCell: () => onHeaderCellClick('email'),
     dataIndex: 'email',
     key: 'email',
     width: 200,
-    render: (value: string) => (
-      <Text className="font-medium text-gray-700">{value}</Text>
+    render: (_: any, row: any) => (
+      <Text className="font-medium text-gray-700">{row.email}</Text>
     ),
   },
   {
     title: (
-      <HeaderCell
-        title="Company"
-        sortable
-        ascending={
-          sortConfig?.direction === 'asc' && sortConfig?.key === 'company_name'
-        }
-      />
-    ),
-    onHeaderCell: () => onHeaderCellClick('company_name'),
-    dataIndex: 'reference_id',
-    key: 'reference_id',
+    <HeaderCell
+    title="Status"
+    sortable
+    ascending={
+      sortConfig?.direction === 'asc' && sortConfig?.key === 'status'
+    }
+    />),
+    onHeaderCell: () => onHeaderCellClick('status'),
+    dataIndex: 'status',
+    key: 'status',
     width: 200,
-    render: (value: Record<string, string>) => {
-      return <Text className="font-medium text-gray-700">{value?.company_name}</Text>
-    },
-  },
-  {
-    title: (
-      <HeaderCell
-        title="Website"
-        sortable
-        ascending={
-          sortConfig?.direction === 'asc' && sortConfig?.key === 'company_website'
-        }
-      />
-    ),
-    onHeaderCell: () => onHeaderCellClick('company_website'),
-    dataIndex: 'reference_id',
-    key: 'reference_id',
-    width: 200,
-    render: (value: Record<string, string>) => (
-      <>
-       {value?.company_website && value?.company_website != "" ? <Link href={value?.company_website} target='_blank' className="font-medium text-gray-700" ><LuExternalLink size={25} /></Link> : <Text className="font-medium text-gray-700">-</Text>}
-      </>
-    ),
+    render: (value: string) => getStatusBadge(value),
+    // render: (_: any, row: any) => (
+    //   <Text className="font-medium text-gray-700">{row.status}</Text>
+    // ),
   },
   {
     title: (
@@ -182,28 +184,29 @@ export const getColumns = ({
     dataIndex: 'action',
     key: 'action',
     width: 120,
-    render: (_: string, row: Record<string, string>) => (
+    render: (_: string, row: TeamMemberType) => (
       <div className="flex items-center justify-end gap-3 pe-4">
+      
         <CustomModalButton 
-          title="Edit Client"
           icon={<PencilIcon className="h-4 w-4" />}
-          view={<AddClientForm title="Edit Client" row={row} /> }
-          customSize="800px"
+          view={<AddTeamMemberForm title="Edit Team Member" row={row}/>}
+          customSize="625px"
+          title='Edit Team Member'
         />
         <Tooltip
           size="sm"
-          content={() => 'View Client'}
+          content={() => 'View Team Member'}
           placement="top"
           color="invert"
         >
-          {/* <Link href={routes.editTeam}> */}
+          <Link href={routes.viewTeam}>
             <Button size="sm" variant="outline" className='bg-white text-black' aria-label={'View Member'}>
               <EyeIcon className="h-4 w-4" />
             </Button>
-          {/* </Link> */}
+          </Link>
         </Tooltip>
         <DeletePopover
-          title={`Delete the client`}
+          title={`Delete the product`}
           description={`Are you sure you want to delete?`}
           onDelete={() => onDeleteItem(row._id, currentPage, pageSize, data?.length <= 1 ? true : false, sortConfig, searchTerm)}
         />
