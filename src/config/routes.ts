@@ -7,10 +7,15 @@ export const routes = {
   signUp: '/signup',
   forgotPassword: '/forgot-password',
   resetPassword: '/reset-password',
+  viewProfile:'/view-profile',
   dashboard: '/dashboard',
   client: '/client',
   team: '/team',
-  viewTeam: '/team/view-team',
+  agency_team: '/agency-team',
+  client_team: '/client-team',
+  invoice:'/invoice',
+  invoiceForm:'/invoice/create-edit',
+  viewTeam:'/team/view-team',
 
   teams: {
     verify: '/team/verify'
@@ -24,9 +29,10 @@ export const routes = {
   admin: {
     signIn: '/admin/signin',
     signUp: '/admin/signup',
-    forgotPassword: '/admin/forgot-password',
-    resetPassword: '/admin/reset-password',
-    dashboard: '/admin/dashboard'
+    forgotPassword:'/admin/forgot-password',
+    resetPassword:'/admin/reset-password',
+    dashboard: '/admin/dashboard',
+    faq:'/admin/faq',
   },
 
 };

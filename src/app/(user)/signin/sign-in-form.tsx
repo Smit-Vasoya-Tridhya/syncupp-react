@@ -8,7 +8,7 @@ import { Password } from '@/components/ui/password';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useMedia } from '@/hooks/use-media';
 import { Form } from '@/components/ui/form';
-// import { Text } from '@/components/ui/text';
+import { Text } from '@/components/ui/text';
 import { routes } from '@/config/routes';
 import { loginSchema, LoginSchema } from '@/utils/validators/login.schema';
 import { useState } from 'react';
@@ -30,7 +30,7 @@ export default function SignInForm() {
   const dispatch = useDispatch();
   const router = useRouter();
   const signIn = useSelector((state: any) => state?.root?.signIn)
-  console.log("signIn state.....", signIn)
+  // console.log("signIn state.....", signIn)
   
 
 
@@ -121,6 +121,15 @@ export default function SignInForm() {
           </div>
         )}
       </Form>
+      <Text className="mt-5 text-center text-[15px] leading-loose text-gray-500 lg:text-start xl:mt-7 xl:text-base">
+        Don’t have an account?{' '}
+        <Link
+          href={routes.signUp}
+          className="font-semibold text-gray-700 transition-colors hover:text-blue"
+        >
+          Create Account
+        </Link>
+      </Text>
     </>
   );
 }

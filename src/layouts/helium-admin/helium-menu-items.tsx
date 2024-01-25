@@ -1,6 +1,7 @@
 import { routes } from '@/config/routes';
 import {
   PiFolderNotchDuotone,
+  PiQuestionLight,
   PiUserPlusDuotone,
 } from 'react-icons/pi';
 
@@ -15,5 +16,10 @@ export const menuItems = [
     name: 'Customer',
     href: '/admin/agencylist',
     icon: <PiUserPlusDuotone />,
+  },
+  {
+    name: 'FAQ',
+    href: routes.admin.faq,
+    icon: <PiQuestionLight />,
   },
 ];

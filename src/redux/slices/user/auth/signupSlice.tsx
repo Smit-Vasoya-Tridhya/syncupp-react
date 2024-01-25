@@ -67,7 +67,7 @@ export const signupSlice = createSlice({
   initialState,
   reducers: {
 
-    logoutUserSignUp(state, action) {
+    logoutUserSignUp(state) {
       localStorage.clear();
       sessionStorage.clear();
       return {

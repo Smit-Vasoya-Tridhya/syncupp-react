@@ -9,10 +9,10 @@ import { Form } from '@/components/ui/form';
 import { handleKeyDown } from '@/utils/common-functions';
 import { SetPasswordSchema, setPasswordSchema } from '@/utils/validators/set-password-schema';
 import { useDispatch, useSelector } from 'react-redux';
-import { postVerifyClient } from '@/redux/slices/user/client/clientSlice';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { routes } from '@/config/routes';
 import Spinner from '@/components/ui/spinner';
+import { verifyTeamMember } from '@/redux/slices/user/team-member/teamSlice';
 
 
 
@@ -24,7 +24,7 @@ export default function SetPasswordForm(props: any) {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const clientSliceData = useSelector((state: any) => state?.root?.client);
+  const teamMemberData = useSelector((state: any) => state?.root?.teamMember);
 
   const searchParams = useSearchParams();
   // console.log("search Params....", searchParams.get("email"))
@@ -32,6 +32,7 @@ export default function SetPasswordForm(props: any) {
   const email = searchParams.get("email");
   const agency = searchParams.get("agency");
   let redirectt = searchParams.get("redirect");
+  const token = searchParams.get("token");
   // console.log("redirect....", redirectt)
   let redirect = (redirectt === 'true');
   
@@ -49,6 +50,7 @@ export default function SetPasswordForm(props: any) {
     const apiData = {
       email: email,
       agency_id: agency,
+      token: token,
       password: data?.password,
       first_name: data?.firstName,
       last_name: data?.lastName,
@@ -56,8 +58,8 @@ export default function SetPasswordForm(props: any) {
     }
 
 
-    dispatch(postVerifyClient(apiData)).then((result: any) => {
-      if (postVerifyClient.fulfilled.match(result)) {
+    dispatch(verifyTeamMember(apiData)).then((result: any) => {
+      if (verifyTeamMember.fulfilled.match(result)) {
         // console.log('resultt', result)
         if (result && result.payload.success === true ) {
           router.replace(routes.signIn);
@@ -150,10 +152,10 @@ export default function SetPasswordForm(props: any) {
                   size={isMedium ? 'lg' : 'xl'}
                   color="info"
                   rounded="pill"
-                  disabled={clientSliceData?.loading}
+                  disabled={teamMemberData?.loading}
                 >
                   Create Password
-                  { clientSliceData?.loading && <Spinner size="sm" tag='div' className='ms-3' color='white' /> }
+                  { teamMemberData?.loading && <Spinner size="sm" tag='div' className='ms-3' color='white' /> }
                 </Button>
               </div>
             </div>

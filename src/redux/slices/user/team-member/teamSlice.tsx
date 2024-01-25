@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { toast } from 'react-hot-toast';
-import { DeleteTeamMemberApi, GetAllTeamMemberApi, GetTeamMemberProfileApi, PostAddTeamMemberApi, PutEditTeamMemberApi } from "@/api/user/team-member/teamApis";
+import { DeleteTeamMemberApi, GetAllTeamMemberApi, GetTeamMemberProfileApi, PostAddTeamMemberApi, PostTeamMemberVerifyApi, PutEditTeamMemberApi } from "@/api/user/team-member/teamApis";
 
 type TeamData = {
   _id:string;
@@ -13,6 +13,23 @@ type TeamData = {
   page?: any;
   items_per_page?: number;
   search?: string;
+  agencyId?: string;
+}
+
+type DeleteTeamMemberData = {
+  teamMemberIds: string[];
+  agencyId?: string;
+}
+
+type PostTeamMemberVerifyData = {
+  email: string;
+  agency_id: string;
+  redirect: boolean;
+  token?: string;
+  client_id?: string;
+  password?: string;
+  first_name?: string;
+  last_name?: string;
 }
 
 interface TeamMemberDataResponse {
@@ -42,6 +59,7 @@ export const addTeamMember: any = createAsyncThunk(
       name: data.name,
       contact_number: data.contact_number,
       role: data.role,
+      agency_id: data?.agencyId
     }
     try {
       const response: any = await PostAddTeamMemberApi(apiData);
@@ -54,16 +72,9 @@ export const addTeamMember: any = createAsyncThunk(
 
 export const verifyTeamMember: any = createAsyncThunk(
   "team/verifyTeamMember",
-  async (data: TeamData) => {
-    const apiData={
-      id: data._id,
-      email: data.email,
-      name: data.name,
-      contact_number: data.contact_number,
-      role: data.role,
-    }
+  async (data: PostTeamMemberVerifyData) => {
     try {
-      const response: any = await PostAddTeamMemberApi(apiData);
+      const response: any = await PostTeamMemberVerifyApi(data);
       return response;
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as TeamMemberDataResponse;
@@ -80,6 +91,7 @@ export const editTeamMember: any = createAsyncThunk(
       name: data.name,
       contact_number: data.contact_number,
       role: data.role,
+      agency_id: data?.agencyId
     }
     try {
       const response: any = await PutEditTeamMemberApi(apiData);
@@ -98,7 +110,8 @@ export const getAllTeamMember: any = createAsyncThunk(
       sortOrder: data?.sort_order,
       search: data?.search,
       page: data?.page,
-      itemsPerPage: data?.items_per_page
+      itemsPerPage: data?.items_per_page,
+      agency_id: data?.agencyId
     }
     try {
       const response: any = await GetAllTeamMemberApi(apiData);
@@ -124,12 +137,13 @@ export const getTeamMemberProfile: any = createAsyncThunk(
 );
 export const deleteTeamMember: any = createAsyncThunk(
   "teamMember/deleteTeamMember",
-  async (data: TeamData) => {
-    const apiData={
-      id: data._id
-    }
+  async (data: DeleteTeamMemberData) => {
     try {
-      const response: any = await DeleteTeamMemberApi(apiData);
+      const apiData = {
+        teamMemberIds: data.teamMemberIds,
+        agency_id: data?.agencyId
+      }
+      const response: any = await DeleteTeamMemberApi(data);
       return response;
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as TeamMemberDataResponse;

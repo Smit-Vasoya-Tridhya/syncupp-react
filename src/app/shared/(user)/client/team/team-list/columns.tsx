@@ -10,9 +10,10 @@ import EyeIcon from '@/components/icons/eye';
 import PencilIcon from '@/components/icons/pencil';
 import {TeamMemberType } from '@/data/products-data';
 import DeletePopover from '@/app/shared/delete-popover';
-import CustomModalButton from '../../../custom-modal-button';
+import CustomModalButton from '@/app/shared/custom-modal-button';
 import AddTeamMemberForm from '../create-edit/add-team-member-form';
-import { Button } from 'rizzui';
+import { Badge, Button } from 'rizzui';
+import moment from 'moment';
 
 type Columns = {
   data: any[];
@@ -26,6 +27,32 @@ type Columns = {
   pageSize?: number;
   searchTerm?: string;
 };
+
+function getStatusBadge(status: string) {
+  switch (status.toLowerCase()) {
+    case 'pending':
+      return (
+        <div className="flex items-center">
+          <Badge color="warning" renderAsDot />
+          <Text className="ms-2 font-medium text-orange-dark">{status}</Text>
+        </div>
+      );
+    case 'confirmed':
+      return (
+        <div className="flex items-center">
+          <Badge color="success" renderAsDot />
+          <Text className="ms-2 font-medium text-green-dark">Active</Text>
+        </div>
+      );
+    default:
+      return (
+        <div className="flex items-center">
+          <Badge renderAsDot className="bg-gray-400" />
+          <Text className="ms-2 font-medium text-gray-600">{status}</Text>
+        </div>
+      );
+  }
+}
 
 export const getColumns = ({
   data,
@@ -57,8 +84,8 @@ export const getColumns = ({
       <div className="inline-flex ps-3.5">
         <Checkbox
           className="cursor-pointer"
-          checked={checkedItems.includes(row.id)}
-          {...(onChecked && { onChange: () => onChecked(row.id) })}
+          checked={checkedItems.includes(row._id)}
+          {...(onChecked && { onChange: () => onChecked(row._id) })}
         />
       </div>
     ),
@@ -66,41 +93,24 @@ export const getColumns = ({
   {
     title: (
     <HeaderCell
-    title="Member Name"
+    title="Name"
     sortable
     ascending={
-      sortConfig?.direction === 'asc' && sortConfig?.key === 'first_name'
+      sortConfig?.direction === 'asc' && sortConfig?.key === 'name'
     }
     />),
-    onHeaderCell: () => onHeaderCellClick('first_name'),
-    dataIndex: 'first_name',
-    key: 'first_name',
+    onHeaderCell: () => onHeaderCellClick('name'),
+    dataIndex: 'name',
+    key: 'name',
     width: 200,
-    render: (_: any, row: any) => (
-      <Text className="font-medium text-gray-700">{row.first_name}</Text>
+    render: (value: string) => (
+      <Text className="font-medium text-gray-700">{value}</Text>
     ),
   },
   {
     title: (
     <HeaderCell
-    title="Email"
-    sortable
-    ascending={
-      sortConfig?.direction === 'asc' && sortConfig?.key === 'email'
-    }
-    />),
-    onHeaderCell: () => onHeaderCellClick('email'),
-    dataIndex: 'email',
-    key: 'email',
-    width: 200,
-    render: (_: any, row: any) => (
-      <Text className="font-medium text-gray-700">{row.email}</Text>
-    ),
-  },
-  {
-    title: (
-    <HeaderCell
-    title="Conact no"
+    title="Mobile Number"
     sortable
     ascending={
       sortConfig?.direction === 'asc' && sortConfig?.key === 'contact_number'
@@ -117,24 +127,24 @@ export const getColumns = ({
   {
     title: (
     <HeaderCell
-    title="Role"
+    title="Email ID"
     sortable
     ascending={
-      sortConfig?.direction === 'asc' && sortConfig?.key === 'member_role'
+      sortConfig?.direction === 'asc' && sortConfig?.key === 'email'
     }
     />),
-    onHeaderCell: () => onHeaderCellClick('member_role'),
-    dataIndex: 'member_role',
-    key: 'member_role',
+    onHeaderCell: () => onHeaderCellClick('email'),
+    dataIndex: 'email',
+    key: 'email',
     width: 200,
     render: (_: any, row: any) => (
-      <Text className="font-medium text-gray-700">{row.member_role}</Text>
+      <Text className="font-medium text-gray-700">{row.email}</Text>
     ),
   },
   {
     title: (
     <HeaderCell
-    title="status"
+    title="Status"
     sortable
     ascending={
       sortConfig?.direction === 'asc' && sortConfig?.key === 'status'
@@ -144,9 +154,29 @@ export const getColumns = ({
     dataIndex: 'status',
     key: 'status',
     width: 200,
-    render: (_: any, row: any) => (
-      <Text className="font-medium text-gray-700">{row.status}</Text>
+    render: (value: string) => getStatusBadge(value),
+    // render: (_: any, row: any) => (
+    //   <Text className="font-medium text-gray-700">{row.status}</Text>
+    // ),
+  },
+  {
+    title: (
+      <HeaderCell
+        title="Created"
+        sortable
+        ascending={
+          sortConfig?.direction === 'asc' && sortConfig?.key === 'createdAt'
+        }
+      />
     ),
+    onHeaderCell: () => onHeaderCellClick('createdAt'),
+    dataIndex: 'createdAt',
+    key: 'createdAt',
+    width: 200,
+    render: (value: string) => {
+      const date = moment(value).fromNow();
+      return <Text className="font-medium text-gray-700">{date}</Text>
+    },
   },
   {
     // Need to avoid this issue -> <td> elements in a large <table> do not have table headers.

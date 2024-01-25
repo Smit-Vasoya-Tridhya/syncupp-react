@@ -11,10 +11,9 @@ export const teamMemberSchema = z.object({
   }, {
       message: messages.contactLengthMin,
   }),
-  role: z.string().optional()
-  // role: z
-  //   .string()
-  //   .min(1, { message: messages.roleNameIsRequired })
+  role: z
+  .string({ required_error: messages.roleNameIsRequired })
+  .min(1, { message: messages.roleNameIsRequired })
 });
 
 // generate form types from zod validation schema

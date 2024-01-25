@@ -12,9 +12,12 @@ import viewProfileSlice from "./slices/admin/auth/viewprofile/viewProfileSlice";
 import clientSlice from "./slices/user/client/clientSlice";
 import teamSlice from "./slices/user/team-member/teamSlice";
 import adminChangePasswordSlice from "./slices/admin/auth/updatePassword/changePasswordSlice";
+import adminfaqSlice from "./slices/admin/faq/faqSlice";
 import agencySlice from "./slices/admin/agency/agencySlice";
 import  agencyAgreementSlice from "./slices/user/agreement/agreementSlice";
 import clientAgreementSlice from "./slices/user/client/agreement/clientAgreementSlice";
+import userAgencySlice from "./slices/user/agency/agencySlice";
+import invoiceSlice from "./slices/user/invoice/invoiceSlice";
 
 
 const combinedReducer = combineReducers({
@@ -30,16 +33,22 @@ const combinedReducer = combineReducers({
   viewProfile: viewProfileSlice,
   client: clientSlice,
   adminChangePassword: adminChangePasswordSlice,
+  teamModule: teamSlice,
+  adminFaq:adminfaqSlice,
   teamMember: teamSlice,
   adminAgency: agencySlice,
+  userAgency:userAgencySlice,
+  invoice:invoiceSlice,
   agreement: agencyAgreementSlice,
   clienAgreement: clientAgreementSlice
 });
 
-const rootReducer = (state: any, action: any) => {
-  // if (action.type === "auth/Logout") {
-  //   state = undefined;
-  // }
+ const rootReducer = (state: any, action: any) => {
+  if (action.type === "signin/logoutUser") {
+    state = undefined;
+  } else if(action.type === "signup/lologoutUserSignUp") {
+    state = undefined;
+  }
   return combinedReducer(state, action);
 };
 

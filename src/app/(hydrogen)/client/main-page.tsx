@@ -2,14 +2,14 @@
 // import Link from 'next/link';
 import PageHeader from '@/app/shared/page-header';
 import ModalButton from '@/app/shared/modal-button';
-import AddClientForm from '@/app/shared/(user)/client/create-edit/add-client-form';
+import AddClientForm from '@/app/shared/(user)/agency/client/create-edit/add-client-form';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteClient, getAllClient } from '@/redux/slices/user/client/clientSlice';
 import { useRouter } from 'next/navigation';
 // import toast from 'react-hot-toast';
 import { useModal } from '@/app/shared/modal-views/use-modal';
-import { getColumns } from '@/app/shared/(user)/client/client-list/columns';
+import { getColumns } from '@/app/shared/(user)/agency/client/client-list/columns';
 import CustomTable from '@/components/common-tables/table';
 import { PiPlusBold } from 'react-icons/pi';
 
@@ -27,10 +27,6 @@ export default function ClientPage() {
   
   const [pageSize, setPageSize] = useState<number>(5);
 
-  // console.log("Client data....", clientSliceData);
-
-  // console.log("current page in main file...", currentPagee);
-
 
 
   const handleChangePage = async (paginationParams: any) => {
@@ -45,7 +41,9 @@ export default function ClientPage() {
       await dispatch(getAllClient({ page, items_per_page, sort_field, sort_order, search }));
       return data?.client
     }
-    return data?.client
+    if(data && data?.client && data?.client?.length !== 0 ) {
+      return data?.client
+    }
   };
 
   const handleDeleteById = async (id: string | string[], currentPage?: any, countPerPage?: number, sortConfig?: Record<string, string>, searchTerm?: string) => {
@@ -54,12 +52,9 @@ export default function ClientPage() {
 
     try {
       const res = await dispatch(deleteClient({ client_ids: id }));
-      // console.log("delete response....", res)
       if (res.payload.success === true) {
         closeModal();
-        // console.log("currentpage before get and after delete....", currentPage)
         const reponse = await dispatch(getAllClient({ page: currentPage, items_per_page: countPerPage, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm }));
-        // console.log("response after delete...", reponse)
       }
     } catch (error) {
       console.error(error);

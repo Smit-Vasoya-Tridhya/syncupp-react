@@ -20,7 +20,7 @@ const WithAuthPublic = (WrappedComponent: any) => {
 
       // console.log("####" ,token)
       if (token) {
-        if(signIn?.user?.data?.user?.role?.name === "agency" || signIn?.user?.data?.user?.role?.name === "client"  || socialSignup?.user?.data?.user?.role?.name === "agency" || socialSignup?.user?.data?.user?.role?.name === "client"  ){
+        if(signIn?.user?.data?.user?.role?.name === "agency" || signIn?.user?.data?.user?.role?.name === "client" || signIn?.user?.data?.user?.role?.name === "team_agency" || socialSignup?.user?.data?.user?.role?.name === "agency" || socialSignup?.user?.data?.user?.role?.name === "client"  ){
           router.replace(routes.dashboard)
         } else {
           router.replace(routes.admin.dashboard)
