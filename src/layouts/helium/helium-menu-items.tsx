@@ -10,6 +10,7 @@ import {
 import { useSelector } from 'react-redux';
 import { Title } from '@/components/ui/text';
 import { usePathname } from 'next/navigation';
+import { FaFileInvoiceDollar } from 'react-icons/fa';
 
 
 
@@ -41,6 +42,11 @@ export const MenuItems = () => {
           name: 'Team',
           href: routes.team,
           icon: <PiUserListDuotone />,
+        },
+        {
+          name: 'Invoice',
+          href: routes.invoice,
+          icon: <FaFileInvoiceDollar />,
         },
       ];
       break;

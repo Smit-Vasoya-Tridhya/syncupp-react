@@ -7,9 +7,12 @@ export const routes = {
   signUp: '/signup',
   forgotPassword: '/forgot-password',
   resetPassword: '/reset-password',
+  viewProfile:'/view-profile',
   dashboard: '/dashboard',
   client: '/client',
   team:'/team',
+  invoice:'/invoice',
+  invoiceForm:'/invoice/create-edit',
   viewTeam:'/team/view-team',
 
   teams: {
