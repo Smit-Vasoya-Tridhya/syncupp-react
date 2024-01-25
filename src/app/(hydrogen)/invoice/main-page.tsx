@@ -24,33 +24,33 @@ export default function InvoiceDataTablePage() {
 
   
   const handleChangePage = async (paginationParams: any) => {
-    // let { page, items_per_page, sort_field, sort_order, search } = paginationParams;
+    let { page, items_per_page, sort_field, sort_order, search } = paginationParams;
 
-    // const response = await dispatch(getAllTeamMember({ page, items_per_page, sort_field, sort_order, search }));
-    // // console.log(response, "Response.....")
-    // const { data } = response?.payload;
-    // const maxPage: number = data?.page_count;
+    const response = await dispatch(getAllTeamMember({ page, items_per_page, sort_field, sort_order, search }));
+    // console.log(response, "Response.....")
+    const { data } = response?.payload;
+    const maxPage: number = data?.page_count;
 
-    // if (page > maxPage) {
-    //   page = maxPage > 0 ? maxPage : 1;
-    //   await dispatch(getAllTeamMember({ page, items_per_page, sort_field, sort_order, search }));
-    //   return data?.teamMemberList;
-    // }
-    // if(data && data?.teamMemberList && data?.teamMemberList.length !== 0 ) {
-    //   return data?.teamMemberList
-    // }
+    if (page > maxPage) {
+      page = maxPage > 0 ? maxPage : 1;
+      await dispatch(getAllTeamMember({ page, items_per_page, sort_field, sort_order, search }));
+      return data?.teamMemberList;
+    }
+    if(data && data?.teamMemberList && data?.teamMemberList.length !== 0 ) {
+      return data?.teamMemberList
+    }
   };
 
   const handleDeleteById = async (id: string | string[], currentPage?: any, countPerPage?: number, sortConfig?: Record<string, string>, searchTerm?: string) => {
 
-    try {
-      const res = await dispatch(deleteTeamMember({ _id: id }));
-      if (res.payload.success === true) {
-        const reponse = await dispatch(getAllTeamMember({ page: currentPage, items_per_page: countPerPage, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm }));
-      }
-    } catch (error) {
-      console.error(error);
-    }
+    // try {
+    //   const res = await dispatch(deleteTeamMember({ _id: id }));
+    //   if (res.payload.success === true) {
+    //     const reponse = await dispatch(getAllTeamMember({ page: currentPage, items_per_page: countPerPage, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm }));
+    //   }
+    // } catch (error) {
+    //   console.error(error);
+    // }
   };
 
   return (

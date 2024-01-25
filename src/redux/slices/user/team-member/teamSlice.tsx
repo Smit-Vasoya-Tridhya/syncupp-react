@@ -20,6 +20,19 @@ type DeleteTeamMemberData = {
   teamMemberIds: string[];
   agencyId?: string;
 }
+type GetTeamMemberProfileApiData = {
+  _id: string;
+  name: string;
+  email: string;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+  first_name: string;
+  last_name: string;
+  user_type: string;
+  agency_id: string;
+  member_role: string;
+};
 
 type PostTeamMemberVerifyData = {
   email: string;
@@ -123,10 +136,20 @@ export const getAllTeamMember: any = createAsyncThunk(
 );
 export const getTeamMemberProfile: any = createAsyncThunk(
   "teamMember/getTeamMemberProfile",
-  async (data: TeamData) => {
-    const apiData={
-      id: data._id,
-    }
+  async (data: GetTeamMemberProfileApiData) => {
+    const apiData = {
+      _id: data?._id,
+      name: data?.name,
+      email: data?.email,
+      status: data?.status,
+      createdAt: data?.createdAt,
+      updatedAt: data?.updatedAt,
+      first_name: data?.first_name,
+      last_name: data?.last_name,
+      user_type: data?.user_type,
+      agency_id: data?.agency_id,
+      member_role: data?.member_role,
+    };
     try {
       const response: any = await GetTeamMemberProfileApi(apiData);
       return response;
