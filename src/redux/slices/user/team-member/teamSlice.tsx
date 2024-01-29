@@ -216,7 +216,7 @@ export const teamSlice = createSlice({
           }
       })
       .addCase(addTeamMember.fulfilled, (state,action) => {
-        if(action.payload.success == true){
+        if(action.payload.success === true){
           toast.success(action.payload.message)
         } else {
           toast.error(action.payload.message)
@@ -248,6 +248,7 @@ export const teamSlice = createSlice({
       .addCase(verifyTeamMember.fulfilled, (state,action) => {
         if(action.payload.success == true){
           toast.success(action.payload.message)
+          localStorage.clear();
         } else {
           toast.error(action.payload.message)
         }

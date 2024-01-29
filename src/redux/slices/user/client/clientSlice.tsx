@@ -320,6 +320,7 @@ export const clientSlice = createSlice({
           toast.error(action.payload.message)
         } else {
           toast.success(action.payload.message)
+          localStorage.clear();
         }
         return {
           ...state,

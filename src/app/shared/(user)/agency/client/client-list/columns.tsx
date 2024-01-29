@@ -153,7 +153,7 @@ export const getColumns = ({
     width: 200,
     render: (value: Record<string, string>) => (
       <>
-       {value?.company_website && value?.company_website != "" ? <Link href={value?.company_website} target='_blank' className="font-medium text-gray-700" ><LuExternalLink size={25} /></Link> : <Text className="font-medium text-gray-700">-</Text>}
+       {value?.company_website && value?.company_website != "" ? <a href={value?.company_website} target='_blank' className="font-medium text-gray-700" ><LuExternalLink size={25} /></a> : <Text className="font-medium text-gray-700">-</Text>}
       </>
     ),
   },
