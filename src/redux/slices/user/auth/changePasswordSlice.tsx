@@ -30,14 +30,12 @@ const initialState: ChangePasswordState = {
 export const changePasswordUser : any = createAsyncThunk(
     "changePassword/changePasswordUser",
     async (data: ChangePasswordData) => {
-        console.log("We are in changePassword slice.........", data)
         try {
             const ApiData = {
               old_password: data.currentPassword,
               new_password: data.newPassword
             }
             const response = await PostChangePassword(ApiData);
-            console.log("Change password response......", response);
             return response;
         } catch (error: any) {
             return { status: false, message: error.response.data.message } as PostChangePasswordResponse;
@@ -59,7 +57,6 @@ export const changePasswordSlice = createSlice({
         }
       })
       .addCase(changePasswordUser.fulfilled, (state,action) => {
-        // console.log(action.payload);
         if(action.payload.success == true){
           toast.success(action.payload.message)
         } else {

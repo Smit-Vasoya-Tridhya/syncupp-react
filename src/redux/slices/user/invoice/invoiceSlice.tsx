@@ -37,10 +37,8 @@ const initialState:invoiceInitialState = {
   export const getInvoiceApi: any = createAsyncThunk(
     "invoice/getInvoiceApi",
     async (data:GetInvoiceApiData) => {
-    //   console.log("We are in invoice slice.........", data)
       try {
         const response: any = await GetInvoiceApi(data);
-        console.log("add invoice response....", response);
         return response;
       } catch (error: any) {
         return { status: false, message: error.response.data.message } as PostAPIResponse;
@@ -73,7 +71,6 @@ const initialState:invoiceInitialState = {
           }
       })
       .addCase(getInvoiceApi.fulfilled, (state,action) => {
-        // console.log(action.payload);
         if(action.payload.status == false){
             toast.error(action.payload.message)
         } else {

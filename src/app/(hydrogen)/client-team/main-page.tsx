@@ -2,29 +2,23 @@
 
 import PageHeader from '@/app/shared/page-header';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import CustomTable from '@/components/common-tables/table';
 import { getColumns } from '@/app/shared/(user)/agency/client-team/team-list/columns';
 import { deleteTeamMember, getAllTeamMember } from '@/redux/slices/user/team-member/teamSlice';
 
-
 const pageHeader = {
   title: 'Client Team',
 };
-
 
 export default function TeamDataTablePage() {
   const dispatch = useDispatch();
   const [pageSize, setPageSize] = useState(5);
   const teamMemberData = useSelector((state: any) => state?.root?.teamMember);
   const clientSliceData = useSelector((state: any) => state?.root?.client);
-
-  
   const handleChangePage = async (paginationParams: any) => {
     let { page, items_per_page, sort_field, sort_order, search } = paginationParams;
-
     const response = await dispatch(getAllTeamMember({ page, items_per_page, sort_field, sort_order, search, agencyId: clientSliceData?.agencyId }));
-    // console.log(response, "Response.....")
     const { data } = response?.payload;
     const maxPage: number = data?.page_count;
 
@@ -39,7 +33,6 @@ export default function TeamDataTablePage() {
   };
 
   const handleDeleteById = async (id: string | string[], currentPage?: any, countPerPage?: number, sortConfig?: Record<string, string>, searchTerm?: string) => {
-
     try {
       const res = await dispatch(deleteTeamMember({ teamMemberIds: id, agencyId: clientSliceData?.agencyId }));
       if (res.payload.success === true) {
@@ -50,14 +43,10 @@ export default function TeamDataTablePage() {
     }
   };
 
- 
-
   return (
     <>
       <PageHeader title={pageHeader.title}>
-        <div className="mt-4 flex items-center gap-3 @lg:mt-0">
-          
-        </div>
+        <div className="mt-4 flex items-center gap-3 @lg:mt-0"></div>
       </PageHeader>
       <CustomTable
         data={teamMemberData && teamMemberData?.data?.teamMemberList}

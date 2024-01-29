@@ -28,12 +28,11 @@ const AxiosDefaultSetting = async ({
     async (config) => {
       try {
         const userData: any = localStorage.getItem("token");
-        // console.log("Axios Default...", userData);
         if (isString(userData) && !isEmpty(userData)) {
           config.headers["Authorization"] = `Bearer ${userData}`;
         }
       } catch (error) {
-        console.log(error);
+        console.log('Axios default error',error);
       }
       return config;
     },

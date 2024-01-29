@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
 import { SubmitHandler } from 'react-hook-form';
 import { Password } from '@/components/ui/password';
 import { Button } from '@/components/ui/button';
@@ -12,8 +11,6 @@ import { Form } from '@/components/ui/form';
 import { routes } from '@/config/routes';
 import { SignUpSchema, signUpSchema } from '@/utils/validators/signup.schema';
 import { handleKeyContactDown, handleKeyDown } from '@/utils/common-functions';
-
-
 
 export default function SignUpForm(props: any) {
   const isMedium = useMedia('(max-width: 1200px)', false);
@@ -29,15 +26,10 @@ export default function SignUpForm(props: any) {
     confirmPassword: formData?.confirmPassword ?? '',
   };
 
-  // console.log(formData)
-
-
-
   const onSubmit: SubmitHandler<SignUpSchema> = (data) => {
     setFormData(data);
     setNextBtn(true);
     setTitle('Company Detail');
-    console.log('sign up form data', data);
   };
 
   return (

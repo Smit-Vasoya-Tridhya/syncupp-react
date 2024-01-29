@@ -9,7 +9,6 @@ import {
     title: string,
     description?: string,
   };
-  
   interface FaqDataResponse {
     status: boolean;
     message: string;
@@ -32,10 +31,8 @@ import {
   export const postAddTermAndCondition: any = createAsyncThunk(
     'cms/postAddTermAndCondition',
     async (data: AddTermAndConditionData) => {
-      console.log('We are in FAQ slice.........', data);
       try {
         const response: any = await PostFaqEnroll(data);
-        console.log('add FAQ response....', response);
         return response;
       } catch (error: any) {
         return {
@@ -53,10 +50,8 @@ import {
 //         title: data.title,
 //         description: data.description,
 //       };
-//       console.log('We are in FAQ slice.........', data);
 //       try {
 //         const response: any = await UpdateFaqDataByID(data);
-//         console.log('add FAQ response....', response);
 //         return response;
 //       } catch (error: any) {
 //         return {

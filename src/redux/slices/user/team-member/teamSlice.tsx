@@ -117,7 +117,6 @@ export const editTeamMember: any = createAsyncThunk(
 export const getAllTeamMember: any = createAsyncThunk(
   "teamMember/getAllTeamMember",
   async (data: TeamData) => {
-    console.log(data,'teamMember slice data..............................');
     const apiData :any ={
       sortField: data?.sort_field,
       sortOrder: data?.sort_order,

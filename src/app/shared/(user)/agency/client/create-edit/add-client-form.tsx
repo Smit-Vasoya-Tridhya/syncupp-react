@@ -24,25 +24,15 @@ const Select = dynamic(() => import('@/components/ui/select'), {
   loading: () => <SelectLoader />,
 });
 
-
-
 export default function AddClientForm(props: any) {
-
   const { title, row } = props;
-  // console.log("row data...", row)
   const clientSliceData = useSelector((state: any) => state?.root?.client);
-  
-  
   const dispatch = useDispatch();
   const { closeModal } = useModal();
   const router = useRouter();
-  
   const [save, setSave] = useState(false)
   const [loader, setLoader] = useState(false);
   const [reset, setReset] = useState({})
-  
-
-  // let data = row;
 
   let initialValues: ClientSchema = {
     name: "",
@@ -58,7 +48,6 @@ export default function AddClientForm(props: any) {
     contact_number: ""
   };  
 
-  
   useEffect(() => {
     dispatch(getCountry());
   }, [dispatch]);
@@ -83,20 +72,15 @@ export default function AddClientForm(props: any) {
     contact_number: data?.contact_number
   };
 
-
   const [regionalData, setRegionalData] = useState({
     city: data?.client?.city?.id,
     state: data?.client?.state?.id,
     country: data?.client?.country?.id
   });  
-  // console.log("Regional Data....", regionalData)
-
   let countryOptions: Record<string, string>[] = [];
-
   clientSliceData?.countries !== '' && clientSliceData?.countries?.map((country: Record<string, string>) => {
     countryOptions.push({ name: country?.name, value: country?.name }) 
   })
-  
   const countryHandleChange = (selectedOption: string) => {
     const [ countryObj ] = clientSliceData?.countries?.filter((country: Record<string, string>) => country?.name === selectedOption )
     dispatch(getState({ countryId: countryObj._id }))
@@ -104,7 +88,6 @@ export default function AddClientForm(props: any) {
   };
 
   let stateOptions: Record<string, string>[] = [];
-
   clientSliceData?.states !== '' && clientSliceData?.states?.map((state: Record<string, string>) => {
     stateOptions.push({ name: state?.name, value: state?.name }) 
   })
@@ -125,11 +108,8 @@ export default function AddClientForm(props: any) {
     const [ cityObj ] = clientSliceData?.cities?.filter((city: Record<string, string>) => city?.name === selectedOption )
     setRegionalData({...regionalData, city: cityObj._id})
   };
-
   
   const onSubmit: SubmitHandler<ClientSchema> = (dataa) => {
-    // console.log('Add client dataa---->', dataa);
-
     const formData = {
       name: dataa?.name ?? '',
       email: dataa?.email ?? '',
@@ -140,29 +120,26 @@ export default function AddClientForm(props: any) {
       title: dataa?.title ?? '',
       contact_number: dataa?.contact_number ?? ''
     }
-
     const filteredFormData = Object.fromEntries(
       Object.entries(formData).filter(([_, value]) => value !== undefined && value !== '')
     );
-
-
     const filteredRegionalData = Object.fromEntries(
       Object.entries(regionalData).filter(([_, value]) => value !== undefined && value !== '')
       );
-
     const fullData = { ...filteredRegionalData, ...filteredFormData }
 
     if(title === 'New Client') {
       dispatch(postAddClient(fullData)).then((result: any) => {
-        if(postAddClient.fulfilled.match(result)) {
+        if (postAddClient.fulfilled.match(result)) {
           setLoader(false);
           setSave(false);
-
           if (result && result.payload.success === true) {
             save && closeModal();
-            setReset({...initialValues})
-            dispatch(getAllClient({ sort_field: 'createdAt', sort_order: 'desc' }));
-            dispatch(RemoveRegionalData())
+            setReset({ ...initialValues });
+            dispatch(
+              getAllClient({ sort_field: 'createdAt', sort_order: 'desc' })
+            );
+            dispatch(RemoveRegionalData());
             setSave(false);
           }
         }
@@ -178,7 +155,6 @@ export default function AddClientForm(props: any) {
         }
       });
     } 
-    
   };
 
   const handleSaveClick = () => {
@@ -401,7 +377,6 @@ export default function AddClientForm(props: any) {
                     disabled={Object.keys(errors).length === 0 && loader && isSubmitSuccessful && !save}
                     onClick={() => {
                       handleSubmit(onSubmit)();
-                      // console.log(errors, "errors....")
                       setLoader(true)
                     }}
                   >

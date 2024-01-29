@@ -1,20 +1,14 @@
 'use client';
 
-import { Title, Text, ActionIcon } from '@/components/ui/text';
 import { Button } from '@/components/ui/button';
 import { Controller, SubmitHandler } from 'react-hook-form';
 import { Form } from '@/components/ui/form';
 import { useEffect, useState } from 'react';
-import { routes } from '@/config/routes';
-import Link from 'next/link';
-import toast from 'react-hot-toast';
-import { useMedia } from '@/hooks/use-media';
 import { useDispatch, useSelector } from 'react-redux';
 import { DatePicker } from '@/components/ui/datepicker';
 import { handleKeyDown } from '@/utils/common-functions';
 import { useRouter } from 'next/navigation';
 import Spinner from '@/components/ui/spinner';
-import cn from '@/utils/class-names';
 import { AgrementFormTypes, agrementFormSchema } from '@/utils/validators/agreement.schema';
 import { Input } from 'rizzui';
 import SelectLoader from '@/components/loader/select-loader';
@@ -22,7 +16,7 @@ import dynamic from 'next/dynamic';
 import QuillLoader from '@/components/loader/quill-loader';
 import PageHeader from '@/app/shared/page-header';
 import EyeIcon from '@/components/icons/eye';
-import { createagreement, getDropdownclientlist, getSingleagreement, updateagreement } from '@/redux/slices/user/agreement/agreementSlice';
+import { getDropdownclientlist, getSingleagreement, updateagreement } from '@/redux/slices/user/agreement/agreementSlice';
 
 const Select = dynamic(() => import('@/components/ui/select'), {
     ssr: false,
@@ -41,24 +35,17 @@ const peopleCountOptions = [
     { name: '501-1000', value: '501-1000' },
 ]
 
-
-
-
 export default function ChangePasswordForm({ params }: { params: { id: string } }) {
-    const isMedium = useMedia('(max-width: 1200px)', false);
     const dispatch = useDispatch();
     const router = useRouter();
-
     const { user } = useSelector((state: any) => state?.root?.signIn?.user?.data);
     const { singleAgreementdetails, loading, clientlistDetails } = useSelector((state: any) => state?.root?.agreement);
-
     const clientOptions =
         clientlistDetails?.data?.client && clientlistDetails?.data?.client?.length > 0 ? clientlistDetails?.data?.client?.map((client: any) => ({
             name: client?.name,
             value: client?._id,
             key: client
         })) : [];
-
     const [preview, setpreview] = useState(false);
     const [sendbuttonflag, setsendbuttonflag] = useState<boolean>(false)
     const [formdata, setformData] = useState({
@@ -68,23 +55,14 @@ export default function ChangePasswordForm({ params }: { params: { id: string } 
         description: singleAgreementdetails?.data?.agreement_content || "",
     })
     const [selectedClient, setselectedClient] = useState<any>(clientOptions.find((option: any) => option.value === singleAgreementdetails?.data?.receiver))
-
-    console.log(selectedClient, 'selectedClient')
-
     const today = new Date();
-
     const [dueDate, setDueDate] = useState<Date | null>(new Date(singleAgreementdetails?.data?.due_date));
-
-    console.log(singleAgreementdetails?.data?.receiver, 'singleAgreementdetails?.data?.recipient')
-
     const initialValues: AgrementFormTypes = {
         title: formdata?.title || "",
         recipient: formdata?.recipient || "",
         due_date: formdata?.due_date, // Replace with the actual date in string format
         description: formdata?.description || "",
-
     };
-    console.log("params?.id", params?.id);
 
     useEffect(() => {
         dispatch(getDropdownclientlist())
@@ -95,7 +73,6 @@ export default function ChangePasswordForm({ params }: { params: { id: string } 
     }, [params?.id])
 
     const onSubmit: SubmitHandler<AgrementFormTypes> = (data) => {
-        console.log(' form data->', data);
         const agreementData = {
             client_id: user?._id,
             title: data?.title,
@@ -104,10 +81,8 @@ export default function ChangePasswordForm({ params }: { params: { id: string } 
             agreement_content: data?.description,
             send: sendbuttonflag
         };
-
         dispatch(updateagreement({ data: agreementData, id: params?.id })).then((result: any) => {
             if (updateagreement.fulfilled.match(result)) {
-                // console.log('resultt', result)
                 if (result && result.payload.success === true) {
                     router.replace('/agreement');
                 }
@@ -115,7 +90,6 @@ export default function ChangePasswordForm({ params }: { params: { id: string } 
         })
         setsendbuttonflag(false)
     };
-
     const SendHandler = () => {
         setsendbuttonflag(true)
     }
@@ -126,7 +100,6 @@ export default function ChangePasswordForm({ params }: { params: { id: string } 
         setpreview(!preview);
         setformData(watch())
     };
-    console.log(preview, 'preview')
     return (
         <>
             {loading ? <div className='p-10 flex items-center justify-center'>
@@ -151,10 +124,8 @@ export default function ChangePasswordForm({ params }: { params: { id: string } 
                                         <Input
                                             onKeyDown={handleKeyDown}
                                             type="text"
-                                            // size={isMedium ? 'lg' : 'xl'}
                                             label="Enter Title"
                                             placeholder="Website Agreement"
-                                            // rounded="pill"
                                             color="info"
                                             className="[&>label>span]:font-medium  w-full"
                                             {...register('title')}
@@ -167,7 +138,6 @@ export default function ChangePasswordForm({ params }: { params: { id: string } 
                                                 <Select
                                                     options={clientOptions}
                                                     onChange={(selectedOption: any) => {
-                                                        console.log(selectedOption, 'selectedOption', value)
                                                         setselectedClient(selectedOption);
                                                         onChange(selectedOption?.name);
                                                     }}

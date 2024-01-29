@@ -25,7 +25,6 @@ export function useTable<T extends AnyObject>(
     key: 'createdAt',
     direction: 'desc',
   });
-
   useEffect(() => {
     if (initialData) {
       setData(initialData);
@@ -59,17 +58,13 @@ export function useTable<T extends AnyObject>(
       setLoading(false);
     }
   };
-
   /*
    * Dummy loading state.
    */
-
   const debouncedValue = useDebouncedValue<string>(searchTerm, 1000);
-
   useEffect(() => {
     setLoading(false);
     // if (!searchTerm) {
-    //   console.log("current page..", currentPage);
     //   handleAPICall(+currentPage, pageSize, '', sortConfig.key, sortConfig.direction);
     // } else {
     //   handleAPICall(+currentPage, pageSize, searchTerm, sortConfig.key, sortConfig.direction);
@@ -89,26 +84,20 @@ export function useTable<T extends AnyObject>(
     }
   };
   const handleSelectAll = () => {
-    // console.log("selected row keys...", selectedRowKeys)
-    // console.log("data in row...", data)
     if (selectedRowKeys?.length === data?.length) {
       setSelectedRowKeys([]);
     } else {
       setSelectedRowKeys(data?.map((record) => record?._id));
     }
   };
-
   /*
    * Handle sorting
    */
 
-
   function sortData(data: T[], sortKey: string, sortDirection: string) {
-
     return data && data.length > 0 && [...data].length > 0 && [...data].sort((a, b) => {
       const aValue = a[sortKey];
       const bValue = b[sortKey];
-
       if (aValue < bValue) {
         return sortDirection === 'asc' ? -1 : 1;
       } else if (aValue > bValue) {
@@ -116,7 +105,6 @@ export function useTable<T extends AnyObject>(
       }
       return 0;
     });
-
   }
 
   const sortedData = useMemo(() => {
@@ -151,21 +139,13 @@ export function useTable<T extends AnyObject>(
   function handlePaginate(pageNumber: number) {
     setCurrentPage(pageNumber);
   }
-
-
-
   /*
    * Handle delete 
    */
   const handleDelete = async (id: string | string[], currentPage?: any, countPerPage?: number, Islastitem?: boolean, sortConfig?: Record<string, string>, searchTerm?: string) => {
     let updatedData: [] = [];
-    // console.log("Id..", id)
-    console.log("currentpage", currentPage);
-    console.log("count per page", countPerPage);
-
     if (handleDeleteById) {
       Islastitem && setCurrentPage(currentPage - 1)
-
       try {
         updatedData = await handleDeleteById(id, Islastitem ? currentPage - 1 : currentPage, countPerPage, sortConfig, searchTerm);
         // handlePaginate(currentPage);
@@ -177,12 +157,9 @@ export function useTable<T extends AnyObject>(
       setData(updatedData);
     }
   }
-
   /*
    * Handle Filters and searching
    */
-
-
   const updateFilter = async (columnId: string, filterValue: string | any[]) => {
     if (!Array.isArray(filterValue) && !isString(filterValue)) {
       throw new Error('filterValue data type should be string or array of any');
@@ -193,10 +170,8 @@ export function useTable<T extends AnyObject>(
     }
     await handleAPICall(+currentPage, pageSize, searchTerm, '', '', filterValue);
   }
-
   function applyFilters() {
     const searchTermLower = searchTerm.toLowerCase();
-
     // return (
     //   sortedData?.filter((item) => {
     //       const isMatchingItem = Object.entries(filters).some(

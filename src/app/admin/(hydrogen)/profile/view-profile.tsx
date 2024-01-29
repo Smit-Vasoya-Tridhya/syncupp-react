@@ -3,45 +3,36 @@
 import { Title } from '@/components/ui/text';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { SubmitHandler } from 'react-hook-form';
 import { Form } from '@/components/ui/form';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { routes } from '@/config/routes';
-import { useMedia } from '@/hooks/use-media';
 import { useDispatch, useSelector } from 'react-redux';
 import { handleKeyDown } from '@/utils/common-functions';
 import { useRouter } from 'next/navigation';
 import { useModal } from '@/app/shared/modal-views/use-modal';
-import { PiCreditCardDuotone, PiNotePencilDuotone, PiXBold } from 'react-icons/pi';
-import { ActionIcon, Avatar } from 'rizzui';
+import { PiNotePencilDuotone, PiXBold } from 'react-icons/pi';
+import { ActionIcon} from 'rizzui';
 import cn from '@/utils/class-names';
 import { AdminEditProfileSchema, adminEditProfileSchema } from '@/utils/validators/admin-edit-profile.schema';
 import  { postEditProfile } from '@/redux/slices/admin/auth/viewprofile/viewProfileSlice';
 import Spinner from '@/components/ui/spinner';
 
-
 export default function ViewProfileForm(props:any) {
   const { data } = props;
-  // const[formData]= data;
-  
-  console.log(props.data,'props.data........')
-  
   const initialValues = {
     email:data?.email??'',
     first_name:data?.first_name?? '',
     last_name:data?.last_name?? '',
     contact_no: data?.contact_no??''
   };
-  const isMedium = useMedia('(max-width: 1200px)', false);
   const [reset, setReset] = useState({});
   const [image, setImage] = useState(!!data?.image ? data?.image : 'https://isomorphic-furyroad.s3.amazonaws.com/public/avatars-blur/avatar-11.webp');
   const { closeModal } = useModal();
   const [isOpenEditMode, setIsOpenEditMode] = useState<boolean>(false);
   const dispatch = useDispatch();
-
   const router = useRouter();
   const viewProfile = useSelector((state: any) => state?.root?.viewProfile)
-  console.log("viewProfile state.....", viewProfile)
 
   const onSubmit: SubmitHandler<AdminEditProfileSchema> = (data) => {
     dispatch(postEditProfile(data)).then((result: any) => {
@@ -51,7 +42,6 @@ export default function ViewProfileForm(props:any) {
         } 
       }
     })
-    // setReset({ ...initialValues });
   };
 
   return (

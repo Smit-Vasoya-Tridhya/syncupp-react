@@ -50,7 +50,6 @@ export default function ChangePasswordForm() {
 
     const { user } = useSelector((state: any) => state?.root?.signIn?.user?.data);
     const { clientlistDetails, loading } = useSelector((state: any) => state?.root?.agreement);
-    console.log(clientlistDetails?.data?.client, 'clientlistDetails')
 
     const clientOptions =
         clientlistDetails?.data?.client && clientlistDetails?.data?.client?.length > 0 ? clientlistDetails?.data?.client?.map((client: any) => ({
@@ -121,7 +120,6 @@ export default function ChangePasswordForm() {
         setformData(watch())
     };
 
-    console.log(preview, 'preview')
 
     return (
         <>
@@ -140,7 +138,6 @@ export default function ChangePasswordForm() {
                 >
                     {({ register, control, formState: { errors }, watch, handleSubmit }) => (
 
-                        console.log(watch(), 'watch'),
                         <div className="space-y-5">
                             <div className="grid grid-cols-1 gap-4 md:grid-cols-3 xl:gap-5 xl:pb-2 items-start">
                                 <Input
@@ -185,7 +182,6 @@ export default function ChangePasswordForm() {
                                         <Select
                                             options={clientOptions}
                                             onChange={(selectedOption: any) => {
-                                                console.log(selectedOption, 'selectedOption', value)
                                                 setselectedClient(selectedOption);
                                                 onChange(selectedOption?.name);
                                             }}

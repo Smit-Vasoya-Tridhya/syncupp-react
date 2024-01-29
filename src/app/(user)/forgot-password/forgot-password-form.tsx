@@ -5,19 +5,12 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { SubmitHandler } from 'react-hook-form';
 import { Form } from '@/components/ui/form';
-import { useState } from 'react';
 import { routes } from '@/config/routes';
 import Link from 'next/link';
-// import toast from 'react-hot-toast';
-import { useMedia } from '@/hooks/use-media';
-import {
-  forgetPasswordSchema,
-  ForgetPasswordSchema,
-} from '@/utils/validators/forget-password.schema';
+import {forgetPasswordSchema, ForgetPasswordSchema} from '@/utils/validators/forget-password.schema';
 import { useDispatch, useSelector } from 'react-redux';
 import { forgotPasswordUser } from '@/redux/slices/user/auth/forgotPasswordSlice';
 import { handleKeyDown } from '@/utils/common-functions';
-import { useRouter } from 'next/navigation';
 import Spinner from '@/components/ui/spinner';
 
 const initialValues = {
@@ -25,19 +18,11 @@ const initialValues = {
 };
 
 export default function ForgetPasswordForm() {
-  const isMedium = useMedia('(max-width: 1200px)', false);
-  const [reset, setReset] = useState({});
   const dispatch = useDispatch();
-
-  const router = useRouter();
   const forgotPassword = useSelector((state: any) => state?.root?.forgotPassword)
-  console.log("forgotPassword state.....", forgotPassword)
-
 
   const onSubmit: SubmitHandler<ForgetPasswordSchema> = (data) => {
-    // console.log('Forgot password form data->', data);
     dispatch(forgotPasswordUser(data));
-    // setReset({ ...initialValues });
   };
 
   return (
@@ -55,7 +40,6 @@ export default function ForgetPasswordForm() {
             <Input
               onKeyDown={handleKeyDown}
               type="email"
-              size={isMedium ? 'lg' : 'xl'}
               label="Email"
               placeholder="Enter your email"
               rounded="pill"
@@ -67,7 +51,6 @@ export default function ForgetPasswordForm() {
             { forgotPassword.loading ? (<Button
               className="w-full border-2 text-base font-bold"
               type="submit"
-              size={isMedium ? 'lg' : 'xl'}
               color="info"
               rounded="pill"
               disabled
@@ -77,7 +60,6 @@ export default function ForgetPasswordForm() {
               </Button>) : (<Button
                 className="w-full border-2  text-base font-bold"
                 type="submit"
-                size={isMedium ? 'lg' : 'xl'}
                 color="info"
                 rounded="pill"
               >

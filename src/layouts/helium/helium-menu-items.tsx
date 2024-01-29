@@ -2,31 +2,17 @@ import { routes } from '@/config/routes';
 import cn from '@/utils/class-names';
 import Link from 'next/link';
 import { Fragment } from 'react';
-import {
-  PiFolderNotchDuotone,
-  PiUser,
-  PiUsersThree,
-} from 'react-icons/pi';
+import {PiFolderNotchDuotone,PiUser, PiUsersThree} from 'react-icons/pi';
 import { FaTasks, FaFileInvoiceDollar } from "react-icons/fa";
 import { FaFilePen } from "react-icons/fa6";
-// import { IoIosPeople } from "react-icons/io";
 import { useSelector } from 'react-redux';
 import { Title } from '@/components/ui/text';
 import { usePathname } from 'next/navigation';
 
-
-
 export const MenuItems = () => {
-
-
   const signIn = useSelector((state: any) => state?.root?.signIn);
   const pathname = usePathname();
-
-
-  // console.log("signin slice data",signIn);
-
   let menuItems: Record<string, any>[];
-    
   switch (signIn?.user?.data?.user?.role?.name) {
     case "agency":
       menuItems = [
@@ -146,9 +132,6 @@ export const MenuItems = () => {
       );
     })
   )
-
-
-
 }
 
 

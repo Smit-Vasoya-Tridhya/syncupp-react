@@ -149,7 +149,6 @@ type EditAgencyAgreement = {
 export const updateagreement: any = createAsyncThunk(
     "agreement/updateagreement",
     async ({ data, id }: { data: EditAgencyAgreement, id: string; }) => {
-        console.log(id, 'iddddddddddddddddd', data)
         try {
             const response: any = await EditAgencyAgreementsApi(data, id);
             return response;
@@ -303,7 +302,6 @@ export const agencyAgreementSlice = createSlice({
                 }
             })
             .addCase(downloadAgreement.fulfilled, (state, action) => {
-                // console.log(action.payload,'action.payload')
                 if (action.payload.success == true) {
                     toast.success(action.payload.message)
                 } else {
