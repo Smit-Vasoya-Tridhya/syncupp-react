@@ -43,8 +43,18 @@ type PutEditTeamMemberApiData = {
   }
 
   type GetTeamMemberProfileApiData = {
-    id: string;
-  }
+    _id: string;
+    name: string;
+    email: string;
+    status: string;
+    createdAt: string;
+    updatedAt: string;
+    first_name: string;
+    last_name: string;
+    user_type: string;
+    agency_id: string;
+    member_role: string;
+  };
 
 
 // Add new team member API
@@ -113,7 +123,7 @@ export const GetAllTeamMemberApi= async (data: GetAllTeamMemberApiData) => {
   // get team member profile
   export const GetTeamMemberProfileApi = async (data: GetTeamMemberProfileApiData ) => {
     const response = await AxiosDefault({
-      url: `/api/v1/team-member/details/${data.id}`,
+      url: `/api/v1/team-member/details/${data._id}`,
       method: "GET",
       data: data,
       contentType: "application/json", 

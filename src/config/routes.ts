@@ -34,6 +34,8 @@ export const routes = {
     resetPassword:'/admin/reset-password',
     dashboard: '/admin/dashboard',
     faq:'/admin/faq',
+    cms:'/admin/cms',
+    cmsTC:'/admin/cms/team-and-condition',
   },
 
 };
