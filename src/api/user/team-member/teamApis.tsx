@@ -35,9 +35,9 @@ type PutEditTeamMemberApiData = {
 
   type GetAllTeamMemberApiData = {
     page?: number;
-    itemsPerPage?: number;
-    sortOrder?: string;
-    sortField?: string;
+    items_per_page?: number;
+    sort_order?: string;
+    sort_field?: string;
     search?: string;
     agency_id?: string;
   }
@@ -116,6 +116,18 @@ export const GetAllTeamMemberApi= async (data: GetAllTeamMemberApiData) => {
       url: `/api/v1/team-member/details/${data.id}`,
       method: "GET",
       data: data,
+      contentType: "application/json", 
+    });
+    const responseData = response.data;
+    return responseData;
+  };
+
+   // get client list api
+   export const GetClientsListApi = async () => {
+    const response = await AxiosDefault({
+      url: `/api/v1/team-member/details`,
+      method: "GET",
+      // data: data,
       contentType: "application/json", 
     });
     const responseData = response.data;

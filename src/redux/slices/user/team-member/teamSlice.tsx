@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { toast } from 'react-hot-toast';
-import { DeleteTeamMemberApi, GetAllTeamMemberApi, GetTeamMemberProfileApi, PostAddTeamMemberApi, PostTeamMemberVerifyApi, PutEditTeamMemberApi } from "@/api/user/team-member/teamApis";
+import { DeleteTeamMemberApi, GetAllTeamMemberApi, GetClientsListApi, GetTeamMemberProfileApi, PostAddTeamMemberApi, PostTeamMemberVerifyApi, PutEditTeamMemberApi } from "@/api/user/team-member/teamApis";
 
 type TeamData = {
   _id:string;
@@ -42,6 +42,9 @@ const initialState = {
   user: {},
   data:[],
   teamMember: '',
+  clients: '',
+  clientId: '',
+  clientName: '',
   getAllTeamMemberStatus: '',
   addTeamMemberStatus: '',
   editTeamMemberStatus: '',
@@ -105,16 +108,8 @@ export const getAllTeamMember: any = createAsyncThunk(
   "teamMember/getAllTeamMember",
   async (data: TeamData) => {
     console.log(data,'teamMember slice data..............................');
-    const apiData :any ={
-      sortField: data?.sort_field,
-      sortOrder: data?.sort_order,
-      search: data?.search,
-      page: data?.page,
-      itemsPerPage: data?.items_per_page,
-      agency_id: data?.agencyId
-    }
     try {
-      const response: any = await GetAllTeamMemberApi(apiData);
+      const response: any = await GetAllTeamMemberApi(data);
       return response;
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as TeamMemberDataResponse;
@@ -151,6 +146,18 @@ export const deleteTeamMember: any = createAsyncThunk(
   }
 );
 
+export const getClientsList: any = createAsyncThunk(
+  "teamMember/getClientsList",
+  async () => {
+    try {
+      const response: any = await GetClientsListApi();
+      return response;
+    } catch (error: any) {
+      return { status: false, message: error.response.data.message } as TeamMemberDataResponse;
+    }
+  }
+);
+
 export const teamSlice = createSlice({
   name: "teamMember",
   initialState,
@@ -161,7 +168,19 @@ export const teamSlice = createSlice({
         ...state,
         teamMember: ''
       };
-  },
+    },
+    setClientId(state, action) {
+      return {
+        ...state,
+        clientId: action.payload
+      }
+    },
+    setClientName(state, action) {
+      return {
+        ...state,
+        clientName: action.payload
+      }
+    }
 
   },
   extraReducers: (builder) => {
@@ -338,8 +357,18 @@ export const teamSlice = createSlice({
           deleteTeamMemberStatus: 'error'
         }
       });
+      // new cases for get clients list
+    builder
+    .addCase(getClientsList.fulfilled, (state, action) => {
+      return {
+        ...state,
+        clients: action?.payload?.data,
+        clientId: action?.payload?.data?._id,
+        clientName: action?.payload?.data?.name
+      }
+    });
   },
 });
 
-export const { RemoveTeamMemberData } = teamSlice.actions;
+export const { RemoveTeamMemberData, setClientName, setClientId } = teamSlice.actions;
 export default teamSlice.reducer;

@@ -10,7 +10,7 @@ import EyeIcon from '@/components/icons/eye';
 import PencilIcon from '@/components/icons/pencil';
 import {TeamMemberType } from '@/data/products-data';
 import DeletePopover from '@/app/shared/delete-popover';
-import CustomModalButton from '../../../custom-modal-button';
+import CustomModalButton from '@/app/shared/custom-modal-button';
 import AddTeamMemberForm from '../create-edit/add-task-form';
 import { Badge, Button } from 'rizzui';
 import moment from 'moment';
@@ -29,7 +29,7 @@ type Columns = {
 };
 
 function getStatusBadge(status: string) {
-  switch (status.toLowerCase()) {
+  switch (status?.toLowerCase()) {
     case 'pending':
       return (
         <div className="flex items-center">

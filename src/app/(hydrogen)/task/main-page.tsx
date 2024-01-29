@@ -8,7 +8,7 @@ import { deleteClient, getAllClient } from '@/redux/slices/user/client/clientSli
 import { useRouter } from 'next/navigation';
 // import toast from 'react-hot-toast';
 import { useModal } from '@/app/shared/modal-views/use-modal';
-import { getColumns } from '@/app/shared/(user)/client/client-list/columns';
+import { getColumns } from '@/app/shared/(user)/client/team/team-list/columns';
 import CustomTable from '@/components/common-tables/table';
 import { PiPlusBold } from 'react-icons/pi';
 import AddTaskForm from '@/app/shared/(user)/task/create-edit/add-task-form';

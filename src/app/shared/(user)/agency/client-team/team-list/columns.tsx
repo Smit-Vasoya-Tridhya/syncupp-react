@@ -26,12 +26,12 @@ type Columns = {
 };
 
 function getStatusBadge(status: string) {
-  switch (status.toLowerCase()) {
-    case 'pending':
+  switch (status?.toLowerCase()) {
+    case 'confirm_pending':
       return (
         <div className="flex items-center">
           <Badge color="warning" renderAsDot />
-          <Text className="ms-2 font-medium text-orange-dark">{status}</Text>
+          <Text className="ms-2 font-medium text-orange-dark">Pending</Text>
         </div>
       );
     case 'confirmed':
@@ -117,8 +117,10 @@ export const getColumns = ({
     dataIndex: 'contact_number',
     key: 'contact_number',
     width: 200,
-    render: (_: any, row: any) => (
-      <Text className="font-medium text-gray-700">{row.contact_number}</Text>
+    render: (value: string) => (
+      <>
+      {value && value != "" ? <Text className="font-medium text-gray-700">{value}</Text> : <Text className="font-medium text-gray-700">-</Text>}
+      </>
     ),
   },
   {
@@ -144,15 +146,15 @@ export const getColumns = ({
     title="Permission"
     sortable
     ascending={
-      sortConfig?.direction === 'asc' && sortConfig?.key === 'member_role'
+      sortConfig?.direction === 'asc' && sortConfig?.key === 'role'
     }
     />),
-    onHeaderCell: () => onHeaderCellClick('member_role'),
-    dataIndex: 'member_role',
-    key: 'member_role',
+    onHeaderCell: () => onHeaderCellClick('role'),
+    dataIndex: 'reference_id',
+    key: 'reference_id',
     width: 200,
     render: (_: any, row: any) => (
-      <Text className="font-medium text-gray-700">{row.member_role}</Text>
+      <Text className="font-medium text-gray-700">{row?.reference_id?.role?.name}</Text>
     ),
   },
   {
