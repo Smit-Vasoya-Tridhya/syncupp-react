@@ -146,10 +146,10 @@ export const getColumns = ({
     title="Permission"
     sortable
     ascending={
-      sortConfig?.direction === 'asc' && sortConfig?.key === 'role'
+      sortConfig?.direction === 'asc' && sortConfig?.key === 'reference_id.role.name'
     }
     />),
-    onHeaderCell: () => onHeaderCellClick('role'),
+    onHeaderCell: () => onHeaderCellClick('reference_id.role.name'),
     dataIndex: 'reference_id',
     key: 'reference_id',
     width: 200,

@@ -6,12 +6,14 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteClient, getAllClient } from '@/redux/slices/user/client/clientSlice';
 import { useRouter } from 'next/navigation';
-// import toast from 'react-hot-toast';
 import { useModal } from '@/app/shared/modal-views/use-modal';
 import { getColumns } from '@/app/shared/(user)/client/team/team-list/columns';
 import CustomTable from '@/components/common-tables/table';
-import { PiPlusBold } from 'react-icons/pi';
+import { PiGridFourFill, PiListBulletsBold, PiPlusBold } from 'react-icons/pi';
 import AddTaskForm from '@/app/shared/(user)/task/create-edit/add-task-form';
+import { Button } from 'rizzui';
+import cn from '@/utils/class-names';
+import { setGridView } from '@/redux/slices/user/task/taskSlice';
 
 const pageHeader = {
   title: 'Task',
@@ -24,9 +26,11 @@ export default function TaskPage() {
   const { closeModal } = useModal();
 
   const clientSliceData = useSelector((state: any) => state?.root?.client);
-  
-  const [pageSize, setPageSize] = useState<number>(5);
+  const { gridView } = useSelector((state: any) => state?.root?.task);
 
+  // console.log("Grid view....", gridView)
+
+  const [pageSize, setPageSize] = useState<number>(5);
 
 
   const handleChangePage = async (paginationParams: any) => {
@@ -41,7 +45,7 @@ export default function TaskPage() {
       await dispatch(getAllClient({ page, items_per_page, sort_field, sort_order, search }));
       return data?.client
     }
-    if(data && data?.client && data?.client?.length !== 0 ) {
+    if (data && data?.client && data?.client?.length !== 0) {
       return data?.client
     }
   };
@@ -61,6 +65,13 @@ export default function TaskPage() {
     }
   };
 
+  const handleListView = () => {
+    dispatch(setGridView(false));
+  }
+
+  const handleGridView = () => {
+    dispatch(setGridView(true));
+  }
 
 
 
@@ -77,16 +88,39 @@ export default function TaskPage() {
           />
         </div>
       </PageHeader>
-      <CustomTable
-        data={clientSliceData?.data?.client}
-        total={clientSliceData?.data?.page_count}
-        loading={clientSliceData?.loading}
-        pageSize={pageSize}
-        setPageSize={setPageSize}
-        handleDeleteById={handleDeleteById}
-        handleChangePage={handleChangePage}
-        getColumns={getColumns}
-      />
+      <div className="mt-2 flex justify-end items-center gap-2 @lg:mt-0 absolute top-[9.7rem] right-[2rem]">
+        <Button size="sm" variant="outline" className={cn(
+          "bg-white text-black p-2",
+          !gridView ? 'border-black bg-black text-white' : ' '
+        )} onClick={handleListView}>
+          <PiListBulletsBold className="h-6 w-6" />
+        </Button>
+        <Button size="sm" variant="outline" className={cn(
+          "bg-white text-black p-2",
+          gridView ? 'border-black bg-black text-white' : ' '
+        )} onClick={handleGridView}>
+          <PiGridFourFill className="h-6 w-6" />
+        </Button>
+      </div>
+      {!gridView ? (
+        <div>
+          <CustomTable
+            data={clientSliceData?.data?.client}
+            total={clientSliceData?.data?.page_count}
+            loading={clientSliceData?.loading}
+            pageSize={pageSize}
+            setPageSize={setPageSize}
+            handleDeleteById={handleDeleteById}
+            handleChangePage={handleChangePage}
+            getColumns={getColumns}
+          />
+        </div>
+      ) : (
+        <div>
+          <h4>Grid View</h4>
+        </div>
+      )
+      }
     </>
   );
 }

@@ -57,7 +57,7 @@ export default function SignUpForm(props: any) {
                 type="text"
                 size={isMedium ? 'lg' : 'xl'}
                 label="First Name"
-                placeholder="Enter First Name"
+                placeholder="Enter first name"
                 rounded="pill"
                 color="info"
                 className="[&>label>span]:font-medium"
@@ -69,7 +69,7 @@ export default function SignUpForm(props: any) {
                 type="text"
                 size={isMedium ? 'lg' : 'xl'}
                 label="Last Name"
-                placeholder="Enter Last Name"
+                placeholder="Enter last name"
                 rounded="pill"
                 color="info"
                 className="[&>label>span]:font-medium"
