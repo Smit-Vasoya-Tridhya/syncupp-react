@@ -5,22 +5,17 @@ import { HeaderCell } from '@/components/ui/table';
 import { Text } from '@/components/ui/text';
 import { Checkbox } from '@/components/ui/checkbox';
 import DeletePopover from '@/app/shared/delete-popover';
-import { useDispatch } from 'react-redux';
-import CustomModalButton from '../custom-modal-button';
+import { useDispatch , useSelector } from 'react-redux';
 import PencilIcon from '@/components/icons/pencil';
-import AddClientForm from '../(user)/client/create-edit/add-client-form';
 import { ActionIcon, Button, Popover, Tooltip } from 'rizzui';
 import EyeIcon from '@/components/icons/eye';
 import { AiOutlineFilePdf } from "react-icons/ai";
 import { HiOutlineMail } from "react-icons/hi";
-import { PiDotsThreeVerticalBold, PiXBold } from 'react-icons/pi';
-import TrashIcon from '@/components/icons/trash';
 import { RiDraftLine } from "react-icons/ri";
 import { FiSend } from "react-icons/fi";
 import { FaRegCheckCircle } from "react-icons/fa";
 import moment from 'moment';
 import { downloadAgreement, getAllAgencyagreement, sendAgreement, updateagreementStatus } from '@/redux/slices/user/agreement/agreementSlice';
-import { useSelector } from 'react-redux';
 
 
 

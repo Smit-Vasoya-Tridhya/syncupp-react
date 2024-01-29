@@ -1,6 +1,5 @@
 'use client';
 
-import { Title } from '@/components/ui/text';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
@@ -41,11 +40,12 @@ export default function UserViewProfileForm(props:any) {
   const clientSliceData = useSelector((state: any) => state?.root?.client);
 
 useEffect(() => {
-  if(signIn?.user?.data?.user?.role?.name === "agency"){
+  // if(signIn?.user?.data?.user?.role?.name === "agency"){
+  //   dispatch(getAgencyData())
+  // }else{
+  //   dispatch(getAgencyData())
+  // }
     dispatch(getAgencyData())
-  }else{
-    dispatch(getAgencyData())
-  }
 }, [dispatch]);
 
 const data = userAgency?.data

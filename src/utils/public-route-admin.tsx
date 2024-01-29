@@ -19,7 +19,7 @@ const WithAuthPublic = (WrappedComponent: any) => {
       } else {
         setLoading(false);
       }
-    }, [token]);
+    }, [token , router]);
 
     if (isLoading) {
       return <div className='flex justify-center items-center col-span-full mt-3'><Spinner size='xl' /></div>;

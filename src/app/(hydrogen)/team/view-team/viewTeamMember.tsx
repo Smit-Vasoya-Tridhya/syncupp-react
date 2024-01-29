@@ -5,9 +5,8 @@ import { TfiEmail } from "react-icons/tfi";
 import { FaUser , FaRegCopy } from "react-icons/fa";
 import { IoCallOutline } from "react-icons/io5";
 import { GrUserSettings } from "react-icons/gr";
-import { useDispatch } from "react-redux";
+import { useDispatch , useSelector } from "react-redux";
 import { getTeamMemberProfile } from "@/redux/slices/user/team-member/teamSlice";
-import { useSelector } from "react-redux";
 
 export default function ViewTeamMemberForm(props: any) {
   const dispatch = useDispatch();
