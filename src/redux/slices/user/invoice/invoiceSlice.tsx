@@ -1,59 +1,52 @@
-import {createSlice } from "@reduxjs/toolkit";
+import { GetInvoiceApi } from "@/api/user/invoice/invoiceApis";
+import {createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { toast } from 'react-hot-toast';
 
-
+type GetInvoiceApiData = {
+  _id: string;
+  company_name: string;
+  name: string;
+  first_name?: string;
+  last_name?: string;
+  }
 interface PostAPIResponse {
     status : boolean;
     message : string
   }
 
-interface ClientInitialState {
+interface invoiceInitialState {
     loading: boolean;
     data: any;
-    client: any;
+    invoice: any;
     countries: any;
     states: any;
     cities: any;
-    addClientStatus: string;
-    verifyClientStatus: string;
-    getAllClientStatus: string;
-    getClientStatus: string;
-    editClientStatus: string;
-    deleteClientStatus: string;
-    getClientProfileStatus: string;
-    updateClientStatus:string;
+    getInvoiceStatus: string;   
   }
   
-const initialState:ClientInitialState = {
+const initialState:invoiceInitialState = {
     loading: false,
     data: '',
-    client: '',
+    invoice: '',
     countries: '',
     states: '',
     cities: '',
-    addClientStatus: '',
-    verifyClientStatus: '',
-    getAllClientStatus: '',
-    getClientStatus: '',
-    editClientStatus: '',
-    deleteClientStatus: '',
-    getClientProfileStatus: '',
-    updateClientStatus:'',
+    getInvoiceStatus: '',
   };
 
-//   export const postAddClient: any = createAsyncThunk(
-//     "invoice/postAddClient",
-//     async () => {
-//     //   console.log("We are in client slice.........", data)
-//       try {
-//         const response: any = await PostAddTeamMemberApi();
-//         console.log("add client response....", response);
-//         return response;
-//       } catch (error: any) {
-//         return { status: false, message: error.response.data.message } as PostAPIResponse;
-//       }
-//     }
-//   );
+  export const getInvoiceApi: any = createAsyncThunk(
+    "invoice/getInvoiceApi",
+    async (data:GetInvoiceApiData) => {
+    //   console.log("We are in invoice slice.........", data)
+      try {
+        const response: any = await GetInvoiceApi(data);
+        console.log("add invoice response....", response);
+        return response;
+      } catch (error: any) {
+        return { status: false, message: error.response.data.message } as PostAPIResponse;
+      }
+    }
+  );
 
   export const invoiceSlice = createSlice({
     name: "invoice",
@@ -64,42 +57,42 @@ const initialState:ClientInitialState = {
         ...state,
       }
     },
-    RemoveClientData(state) {
+    RemoveinvoiceData(state) {
       return {
         ...state,
       }
     }
   },
   extraReducers: (builder) => {
-    // builder
-    //   .addCase(postAddClient.pending, (state) => {
-    //       return{
-    //         ...state,
-    //         loading: true,
-    //         addClientStatus: 'pending'
-    //       }
-    //   })
-    //   .addCase(postAddClient.fulfilled, (state,action) => {
-    //     // console.log(action.payload);
-    //     if(action.payload.status == false){
-    //         toast.error(action.payload.message)
-    //     } else {
-    //         toast.success(action.payload.message)
-    //     }
-    //     return{
-    //       ...state,
-    //     //   data: action.payload,
-    //       loading: false,
-    //       addClientStatus: 'success'
-    //     }
-    //   })
-    //   .addCase(postAddClient.rejected, (state) => {
-    //     return{
-    //       ...state,
-    //       loading: false,
-    //       addClientStatus: 'error'
-    //     }
-    //   });
+    builder
+      .addCase(getInvoiceApi.pending, (state) => {
+          return{
+            ...state,
+            loading: true,
+            getInvoiceStatus: 'pending'
+          }
+      })
+      .addCase(getInvoiceApi.fulfilled, (state,action) => {
+        // console.log(action.payload);
+        if(action.payload.status == false){
+            toast.error(action.payload.message)
+        } else {
+            toast.success(action.payload.message)
+        }
+        return{
+          ...state,
+          data: action.payload,
+          loading: false,
+          getInvoiceStatus: 'success'
+        }
+      })
+      .addCase(getInvoiceApi.rejected, (state) => {
+        return{
+          ...state,
+          loading: false,
+          getInvoiceStatus: 'error'
+        }
+      });
     },
    });
    export default invoiceSlice.reducer;
