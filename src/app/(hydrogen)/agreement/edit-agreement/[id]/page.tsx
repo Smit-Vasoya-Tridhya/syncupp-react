@@ -1,20 +1,15 @@
 'use client';
 
-import { Title, Text, ActionIcon } from '@/components/ui/text';
 import { Button } from '@/components/ui/button';
 import { Controller, SubmitHandler } from 'react-hook-form';
 import { Form } from '@/components/ui/form';
 import { useEffect, useState } from 'react';
-import { routes } from '@/config/routes';
-import Link from 'next/link';
-import toast from 'react-hot-toast';
 import { useMedia } from '@/hooks/use-media';
 import { useDispatch, useSelector } from 'react-redux';
 import { DatePicker } from '@/components/ui/datepicker';
 import { handleKeyDown } from '@/utils/common-functions';
 import { useRouter } from 'next/navigation';
 import Spinner from '@/components/ui/spinner';
-import cn from '@/utils/class-names';
 import { AgrementFormTypes, agrementFormSchema } from '@/utils/validators/agreement.schema';
 import { Input } from 'rizzui';
 import SelectLoader from '@/components/loader/select-loader';
@@ -22,7 +17,7 @@ import dynamic from 'next/dynamic';
 import QuillLoader from '@/components/loader/quill-loader';
 import PageHeader from '@/app/shared/page-header';
 import EyeIcon from '@/components/icons/eye';
-import { createagreement, getDropdownclientlist, getSingleagreement, updateagreement } from '@/redux/slices/user/agreement/agreementSlice';
+import { getDropdownclientlist, getSingleagreement, updateagreement } from '@/redux/slices/user/agreement/agreementSlice';
 
 const Select = dynamic(() => import('@/components/ui/select'), {
     ssr: false,
@@ -88,11 +83,11 @@ export default function ChangePasswordForm({ params }: { params: { id: string } 
 
     useEffect(() => {
         dispatch(getDropdownclientlist())
-    }, [])
+    }, [dispatch])
 
     useEffect(() => {
         dispatch(getSingleagreement(params?.id))
-    }, [params?.id])
+    }, [params?.id , dispatch])
 
     const onSubmit: SubmitHandler<AgrementFormTypes> = (data) => {
         console.log(' form data->', data);

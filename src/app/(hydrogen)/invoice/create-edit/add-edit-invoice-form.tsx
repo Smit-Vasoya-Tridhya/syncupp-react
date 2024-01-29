@@ -12,8 +12,8 @@ import {
   InvoiceFormInput,
   invoiceFormSchema,
 } from '@/utils/validators/create-invoice.schema';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
+import { useSelector , useDispatch } from 'react-redux';
+import {  } from 'react-redux';
 import { PiEyeFill, PiNotePencilDuotone, PiPlusBold, PiXBold } from 'react-icons/pi';
 import { Button } from 'rizzui';
 
@@ -103,29 +103,10 @@ export default function CreateInvoice({
     setIsOpenEditMode(!isOpenEditMode);
     setIsUploadFileOpen(true);
   };
-  // const handleFileChange = (event:any) => {
-  //   const file = event.target.files[0];
-  //   setValue('fileInputName', file);
-  //     const reader = new FileReader();
-  //     const files = event.target.files;
-    
-  //     if (files.length > 0) {
-  //       const file = files[0];
-    
-  //       if (file.size <= 100 * 1024 * 5000000) {
-  //         setValue('fileInputName', file);
-    
-  //         reader.onload = function () {
-  //           setAvatar(reader.result);
-  //         };
-    
-  //         reader.readAsDataURL(file);
-  //       } else {
-  //         toast.error('File size exceeds the allowed limit (100 KB). Please select a smaller file.')
-  //         event.target.value = null;
-  //       }
-  //     }
-  //   }; 
+  const [showFields, setShowFields] = useState(false);
+  const toggleFields = () => {
+    setShowFields(!showFields);
+  };
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
   
@@ -186,7 +167,9 @@ export default function CreateInvoice({
     tax: any
   ): string => {
     const subTotal = qty * rate;
-    const totalAmount = subTotal + subTotal * tax;
+    // const totalAmount = subTotal + subTotal % tax * 100;
+    // const totalAmount = subTotal + subTotal * tax;
+    const totalAmount = subTotal + (subTotal * tax / 100);
     return totalAmount.toFixed(2);
   };
 
@@ -201,7 +184,8 @@ export default function CreateInvoice({
 
   const calculateTotal = (): string => {
     const subTotal = calculateSubtotal();
-    const totalAmount = subTotal + subTotal * (tableData[0]?.tax || 0);
+    const taxRate = tableData[0]?.tax || 0;
+    const totalAmount = subTotal + subTotal * (taxRate / 100);
     return totalAmount.toFixed(2);
   };
   const handleAddItem = () => {
@@ -259,7 +243,7 @@ export default function CreateInvoice({
               <div className="flex gap-10">
                 {/* left side form page*/}
                 {isPreviewMode ? null : (
-                  <div className="mt-5 h-[43rem] w-[18rem] rounded-lg bg-white p-2 shadow dark:divide-gray-600">
+                  <div className="mt-5 h-[43rem] w-full md:w-2/5 lg:w-1/4 rounded-lg bg-white p-2 shadow dark:divide-gray-600">
                     <Controller
                       name="Recipient"
                       control={control}
@@ -320,7 +304,7 @@ export default function CreateInvoice({
                 )}
                 {/* right side form page*/}
                 <div
-                  className="z-10 mt-5 h-full w-full divide-y divide-gray-100 rounded-lg bg-white p-2 
+                  className="mt-5 h-full w-full md:w-3/5 lg:w-3/4 divide-y divide-gray-100 rounded-lg bg-white p-2 
                 shadow dark:divide-gray-600 dark:bg-gray-700"
                 >
                   {/* header image and invoice*/}
@@ -373,6 +357,8 @@ export default function CreateInvoice({
                   <div className="mt-3 flex w-full flex-col justify-start p-1 md:flex-row md:justify-between">
                     <div className=" text-lg">
                       <h3 className="py-2">TO</h3>
+                      {showFields ? (
+                        <>
                       <Text>First name</Text>
                       <Text>Address</Text>
                       <Text>City</Text>
@@ -381,9 +367,15 @@ export default function CreateInvoice({
                         <Text>Country</Text>
                         <Text>PinCode</Text>
                       </span>
+                      </>
+                      ):(
+                        <Text>N/A</Text>
+                      )}
                     </div>
                     <div className="text-left text-lg md:text-right">
                       <h3 className="py-2">FROM</h3>
+                      {showFields ? (
+                        <>
                       <Text>First name</Text>
                       <Text>Address</Text>
                       <Text>City</Text>
@@ -392,6 +384,10 @@ export default function CreateInvoice({
                         <Text>Country</Text>
                         <Text>PinCode</Text>
                       </span>
+                      </>
+                      ):(
+                        <Text>N/A</Text>
+                      )}
                     </div>
                   </div>
                   {/*invoice date and due date */}
