@@ -21,6 +21,7 @@ import QuillLoader from '@/components/loader/quill-loader';
 import { DatePicker } from '@/components/ui/datepicker';
 import EventCalendarView from './calendar';
 import { Checkbox } from '@/components/ui/checkbox';
+import { postAddTask } from '@/redux/slices/user/task/taskSlice';
 
 const Select = dynamic(() => import('@/components/ui/select'), {
   ssr: false,
@@ -87,21 +88,26 @@ export default function AddTaskForm(props: any) {
   const onSubmit: SubmitHandler<AddTaskSchema> = (dataa) => {
     console.log('Add task dataa---->', dataa);
 
+    const formData = {
+      ...dataa,
+      due_date: new String(dataa?.due_date),
+      due_time: new String(dataa?.due_time),
+    }
 
     const filteredFormData = Object.fromEntries(
-      Object.entries(dataa).filter(([_, value]) => value !== undefined && value !== '')
+      Object.entries(formData).filter(([_, value]) => value !== undefined && value !== '')
     );
 
 
-    if (title === 'New Team Member') {
-      // dispatch(addTeamMember(filteredFormData)).then((result: any) => {
-      //   if(addTeamMember.fulfilled.match(result)) {
-      //     if (result && result.payload.success === true) {
-      //       closeModal();
-      //       dispatch(getAllTeamMember({ sort_field: 'createdAt', sort_order: 'desc' }));
-      //     }
-      //   }
-      // });
+    if (title === 'New Task') {
+      dispatch(postAddTask(filteredFormData)).then((result: any) => {
+        if(postAddTask.fulfilled.match(result)) {
+          if (result && result.payload.success === true) {
+            closeModal();
+            // dispatch(getAllTeamMember({ sort_field: 'createdAt', sort_order: 'desc' }));
+          }
+        }
+      });
     } else {
       // dispatch(editTeamMember({ ...filteredFormData, _id: data._id })).then((result: any) => {
       //   if(editTeamMember.fulfilled.match(result)) {
@@ -182,16 +188,33 @@ export default function AddTaskForm(props: any) {
                       <DatePicker
                         selected={value}
                         inputProps={{
-                          label: 'Due Date & Time',
+                          label: 'Due Date',
                           color: 'info'
                         }}
-                        placeholderText='Select Date & Time'
+                        placeholderText='Select due date'
                         onChange={onChange}
                         selectsStart
                         startDate={value}
                         minDate={new Date()}
+                        dateFormat="MMMM d, yyyy"
+                      />
+                    )}
+                  />
+                  <Controller
+                    name="due_time"
+                    control={control}
+                    render={({ field: { value, onChange } }) => (
+                      <DatePicker
+                        selected={value}
+                        inputProps={{
+                          label: 'Due Time',
+                          color: 'info'
+                        }}
+                        placeholderText='Select due time'
+                        onChange={onChange}
                         showTimeSelect
-                        dateFormat="MMMM d, yyyy h:mm aa"
+                        showTimeSelectOnly
+                        dateFormat="h:mm aa"
                       />
                     )}
                   />

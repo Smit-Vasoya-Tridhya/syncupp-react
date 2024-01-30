@@ -151,11 +151,13 @@ export const getColumns = ({
     dataIndex: 'reference_id',
     key: 'reference_id',
     width: 200,
-    render: (value: Record<string, string>) => (
+    render: (value: Record<string, string>) => {
+      console.log(value)
+      return (
       <>
        {value?.company_website && value?.company_website != "" ? <a href={value?.company_website} target='_blank' className="font-medium text-gray-700" ><LuExternalLink size={25} /></a> : <Text className="font-medium text-gray-700">-</Text>}
       </>
-    ),
+    )},
   },
   {
     title: (

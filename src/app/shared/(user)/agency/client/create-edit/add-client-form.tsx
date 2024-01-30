@@ -161,7 +161,7 @@ export default function AddClientForm(props: any) {
           if (result && result.payload.success === true) {
             save && closeModal();
             setReset({...initialValues})
-            dispatch(getAllClient({ sort_field: 'createdAt', sort_order: 'desc' }));
+            dispatch(getAllClient({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
             dispatch(RemoveRegionalData())
             setSave(false);
           }
@@ -172,7 +172,7 @@ export default function AddClientForm(props: any) {
         if(patchEditClient.fulfilled.match(result)) {
           if (result && result.payload.success === true) {
             save && closeModal();
-            dispatch(getAllClient({ sort_field: 'createdAt', sort_order: 'desc' }));
+            dispatch(getAllClient({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
             setSave(false);
           }
         }

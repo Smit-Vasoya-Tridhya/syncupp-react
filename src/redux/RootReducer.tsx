@@ -34,7 +34,6 @@ const combinedReducer = combineReducers({
   viewProfile: viewProfileSlice,
   client: clientSlice,
   adminChangePassword: adminChangePasswordSlice,
-  teamModule: teamSlice,
   adminFaq:adminfaqSlice,
   teamMember: teamSlice,
   adminAgency: agencySlice,

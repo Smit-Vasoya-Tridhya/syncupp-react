@@ -21,7 +21,7 @@ export const clientSchema = z.object({
     }),
     company_name: z.string().min(1, { message: messages.companyNameRequired }),
     company_website: z.string().trim().nullable().refine(value => {
-        return !value || /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d{1,5})?(\/[^\s]*)?$/.test(value);
+        return !value || /^(https?:\/\/)([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d{1,5})?(\/[^\s]*)?$/.test(value);
     }, {
         message: messages.companyUrlInvalid,
     }),

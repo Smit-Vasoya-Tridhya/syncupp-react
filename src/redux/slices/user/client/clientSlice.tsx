@@ -46,6 +46,7 @@ type GetAllClientData = {
   sort_order?: string;
   sort_field?: string;
   search?: string;
+  pagination?: boolean;
 }
 
 type GetClientByIdData = {

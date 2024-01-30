@@ -3,17 +3,13 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { toast } from 'react-hot-toast';
 
 type AddTaskData = {
-  name: string;
-  email: string;
-  company_name: string;
-  company_website?: string;
-  address?: string;
-  city?: string;
-  state?: string;
-  country?: string;
-  pincode?: string;
-  title?: string;
-  contact_number?: string;
+  title: string;
+  description?: string;
+  due_date?: string;
+  due_time?: string;
+  client?: string;
+  assigned?: string;
+  done?: boolean;
 }
 
 type EditTaskData = {
@@ -81,7 +77,16 @@ export const postAddTask: any = createAsyncThunk(
   async (data: AddTaskData) => {
     console.log("We are in task slice.........", data)
     try {
-      const response: any = await PostAddTaskApi(data);
+      const apiData = {
+        title: data?.title,
+        internal_info: data?.description,
+        due_date: data?.due_date,
+        due_time: data?.due_time,
+        client_id: '659aa86bd4c6c56ca7ccac14',
+        assign_to: '659ed6ca5c7429be94d1d935',
+        mark_as_done: data?.done
+      }
+      const response: any = await PostAddTaskApi(apiData);
       console.log("add task response....", response);
       return response;
     } catch (error: any) {

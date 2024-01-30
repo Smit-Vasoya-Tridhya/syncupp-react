@@ -1,18 +1,14 @@
 import AxiosDefault from "@/services/AxiosDefault";
 
 type PostAddTaskApiData = {
-    name: string;
-    email: string;
-    company_name: string;
-    company_website?: string;
-    address?: string;
-    city?: string;
-    state?: string;
-    country?: string;
-    pincode?: string;
-    title?: string;
-    contact_number?: string;
-  }
+  title: string;
+  internal_info?: string;
+  due_date?: string;
+  due_time?: string;
+  client_id?: string;
+  assign_to?: string;
+  mark_as_done ?: boolean;
+}
   
 type PatchEditTaskApiData = {
     clientId: string,
@@ -53,8 +49,9 @@ type GetTaskByIdApiData = {
 // };
 
 export const PostAddTaskApi = async (data: PostAddTaskApiData) => {
+  console.log(data)
   const response = await AxiosDefault({
-    url: "/api/v1/agency/create-client",
+    url: "/api/v1/activity/create-task",
     method: "POST",
     data: data,
     contentType: "application/json", 

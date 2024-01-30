@@ -14,6 +14,7 @@ import AddTaskForm from '@/app/shared/(user)/task/create-edit/add-task-form';
 import { Button } from 'rizzui';
 import cn from '@/utils/class-names';
 import { setGridView } from '@/redux/slices/user/task/taskSlice';
+import KanbanBoard from '@/app/shared/(user)/task/task-grid/kanban-board';
 
 const pageHeader = {
   title: 'Task',
@@ -118,6 +119,7 @@ export default function TaskPage() {
       ) : (
         <div>
           <h4>Grid View</h4>
+          <KanbanBoard />
         </div>
       )
       }
