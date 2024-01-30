@@ -6,7 +6,6 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Password } from '@/components/ui/password';
 import { Checkbox } from '@/components/ui/checkbox';
-import { useMedia } from '@/hooks/use-media';
 import { Form } from '@/components/ui/form';
 import { routes } from '@/config/routes';
 import { loginSchema, LoginSchema } from '@/utils/validators/login.schema';
@@ -22,12 +21,9 @@ const initialValues: LoginSchema = {
 };
 
 export default function SignInForm() {
-  const isMedium = useMedia('(max-width: 1200px)', false);
   const dispatch = useDispatch();
-
   const router = useRouter();
   const adminSignIn = useSelector((state: any) => state?.root?.adminSignIn)
-  console.log("adminSignIn state.....", adminSignIn)
 
   const onSubmit: SubmitHandler<LoginSchema> = async (data) => {
     const requestObject = {
@@ -35,13 +31,11 @@ export default function SignInForm() {
     }
     dispatch(postSignin(requestObject)).then((result: any) => {
       if (postSignin.fulfilled.match(result)) {
-        // console.log('resultt', result)
         if (result && result.payload.success === true ) {
           router.replace(routes.admin.dashboard);
         } 
       }
     })
-    console.log('Sign in data', data);
   };
 
   return (
@@ -58,7 +52,6 @@ export default function SignInForm() {
           <div className="space-y-5">
             <Input
               type="email"
-              size={isMedium ? 'lg' : 'xl'}
               label="Email"
               placeholder="Enter your email"
               rounded="pill"
@@ -70,7 +63,6 @@ export default function SignInForm() {
             <Password
               label="Password"
               placeholder="Enter your password"
-              size={isMedium ? 'lg' : 'xl'}
               rounded="pill"
               color="info"
               className="[&>label>span]:font-medium"
@@ -95,7 +87,6 @@ export default function SignInForm() {
             <Button
               className="w-full border-2 text-base font-bold"
               type="submit"
-              size={isMedium ? 'lg' : 'xl'}
               color="info"
               rounded="pill"
               disabled={adminSignIn.loading}

@@ -33,12 +33,8 @@ const initialState: SigninState = {
 export const signInUser: any = createAsyncThunk(
   "signin/signInUser",
   async (data: UserData) => {
-    // console.log("We are in signin slice.........", data)
     try {
       const response: any = await PostSignin(data);
-      // console.log("signin response......", response);
-      // console.log("Tokenn....", response.data.token)
-
       return response;
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as PostSigninResponse;
@@ -46,12 +42,10 @@ export const signInUser: any = createAsyncThunk(
   }
 );
 
-
 export const signinSlice: any = createSlice({
   name: "signin",
   initialState,
   reducers: {
-
     logoutUser(state) {
       localStorage.clear();
       sessionStorage.clear();
@@ -64,7 +58,6 @@ export const signinSlice: any = createSlice({
         loginUserError: '',
       };
     },
-
   },
   extraReducers: (builder) => {
     builder
@@ -76,7 +69,6 @@ export const signinSlice: any = createSlice({
         }
       })
       .addCase(signInUser.fulfilled, (state, action) => {
-        // console.log(action.payload);
         if (action.payload.status == false) {
           toast.error(action.payload.message)
         } else {
@@ -101,5 +93,4 @@ export const signinSlice: any = createSlice({
 });
 
 export const { logoutUser } = signinSlice.actions;
-
 export default signinSlice.reducer;

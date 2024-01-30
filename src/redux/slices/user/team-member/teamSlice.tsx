@@ -120,7 +120,6 @@ export const editTeamMember: any = createAsyncThunk(
 export const getAllTeamMember: any = createAsyncThunk(
   "teamMember/getAllTeamMember",
   async (data: TeamData) => {
-    console.log(data,'teamMember slice data..............................');
     try {
       const response: any = await GetAllTeamMemberApi(data);
       return response;

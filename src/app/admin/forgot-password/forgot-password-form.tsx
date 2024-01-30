@@ -5,14 +5,10 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { SubmitHandler } from 'react-hook-form';
 import { Form } from '@/components/ui/form';
-import { useState } from 'react';
 import { routes } from '@/config/routes';
 import Link from 'next/link';
 import { useMedia } from '@/hooks/use-media';
-import {
-  forgetPasswordSchema,
-  ForgetPasswordSchema,
-} from '@/utils/validators/forget-password.schema';
+import {forgetPasswordSchema,ForgetPasswordSchema} from '@/utils/validators/forget-password.schema';
 import { useDispatch, useSelector } from 'react-redux';
 import { postForgetPassword } from '@/redux/slices/admin/auth/forgotpassword/forgetPasswordSlice';
 import { handleKeyDown } from '@/utils/common-functions';
@@ -24,26 +20,19 @@ const initialValues = {
 
 export default function ForgetPasswordForm() {
   const isMedium = useMedia('(max-width: 1200px)', false);
-  const [reset, setReset] = useState({});
   const dispatch = useDispatch();
-
   const adminForgotPassword = useSelector((state: any) => state?.root?.adminForgotPassword)
-  console.log("changePassword state.....", adminForgotPassword)
-
   const onSubmit: SubmitHandler<ForgetPasswordSchema> = (data) => {
     const requestObject = {
       ...data,
     }
-    
     dispatch(postForgetPassword(requestObject))
-    console.log('Forgot password form data->', data);
   };
 
   return (
     <>
       <Form<ForgetPasswordSchema>
         validationSchema={forgetPasswordSchema}
-        // resetValues={reset}
         onSubmit={onSubmit}
         useFormProps={{
           defaultValues: initialValues,

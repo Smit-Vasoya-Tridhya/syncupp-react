@@ -1,39 +1,29 @@
 "use client";
 import PageHeader from '@/app/shared/page-header';
 import { useDispatch, useSelector } from 'react-redux';
-import { useRouter } from 'next/navigation';
 import { useModal } from '@/app/shared/modal-views/use-modal';
 import AgencyTable from '@/app/shared/(admin)/agency/table';
 import { deleteAgency, getAllAgency } from '@/redux/slices/admin/agency/agencySlice';
 import { useState } from 'react';
 
-
 const pageHeader = {
     title: 'Agency list',
 };
-
 
 export default function ClientPage() {
 
     const dispatch = useDispatch();
     const { closeModal } = useModal();
     const [currentPagee, setCurrentPagee] = useState(1);
-    const router = useRouter();
     const { agencylistDetails, loading } = useSelector((state: any) => state?.root?.adminAgency);
-    console.log("agencylistDetails", agencylistDetails, loading);
-
-
     // useEffect(() => {
     //     dispatch(getAllAgency({ page: 1, items_per_page: 5, sort_order: 'desc', sort_field: 'createdAt', search: undefined }))
     // }, [dispatch])
 
-
     const handleChangePage = async (paginationParams: any) => {
         let { page, items_per_page, sort_field, sort_order, search } = paginationParams;
-        // console.log("Items per page...", items_per_page);
         setCurrentPagee(page);
         const response = await dispatch(getAllAgency({ page, items_per_page, sort_field, sort_order, search }));
-        // console.log("handleChange response....", response.payload)
         const { data } = response?.payload;
         const maxPage: number = data?.page_count;
 
@@ -46,14 +36,11 @@ export default function ClientPage() {
     };
 
     const handleDeleteById = async (id: string | string[], currentPage?: any, countPerPage?: number, sortConfig?: Record<string, string>, searchTerm?: string) => {
-        console.log(searchTerm,'searchTerm')
         try {
             const res = await dispatch(deleteAgency({ agencies: id, delete: true }));
             if (res.payload.success === true) {
                 closeModal();
-                console.log("currentpage before get and after delete....", currentPagee)
                 const reponse = await dispatch(getAllAgency({ page: currentPage, items_per_page: countPerPage, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm }));
-                console.log("response after delete...", reponse)
             }
         } catch (error) {
             console.error(error);

@@ -83,7 +83,6 @@ export const PostTeamMemberVerifyApi = async (data: PostTeamMemberVerifyApiData)
 
 // Edit team member API
 export const PutEditTeamMemberApi = async (data: PutEditTeamMemberApiData) => {
-  // console.log("id in edit team api", data)
   const response = await AxiosDefault({
     url: `/api/v1/team-member/edit/${data.id}`,
     method: "PUT",

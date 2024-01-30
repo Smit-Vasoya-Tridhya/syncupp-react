@@ -1,10 +1,4 @@
-import {
-  DeleteFaqData,
-  GetAllFaq,
-  GetFaqDataByID,
-  PostFaqEnroll,
-  UpdateFaqDataByID,
-} from '@/api/auth/faq/faqApis';
+import {DeleteFaqData, GetAllFaq,GetFaqDataByID,PostFaqEnroll, UpdateFaqDataByID} from '@/api/auth/faq/faqApis';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { toast } from 'react-hot-toast';
 
@@ -18,12 +12,10 @@ type AddFaqData = {
   sort_field?:string,
   sort_order?:string,
 };
-
 interface FaqDataResponse {
   status: boolean;
   message: string;
 }
-
 interface FaqInitialState {
   loading: boolean;
   _id: string;
@@ -47,10 +39,8 @@ const initialState: FaqInitialState = {
 export const postAddFaq: any = createAsyncThunk(
   'faq/postAddFaq',
   async (data: AddFaqData) => {
-    console.log('We are in FAQ slice.........', data);
     try {
       const response: any = await PostFaqEnroll(data);
-      console.log('add FAQ response....', response);
       return response;
     } catch (error: any) {
       return {
@@ -63,10 +53,8 @@ export const postAddFaq: any = createAsyncThunk(
 export const getAllFaq: any = createAsyncThunk(
   'faq/getAllFaq',
   async (data: AddFaqData) => {
-    console.log('We are in FAQ slice.........', data);
     try {
       const response: any = await GetAllFaq(data);
-      console.log('add FAQ response....', response);
       return response;
     } catch (error: any) {
       return {
@@ -93,10 +81,8 @@ export const getFaqDataByID: any = createAsyncThunk(
 export const deleteFaqData: any = createAsyncThunk(
   'faq/deleteFaqData',
   async (data: AddFaqData) => {
-    console.log('We are in FAQ slice.........', data);
     try {
       const response: any = await DeleteFaqData(data);
-      console.log('add FAQ response....', response);
       return response;
     } catch (error: any) {
       return {
@@ -114,10 +100,8 @@ export const updateFaqDataByID: any = createAsyncThunk(
       title: data.title,
       description: data.description,
     };
-    console.log('We are in FAQ slice.........', data);
     try {
       const response: any = await UpdateFaqDataByID(data);
-      console.log('add FAQ response....', response);
       return response;
     } catch (error: any) {
       return {
@@ -156,7 +140,7 @@ export const faqSlice = createSlice({
         }
         return {
           ...state,
-          // data: action.payload,
+          data: action.payload,
           loading: false,
           addFaqStatus: 'success',
         };

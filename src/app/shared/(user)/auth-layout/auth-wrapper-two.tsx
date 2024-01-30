@@ -2,19 +2,12 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-// import logoImg from '@public/assets/svgs/syncupp-logo.svg';
 import starImg from '@public/auth/star.svg';
 import { Title, Text } from '@/components/ui/text';
 import { usePathname, useRouter } from 'next/navigation';
 import { routes } from '@/config/routes';
 import cn from '@/utils/class-names';
-import {
-  PiArrowLeftBold,
-  PiArrowLineRight,
-  PiFacebookLogo,
-  PiGoogleLogo,
-  PiUserCirclePlus,
-} from 'react-icons/pi';
+import {PiArrowLineRight,PiFacebookLogo,PiGoogleLogo,PiUserCirclePlus} from 'react-icons/pi';
 import { FcGoogle } from 'react-icons/fc';
 import { FaFacebook } from "react-icons/fa";
 import { siteConfig } from '@/config/site.config';
@@ -129,26 +122,19 @@ function SocialAuth({
   const dispatch = useDispatch();
   const router = useRouter();
   const socialSignup = useSelector((state: any) => state?.root?.socialSignup)
-  // console.log("socialSignup state.....", socialSignup)
   const [loader, setLoader] = useState(false)
   const [facebookLogin, setFacebookLogin] = useState(false);
-
   const handleFacebookClick = () => {
-    console.log("Facebook login click")
     setFacebookLogin(true);
   }
-
   const responseFacebook = async (response: any) => {
     setLoader(true)
     // Handle the Facebook login response
-    console.log(response, 'responseFacebook');
     const data = {
       access_token: response.accessToken
     }
-
     dispatch(facebookSignUpUser(data)).then((result: any) => {
       if (facebookSignUpUser.fulfilled.match(result)) {
-        // console.log('resultt', result)
         if (result && result.payload.success === true) {
           router.replace(routes.dashboard);
         }
@@ -157,12 +143,7 @@ function SocialAuth({
     });
 
   };
-
-  const failureFacebook = async (response: any) => {
-    console.log(response, 'failureFacebook');
-  }
-
-
+  const failureFacebook = async (response: any) => {}
   
   return (
     <div className="grid grid-cols-1 gap-4 pb-7 md:grid-cols-1 lg:grid-cols-2 xl:gap-5 xl:pb-8">
@@ -181,13 +162,11 @@ function SocialAuth({
                 text="continue_with"
                 width="261"
                 onSuccess={(credentialResponse: any) => {
-                  console.log("Google credentials....", credentialResponse)
                   const data = {
                     signupId: credentialResponse.credential
                   }
                   dispatch(googleSignUpUser(data)).then((result: any) => {
                     if (googleSignUpUser.fulfilled.match(result)) {
-                      // console.log('resultt', result)
                       if (result && result.payload.success === true ) {
                         router.replace(routes.dashboard);
                       } 
@@ -195,10 +174,8 @@ function SocialAuth({
                   });
                 }}
                 onError={() => {
-                  console.log("Login Failed");
                 }}
               />
-
               <div className="testinggs overflow-hidden w-[50%]">
                 <GoogleLogin
           //         className="absolute z-30 rouned_button_transparent
@@ -212,13 +189,11 @@ function SocialAuth({
                   text="continue_with"
                   width="400 | 200"
                   onSuccess={(credentialResponse: any) => {
-                    console.log("Google credentials....", credentialResponse)
                     const data = {
                       signupId: credentialResponse.credential
                     }
                     dispatch(googleSignUpUser(data)).then((result: any) => {
                       if (googleSignUpUser.fulfilled.match(result)) {
-                        // console.log('resultt', result)
                         if (result && result.payload.success === true ) {
                           router.replace(routes.dashboard);
                         } 
@@ -226,7 +201,6 @@ function SocialAuth({
                     });
                   }}
                   onError={() => {
-                    console.log("Login Failed");
                   }}
                 />
               </div>    
@@ -330,11 +304,3 @@ function SocialLinks() {
     </div>
   );
 }
-
-const members = [
-  'https://randomuser.me/api/portraits/women/40.jpg',
-  'https://randomuser.me/api/portraits/women/41.jpg',
-  'https://randomuser.me/api/portraits/women/42.jpg',
-  'https://randomuser.me/api/portraits/women/43.jpg',
-  'https://randomuser.me/api/portraits/women/44.jpg',
-];

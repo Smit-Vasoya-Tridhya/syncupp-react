@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useRouter } from 'next/navigation';
 import CustomTable from '@/components/common-tables/table';
 import { getColumns } from '@/app/shared/(admin)/faq/faq-list/columns';
 import { deleteFaqData, getAllFaq } from '@/redux/slices/admin/faq/faqSlice';
@@ -18,17 +17,12 @@ const pageHeader = {
 export default function FaqPage() {
 
     const dispatch = useDispatch();
-    const router = useRouter();
     const adminFaqData = useSelector((state: any) => state?.root?.adminFaq);
-
     const [pageSize, setPageSize] = useState(5)
-
 
     const handleChangePage = async (paginationParams: any) => {
         let { page, items_per_page, sort_field, sort_order, search } = paginationParams;
-        // console.log("Items per page...", items_per_page);
         const response = await dispatch(getAllFaq({ page, items_per_page, sort_field, sort_order, search }));
-        // console.log("handleChange response....", response.payload)
         const { data } = response?.payload;
         const maxPage: number = data?.page_count;
 

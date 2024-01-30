@@ -2,32 +2,25 @@
 
 import PageHeader from '@/app/shared/page-header';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import CustomTable from '@/components/common-tables/table';
 import { getColumns } from '@/app/shared/(user)/invoice/invoice-list/column';
-import { deleteTeamMember, getAllTeamMember } from '@/redux/slices/user/team-member/teamSlice';
+import { getAllTeamMember } from '@/redux/slices/user/team-member/teamSlice';
 import { Button } from 'rizzui';
 import Link from 'next/link';
-
 import { routes } from '@/config/routes';
-
 
 const pageHeader = {
   title: 'Invoice',
 };
 
-
 export default function InvoiceDataTablePage() {
   const dispatch = useDispatch();
   const [pageSize, setPageSize] = useState(5);
   const teamMemberData = useSelector((state: any) => state?.root?.teamMember);
-
-  
   const handleChangePage = async (paginationParams: any) => {
     let { page, items_per_page, sort_field, sort_order, search } = paginationParams;
-
     const response = await dispatch(getAllTeamMember({ page, items_per_page, sort_field, sort_order, search }));
-    // console.log(response, "Response.....")
     const { data } = response?.payload;
     const maxPage: number = data?.page_count;
 
@@ -42,7 +35,6 @@ export default function InvoiceDataTablePage() {
   };
 
   const handleDeleteById = async (id: string | string[], currentPage?: any, countPerPage?: number, sortConfig?: Record<string, string>, searchTerm?: string) => {
-
     // try {
     //   const res = await dispatch(deleteTeamMember({ _id: id }));
     //   if (res.payload.success === true) {

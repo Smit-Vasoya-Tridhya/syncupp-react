@@ -7,12 +7,10 @@ type ChangePasswordData = {
   newPassword: string;
   confirmedPassword?: string;
 };
-
 interface PostChangePasswordResponse {
   status : boolean;
   message : string
 }
-
 interface ChangePasswordState {
   loading: boolean;
   user: any;
@@ -30,14 +28,12 @@ const initialState: ChangePasswordState = {
 export const changePasswordAdmin : any = createAsyncThunk(
     "changePassword/changePasswordAdmin",
     async (data: ChangePasswordData) => {
-        console.log("We are in changePassword slice.........", data)
         try {
             const ApiData = {
               oldPassword: data.oldPassword,
               newPassword: data.newPassword
             }
             const response = await PostChangePassword(ApiData);
-            console.log("Change password response......", response);
             return response;
         } catch (error: any) {
             return { status: false, message: error.response.data.message } as PostChangePasswordResponse;
@@ -46,28 +42,28 @@ export const changePasswordAdmin : any = createAsyncThunk(
 );
 
 export const adminChangePasswordSlice = createSlice({
-  name: "changePassword",
+  name: 'changePassword',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(changePasswordAdmin.pending, (state) => {
-            state.loading=true;
+        state.loading = true;
       })
-      .addCase(changePasswordAdmin.fulfilled, (state,action) => {
-        if(action.payload.success == true){
-          toast.success(action.payload.message)
+      .addCase(changePasswordAdmin.fulfilled, (state, action) => {
+        if (action.payload.success == true) {
+          toast.success(action.payload.message);
         } else {
-          toast.error(action.payload.message)
+          toast.error(action.payload.message);
         }
-          state.loading=false;
+        state.loading = false;
       })
       .addCase(changePasswordAdmin.rejected, (state) => {
-        return{
+        return {
           ...state,
           loading: false,
-          changePasswordUserStatus: 'error'
-        }
+          changePasswordUserStatus: 'error',
+        };
       });
   },
 });
