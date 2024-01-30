@@ -66,11 +66,11 @@ export default function ChangePasswordForm({ params }: { params: { id: string } 
 
     useEffect(() => {
         dispatch(getDropdownclientlist())
-    }, [])
+    }, [dispatch])
 
     useEffect(() => {
         dispatch(getSingleagreement(params?.id))
-    }, [params?.id])
+    }, [params?.id , dispatch])
 
     const onSubmit: SubmitHandler<AgrementFormTypes> = (data) => {
         const agreementData = {

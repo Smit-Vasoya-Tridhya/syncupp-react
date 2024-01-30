@@ -169,7 +169,7 @@ export default function AddTeamMemberForm(props: any) {
                   onKeyDown={handleKeyDown}
                   label="Name *"
                   color="info"
-                  placeholder="Enter your Name"
+                  placeholder="Enter your name"
                   className="[&>label>span]:font-medium"
                   {...register('name')}
                   error={errors.name?.message as string}
@@ -179,7 +179,7 @@ export default function AddTeamMemberForm(props: any) {
                   onKeyDown={handleKeyDown}
                   label="Email ID *"
                   color="info"
-                  placeholder="Enter your Email ID"
+                  placeholder="Enter your email"
                   className="[&>label>span]:font-medium"
                   disabled={title === 'Edit Team Member'}
                   {...register('email')}
@@ -190,7 +190,7 @@ export default function AddTeamMemberForm(props: any) {
                   onKeyDown={handleKeyContactDown}
                   label="Phone"
                   color="info"
-                  placeholder="Enter your Phone"
+                  placeholder="Enter phone number"
                   className="[&>label>span]:font-medium"
                   {...register('contact_number')}
                   error={errors.contact_number?.message as string}
@@ -204,6 +204,7 @@ export default function AddTeamMemberForm(props: any) {
                       value={value}
                       onChange={onChange}
                       label="Permisson *"
+                      placeholder='Select role'
                       color="info"
                       disabled={signIn?.role === 'client'}
                       error={errors?.role?.message as string}

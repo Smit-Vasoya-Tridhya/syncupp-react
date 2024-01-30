@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Spinner from '@/components/ui/spinner';
 import { useModal } from '@/app/shared/modal-views/use-modal';
 import cn from '@/utils/class-names';
-import { Input } from 'rizzui';
+import { Input } from '@/components/ui/input';
 import { TermsAndConditionSchema, termsAndConditionSchema } from '@/utils/validators/terms-condition.schema';
 import QuillEditor from '@/components/ui/quill-editor';
 
@@ -67,7 +67,7 @@ export default function TermsAndConditionFormPage() {
               </Title>
             </div>
             <Input
-              type="title"
+              type="text"
               label="Title"
               placeholder="Enter your Title here..."
               color="info"

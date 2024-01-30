@@ -56,7 +56,7 @@ export default function CompanyDetailsForm(props: any) {
             onKeyDown={handleKeyDown}
             type="text"
             label="Company Name"
-            placeholder="Enter Company Name"
+            placeholder="Enter company name"
             rounded="pill"
             color="info"
             className="[&>label>span]:font-medium"
@@ -67,7 +67,7 @@ export default function CompanyDetailsForm(props: any) {
             onKeyDown={handleKeyDown}
             type="text"
             label="Company Website"
-            placeholder="Enter Website url"
+            placeholder="Enter website url"
             rounded="pill"
             color="info"
             className="[&>label>span]:font-medium"

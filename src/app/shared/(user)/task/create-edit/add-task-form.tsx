@@ -20,6 +20,7 @@ import { AddTaskSchema, addTaskSchema } from '@/utils/validators/add-task.schema
 import QuillLoader from '@/components/loader/quill-loader';
 import { DatePicker } from '@/components/ui/datepicker';
 import EventCalendarView from './calendar';
+import { Checkbox } from '@/components/ui/checkbox';
 
 const Select = dynamic(() => import('@/components/ui/select'), {
   ssr: false,
@@ -47,9 +48,9 @@ export default function AddTaskForm(props: any) {
   const { closeModal } = useModal();
   const router = useRouter();
 
-  // const teamMemberData = useSelector(
-  //   (state: any) => state?.root?.teamMember
-  // );
+  const taskData = useSelector(
+    (state: any) => state?.root?.task
+  );
 
 
 
@@ -61,7 +62,8 @@ export default function AddTaskForm(props: any) {
     description: '',
     due_date: undefined,
     client: '',
-    assigned: ''
+    assigned: '',
+    done: false
   };
 
 
@@ -172,26 +174,28 @@ export default function AddTaskForm(props: any) {
                     />
                   )}
                 />
-                <Controller
-                  name="due_date"
-                  control={control}
-                  render={({ field: { value, onChange } }) => (
-                    <DatePicker
-                      selected={value}
-                      inputProps={{
-                        label: 'Due Date & Time',
-                        color: 'info'
-                      }}
-                      placeholderText='Select Date & Time'
-                      onChange={onChange}
-                      selectsStart
-                      startDate={value}
-                      minDate={new Date()}
-                      showTimeSelect
-                      dateFormat="MMMM d, yyyy h:mm aa"
-                    />
-                  )}
-                />
+                <div className={cn('grid grid-cols-2 gap-5 pt-5')}>
+                  <Controller
+                    name="due_date"
+                    control={control}
+                    render={({ field: { value, onChange } }) => (
+                      <DatePicker
+                        selected={value}
+                        inputProps={{
+                          label: 'Due Date & Time',
+                          color: 'info'
+                        }}
+                        placeholderText='Select Date & Time'
+                        onChange={onChange}
+                        selectsStart
+                        startDate={value}
+                        minDate={new Date()}
+                        showTimeSelect
+                        dateFormat="MMMM d, yyyy h:mm aa"
+                      />
+                    )}
+                  />
+                </div>
                 <Controller
                   name="client"
                   control={control}
@@ -238,13 +242,18 @@ export default function AddTaskForm(props: any) {
                     Cancel
                   </Button>
                 </div>
-                <div className='float-right text-right'>
-
+                <div className='flex justify-end items-center gap-2'>
+                    <Checkbox
+                    {...register('done')}
+                    label="Mark as done"
+                    color="info"
+                    variant="flat"
+                    className="[&>label>span]:font-medium"
+                  />
                   <Button
                     type="submit"
-                    className="hover:gray-700 ms-3 @xl:w-auto dark:bg-gray-200 dark:text-white"
+                    className="hover:gray-700 @xl:w-auto dark:bg-gray-200 dark:text-white"
                   // disabled={(teamMemberData?.addTeamMemberStatus === 'pending' || teamMemberData?.editTeamMemberStatus === 'pending') && save}
-
                   >
                     Save
                     {/* { (teamMemberData?.addTeamMemberStatus === 'pending' || teamMemberData?.editTeamMemberStatus === 'pending') && save && (<Spinner size="sm" tag='div' className='ms-3' color='white' />)  } */}

@@ -8,6 +8,7 @@ export const addTaskSchema = z.object({
   due_date: z.date().optional(), 
   client: z.string().optional(),
   assigned: z.string().optional(),
+  done: z.boolean().optional(),
 });
 
 // generate form types from zod validation schema
