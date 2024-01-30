@@ -8,25 +8,15 @@ import { useEffect } from 'react';
 import { Controller } from 'react-hook-form';
 import { useDispatch, useSelector } from "react-redux";
 
-
-
 const Select = dynamic(() => import('@/components/ui/select'), {
     ssr: false,
     loading: () => <SelectLoader />,
 });
 
-
 export default function AgencySelectionForm() {
-
     const dispatch = useDispatch();
     const clientSliceData = useSelector((state: any) => state?.root?.client);
-
-    useEffect(() => {
-        dispatch(getClientAgencies())
-    }, [dispatch]);
-
-    // console.log("Agencies....", clientSliceData?.agencies)
-
+    useEffect(() => {dispatch(getClientAgencies())}, [dispatch]);
     let initialValue: Record<string, string> = {
         agency_selection: clientSliceData?.agencyName ?? ''
     }
@@ -37,13 +27,11 @@ export default function AgencySelectionForm() {
     }) : [];
 
     const handleAgencyChange = (selectedOption: Record<string, any>) => {
-        // console.log("selected option....", selectedOption)
         dispatch(setAgencyName(selectedOption?.name))
         dispatch(setAgencyId(selectedOption?.value))
     }
 
     const onSubmit = (data: any) => {
-        // console.log('form data', data);
     };
 
     if (clientSliceData?.agencies.length === 0) {
@@ -79,8 +67,8 @@ export default function AgencySelectionForm() {
                             />
                         </div>
                     )}
-                </Form>
-            </>
+            </Form>
+          </>
         );
     }
 }

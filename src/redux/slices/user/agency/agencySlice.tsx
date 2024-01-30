@@ -56,7 +56,6 @@ export const getAgencyData: any = createAsyncThunk(
   async () => {
     try {
       const response: any = await GetAgencyData();
-      console.log(response,'agency data////////')
       return response;
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as PostAPIResponse;

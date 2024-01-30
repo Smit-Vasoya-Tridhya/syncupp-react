@@ -15,22 +15,17 @@ const pageHeader = {
   title: 'Team',
 };
 
-
 export default function TeamDataTablePage() {
   const dispatch = useDispatch();
   const [pageSize, setPageSize] = useState(5);
   const teamMemberData = useSelector((state: any) => state?.root?.teamMember);
   const clientSliceData = useSelector((state: any) => state?.root?.client);
-
   
   const handleChangePage = async (paginationParams: any) => {
     let { page, items_per_page, sort_field, sort_order, search } = paginationParams;
-
     const response = await dispatch(getAllTeamMember({ page, items_per_page, sort_field, sort_order, search, agencyId: clientSliceData?.agencyId }));
-    // console.log(response, "Response.....")
     const { data } = response?.payload;
     const maxPage: number = data?.page_count;
-
     if (page > maxPage) {
       page = maxPage > 0 ? maxPage : 1;
       await dispatch(getAllTeamMember({ page, items_per_page, sort_field, sort_order, search, agencyId: clientSliceData?.agencyId }));
@@ -42,7 +37,6 @@ export default function TeamDataTablePage() {
   };
 
   const handleDeleteById = async (id: string | string[], currentPage?: any, countPerPage?: number, sortConfig?: Record<string, string>, searchTerm?: string) => {
-
     try {
       const res = await dispatch(deleteTeamMember({ teamMemberIds: id, agencyId: clientSliceData?.agencyId }));
       if (res.payload.success === true) {
@@ -52,8 +46,6 @@ export default function TeamDataTablePage() {
       console.error(error);
     }
   };
-
- 
 
   return (
     <>

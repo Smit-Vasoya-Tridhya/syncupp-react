@@ -18,22 +18,14 @@ import { verifyTeamMember } from '@/redux/slices/user/team-member/teamSlice';
 
 export default function SetPasswordForm(props: any) {
   const isMedium = useMedia('(max-width: 1200px)', false);
-
-  
-  // console.log(formData)
   const dispatch = useDispatch();
   const router = useRouter();
-
   const teamMemberData = useSelector((state: any) => state?.root?.teamMember);
-
   const searchParams = useSearchParams();
-  // console.log("search Params....", searchParams.get("email"))
-  
   const email = searchParams.get("email");
   const agency = searchParams.get("agency");
   let redirectt = searchParams.get("redirect");
   const token = searchParams.get("token");
-  // console.log("redirect....", redirectt)
   let redirect = (redirectt === 'true');
   
   const initialValues = {
@@ -45,8 +37,6 @@ export default function SetPasswordForm(props: any) {
   };
   
   const onSubmit: SubmitHandler<SetPasswordSchema> = (data) => {
-    console.log('set password form data', data);
-    
     const apiData = {
       email: email,
       agency_id: agency,
@@ -60,7 +50,6 @@ export default function SetPasswordForm(props: any) {
 
     dispatch(verifyTeamMember(apiData)).then((result: any) => {
       if (verifyTeamMember.fulfilled.match(result)) {
-        // console.log('resultt', result)
         if (result && result.payload.success === true ) {
           router.replace(routes.signIn);
         } 

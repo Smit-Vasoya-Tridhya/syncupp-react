@@ -12,23 +12,16 @@ export default function MainPage() {
 
     const dispatch = useDispatch();
     const router = useRouter();
-
     const searchParams = useSearchParams();
-    // console.log("search Params....", searchParams.get("email"))
-  
     const email = searchParams.get("email");
     const agency = searchParams.get("agency");
     const token = searchParams.get("token");
     let redirectt = searchParams.get("redirect");
-    // console.log("redirect....", redirectt)
     let redirect = (redirectt === 'true');
-    
-    // console.log("token....", token)
 
     useEffect(() => { redirect &&
         dispatch(verifyTeamMember({email: email, agency_id: agency, redirect: redirect, token: token })).then((result: any) => {
           if (verifyTeamMember.fulfilled.match(result)) {
-            // console.log('resultt', result)
             if (result && result.payload.success === true ) {
               router.replace(routes.signIn);
             } 

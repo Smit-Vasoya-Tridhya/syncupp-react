@@ -10,7 +10,6 @@ import { routes } from '@/config/routes';
 import {resetPasswordSchema,ResetPasswordSchema} from '@/utils/validators/reset-password.schema';
 import { useDispatch, useSelector } from 'react-redux';
 import { postResetPassword } from '@/redux/slices/admin/auth/resetpassword/resetPasswordSlice';
-import useMedia from 'react-use/lib/useMedia';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Spinner from '@/components/ui/spinner';
 
@@ -20,20 +19,12 @@ const initialValues = {
 };
 
 export default function ResetPasswordForm() {
-  const isMedium = useMedia('(max-width: 1200px)', false);
   const dispatch = useDispatch();
-
   const searchParams = useSearchParams();
-  // console.log("search Params", searchParams.get("email"))
-
   const token = searchParams.get("token");
   const email = searchParams.get("email");
-
-  // console.log("token....", token)
-
   const router = useRouter();
   const adminResetPassword = useSelector((state: any) => state?.root?.adminResetPassword)
-  console.log("adminResetPassword state.....", adminResetPassword)
 
   const onSubmit: SubmitHandler<ResetPasswordSchema> = (data) => {
     const requestObject = {
@@ -43,7 +34,6 @@ export default function ResetPasswordForm() {
     }
     dispatch(postResetPassword(requestObject)).then((result: any) => {
       if (postResetPassword.fulfilled.match(result)) {
-        console.log('resultt', result)
         if (result && result.payload.success === true ) {
           router.replace(routes.admin.signIn);
         } 

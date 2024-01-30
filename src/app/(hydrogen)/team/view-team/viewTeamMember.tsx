@@ -12,11 +12,8 @@ export default function ViewTeamMemberForm(props: any) {
   const dispatch = useDispatch();
   const { data } = props;
   const teamMemberData = useSelector((state: any) => state?.root?.teamMember);
-  // const[formData]= data;
   let dataa = teamMemberData?.teamMember;
-  
-  console.log(props.data,'props.data........')
-  
+    
   const initialValues = {
     _id: data?._id ?? '',
     name: data?.name ?? '',
@@ -33,14 +30,11 @@ export default function ViewTeamMemberForm(props: any) {
   const filteredFormData = Object.fromEntries(
     Object.entries(formData).filter(([_, value]) => value !== undefined && value !== '')
   );
-     
 
   const fullData = { ...filteredFormData }
-
     dispatch(getTeamMemberProfile({ ...fullData, _id: dataa._id })).then((result: any) => {
         if (getTeamMemberProfile.fulfilled.match(result)) {
           if (result && result.payload.success === true ) {
-            // router.replace(routes.admin.dashboard);
           } 
         }
       })

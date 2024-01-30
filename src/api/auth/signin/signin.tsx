@@ -75,7 +75,6 @@ export const PostChangePassword = async (data: ChangePasswordData): Promise<ApiR
   return responseData;
 };
 export const PostViewProfiles = async (): Promise<ApiResponse> => {
-  console.log('we are in view profile API')
   const response = await AxiosDefault({
     url: "/api/v1/admin/getProfile",
     method: "GET",

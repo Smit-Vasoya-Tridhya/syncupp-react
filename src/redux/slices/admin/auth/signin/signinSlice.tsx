@@ -1,19 +1,16 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { PostSignin } from "../../../../../api/auth/signin/signin";
 import { toast } from 'react-hot-toast';
-import { messages } from "@/config/messages";
 
 type UserData = {
   email: string;
   password: string;
   rememberMe?: string;
 }
-
 interface SigninState {
   loading: boolean;
   userData: {},
 }
-
 interface PostSigninResponse {
   status: boolean;
   message: string
@@ -28,7 +25,6 @@ export const postSignin: any = createAsyncThunk(
   "signin/postSignin",
   async (data: UserData) => {
     try {
-      // console.log('..............')
       const response: any = await PostSignin(data);
       return response;
     } catch (error: any) {
@@ -38,20 +34,18 @@ export const postSignin: any = createAsyncThunk(
 );
 
 export const signinSlice = createSlice({
-  name: "signin",
+  name: 'signin',
   initialState,
   reducers: {
-
     logoutUserAdmin(state, action) {
       localStorage.clear();
       sessionStorage.clear();
       return {
-          ...state,
-          loading: false,
-          userData: {},
+        ...state,
+        loading: false,
+        userData: {},
       };
-  },
-
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -60,8 +54,7 @@ export const signinSlice = createSlice({
       })
       .addCase(postSignin.fulfilled, (state, action) => {
         state.loading = false;
-        console.log(action.payload,'action.payload')
-        state.userData = action.payload
+        state.userData = action.payload;
         if (action.payload.status == false) {
           toast.error(action.payload.message);
         } else {
@@ -70,7 +63,7 @@ export const signinSlice = createSlice({
       })
       .addCase(postSignin.rejected, (state) => {
         state.loading = false;
-      })
+      });
   },
 });
 export const getUserData = (state: { signin: { userData: any; }; }) => state.signin.userData;

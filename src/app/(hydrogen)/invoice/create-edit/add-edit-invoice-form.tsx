@@ -68,7 +68,6 @@ export default function CreateInvoice({
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      console.log('createInvoice data ->', data);
       setReset({
         fromName: '',
         fromAddress: '',
@@ -317,7 +316,7 @@ export default function CreateInvoice({
                       width={40}
                       className="rounded-md"
                     />
-                    <div
+                    {/* <div
                       style={{ position: 'relative', display: 'inline-block' }}
                     >
                       <ActionIcon
@@ -341,7 +340,7 @@ export default function CreateInvoice({
                         }}
                         onChange={handleFileChange}
                       />
-                    </div>
+                    </div> */}
                     <Input
                       type="text"
                       placeholder="Invoice number"

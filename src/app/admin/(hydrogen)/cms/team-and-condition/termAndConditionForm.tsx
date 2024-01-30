@@ -6,7 +6,6 @@ import { Controller, SubmitHandler } from 'react-hook-form';
 import { Form } from '@/components/ui/form';
 import {useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useRouter } from 'next/navigation';
 import Spinner from '@/components/ui/spinner';
 import { useModal } from '@/app/shared/modal-views/use-modal';
 import cn from '@/utils/class-names';
@@ -29,15 +28,12 @@ export default function TermsAndConditionFormPage() {
 })
 
   const termAndCondition = useSelector((state: any) => state?.root?.changePassword)
-  // console.log("termAndCondition state.....", termAndCondition)
-
 
   const initialValues: TermsAndConditionSchema = {
     title: formdata?.title,
     description: formdata?.description,
 };
   const onSubmit: SubmitHandler<TermsAndConditionSchema> = (data) => {
-    console.log('Change password form data->', data);
 
     const formData = {
       title: data?.title,
@@ -45,7 +41,6 @@ export default function TermsAndConditionFormPage() {
     }
     // dispatch(changePasswordUser(formData)).then((result: any) => {
     //   if (changePasswordUser.fulfilled.match(result)) {
-    //     // console.log('resultt', result)
     //     if (result && result.payload.success === true ) {
     //       // router.replace(routes.dashboard);
     //       closeModal();

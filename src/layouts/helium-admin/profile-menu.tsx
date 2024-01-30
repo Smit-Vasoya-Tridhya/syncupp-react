@@ -16,14 +16,12 @@ import { useDispatch } from 'react-redux';
 import "../helium/style.css"
 import { postViewProfile } from '@/redux/slices/admin/auth/viewprofile/viewProfileSlice';
 
-
 const menuItems = [
   {
     name: 'My Profile',
     href: routes.admin.signIn,
   },
 ];
-
 export interface UserProfileDTO {
   createdAt: Date;
   email: string;
@@ -38,12 +36,9 @@ export interface UserProfileDTO {
 }
 
 function DropdownMenu() {
-
   const dispatch = useDispatch();
   const router = useRouter();
-
   const handleClick = () => {
-    console.log("signout clicked..")
     dispatch(logoutUserAdmin(''));
     router.replace('/admin/signin');
   }
@@ -57,7 +52,6 @@ function DropdownMenu() {
       }
     })
   }, [dispatch])
-console.log(data,'get profile data.........')
 
   return (
     <div className="w-64 text-left rtl:text-right">

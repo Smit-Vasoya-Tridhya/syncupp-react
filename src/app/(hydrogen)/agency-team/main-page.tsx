@@ -27,7 +27,6 @@ export default function TeamDataTablePage() {
     let { page, items_per_page, sort_field, sort_order, search } = paginationParams;
 
     const response = await dispatch(getAllTeamMember({ page, items_per_page, sort_field, sort_order, search }));
-    // console.log(response, "Response.....")
     const { data } = response?.payload;
     const maxPage: number = data?.page_count;
 

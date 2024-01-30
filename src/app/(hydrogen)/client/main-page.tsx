@@ -48,7 +48,6 @@ export default function ClientPage() {
 
   const handleDeleteById = async (id: string | string[], currentPage?: any, countPerPage?: number, sortConfig?: Record<string, string>, searchTerm?: string) => {
 
-    // console.log("delete id in main page....", id)
 
     try {
       const res = await dispatch(deleteClient({ client_ids: id }));

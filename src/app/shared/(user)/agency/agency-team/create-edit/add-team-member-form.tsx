@@ -4,9 +4,7 @@ import { Title, ActionIcon } from '@/components/ui/text';
 import { Button } from '@/components/ui/button';
 import { Controller, SubmitHandler } from 'react-hook-form';
 import { Form } from '@/components/ui/form';
-import { useMedia } from '@/hooks/use-media';
 import { useDispatch, useSelector } from 'react-redux';
-import { useRouter } from 'next/navigation';
 import Spinner from '@/components/ui/spinner';
 import { useModal } from '@/app/shared/modal-views/use-modal';
 import cn from '@/utils/class-names';
@@ -24,37 +22,23 @@ import SelectBox from '@/components/ui/select';
 //   loading: () => <SelectLoader />,
 // });
 
-
-
 const typeOption = [
   { name: 'Team Member', value: 'team_member' },
   { name: 'Admin', value: 'admin' },
 ]
 
-
 export default function AddTeamMemberForm(props: any) {
-
   const { title, row } = props;
-
-  const isMedium = useMedia('(max-width: 1200px)', false);
   const dispatch = useDispatch();
   const { closeModal } = useModal();
-  const router = useRouter();
   const [save, setSave] = useState(false)
   const [loader, setLoader] = useState(true);
   const [reset, setReset] = useState({})
-
   const teamMemberData = useSelector(
     (state: any) => state?.root?.teamMember
   );
   const clientSliceData = useSelector((state: any) => state?.root?.client);
   const signIn = useSelector((state: any) => state?.root?.signIn)
-
-
-
-
-
-  // let data = row;
 
   const initialValues: TeamMemberSchema = {
     email: '',
@@ -63,15 +47,12 @@ export default function AddTeamMemberForm(props: any) {
     role: ''
   };
 
-
   useEffect(() => {
     row && dispatch(getTeamMemberProfile({ _id: row?._id }))
   }, [row, dispatch]);
 
   let [data] = teamMemberData?.teamMember;
-
   let defaultValuess = {};
-
   if (data) {
     defaultValuess = {
       name: data?.name,
@@ -95,9 +76,6 @@ export default function AddTeamMemberForm(props: any) {
     };
   }
 
-
-
-
   const onSubmit: SubmitHandler<TeamMemberSchema> = (dataa) => {
     let formData = {};
     if (title === 'New Team Member') {
@@ -118,22 +96,15 @@ export default function AddTeamMemberForm(props: any) {
       }
     }
 
-
     const filteredFormData = Object.fromEntries(
       Object.entries(formData).filter(([_, value]) => value !== undefined && value !== '')
     );
-
-
     const fullData = { ...filteredFormData }
-
-    // if(loader && !save) return
-
     if (title === 'New Team Member') {
       dispatch(addTeamMember(fullData)).then((result: any) => {
         if (addTeamMember.fulfilled.match(result)) {
           setLoader(false);
           setSave(false);
-
           if (result && result.payload.success === true) {
             save && closeModal();
             setReset({ ...initialValues })
@@ -153,13 +124,11 @@ export default function AddTeamMemberForm(props: any) {
         }
       });
     }
-
   };
 
   const handleSaveClick = () => {
     setSave(true);
   }
-
   if (!teamMemberData?.teamMember && title === 'Edit Team Member') {
     return (
       <div className='p-10 flex items-center justify-center'>
@@ -263,7 +232,6 @@ export default function AddTeamMemberForm(props: any) {
                         disabled={Object.keys(errors).length === 0 && loader && isSubmitSuccessful && !save}
                         onClick={() => {
                           handleSubmit(onSubmit)();
-                          // console.log(errors, "errors....")
                           setLoader(true)
                         }}
                       >

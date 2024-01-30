@@ -6,11 +6,9 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { Form } from '@/components/ui/form';
 import { useEffect, useState } from 'react';
 import { routes } from '@/config/routes';
-import { useMedia } from '@/hooks/use-media';
 import { useDispatch, useSelector } from 'react-redux';
 import { handleKeyDown } from '@/utils/common-functions';
 import { useRouter } from 'next/navigation';
-import { useModal } from '@/app/shared/modal-views/use-modal';
 import { PiNotePencilDuotone, PiXBold } from 'react-icons/pi';
 import { ActionIcon } from 'rizzui';
 import cn from '@/utils/class-names';
@@ -26,15 +24,10 @@ const Select = dynamic(() => import('@/components/ui/select'), {
 });
 
 export default function UserViewProfileForm(props:any) {
-  // const { data } = props;
-  const isMedium = useMedia('(max-width: 1200px)', false);
   const [reset, setReset] = useState({});
-  const { closeModal } = useModal();
   const [isOpenEditMode, setIsOpenEditMode] = useState<boolean>(false);
   const dispatch = useDispatch();
   const signIn = useSelector((state: any) => state?.root?.signIn);
-
-
   const router = useRouter();
   const userAgency = useSelector((state: any) => state?.root?.userAgency)
   const clientSliceData = useSelector((state: any) => state?.root?.client);
@@ -118,7 +111,6 @@ const cityHandleChange = (selectedOption: string) => {
     })
   };
 
-  console.log(initialValues,'initial.....')
   if(userAgency?.getProfileStatus==='pending') {
     return (
       <div className='p-10 flex items-center justify-center'>

@@ -26,9 +26,6 @@ export default function TablePagination({
   // if (total && total < pageSize) {
   //   return null;
   // }
-  
-  // console.log("pagination props options...", props, pageSize, total)
-
   return (
     <div
       className={cn(

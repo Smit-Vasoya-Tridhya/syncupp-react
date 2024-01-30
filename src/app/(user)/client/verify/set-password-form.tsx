@@ -4,7 +4,6 @@ import { SubmitHandler } from 'react-hook-form';
 import { Password } from '@/components/ui/password';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useMedia } from '@/hooks/use-media';
 import { Form } from '@/components/ui/form';
 import { handleKeyDown } from '@/utils/common-functions';
 import { SetPasswordSchema, setPasswordSchema } from '@/utils/validators/set-password-schema';
@@ -14,25 +13,14 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { routes } from '@/config/routes';
 import Spinner from '@/components/ui/spinner';
 
-
-
 export default function SetPasswordForm(props: any) {
-  const isMedium = useMedia('(max-width: 1200px)', false);
-
-  
-  // console.log(formData)
   const dispatch = useDispatch();
   const router = useRouter();
-
   const clientSliceData = useSelector((state: any) => state?.root?.client);
-
   const searchParams = useSearchParams();
-  // console.log("search Params....", searchParams.get("email"))
-  
   const email = searchParams.get("email");
   const agency = searchParams.get("agency");
   let redirectt = searchParams.get("redirect");
-  // console.log("redirect....", redirectt)
   let redirect = (redirectt === 'true');
   
   const initialValues = {
@@ -44,8 +32,6 @@ export default function SetPasswordForm(props: any) {
   };
   
   const onSubmit: SubmitHandler<SetPasswordSchema> = (data) => {
-    console.log('set password form data', data);
-    
     const apiData = {
       email: email,
       agency_id: agency,
@@ -54,17 +40,13 @@ export default function SetPasswordForm(props: any) {
       last_name: data?.lastName,
       redirect: redirect
     }
-
-
     dispatch(postVerifyClient(apiData)).then((result: any) => {
       if (postVerifyClient.fulfilled.match(result)) {
-        // console.log('resultt', result)
         if (result && result.payload.success === true ) {
           router.replace(routes.signIn);
         } 
       }
     })
-
   };
 
     return (
@@ -82,7 +64,6 @@ export default function SetPasswordForm(props: any) {
                 <Input
                   onKeyDown={handleKeyDown}
                   type="text"
-                  size={isMedium ? 'lg' : 'xl'}
                   label="First Name"
                   placeholder="Enter first name"
                   rounded="pill"
@@ -94,7 +75,6 @@ export default function SetPasswordForm(props: any) {
                 <Input
                   onKeyDown={handleKeyDown}
                   type="text"
-                  size={isMedium ? 'lg' : 'xl'}
                   label="Last Name"
                   placeholder="Enter last name"
                   rounded="pill"
@@ -108,7 +88,6 @@ export default function SetPasswordForm(props: any) {
                 <Input
                   onKeyDown={handleKeyDown}
                   type="email"
-                  size={isMedium ? 'lg' : 'xl'}
                   label="Email ID"
                   placeholder="Enter your email"
                   rounded="pill"
@@ -124,7 +103,6 @@ export default function SetPasswordForm(props: any) {
                   onKeyDown={handleKeyDown}
                   label="Password"
                   placeholder="Enter your password"
-                  size={isMedium ? 'lg' : 'xl'}
                   rounded="pill"
                   color="info"
                   className="[&>label>span]:font-medium"
@@ -135,7 +113,6 @@ export default function SetPasswordForm(props: any) {
                   onKeyDown={handleKeyDown}
                   label="Confirm Password"
                   placeholder="Enter your password"
-                  size={isMedium ? 'lg' : 'xl'}
                   rounded="pill"
                   color="info"
                   className="[&>label>span]:font-medium"
@@ -147,7 +124,6 @@ export default function SetPasswordForm(props: any) {
                 <Button
                   className="border-2 text-base font-medium float-end"
                   type="submit"
-                  size={isMedium ? 'lg' : 'xl'}
                   color="info"
                   rounded="pill"
                   disabled={clientSliceData?.loading}

@@ -37,10 +37,8 @@ const initialState:SignUpState = {
 export const googleSignUpUser: any = createAsyncThunk(
   "socialSignup/googleSignUpUser",
   async (data: GoogleUserData) => {
-    // console.log("We are in socialSignup slice Google.........", data)
     try {
       const response: any = await PostSocialSignupGoogle(data);
-      // console.log("socialSignup response Google.....", response);
       return response;
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as PostSignUpResponse;
@@ -51,10 +49,8 @@ export const googleSignUpUser: any = createAsyncThunk(
 export const facebookSignUpUser: any = createAsyncThunk(
   "socialSignup/facebookSignUpUser",
   async (data: FacebookUserData) => {
-    // console.log("We are in socialSignup slice Facebook.........", data);
     try {
       const response: any = await PostSocialSignupFacebook(data);
-      // console.log("socialSignup response Facebook.....", response);
       return response;
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as PostSignUpResponse;
@@ -90,7 +86,6 @@ export const socialSignupSlice = createSlice({
           }
       })
       .addCase(googleSignUpUser.fulfilled, (state,action) => {
-        // console.log(action.payload);
         if(action.payload.status == false){
           toast.error(action.payload.message)
         } else {
@@ -119,7 +114,6 @@ export const socialSignupSlice = createSlice({
           }
       })
       .addCase(facebookSignUpUser.fulfilled, (state,action) => {
-        // console.log(action.payload);
         if(action.payload.status == false){
           toast.error(action.payload.message)
         } else {

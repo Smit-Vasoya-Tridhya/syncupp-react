@@ -61,13 +61,10 @@ type MasterData = {
   stateId?: string;
   countryId?: string;
 }
-
-
 interface PostAPIResponse {
   status: boolean;
   message: string
 }
-
 interface ClientInitialState {
   loading: boolean;
   data: any;
@@ -109,10 +106,8 @@ const initialState: ClientInitialState = {
 export const postAddClient: any = createAsyncThunk(
   "client/postAddClient",
   async (data: AddClientData) => {
-    console.log("We are in client slice.........", data)
     try {
       const response: any = await PostAddClientApi(data);
-      console.log("add client response....", response);
       return response;
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as PostAPIResponse;
@@ -123,10 +118,8 @@ export const postAddClient: any = createAsyncThunk(
 export const postVerifyClient: any = createAsyncThunk(
   "client/postVerifyClient",
   async (data: VerifyClientData) => {
-    console.log("We are in client slice.........", data)
     try {
       const response: any = await PostVerifyClientApi(data);
-      console.log("verify client response....", response);
       return response;
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as PostAPIResponse;
@@ -137,10 +130,8 @@ export const postVerifyClient: any = createAsyncThunk(
 export const patchEditClient: any = createAsyncThunk(
   "client/patchEditClient",
   async (data: EditClientData) => {
-    console.log("We are in client slice.........", data)
     try {
       const response: any = await PatchEditClientApi(data);
-      console.log("edit client response....", response);
       return response;
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as PostAPIResponse;
@@ -151,10 +142,8 @@ export const patchEditClient: any = createAsyncThunk(
 export const getAllClient: any = createAsyncThunk(
   "client/getAllClient",
   async (data: GetAllClientData) => {
-    console.log("We are in client slice.........", data)
     try {
       const response: any = await GetAllClientApi(data);
-      console.log("get all client response....", response);
       return response;
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as PostAPIResponse;
@@ -165,10 +154,8 @@ export const getAllClient: any = createAsyncThunk(
 export const getClientById: any = createAsyncThunk(
   "client/getClientById",
   async (data: GetClientByIdData) => {
-    console.log("We are in client slice.........", data)
     try {
       const response: any = await GetClientByIdApi(data);
-      console.log("get client by id response....", response);
       return response;
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as PostAPIResponse;
@@ -179,10 +166,8 @@ export const getClientById: any = createAsyncThunk(
 export const deleteClient: any = createAsyncThunk(
   "client/deleteClient",
   async (data: DeleteClientData) => {
-    console.log("We are in client slice.........", data)
     try {
       const response: any = await DeleteClientApi(data);
-      console.log("delete client response....", response);
       return response;
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as PostAPIResponse;
@@ -193,10 +178,8 @@ export const deleteClient: any = createAsyncThunk(
 export const getCountry: any = createAsyncThunk(
   "client/getCountry",
   async (data: MasterData) => {
-    // console.log("We are in client slice.........", data)
     try {
       const response: any = await GetAllCountryApi(data);
-      // console.log("get country response....", response);
       return response;
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as PostAPIResponse;
@@ -207,10 +190,8 @@ export const getCountry: any = createAsyncThunk(
 export const getState: any = createAsyncThunk(
   "client/getState",
   async (data: MasterData) => {
-    // console.log("We are in client slice.........", data)
     try {
       const response: any = await GetAllStateApi(data);
-      // console.log("get state response....", response);
       return response;
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as PostAPIResponse;
@@ -221,10 +202,8 @@ export const getState: any = createAsyncThunk(
 export const getCities: any = createAsyncThunk(
   "client/getCities",
   async (data: MasterData) => {
-    // console.log("We are in client slice.........", data)
     try {
       const response: any = await GetAllCityApi(data);
-      // console.log("get city response....", response);
       return response;
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as PostAPIResponse;
@@ -285,7 +264,6 @@ export const clientSlice = createSlice({
         }
       })
       .addCase(postAddClient.fulfilled, (state, action) => {
-        // console.log(action.payload);
         if (action.payload.status == false) {
           toast.error(action.payload.message)
         } else {
@@ -315,7 +293,6 @@ export const clientSlice = createSlice({
         }
       })
       .addCase(postVerifyClient.fulfilled, (state, action) => {
-        // console.log(action.payload);
         if (action.payload.status == false) {
           toast.error(action.payload.message)
         } else {
@@ -345,7 +322,6 @@ export const clientSlice = createSlice({
         }
       })
       .addCase(patchEditClient.fulfilled, (state, action) => {
-        // console.log(action.payload);
         if (action.payload.status == false) {
           toast.error(action.payload.message)
         } else {
@@ -376,7 +352,6 @@ export const clientSlice = createSlice({
         }
       })
       .addCase(getAllClient.fulfilled, (state, action) => {
-        // console.log(action.payload);
         if (action.payload.status == false) {
           toast.error(action.payload.message)
         }
@@ -404,7 +379,6 @@ export const clientSlice = createSlice({
         }
       })
       .addCase(getClientById.fulfilled, (state, action) => {
-        // console.log(action.payload);
         // if(action.payload.status == false){
         //     toast.error(action.payload.message)
         // } else {
@@ -433,12 +407,11 @@ export const clientSlice = createSlice({
           deleteClientStatus: 'pending'
         }
       })
-      .addCase(deleteClient.fulfilled, (state, action) => {
-        // console.log(action.payload);
-        if (action.payload.status == false) {
-          toast.error(action.payload.message)
-          return {
-            ...state,
+      .addCase(deleteClient.fulfilled, (state,action) => {
+        if(action.payload.status == false){
+            toast.error(action.payload.message)
+            return{
+              ...state,
             //   data: action.payload,
             loading: false,
             deleteClientStatus: 'error'
