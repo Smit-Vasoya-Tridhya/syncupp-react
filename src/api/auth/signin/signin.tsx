@@ -14,7 +14,7 @@ export type SignInData = {
 export type ProfileData = {
   first_name: string,
   last_name: string,
-  contact_no: string
+  contact_number: string
 };
 export type ForgotData = {
   email: string;
@@ -74,7 +74,7 @@ export const PostChangePassword = async (data: ChangePasswordData): Promise<ApiR
   const responseData: ApiResponse = response.data;
   return responseData;
 };
-export const PostViewProfiles = async (): Promise<ApiResponse> => {
+export const GetViewProfiles = async (data:ProfileData): Promise<ApiResponse> => {
   const response = await AxiosDefault({
     url: "/api/v1/admin/getProfile",
     method: "GET",

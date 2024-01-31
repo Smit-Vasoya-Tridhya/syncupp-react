@@ -6,7 +6,7 @@ export const metadata = {
   ...metaObject('Faq'),
 };
 
-export default function Page() {
+export default function FaqsPage() {
   return (
     <>
       <FaqPage />

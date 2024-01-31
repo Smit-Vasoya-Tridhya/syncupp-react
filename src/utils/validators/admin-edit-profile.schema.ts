@@ -12,7 +12,7 @@ export const adminEditProfileSchema = z.object({
   first_name: z.string().min(1, { message: messages.firstNameRequired }),
   last_name: z.string().min(1, { message: messages.lastNameRequired }),
   email: validateEmail,
-  contact_no: validateContactNumber,
+  contact_number: validateContactNumber,
   // isAgreed: z.boolean(),
 })
 // generate form types from zod validation schema

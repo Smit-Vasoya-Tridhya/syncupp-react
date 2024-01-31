@@ -1,6 +1,6 @@
 'use client';
 
-import { PostEditProfile, PostViewProfiles } from "@/api/auth/signin/signin";
+import { GetViewProfiles, PostEditProfile } from "@/api/auth/signin/signin";
 import { createAsyncThunk, createSlice, isRejectedWithValue } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
 
@@ -8,7 +8,7 @@ type userEmail = {
   email: string;
   first_name: string,
   last_name: string,
-  contact_no: string
+  contact_number: string
 }
 
 const initialState = {
@@ -18,11 +18,11 @@ const initialState = {
   userEmail :{}
 };
 
-export const postViewProfile : any = createAsyncThunk(
-  "viewprofile/postViewProfile",
-  async () => {
+export const getViewProfiles : any = createAsyncThunk(
+  "viewprofile/getViewProfiles",
+  async (data:userEmail) => {
     try {      
-      const response:any = await PostViewProfiles();
+      const response:any = await GetViewProfiles(data);
       return response;
     } catch (error:any) {
       return { status: false, message: error.response.data.message };
@@ -38,7 +38,7 @@ export const postEditProfile : any = createAsyncThunk(
         email:data.email,
         first_name: data.first_name,
         last_name: data.last_name,
-        contact_no: data.contact_no
+        contact_number: data.contact_number
       }
       const response:any = await PostEditProfile(ApiData);
       return response;
@@ -73,20 +73,20 @@ export const viewProfileSlice = createSlice({
         state.loading = false;
       })
     builder
-      .addCase(postViewProfile.pending, (state) => {
+      .addCase(getViewProfiles.pending, (state) => {
         return{
           ...state,
           loading: true
         }
       })
-      .addCase(postViewProfile.fulfilled, (state, action) => {
+      .addCase(getViewProfiles.fulfilled, (state, action) => {
         return{
           ...state,
           loading: false,
-          data: action.payload,
+          data: action?.payload?.data,
         }
       })
-      .addCase(postViewProfile.rejected, (state) => {
+      .addCase(getViewProfiles.rejected, (state) => {
         state.loading = false;
       })
   },

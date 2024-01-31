@@ -14,11 +14,13 @@ import "./style.css"
 import ChangePasswordForm from '@/app/shared/(user)/forms/change-password-form';
 import { routes } from '@/config/routes';
 import Link from 'next/link';
+import { useSelector } from 'react-redux';
 
 function DropdownMenu() {
 
   const dispatch = useDispatch();
   const router = useRouter();
+  const { user } = useSelector((state: any) => state?.root?.signIn);
 
   const handleClick = () => {
     dispatch(signOutUser()).then((result: any) => {
@@ -39,10 +41,14 @@ function DropdownMenu() {
           color="invert"
         />
         <div className="ms-3">
-          <Title as="h6" className="font-semibold">
-            Albert Flores
+          <Title as="h6" className="break-all text-sm font-semibold">
+            {/* {`${data?.first_name} ${data?.last_name}`} */}
+            {`${user?.data?.user?.first_name} ${user?.data?.user?.last_name}`}
           </Title>
-          <Text className="text-gray-600">flores@doe.io</Text>
+          {/* <Text className="break-all text-sm text-gray-600">
+            {`${data?.email}`}
+          </Text> */}
+          <Text className="text-gray-600 text-sm break-all">{`${user?.data?.user?.email}`}</Text>
         </div>
       </div>
       <div className="grid px-3.5 py-3.5 font-medium text-gray-700">
@@ -50,9 +56,7 @@ function DropdownMenu() {
           className="mt-0 justify-start bg-white text-gray-900"
           href={routes.viewProfile}
         >
-          <Button variant="text">
-            View Profile
-          </Button>
+          <Button variant="text">View Profile</Button>
         </Link>
 
         <ModalButton
@@ -62,7 +66,7 @@ function DropdownMenu() {
           className="mt-0 justify-start bg-white text-gray-900"
         />
       </div>
-      <div className="border-t border-gray-300 px-6 pb-6 pt-5">
+      <div className="border-t border-gray-300 px-6 py-4">
         <Button
           className="ml-2 h-auto w-full justify-start p-0 font-medium text-gray-700 outline-none focus-within:text-gray-600 hover:text-gray-900 focus-visible:ring-0"
           variant="text"
@@ -106,7 +110,7 @@ export default function ProfileMenu({
       >
         <Avatar
           src="https://isomorphic-furyroad.s3.amazonaws.com/public/avatars-blur/avatar-11.webp"
-          name="John Doe"
+          name=""
           color="invert"
           className={cn('!h-9 w-9 sm:!h-10 sm:w-10', avatarClassName)}
         />

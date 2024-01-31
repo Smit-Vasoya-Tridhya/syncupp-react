@@ -1,14 +1,14 @@
-"use client";
-import AuthWrapperTwo from '@/app/shared/(admin)/auth-layout/auth-wrapper-two';
-import WithAuth from '@/utils/private-route-admin';
 import ViewProfileForm from './view-profile';
+import { metaObject } from '@/config/site.config';
 
-function ChangePassword() {
+export const metadata = {
+  ...metaObject('Profile'),
+};
+
+export default function ViewProfile() {
   return (
-    <AuthWrapperTwo title="Change your Password">
+    <>
       <ViewProfileForm />
-    </AuthWrapperTwo>
+    </>
   );
 }
-
-export default WithAuth(ChangePassword);

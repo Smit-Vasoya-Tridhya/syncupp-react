@@ -33,9 +33,9 @@ export default function TermsAndCondition() {
                         <Text> Home </Text>{' '}
                       </div>
                       <div className='flex'>
-                        <PiEyeFill className="mr-3 h-[18px] w-[18px] cursor-pointer" />
+                        <PiEyeFill className="mr-3 h-[30px] w-[30px] cursor-pointer" />
                         {/* <Link href={routes.admin.cmsTC}> */}
-                        <PiNotePencilDuotone className="h-[18px] w-[18px] cursor-pointer" />{' '}
+                        <PiNotePencilDuotone className="h-[30px] w-[30px] cursor-pointer" />{' '}
                         {/* </Link> */}
                       </div>
                     </td>
@@ -46,9 +46,9 @@ export default function TermsAndCondition() {
                         <Text> Features </Text>{' '}
                       </div>
                       <div className='flex'>
-                        <PiEyeFill className="mr-3 h-[18px] w-[18px] cursor-pointer" />
+                        <PiEyeFill className="mr-3 h-[30px] w-[30px] cursor-pointer" />
                         {/* <Link href={routes.admin.cmsTC}> */}
-                        <PiNotePencilDuotone className="h-[18px] w-[18px] cursor-pointer" />{' '}
+                        <PiNotePencilDuotone className="h-[30px] w-[30px] cursor-pointer" />{' '}
                         {/* </Link> */}
                       </div>
                     </td>
@@ -59,9 +59,9 @@ export default function TermsAndCondition() {
                         <Text> Price </Text>{' '}
                       </div>
                       <div className='flex'>
-                        <PiEyeFill className="mr-3 h-[18px] w-[18px] cursor-pointer" />
+                        <PiEyeFill className="mr-3 h-[30px] w-[30px] cursor-pointer" />
                         {/* <Link href={routes.admin.cmsTC}> */}
-                        <PiNotePencilDuotone className="h-[18px] w-[18px] cursor-pointer" />{' '}
+                        <PiNotePencilDuotone className="h-[30px] w-[30px] cursor-pointer" />{' '}
                         {/* </Link> */}
                       </div>
                     </td>
@@ -72,9 +72,9 @@ export default function TermsAndCondition() {
                         <Text> Contact us </Text>{' '}
                       </div>
                       <div className='flex'>
-                        <PiEyeFill className="mr-3 h-[18px] w-[18px] cursor-pointer" />
+                        <PiEyeFill className="mr-3 h-[30px] w-[30px] cursor-pointer" />
                         {/* <Link href={routes.admin.cmsTC}> */}
-                        <PiNotePencilDuotone className="h-[18px] w-[18px] cursor-pointer" />{' '}
+                        <PiNotePencilDuotone className="h-[30px] w-[30px] cursor-pointer" />{' '}
                         {/* </Link> */}
                       </div>
                     </td>
@@ -85,9 +85,9 @@ export default function TermsAndCondition() {
                         <Text> Terms & Conditions </Text>{' '}
                       </div>
                       <div className='flex'>
-                        <PiEyeFill className="mr-3 h-[18px] w-[18px] cursor-pointer" />
+                        <PiEyeFill className="mr-3 h-[30px] w-[30px] cursor-pointer" />
                         <Link href={routes.admin.cmsTC}>
-                        <PiNotePencilDuotone className="h-[18px] w-[18px] cursor-pointer" />{' '}
+                        <PiNotePencilDuotone className="h-[30px] w-[30px] cursor-pointer" />{' '}
                         </Link>
                       </div>
                     </td>
@@ -98,9 +98,9 @@ export default function TermsAndCondition() {
                         <Text> Privacy policy </Text>{' '}
                       </div>
                       <div className='flex'>
-                        <PiEyeFill className="mr-3 h-[18px] w-[18px] cursor-pointer" />
+                        <PiEyeFill className="mr-3 h-[30px] w-[30px] cursor-pointer" />
                         {/* <Link href={routes.admin.cmsTC}> */}
-                        <PiNotePencilDuotone className="h-[18px] w-[18px] cursor-pointer" />{' '}
+                        <PiNotePencilDuotone className="h-[30px] w-[30px] cursor-pointer" />{' '}
                         {/* </Link> */}
                       </div>
                     </td>

@@ -1,11 +1,45 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { PostSignin } from "../../../../api/user/auth/authApis";
+import { GetUserProfileAPI, PostChangePassword, PostSignin, UpdateUserProfileAPI } from "../../../../api/user/auth/authApis";
 import { toast } from 'react-hot-toast';
 
 type UserData = {
   email: string;
   password: string;
   rememberMe?: boolean;
+}
+type GetUserProfileData = {
+  _id: string,
+    first_name: string,
+    last_name: string,
+    email: string,
+    is_google_signup: false,
+    is_facebook_signup: false,
+    remember_me: false,
+    is_deleted: false,
+    role: string,
+    reference_id: {
+      _id: string,
+      createdAt: Date,
+      updatedAt: Date,
+      company_name: string
+    },
+    status: string,
+    createdAt: Date,
+    updatedAt: Date,
+};
+type UpdateUserProfileData = {
+  first_name: string,
+  last_name: string,
+  contact_number: string,
+  address: string,
+  city: string,
+  company_name: string,
+  company_website: string,
+  country: string,
+  industry: string,
+  no_of_people: string,
+  pin_code: Number,
+  state: string
 }
 
 interface PostSigninResponse {
@@ -16,8 +50,11 @@ interface PostSigninResponse {
 interface SigninState {
   loading: boolean;
   user: any;
+  userProfile:any;
   role: string;
   loginUserStatus: string;
+  getUserProfileStatus:string;
+  updateUserProfileStatus:string;
   loginUserError: string;
   logoutUserStatus: string;
 }
@@ -26,10 +63,13 @@ interface SigninState {
 const initialState: SigninState = {
   loading: false,
   user: {},
+  userProfile:{},
   role: '',
   loginUserStatus: '',
   loginUserError: '',
   logoutUserStatus: '',
+  getUserProfileStatus:'',
+  updateUserProfileStatus:''
 };
 
 export const signInUser: any = createAsyncThunk(
@@ -37,6 +77,28 @@ export const signInUser: any = createAsyncThunk(
   async (data: UserData) => {
     try {
       const response: any = await PostSignin(data);
+      return response;
+    } catch (error: any) {
+      return { status: false, message: error.response.data.message } as PostSigninResponse;
+    }
+  }
+);
+export const getUserProfile: any = createAsyncThunk(
+  "signin/getUserProfile",
+  async (data: GetUserProfileData) => {
+    try {
+      const response: any = await GetUserProfileAPI(data);
+      return response;
+    } catch (error: any) {
+      return { status: false, message: error.response.data.message } as PostSigninResponse;
+    }
+  }
+);
+export const updateUserProfile: any = createAsyncThunk(
+  "signin/updateUserProfile",
+  async (data: UpdateUserProfileData) => {
+    try {
+      const response: any = await UpdateUserProfileAPI(data);
       return response;
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as PostSigninResponse;
@@ -104,7 +166,73 @@ export const signinSlice: any = createSlice({
           ...state,
           logoutUserStatus: 'success'
         }
+      });
+      builder
+      .addCase(getUserProfile.pending, (state) => {
+        return{
+            ...state,
+            loading: true,
+            getUserProfileStatus: 'pending'
+        }
       })
+      .addCase(getUserProfile.fulfilled, (state,action) => {
+        // if(action.payload.success == true){
+        //   toast.success(action.payload.message)
+        // } else {
+        //   toast.error(action.payload.message)
+        // }
+        return{
+          ...state,
+          userProfile: action?.payload?.data,
+          loading: false,
+          getUserProfileStatus: 'success'
+        }
+      })
+      .addCase(getUserProfile.rejected, (state, action) => {
+        if(action.payload.success == true){
+          toast.success(action.payload.message)
+        } else {
+          toast.error(action.payload.message)
+        }
+        return{
+          ...state,
+          loading: false,
+          getUserProfileStatus: 'error'
+        }
+      });
+      builder
+      .addCase(updateUserProfile.pending, (state) => {
+        return{
+            ...state,
+            loading: true,
+            updateUserProfileStatus: 'pending'
+        }
+      })
+      .addCase(updateUserProfile.fulfilled, (state,action) => {
+        if(action.payload.success == true){
+          toast.success(action.payload.message)
+        } else {
+          toast.error(action.payload.message)
+        }
+        return{
+          ...state,
+          userProfile: action?.payload?.data,
+          loading: false,
+          updateUserProfileStatus: 'success'
+        }
+      })
+      .addCase(updateUserProfile.rejected, (state, action) => {
+        if(action.payload.success == true){
+          toast.success(action.payload.message)
+        } else {
+          toast.error(action.payload.message)
+        }
+        return{
+          ...state,
+          loading: false,
+          updateUserProfileStatus: 'error'
+        }
+      });
   },
 });
 

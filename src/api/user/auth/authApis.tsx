@@ -41,6 +41,41 @@ type ChangePasswordData = {
   old_password: string;
   new_password: string;
 };
+type GetUserProfileData = {
+  _id: string,
+    first_name: string,
+    last_name: string,
+    email: string,
+    is_google_signup: false,
+    is_facebook_signup: false,
+    remember_me: false,
+    is_deleted: false,
+    role: string,
+    reference_id: {
+      _id: string,
+      createdAt: Date,
+      updatedAt: Date,
+      company_name: string
+    },
+    status: string,
+    createdAt: Date,
+    updatedAt: Date,
+};
+
+type UpdateUserProfileData = {
+    first_name: string,
+    last_name: string,
+    contact_number: string,
+    address: string,
+    city: string,
+    company_name: string,
+    company_website: string,
+    country: string,
+    industry: string,
+    no_of_people: string,
+    pin_code: Number,
+    state: string
+}
 
 // type ApiResponse = {
 //   success: boolean;
@@ -118,6 +153,26 @@ export const PostChangePassword = async (data: ChangePasswordData) => {
   const response = await AxiosDefault({
     url: "/api/v1/auth/change-password",
     method: "POST",
+    data: data,
+    contentType: "application/json", 
+  });
+  const responseData = response.data;
+  return responseData;
+};
+export const GetUserProfileAPI = async (data: GetUserProfileData) => {
+  const response = await AxiosDefault({
+    url: "/api/v1/auth/profile",
+    method: "GET",
+    data: data,
+    contentType: "application/json", 
+  });
+  const responseData = response.data;
+  return responseData;
+};
+export const UpdateUserProfileAPI = async (data: UpdateUserProfileData) => {
+  const response = await AxiosDefault({
+    url: "/api/v1/auth/update-profile",
+    method: "PATCH",
     data: data,
     contentType: "application/json", 
   });
