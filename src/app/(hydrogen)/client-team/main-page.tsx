@@ -6,7 +6,7 @@ import { useState } from 'react';
 import CustomTable from '@/components/common-tables/table';
 import { getColumns } from '@/app/shared/(user)/agency/client-team/team-list/columns';
 import { deleteTeamMember, getAllTeamMember } from '@/redux/slices/user/team-member/teamSlice';
-import ClientSelectionForm from '@/app/shared/(user)/forms/client-selection-form';
+// import ClientSelectionForm from '@/app/shared/(user)/forms/client-selection-form';
 
 const pageHeader = {
   title: 'Client Team',
@@ -52,7 +52,7 @@ export default function TeamDataTablePage() {
     <>
       <PageHeader title={pageHeader.title}>
         <div className="mt-4 flex items-center gap-3 @lg:mt-0">
-          <ClientSelectionForm />
+          {/* <ClientSelectionForm /> */}
         </div>
       </PageHeader>
       <CustomTable
