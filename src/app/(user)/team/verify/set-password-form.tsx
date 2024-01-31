@@ -17,6 +17,8 @@ import { verifyTeamMember } from '@/redux/slices/user/team-member/teamSlice';
 
 
 export default function SetPasswordForm(props: any) {
+  const { redirect } = props;
+
   const isMedium = useMedia('(max-width: 1200px)', false);
   const dispatch = useDispatch();
   const router = useRouter();
@@ -24,9 +26,7 @@ export default function SetPasswordForm(props: any) {
   const searchParams = useSearchParams();
   const email = searchParams.get("email");
   const agency = searchParams.get("agency");
-  let redirectt = searchParams.get("redirect");
   const token = searchParams.get("token");
-  let redirect = (redirectt === 'true');
   
   const initialValues = {
     firstName: '',
