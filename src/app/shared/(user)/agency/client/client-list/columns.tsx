@@ -208,16 +208,16 @@ export const getColumns = ({
           title="Created"
           sortable
           ascending={
-            sortConfig?.direction === 'asc' && sortConfig?.key === 'createdAt'
+            sortConfig?.direction === 'asc' && sortConfig?.key === 'agency.createdAt'
           }
         />
       ),
-      onHeaderCell: () => onHeaderCellClick('createdAt'),
-      dataIndex: 'createdAt',
-      key: 'createdAt',
+      onHeaderCell: () => onHeaderCellClick('agency.createdAt'),
+      dataIndex: 'agency',
+      key: 'agency',
       width: 200,
-      render: (value: string) => {
-        const date = moment(value).fromNow();
+      render: (value: Record<string, any>) => {
+        const date = moment(value?.createdAt,"YYYY-MM-DDTHH:mm:ss.sssZ").fromNow();
         return <Text className="font-medium text-gray-700">{date}</Text>
       },
     },
