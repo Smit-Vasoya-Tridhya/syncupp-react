@@ -15,6 +15,7 @@ export const routes = {
   client_team: '/client-team',
   invoice:'/invoice',
   invoiceForm:'/invoice/create-edit',
+  invoiceView:'/invoice/view-invoice',
   viewTeam:'/team/view-team',
   task: '/task',
 

@@ -60,7 +60,7 @@ export default function ViewProfileForm(props: any) {
       }
     });
   };
-  if (!viewProfile?.data && title === 'Edit Profile') {
+  if (viewProfile?.data === 'pending') {
     return (
       <div className="flex items-center justify-center p-10">
         <Spinner size="xl" tag="div" className="ms-3" />
@@ -91,11 +91,7 @@ export default function ViewProfileForm(props: any) {
                   <ActionIcon
                     size="sm"
                     variant="text"
-                    onClick={() => {
-                      setIsOpenEditMode(!isOpenEditMode);
-                      // Change the title to "Edit Profile" when entering edit mode
-                      setTitle('Edit Profile');
-                    }}
+                    onClick={() => {setIsOpenEditMode(!isOpenEditMode);}}
                     className="p-0 text-gray-500 hover:!text-gray-900"
                   >
                     <PiNotePencilDuotone className="h-[30px] w-[30px]" />

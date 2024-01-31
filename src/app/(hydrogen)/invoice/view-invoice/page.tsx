@@ -1,6 +1,5 @@
-
 import { metaObject } from '@/config/site.config';
-import InvoiceDataTablePage from './main-page';
+import InvoiceDetails from './invoice-details';
 
 export const metadata = {
   ...metaObject('Invoice'),
@@ -9,7 +8,7 @@ export const metadata = {
 export default function Page() {
   return (
     <>
-    <InvoiceDataTablePage/>
+    <InvoiceDetails/>
     </>
   );
 }
