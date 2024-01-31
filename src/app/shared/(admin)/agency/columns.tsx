@@ -75,7 +75,7 @@ export const GetColumns = ({
         {
             title: (
                 <HeaderCell
-                    title="Firs Name"
+                    title="First Name"
                     sortable
                     ascending={
                         sortConfig?.direction === 'asc' && sortConfig?.key === 'first_name'

@@ -11,8 +11,10 @@ import { signUpUser } from "@/redux/slices/user/auth/signupSlice";
 import { useRouter } from "next/navigation";
 import Spinner from "@/components/ui/spinner";
 import { routes } from "@/config/routes";
+import useMedia from "react-use/lib/useMedia";
 
 export default function CompanyForm(props: any) {
+    const isMedium = useMedia('(max-width: 1200px)', false);
     const { signUpFormData, setNextBtn, setTitle, setFdata, fdata } = props;
     const signUp = useSelector((state: any) => state?.root?.signUp)
     const initialValues = {
@@ -69,6 +71,7 @@ export default function CompanyForm(props: any) {
                         type="submit"
                         color="info"
                         rounded="pill"
+                        size={isMedium ? 'lg' : 'xl'}
                         disabled={signUp?.loading && !loader}
                     >
                         Submit
@@ -81,6 +84,7 @@ export default function CompanyForm(props: any) {
                 type="submit"
                 color="info"
                 rounded="pill"
+                size={isMedium ? 'lg' : 'xl'}
                 onClick={handleClick}
                 disabled={loader}
             >
@@ -92,6 +96,7 @@ export default function CompanyForm(props: any) {
                 type="submit"
                 color="info"
                 rounded="pill"
+                size={isMedium ? 'lg' : 'xl'}
                 onClick={handlePrevClick}
             >
                 Previous

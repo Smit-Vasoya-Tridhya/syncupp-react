@@ -14,6 +14,7 @@ type TeamData = {
   items_per_page?: number;
   search?: string;
   agencyId?: string;
+  client_id?: string;
 }
 
 type DeleteTeamMemberData = {
@@ -92,7 +93,7 @@ export const verifyTeamMember: any = createAsyncThunk(
       const response: any = await PostTeamMemberVerifyApi(data);
       return response;
     } catch (error: any) {
-      return { status: false, message: error.response.data.message } as TeamMemberDataResponse;
+      return { status: false, message: error.response.data.message, code: error.response.data.status } as any;
     }
   }
 );

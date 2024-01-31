@@ -208,18 +208,22 @@ export const getColumns = ({
           title="Created"
           sortable
           ascending={
-            sortConfig?.direction === 'asc' && sortConfig?.key === 'agency.createdAt'
+            sortConfig?.direction === 'asc' && sortConfig?.key === 'createdAt'
           }
         />
       ),
-      onHeaderCell: () => onHeaderCellClick('agency.createdAt'),
-      dataIndex: 'agency',
-      key: 'agency',
+      onHeaderCell: () => onHeaderCellClick('createdAt'),
+      dataIndex: 'createdAt',
+      key: 'createdAt',
       width: 200,
-      render: (value: Record<string, any>) => {
-        const date = moment(value?.createdAt,"YYYY-MM-DDTHH:mm:ss.sssZ").fromNow();
+      render: (value: string) => {
+        const date = moment(value).fromNow();
         return <Text className="font-medium text-gray-700">{date}</Text>
-      },
+      }
+      // render: (value: Record<string, any>) => {
+      //   const date = moment(value?.createdAt,"YYYY-MM-DDTHH:mm:ss.sssZ").fromNow();
+      //   return <Text className="font-medium text-gray-700">{date}</Text>
+      // },
     },
     {
       // Need to avoid this issue -> <td> elements in a large <table> do not have table headers.

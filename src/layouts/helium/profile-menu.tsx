@@ -9,12 +9,11 @@ import { getUserProfile, logoutUser, signOutUser } from '@/redux/slices/user/aut
 import cn from '@/utils/class-names';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import "./style.css"
 import ChangePasswordForm from '@/app/shared/(user)/forms/change-password-form';
 import { routes } from '@/config/routes';
 import Link from 'next/link';
-import { useSelector } from 'react-redux';
 import Spinner from '@/components/ui/spinner';
 
 function DropdownMenu() {
