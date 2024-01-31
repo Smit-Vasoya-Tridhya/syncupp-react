@@ -33,6 +33,7 @@ export const routes = {
     forgotPassword:'/admin/forgot-password',
     resetPassword:'/admin/reset-password',
     dashboard: '/admin/dashboard',
+    viewProfile: '/admin/profile',
     faq:'/admin/faq',
     cms:'/admin/cms',
     cmsTC:'/admin/cms/team-and-condition',

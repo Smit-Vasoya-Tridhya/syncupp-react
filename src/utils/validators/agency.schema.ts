@@ -27,7 +27,7 @@ address: z.string().optional(),
 city: z.string().optional(),
 country: z.string().optional(),
 state: z.string().optional(),
-pin_code: z.string().trim().nullable().refine(value => {
+pincode: z.string().trim().nullable().refine(value => {
     return !value || /^[0-9]{0,6}$/.test(value);
 }, {
     message: 'Pin code must be a numeric value with a maximum length of 6.',
