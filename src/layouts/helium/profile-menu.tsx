@@ -5,7 +5,7 @@ import { Avatar } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Popover } from '@/components/ui/popover';
 import { Title, Text } from '@/components/ui/text';
-import { logoutUser, signOutUser } from '@/redux/slices/user/auth/signinSlice';
+import { getUserProfile, logoutUser, signOutUser } from '@/redux/slices/user/auth/signinSlice';
 import cn from '@/utils/class-names';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -15,12 +15,16 @@ import ChangePasswordForm from '@/app/shared/(user)/forms/change-password-form';
 import { routes } from '@/config/routes';
 import Link from 'next/link';
 import { useSelector } from 'react-redux';
+import Spinner from '@/components/ui/spinner';
 
 function DropdownMenu() {
 
   const dispatch = useDispatch();
   const router = useRouter();
-  const { user } = useSelector((state: any) => state?.root?.signIn);
+  useEffect(()=>{
+    dispatch(getUserProfile())
+  },[dispatch])
+  const { userProfile , loading} = useSelector((state: any) => state?.root?.signIn);
 
   const handleClick = () => {
     dispatch(signOutUser()).then((result: any) => {
@@ -31,7 +35,13 @@ function DropdownMenu() {
       }
     })
   }
-
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center p-10">
+        <Spinner size="xl" tag="div" className="ms-3" />
+      </div>
+    );
+  } else {
   return (
     <div className="w-64 text-left rtl:text-right">
       <div className="flex items-center border-b border-gray-300 px-6 pb-5 pt-6">
@@ -42,13 +52,11 @@ function DropdownMenu() {
         />
         <div className="ms-3">
           <Title as="h6" className="break-all text-sm font-semibold">
-            {/* {`${data?.first_name} ${data?.last_name}`} */}
-            {`${user?.data?.user?.first_name} ${user?.data?.user?.last_name}`}
+            {`${userProfile?.first_name} ${userProfile?.last_name}`}
           </Title>
-          {/* <Text className="break-all text-sm text-gray-600">
-            {`${data?.email}`}
-          </Text> */}
-          <Text className="text-gray-600 text-sm break-all">{`${user?.data?.user?.email}`}</Text>
+          <Text className="break-all text-sm text-gray-600">
+            {`${userProfile?.email}`}
+          </Text>
         </div>
       </div>
       <div className="grid px-3.5 py-3.5 font-medium text-gray-700">
@@ -78,7 +86,7 @@ function DropdownMenu() {
     </div>
   );
 }
-
+}
 export default function ProfileMenu({
   buttonClassName,
   avatarClassName,
