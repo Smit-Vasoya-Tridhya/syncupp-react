@@ -1,12 +1,11 @@
 'use client';
 
 import ChangePasswordForm from '@/app/admin/(hydrogen)/change-password/change-password-form';
-import ViewProfileForm from '@/app/admin/(hydrogen)/profile/view-profile';
 import ModalButton from '@/app/shared/modal-button';
 import { Avatar } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Popover } from '@/components/ui/popover';
-import { Title } from '@/components/ui/text';
+import { Text, Title } from '@/components/ui/text';
 import { routes } from '@/config/routes';
 import { logoutUserAdmin } from '@/redux/slices/admin/auth/signin/signinSlice';
 import cn from '@/utils/class-names';
@@ -14,7 +13,9 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import "../helium/style.css"
-import { postViewProfile } from '@/redux/slices/admin/auth/viewprofile/viewProfileSlice';
+import { getViewProfiles } from '@/redux/slices/admin/auth/viewprofile/viewProfileSlice';
+import { useSelector } from 'react-redux';
+import Link from 'next/link';
 
 const menuItems = [
   {
@@ -42,52 +43,53 @@ function DropdownMenu() {
     dispatch(logoutUserAdmin(''));
     router.replace('/admin/signin');
   }
+  const { userData } = useSelector((state: any) => state?.root?.adminSignIn);
   const [data, setData] = useState<UserProfileDTO>({} as UserProfileDTO);
-  useEffect(() => {
-    dispatch(postViewProfile()).then((result: any) => {
-      if (postViewProfile.fulfilled.match(result)) {
-        if (result && result.payload.success === true ) {
-          setData(result.payload.data);
-        } 
-      }
-    })
-  }, [dispatch])
+
 
   return (
     <div className="w-64 text-left rtl:text-right">
       <div className="flex items-center border-b border-gray-300 px-6 pb-5 pt-6">
         <Avatar
           src="https://isomorphic-furyroad.s3.amazonaws.com/public/avatars-blur/avatar-11.webp"
-          name="Albert Flores"
+          name='Admin'
           color="invert"
         />
         <div className="ms-3">
           <Title as="h6" className="font-semibold">
-            Albert Flores
+          {`${data?.first_name} ${data?.last_name}`}
+          {/* {`${userData?.data?.user?.first_name} ${userData?.data?.user?.last_name}`} */}
           </Title>
-          {/* <Text className="text-gray-600">flores@doe.io</Text> */}
+          <Text className="text-gray-600">{`${data?.email}`}</Text>
+          {/* <Text className="text-gray-600">{`${userData?.data?.user?.email}`}</Text> */}
         </div>
       </div>
-      <ModalButton
+      <Link
+          className="mt-0 justify-start bg-white text-gray-900"
+          href={routes.admin.viewProfile}
+        >
+          <Button variant="text">View Profile</Button>
+        </Link>
+      {/* <ModalButton
           label="View Profile"
           view={<ViewProfileForm data={data} />}
           customSize="625px"
-          className="mt-0 justify-start mb-3 text-gray-900 bg-white "
-        />
+          className="mt-0 justify-start text-gray-900 bg-white "
+        /> */}
       <ModalButton
           label="Change Password"
           view={<ChangePasswordForm />}
           customSize="625px"
-          className="mt-0 justify-start mb-3 text-gray-900 bg-white "
+          className="mt-0 justify-start text-gray-900 bg-white "
 
         />
-      <div className="border-t border-gray-300 px-6 pb-6 pt-5">
+      <div className="border-t border-gray-300 px-6 py-4">
         <Button
           className="h-auto w-full justify-start p-0 font-medium text-gray-700 outline-none focus-within:text-gray-600 hover:text-gray-900 focus-visible:ring-0"
           variant="text"
           onClick={handleClick}
         >
-          Logout
+          Sign Out
         </Button>
       </div>
     </div>
@@ -125,7 +127,7 @@ export default function ProfileMenu({
       >
         <Avatar
           src="https://isomorphic-furyroad.s3.amazonaws.com/public/avatars-blur/avatar-11.webp"
-          name="John Doe"
+          name=""
           color="invert"
           className={cn('!h-9 w-9 sm:!h-10 sm:w-10', avatarClassName)}
         />

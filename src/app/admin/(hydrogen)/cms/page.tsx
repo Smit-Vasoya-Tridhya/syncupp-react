@@ -2,9 +2,9 @@ import { metaObject } from '@/config/site.config';
 import TermsAndCondition from './main-page';
 
 export const metadata = {
-  ...metaObject('Faq'),
+  ...metaObject('CMS'),
 };
-export default function Page() {
+export default function TermAndConditionPage() {
   return (
     <>
       <TermsAndCondition/>
