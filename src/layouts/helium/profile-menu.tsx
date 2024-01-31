@@ -26,9 +26,7 @@ function DropdownMenu() {
       if (signOutUser.fulfilled.match(result)) {
         // router.replace('/signin');
         window.location.href = routes?.signIn;
-        setTimeout(() => {
-          dispatch(logoutUser());
-        }, 3000)
+        dispatch(logoutUser());
       }
     })
   }
