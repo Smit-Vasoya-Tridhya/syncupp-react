@@ -137,7 +137,7 @@ export const postVerifyClient: any = createAsyncThunk(
       const response: any = await PostVerifyClientApi(data);
       return response;
     } catch (error: any) {
-      return { status: false, message: error.response.data.message } as PostAPIResponse;
+      return { status: false, message: error.response.data.message, code: error.response.data.status } as any;
     }
   }
 );
@@ -431,12 +431,13 @@ export const clientSlice = createSlice({
             getAllClientStatus: 'success'
           }
         } else {
+        const fullName = action?.payload?.response?.data[0]?.first_name + " " + action?.payload?.response?.data[0]?.last_name
           return {
             ...state,
             loading: false,
             clientList: action?.payload?.response?.data,
-            clientId: action?.payload?.response?.data,
-            clientName: action?.payload?.response?.data,
+            clientId: action?.payload?.response?.data[0]?.reference_id,
+            clientName: fullName,
           }
         }
       })

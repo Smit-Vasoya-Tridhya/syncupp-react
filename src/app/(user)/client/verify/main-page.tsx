@@ -28,6 +28,8 @@ function MainPage() {
               if (postVerifyClient.fulfilled.match(result)) {
                 if (result && result.payload.success === true) {
                   router.replace(routes.signIn);
+                } else if(result && result.payload.code === 422){
+                  router.replace(routes.signIn);
                 }
               }
             })

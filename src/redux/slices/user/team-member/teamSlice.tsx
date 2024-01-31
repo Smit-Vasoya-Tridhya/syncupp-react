@@ -14,6 +14,7 @@ type TeamData = {
   items_per_page?: number;
   search?: string;
   agencyId?: string;
+  client_id?: string;
 }
 
 type DeleteTeamMemberData = {
