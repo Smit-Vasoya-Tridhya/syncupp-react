@@ -22,6 +22,10 @@ type PostAddClientApiData = {
       last_name?: string;
       redirect: boolean;
   }
+
+  type PostClientRedirectApiData = {
+    email: string;
+}
   
 type PatchEditClientApiData = {
     clientId: string,
@@ -82,6 +86,17 @@ export const PostAddClientApi = async (data: PostAddClientApiData) => {
 export const PostVerifyClientApi = async (data: PostVerifyClientApiData) => {
   const response = await AxiosDefault({
     url: "/api/v1/client/verify-client",
+    method: "POST",
+    data: data,
+    contentType: "application/json", 
+  });
+  const responseData = response.data;
+  return responseData;
+};
+
+export const PostClientRedirectApi = async (data: PostClientRedirectApiData) => {
+  const response = await AxiosDefault({
+    url: "/api/v1/auth/set-password",
     method: "POST",
     data: data,
     contentType: "application/json", 

@@ -19,6 +19,7 @@ interface SigninState {
   role: string;
   loginUserStatus: string;
   loginUserError: string;
+  logoutUserStatus: string;
 }
 
 
@@ -28,6 +29,7 @@ const initialState: SigninState = {
   role: '',
   loginUserStatus: '',
   loginUserError: '',
+  logoutUserStatus: '',
 };
 
 export const signInUser: any = createAsyncThunk(
@@ -39,6 +41,14 @@ export const signInUser: any = createAsyncThunk(
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as PostSigninResponse;
     }
+  }
+);
+
+export const signOutUser: any = createAsyncThunk(
+  "signin/signOutUser",
+  () => {
+    localStorage.removeItem("token");
+    return true;
   }
 );
 
@@ -89,6 +99,12 @@ export const signinSlice: any = createSlice({
           loginUserStatus: 'error'
         }
       });
+      builder.addCase(signOutUser.fulfilled, (state) => {
+        return {
+          ...state,
+          logoutUserStatus: 'success'
+        }
+      })
   },
 });
 

@@ -2,6 +2,7 @@
 
 import SelectLoader from '@/components/loader/select-loader';
 import { Form } from '@/components/ui/form';
+import { getAllClient } from '@/redux/slices/user/client/clientSlice';
 import { getClientsList, setClientId, setClientName } from '@/redux/slices/user/team-member/teamSlice';
 import dynamic from 'next/dynamic';
 import { useEffect } from 'react';
@@ -23,7 +24,7 @@ export default function ClientSelectionForm() {
         (state: any) => state?.root?.teamMember
       );
     useEffect(() => {
-        dispatch(getClientsList())
+        dispatch(getAllClient({ pagination: false }))
     }, [dispatch]);
 
     // console.log("Clients list....", teamMemberData?.clients)

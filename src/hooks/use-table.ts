@@ -1,6 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
 import isString from 'lodash/isString';
-import { isArray } from 'lodash';
 import { useDebouncedValue } from './use-debounce';
 
 interface AnyObject {
@@ -26,7 +25,7 @@ export function useTable<T extends AnyObject>(
     direction: 'desc',
   });
   useEffect(() => {
-    if (initialData) {
+    if (initialData && initialData.length > 0) {
       setData(initialData);
     }
     if (currentPage) {

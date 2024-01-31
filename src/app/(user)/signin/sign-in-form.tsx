@@ -15,6 +15,7 @@ import { signInUser } from '@/redux/slices/user/auth/signinSlice';
 import { handleKeyDown } from '@/utils/common-functions';
 import { useRouter } from 'next/navigation';
 import Spinner from '@/components/ui/spinner';
+import useMedia from 'react-use/lib/useMedia';
 
 const initialValues: LoginSchema = {
   email: '',
@@ -23,6 +24,7 @@ const initialValues: LoginSchema = {
 };
 
 export default function SignInForm() {
+  const isMedium = useMedia('(max-width: 1200px)', false);
   const dispatch = useDispatch();
   const router = useRouter();
   const signIn = useSelector((state: any) => state?.root?.signIn)
@@ -45,7 +47,7 @@ export default function SignInForm() {
         onSubmit={onSubmit}
         // resetValues={reset}
         useFormProps={{
-          mode: 'onChange',
+          mode: 'onTouched',
           defaultValues: initialValues,
         }}
       >
@@ -58,19 +60,21 @@ export default function SignInForm() {
               placeholder="Enter your email"
               rounded="pill"
               color="info"
+              size={isMedium ? 'lg' : 'xl'}
               className="[&>label>span]:font-medium"
               {...register('email')}
-              error={errors.email?.message}
+              error={errors?.email?.message}
             />
             <Password
               onKeyDown={handleKeyDown}
               label="Password"
               placeholder="Enter your password"
               rounded="pill"
+              size={isMedium ? 'lg' : 'xl'}
               color="info"
               className="[&>label>span]:font-medium"
               {...register('password')}
-              error={errors.password?.message}
+              error={errors?.password?.message}
             />
             <div className="flex items-center justify-between pb-2">
               <Checkbox
@@ -81,37 +85,30 @@ export default function SignInForm() {
                 className="[&>label>span]:font-medium"
               />
               <Link
-                href={routes.forgotPassword}
+                href={routes?.forgotPassword}
                 className="h-auto p-0 text-sm font-semibold text-blue underline transition-colors hover:text-gray-900 hover:no-underline"
               >
                 Forgot Password?
               </Link>
             </div>
-            { signIn && signIn.loading ? (<Button
+            <Button
               className="w-full border-2 text-base font-bold"
               type="submit"
               color="info"
+              size={isMedium ? 'lg' : 'xl'}
               rounded="pill"
-              disabled
+              disabled={signIn?.loading}
             >
               Sign in
-              <Spinner size="sm" tag='div' className='ms-3' color='white' />
-            </Button>) : (<Button
-              className="w-full border-2  text-base font-bold"
-              type="submit"
-              color="info"
-              rounded="pill"
-            >
-              Sign in
-            </Button>)
-            }
+              { signIn && signIn?.loading && <Spinner size="sm" tag='div' className='ms-3' color='white' /> }
+            </Button>
           </div>
         )}
       </Form>
       <Text className="mt-5 text-center text-[15px] leading-loose text-gray-500 lg:text-start xl:mt-7 xl:text-base">
         Don’t have an account?{' '}
         <Link
-          href={routes.signUp}
+          href={routes?.signUp}
           className="font-semibold text-gray-700 transition-colors hover:text-blue"
         >
           Create Account

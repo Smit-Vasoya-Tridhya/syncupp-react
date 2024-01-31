@@ -7,8 +7,9 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import Spinner from '@/components/ui/spinner';
 import { verifyTeamMember } from '@/redux/slices/user/team-member/teamSlice';
+import WithAuthPublic from '@/utils/public-route-user';
 
-export default function MainPage() {
+function MainPage() {
 
     const dispatch = useDispatch();
     const router = useRouter();
@@ -18,6 +19,7 @@ export default function MainPage() {
     const token = searchParams.get("token");
     let redirectt = searchParams.get("redirect");
     let redirect = (redirectt === 'true');
+    
 
     useEffect(() => { redirect &&
         dispatch(verifyTeamMember({email: email, agency_id: agency, redirect: redirect, token: token })).then((result: any) => {
@@ -41,3 +43,5 @@ export default function MainPage() {
     </>
   );
 }
+
+export default WithAuthPublic(MainPage)

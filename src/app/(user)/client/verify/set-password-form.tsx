@@ -12,16 +12,17 @@ import { postVerifyClient } from '@/redux/slices/user/client/clientSlice';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { routes } from '@/config/routes';
 import Spinner from '@/components/ui/spinner';
+import useMedia from 'react-use/lib/useMedia';
 
 export default function SetPasswordForm(props: any) {
+  const { redirect } = props;
+  const isMedium = useMedia('(max-width: 1200px)', false);
   const dispatch = useDispatch();
   const router = useRouter();
   const clientSliceData = useSelector((state: any) => state?.root?.client);
   const searchParams = useSearchParams();
   const email = searchParams.get("email");
   const agency = searchParams.get("agency");
-  let redirectt = searchParams.get("redirect");
-  let redirect = (redirectt === 'true');
   
   const initialValues = {
     firstName: '',
@@ -55,6 +56,7 @@ export default function SetPasswordForm(props: any) {
           validationSchema={setPasswordSchema}
           onSubmit={onSubmit}
           useFormProps={{
+            mode: 'onTouched',
             defaultValues: initialValues,
           }}
         >
@@ -67,6 +69,7 @@ export default function SetPasswordForm(props: any) {
                   label="First Name"
                   placeholder="Enter first name"
                   rounded="pill"
+                  size={isMedium ? 'lg' : 'xl'}
                   color="info"
                   className="[&>label>span]:font-medium"
                   {...register('firstName')}
@@ -77,6 +80,7 @@ export default function SetPasswordForm(props: any) {
                   type="text"
                   label="Last Name"
                   placeholder="Enter last name"
+                  size={isMedium ? 'lg' : 'xl'}
                   rounded="pill"
                   color="info"
                   className="[&>label>span]:font-medium"
@@ -89,7 +93,8 @@ export default function SetPasswordForm(props: any) {
                   onKeyDown={handleKeyDown}
                   type="email"
                   label="Email ID"
-                  placeholder="Enter your email"
+                  placeholder="Enter your email"                  
+                  size={isMedium ? 'lg' : 'xl'}
                   rounded="pill"
                   color="info"
                   className="[&>label>span]:font-medium"
@@ -105,6 +110,7 @@ export default function SetPasswordForm(props: any) {
                   placeholder="Enter your password"
                   rounded="pill"
                   color="info"
+                  size={isMedium ? 'lg' : 'xl'}
                   className="[&>label>span]:font-medium"
                   {...register('password')}
                   error={errors.password?.message}
@@ -115,6 +121,7 @@ export default function SetPasswordForm(props: any) {
                   placeholder="Enter your password"
                   rounded="pill"
                   color="info"
+                  size={isMedium ? 'lg' : 'xl'}
                   className="[&>label>span]:font-medium"
                   {...register('confirmPassword')}
                   error={errors.confirmPassword?.message}
@@ -126,6 +133,7 @@ export default function SetPasswordForm(props: any) {
                   type="submit"
                   color="info"
                   rounded="pill"
+                  size={isMedium ? 'lg' : 'xl'}
                   disabled={clientSliceData?.loading}
                 >
                   Create Password

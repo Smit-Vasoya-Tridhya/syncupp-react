@@ -7,17 +7,19 @@ import { SubmitHandler } from 'react-hook-form';
 import { Form } from '@/components/ui/form';
 import { routes } from '@/config/routes';
 import Link from 'next/link';
-import {forgetPasswordSchema, ForgetPasswordSchema} from '@/utils/validators/forget-password.schema';
+import { forgetPasswordSchema, ForgetPasswordSchema } from '@/utils/validators/forget-password.schema';
 import { useDispatch, useSelector } from 'react-redux';
 import { forgotPasswordUser } from '@/redux/slices/user/auth/forgotPasswordSlice';
 import { handleKeyDown } from '@/utils/common-functions';
 import Spinner from '@/components/ui/spinner';
+import useMedia from 'react-use/lib/useMedia';
 
 const initialValues = {
   email: '',
 };
 
 export default function ForgetPasswordForm() {
+  const isMedium = useMedia('(max-width: 1200px)', false);
   const dispatch = useDispatch();
   const forgotPassword = useSelector((state: any) => state?.root?.forgotPassword)
 
@@ -32,6 +34,7 @@ export default function ForgetPasswordForm() {
         // resetValues={reset}
         onSubmit={onSubmit}
         useFormProps={{
+          mode: 'onTouched',
           defaultValues: initialValues,
         }}
       >
@@ -44,28 +47,22 @@ export default function ForgetPasswordForm() {
               placeholder="Enter your email"
               rounded="pill"
               color="info"
+              size={isMedium ? 'lg' : 'xl'}
               className="[&>label>span]:font-medium"
               {...register('email')}
               error={errors.email?.message as string}
             />
-            { forgotPassword.loading ? (<Button
+            <Button
               className="w-full border-2 text-base font-bold"
               type="submit"
               color="info"
+              size={isMedium ? 'lg' : 'xl'}
               rounded="pill"
-              disabled
+              disabled={forgotPassword?.loading}
             >
               Submit
-              <Spinner size="sm" tag='div' className='ms-3' color='white' />
-              </Button>) : (<Button
-                className="w-full border-2  text-base font-bold"
-                type="submit"
-                color="info"
-                rounded="pill"
-              >
-                Submit
-              </Button>)
-            }
+              {forgotPassword && forgotPassword?.loading && <Spinner size="sm" tag='div' className='ms-3' color='white' />}
+            </Button>
           </div>
         )}
       </Form>

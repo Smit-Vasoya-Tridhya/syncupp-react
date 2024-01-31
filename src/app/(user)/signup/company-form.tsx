@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { Button } from "rizzui";
 import CompanyDetailsForm from "./company-details";
-import {  useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { signUpUser } from "@/redux/slices/user/auth/signupSlice";
 import { useRouter } from "next/navigation";
@@ -13,7 +13,7 @@ import Spinner from "@/components/ui/spinner";
 import { routes } from "@/config/routes";
 
 export default function CompanyForm(props: any) {
-    const { signUpFormData, setNextBtn,  setTitle, setFdata, fdata } = props;
+    const { signUpFormData, setNextBtn, setTitle, setFdata, fdata } = props;
     const signUp = useSelector((state: any) => state?.root?.signUp)
     const initialValues = {
         companyName: fdata?.companyName ?? '',
@@ -30,22 +30,22 @@ export default function CompanyForm(props: any) {
     });
 
     const onSubmit: SubmitHandler<CompanyDetailsSchema> = (data) => {
-        dispatch(signUpUser({...signUpFormData, ...data})).then((result: any) => {
+        dispatch(signUpUser({ ...signUpFormData, ...data })).then((result: any) => {
             if (signUpUser.fulfilled.match(result)) {
-              if (result && result.payload.success === true ) {
-                router.replace(routes.signIn);
-              } 
+                if (result && result.payload.success === true) {
+                    router.replace(routes.signIn);
+                }
             }
-          })
+        })
     };
 
     const handleClick = () => {
-        dispatch(signUpUser({...signUpFormData})).then((result: any) => {
+        dispatch(signUpUser({ ...signUpFormData })).then((result: any) => {
             if (signUpUser.fulfilled.match(result)) {
-              if (result && result.payload.success === true ) {
-                router.replace(routes.signIn);
-              } 
-              setLoader(false)
+                if (result && result.payload.success === true) {
+                    router.replace(routes.signIn);
+                }
+                setLoader(false)
             }
         })
         setLoader(true);
@@ -56,61 +56,44 @@ export default function CompanyForm(props: any) {
         setTitle('Sign Up!');
     }
 
-    return(
+    return (
         <>
             <FormProvider {...methods}>
                 <form
                     onSubmit={methods.handleSubmit(onSubmit)}
-                    // className={cn('[&_label.block>span]:font-medium', className)}
+                // className={cn('[&_label.block>span]:font-medium', className)}
                 >
                     <CompanyDetailsForm fdata={fdata} setFdata={setFdata} />
-                     { signUp.loading  && !loader ? (<Button
+                    <Button
                         className="border-2 text-base font-bold float-right mt-8"
                         type="submit"
                         color="info"
                         rounded="pill"
-                        disabled
+                        disabled={signUp?.loading && !loader}
                     >
                         Submit
-                        <Spinner size="sm" tag='div' className='ms-3' color='white' />
-                    </Button>) : (<Button
-                        className="border-2  text-base font-bold float-right mt-8"
-                        type="submit"
-                        color="info"
-                        rounded="pill"
-                    >
-                        Submit
-                    </Button>)
-                }
+                        {signUp?.loading && !loader && <Spinner size="sm" tag='div' className='ms-3' color='white' />}
+                    </Button>
                 </form>
             </FormProvider>
-            {loader ? (<Button
+            <Button
                 className="border-2  text-base font-medium float-right me-3 mt-8"
                 type="submit"
                 color="info"
                 rounded="pill"
-                onClick={handleClick} 
-                disabled
-                >
+                onClick={handleClick}
+                disabled={loader}
+            >
                 Skip & Save
-                <Spinner size="sm" tag='div' className='ms-3' color='white' />
-            </Button>) : (<Button
-                className="border-2  text-base font-medium float-right me-3 mt-8"
-                type="submit"
-                color="info"
-                rounded="pill"
-                onClick={handleClick} 
-                >
-                Skip & Save
-            </Button>)
-            }
+                {loader && <Spinner size="sm" tag='div' className='ms-3' color='white' />}
+            </Button>
             <Button
                 className="border-2  text-base font-medium float-left me-3 mt-8"
                 type="submit"
                 color="info"
                 rounded="pill"
-                onClick={handlePrevClick} 
-                >
+                onClick={handlePrevClick}
+            >
                 Previous
             </Button>
         </>

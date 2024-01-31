@@ -1,4 +1,4 @@
-import { DeleteClientApi, GetAllCityApi, GetAllClientApi, GetAllCountryApi, GetAllStateApi, GetClientAgenciesApi, GetClientByIdApi, PatchEditClientApi, PostAddClientApi, PostVerifyClientApi } from "@/api/user/client/clientApis";
+import { DeleteClientApi, GetAllCityApi, GetAllClientApi, GetAllCountryApi, GetAllStateApi, GetClientAgenciesApi, GetClientByIdApi, PatchEditClientApi, PostAddClientApi, PostClientRedirectApi, PostVerifyClientApi } from "@/api/user/client/clientApis";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { toast } from 'react-hot-toast';
 
@@ -40,6 +40,10 @@ type VerifyClientData = {
   redirect: boolean;
 }
 
+type RedirectClientData = {
+  email: string;
+}
+
 type GetAllClientData = {
   page?: number;
   items_per_page?: number;
@@ -71,13 +75,18 @@ interface ClientInitialState {
   data: any;
   client: any;
   countries: any;
+  clientList: any;
   states: any;
   cities: any;
   agencies: any;
+  redirect: any;
   agencyId: string;
   agencyName: string;
+  clientId: string;
+  clientName: string;
   addClientStatus: string;
   verifyClientStatus: string;
+  clientRedirectStatus: string;
   getAllClientStatus: string;
   getClientStatus: string;
   editClientStatus: string;
@@ -89,14 +98,19 @@ const initialState: ClientInitialState = {
   loading: false,
   data: '',
   client: '',
+  clientList: '',
   countries: '',
   states: '',
   cities: '',
+  redirect: '',
   agencies: '',
   agencyId: '',
   agencyName: '',
+  clientId: '',
+  clientName: '',
   addClientStatus: '',
   verifyClientStatus: '',
+  clientRedirectStatus: '',
   getAllClientStatus: '',
   getClientStatus: '',
   editClientStatus: '',
@@ -128,6 +142,18 @@ export const postVerifyClient: any = createAsyncThunk(
   }
 );
 
+export const postClientRedirect: any = createAsyncThunk(
+  "client/postClientRedirect",
+  async (data: RedirectClientData) => {
+    try {
+      const response: any = await PostClientRedirectApi(data);
+      return response;
+    } catch (error: any) {
+      return { status: false, message: error.response.data.message } as PostAPIResponse;
+    }
+  }
+);
+
 export const patchEditClient: any = createAsyncThunk(
   "client/patchEditClient",
   async (data: EditClientData) => {
@@ -145,7 +171,7 @@ export const getAllClient: any = createAsyncThunk(
   async (data: GetAllClientData) => {
     try {
       const response: any = await GetAllClientApi(data);
-      return response;
+      return { response: response, pagination: data?.pagination};
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as PostAPIResponse;
     }
@@ -253,6 +279,18 @@ export const clientSlice = createSlice({
         ...state,
         agencyName: action.payload
       }
+    },
+    setClientId(state, action) {
+      return {
+        ...state,
+        clientId: action.payload
+      }
+    },
+    setClientName(state, action) {
+      return {
+        ...state,
+        clientName: action.payload
+      }
     }
   },
   extraReducers: (builder) => {
@@ -298,7 +336,6 @@ export const clientSlice = createSlice({
           toast.error(action.payload.message)
         } else {
           toast.success(action.payload.message)
-          localStorage.clear();
         }
         return {
           ...state,
@@ -314,6 +351,30 @@ export const clientSlice = createSlice({
           verifyClientStatus: 'error'
         }
       });
+       // new cases for client redirect
+    builder
+    .addCase(postClientRedirect.pending, (state) => {
+      return {
+        ...state,
+        loading: true,
+        clientRedirectStatus: 'pending'
+      }
+    })
+    .addCase(postClientRedirect.fulfilled, (state, action) => {
+      return {
+        ...state,
+        redirect: action?.payload?.data?.password_required,
+        loading: false,
+        clientRedirectStatus: 'success'
+      }
+    })
+    .addCase(postClientRedirect.rejected, (state) => {
+      return {
+        ...state,
+        loading: false,
+        clientRedirectStatus: 'error'
+      }
+    });
     // new cases for Edit client
     builder
       .addCase(patchEditClient.pending, (state) => {
@@ -354,14 +415,29 @@ export const clientSlice = createSlice({
         }
       })
       .addCase(getAllClient.fulfilled, (state, action) => {
-        if (action.payload.status == false) {
+        console.log("client response in reducer", action.payload)
+        if (action?.payload?.status == false) {
           toast.error(action.payload.message)
+          return {
+            ...state,
+            loading: false
+          }
         }
-        return {
-          ...state,
-          data: action?.payload?.data,
-          loading: false,
-          getAllClientStatus: 'success'
+        else if(action?.payload?.pagination) {
+          return {
+            ...state,
+            data: action?.payload?.response?.data,
+            loading: false,
+            getAllClientStatus: 'success'
+          }
+        } else {
+          return {
+            ...state,
+            loading: false,
+            clientList: action?.payload?.response?.data,
+            clientId: action?.payload?.response?.data,
+            clientName: action?.payload?.response?.data,
+          }
         }
       })
       .addCase(getAllClient.rejected, (state) => {
@@ -473,5 +549,5 @@ export const clientSlice = createSlice({
   },
 });
 
-export const { RemoveRegionalData, RemoveClientData, setAgencyId, setAgencyName } = clientSlice.actions;
+export const { RemoveRegionalData, RemoveClientData, setAgencyId, setAgencyName, setClientId, setClientName } = clientSlice.actions;
 export default clientSlice.reducer;

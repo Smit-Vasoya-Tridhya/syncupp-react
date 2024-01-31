@@ -191,13 +191,13 @@ export const getColumns = ({
       
         <CustomModalButton 
           icon={<PencilIcon className="h-4 w-4" />}
-          view={<AddTeamMemberForm title="Edit Team Member" row={row}/>}
+          view={<AddTeamMemberForm title="Edit Team member" row={row}/>}
           customSize="625px"
-          title='Edit Team Member'
+          title='Edit Team member'
         />
         <Tooltip
           size="sm"
-          content={() => 'View Team Member'}
+          content={() => 'View Team member'}
           placement="top"
           color="invert"
         >
@@ -208,7 +208,7 @@ export const getColumns = ({
           </Link>
         </Tooltip>
         <DeletePopover
-          title={`Delete the product`}
+          title={`Delete the Team member`}
           description={`Are you sure you want to delete?`}
           onDelete={() => onDeleteItem(row._id, currentPage, pageSize, data?.length <= 1 ? true : false, sortConfig, searchTerm)}
         />

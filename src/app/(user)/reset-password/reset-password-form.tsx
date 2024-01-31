@@ -11,6 +11,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { handleKeyDown } from '@/utils/common-functions';
 import Spinner from '@/components/ui/spinner';
 import { routes } from '@/config/routes';
+import useMedia from 'react-use/lib/useMedia';
 
 const initialValues: ResetPasswordSchema = {
   password: '',
@@ -18,6 +19,7 @@ const initialValues: ResetPasswordSchema = {
 };
 
 export default function ResetPasswordForm() {
+  const isMedium = useMedia('(max-width: 1200px)', false);
   const dispatch = useDispatch();
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
@@ -43,7 +45,7 @@ export default function ResetPasswordForm() {
         onSubmit={onSubmit}
         // resetValues={reset}
         useFormProps={{
-          mode: 'onChange',
+          mode: 'onTouched',
           defaultValues: initialValues,
         }}
       >
@@ -55,6 +57,7 @@ export default function ResetPasswordForm() {
                 placeholder="Enter your password"
                 rounded="pill"
                 color="info"
+                size={isMedium ? 'lg' : 'xl'}
                 className="[&>label>span]:font-medium"
                 {...register('password')}
                 error={errors.password?.message}
@@ -64,29 +67,22 @@ export default function ResetPasswordForm() {
                 label="Confirm New Password"
                 placeholder="Enter your password"
                 rounded="pill"
+                size={isMedium ? 'lg' : 'xl'}
                 color="info"
                 className="[&>label>span]:font-medium"
                 {...register('confirmPassword')}
                 error={errors.confirmPassword?.message}
             />
-            { resetPassword.loading ? (<Button
+            <Button
               className="w-full border-2 text-base font-bold"
               type="submit"
               color="info"
               rounded="pill"
-              disabled
+              disabled={resetPassword?.loading}
             >
               Reset Password
-              <Spinner size="sm" tag='div' className='ms-3' color='white' />
-              </Button>) : (<Button
-                className="w-full border-2  text-base font-bold"
-                type="submit"
-                color="info"
-                rounded="pill"
-              >
-                Reset Password
-              </Button>)
-            }
+              {resetPassword?.loading && <Spinner size="sm" tag='div' className='ms-3' color='white' />}
+              </Button>
           </div>
         )}
       </Form>

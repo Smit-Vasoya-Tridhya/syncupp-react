@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic';
 import { Input } from '@/components/ui/input';
 import { Controller, useFormContext } from 'react-hook-form';
 import { handleKeyDown } from '@/utils/common-functions';
+import useMedia from 'react-use/lib/useMedia';
 
 const Select = dynamic(() => import('@/components/ui/select'), {
   ssr: false,
@@ -23,6 +24,7 @@ const industryOptions = [
 ]
 
 export default function CompanyDetailsForm(props: any) {
+  const isMedium = useMedia('(max-width: 1200px)', false);
   const { fdata, setFdata } = props;
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFdata({
@@ -58,6 +60,7 @@ export default function CompanyDetailsForm(props: any) {
             label="Company Name"
             placeholder="Enter company name"
             rounded="pill"
+            size={isMedium ? 'lg' : 'xl'}
             color="info"
             className="[&>label>span]:font-medium"
             {...register('companyName', { onChange: (e: any)=> handleChange(e)})}
@@ -69,6 +72,7 @@ export default function CompanyDetailsForm(props: any) {
             label="Company Website"
             placeholder="Enter website url"
             rounded="pill"
+            size={isMedium ? 'lg' : 'xl'}
             color="info"
             className="[&>label>span]:font-medium"
             {...register('companyWebsite', { onChange: (e: any)=> handleChange(e)})}
@@ -90,6 +94,7 @@ export default function CompanyDetailsForm(props: any) {
                 label="How many people"
                 rounded="pill"
                 color="info"
+                size={isMedium ? 'lg' : 'xl'}
                 getOptionValue={(option) => option.value}
                 dropdownClassName="p-1 border w-12 border-gray-100 shadow-lg"
                 className="font-medium"
@@ -109,6 +114,7 @@ export default function CompanyDetailsForm(props: any) {
                 }}
                 value={value}
                 label="Industry"
+                size={isMedium ? 'lg' : 'xl'}
                 rounded="pill"
                 color="info"
                 getOptionValue={(option) => option.value}

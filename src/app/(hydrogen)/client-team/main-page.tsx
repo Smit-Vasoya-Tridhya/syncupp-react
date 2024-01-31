@@ -17,6 +17,10 @@ export default function TeamDataTablePage() {
   const [pageSize, setPageSize] = useState(5);
   const teamMemberData = useSelector((state: any) => state?.root?.teamMember);
   const clientSliceData = useSelector((state: any) => state?.root?.client);
+  
+  // console.log("client data.....", clientSliceData?.data)
+  // console.log("client list data.....", clientSliceData?.clientList)
+
   const handleChangePage = async (paginationParams: any) => {
     let { page, items_per_page, sort_field, sort_order, search } = paginationParams;
     const response = await dispatch(getAllTeamMember({ page, items_per_page, sort_field, sort_order, search, agencyId: clientSliceData?.agencyId }));

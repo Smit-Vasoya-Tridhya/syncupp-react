@@ -130,15 +130,3 @@ export const GetAllTeamMemberApi= async (data: GetAllTeamMemberApiData) => {
     const responseData = response.data;
     return responseData;
   };
-
-   // get client list api
-   export const GetClientsListApi = async () => {
-    const response = await AxiosDefault({
-      url: `/api/v1/team-member/details`,
-      method: "GET",
-      // data: data,
-      contentType: "application/json", 
-    });
-    const responseData = response.data;
-    return responseData;
-  };

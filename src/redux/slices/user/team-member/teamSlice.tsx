@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { toast } from 'react-hot-toast';
-import { DeleteTeamMemberApi, GetAllTeamMemberApi, GetClientsListApi, GetTeamMemberProfileApi, PostAddTeamMemberApi, PostTeamMemberVerifyApi, PutEditTeamMemberApi } from "@/api/user/team-member/teamApis";
+import { DeleteTeamMemberApi, GetAllTeamMemberApi, GetTeamMemberProfileApi, PostAddTeamMemberApi, PostTeamMemberVerifyApi, PutEditTeamMemberApi } from "@/api/user/team-member/teamApis";
 
 type TeamData = {
   _id:string;
@@ -55,7 +55,6 @@ const initialState = {
   user: {},
   data:[],
   teamMember: '',
-  clients: '',
   clientId: '',
   clientName: '',
   getAllTeamMemberStatus: '',
@@ -168,17 +167,6 @@ export const deleteTeamMember: any = createAsyncThunk(
   }
 );
 
-export const getClientsList: any = createAsyncThunk(
-  "teamMember/getClientsList",
-  async () => {
-    try {
-      const response: any = await GetClientsListApi();
-      return response;
-    } catch (error: any) {
-      return { status: false, message: error.response.data.message } as TeamMemberDataResponse;
-    }
-  }
-);
 
 export const teamSlice = createSlice({
   name: "teamMember",
@@ -191,19 +179,6 @@ export const teamSlice = createSlice({
         teamMember: ''
       };
     },
-    setClientId(state, action) {
-      return {
-        ...state,
-        clientId: action.payload
-      }
-    },
-    setClientName(state, action) {
-      return {
-        ...state,
-        clientName: action.payload
-      }
-    }
-
   },
   extraReducers: (builder) => {
       builder
@@ -380,18 +355,8 @@ export const teamSlice = createSlice({
           deleteTeamMemberStatus: 'error'
         }
       });
-      // new cases for get clients list
-    builder
-    .addCase(getClientsList.fulfilled, (state, action) => {
-      return {
-        ...state,
-        clients: action?.payload?.data,
-        clientId: action?.payload?.data?._id,
-        clientName: action?.payload?.data?.name
-      }
-    });
   },
 });
 
-export const { RemoveTeamMemberData, setClientName, setClientId } = teamSlice.actions;
+export const { RemoveTeamMemberData } = teamSlice.actions;
 export default teamSlice.reducer;

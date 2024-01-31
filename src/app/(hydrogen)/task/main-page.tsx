@@ -106,7 +106,7 @@ export default function TaskPage() {
       {!gridView ? (
         <div>
           <CustomTable
-            data={clientSliceData?.data?.client}
+            data={clientSliceData?.data?.clients}
             total={clientSliceData?.data?.page_count}
             loading={clientSliceData?.loading}
             pageSize={pageSize}

@@ -3,6 +3,7 @@
 import SelectLoader from '@/components/loader/select-loader';
 import { Form } from '@/components/ui/form';
 import { getClientAgencies, setAgencyId, setAgencyName } from '@/redux/slices/user/client/clientSlice';
+import { getAllTeamMember } from '@/redux/slices/user/team-member/teamSlice';
 import dynamic from 'next/dynamic';
 import { useEffect } from 'react';
 import { Controller } from 'react-hook-form';
@@ -16,7 +17,7 @@ const Select = dynamic(() => import('@/components/ui/select'), {
 export default function AgencySelectionForm() {
     const dispatch = useDispatch();
     const clientSliceData = useSelector((state: any) => state?.root?.client);
-    useEffect(() => {dispatch(getClientAgencies())}, [dispatch]);
+    useEffect(() => { dispatch(getClientAgencies()) }, [dispatch]);
     let initialValue: Record<string, string> = {
         agency_selection: clientSliceData?.agencyName ?? ''
     }
@@ -29,6 +30,12 @@ export default function AgencySelectionForm() {
     const handleAgencyChange = (selectedOption: Record<string, any>) => {
         dispatch(setAgencyName(selectedOption?.name))
         dispatch(setAgencyId(selectedOption?.value))
+        dispatch(getAllTeamMember({
+            sort_field: 'createdAt',
+            sort_order: 'desc',
+            agencyId: selectedOption?.value,
+        })
+        );
     }
 
     const onSubmit = (data: any) => {
@@ -67,8 +74,8 @@ export default function AgencySelectionForm() {
                             />
                         </div>
                     )}
-            </Form>
-          </>
+                </Form>
+            </>
         );
     }
 }

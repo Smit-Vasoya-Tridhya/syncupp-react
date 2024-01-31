@@ -52,8 +52,8 @@ export default function TeamDataTablePage() {
       <PageHeader title={pageHeader.title}>
         <div className="mt-4 flex items-center gap-3 @lg:mt-0">
           <ModalButton
-          label="Add Team Member"
-          view={<AddTeamMemberForm title="New Team Member" />}
+          label="Add Team member"
+          view={<AddTeamMemberForm title="New Team member" />}
           customSize="625px"
           className="mt-0 w-full hover:bg-gray-700 @lg:w-auto dark:bg-gray-100 dark:text-white dark:hover:bg-gray-200 dark:active:bg-gray-100"
           icon={<PiPlusBold className="me-1.5 h-[17px] w-[17px]" />}

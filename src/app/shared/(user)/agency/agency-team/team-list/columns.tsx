@@ -29,7 +29,7 @@ type Columns = {
 };
 
 function getStatusBadge(status: string) {
-  switch (status.toLowerCase()) {
+  switch (status?.toLowerCase()) {
     case 'confirm_pending':
       return (
         <div className="flex items-center">
@@ -50,6 +50,23 @@ function getStatusBadge(status: string) {
           <Badge renderAsDot className="bg-gray-400" />
           <Text className="ms-2 font-medium text-gray-600">{status}</Text>
         </div>
+      );
+  }
+}
+
+function getRoleName(role: string) {
+  switch (role?.toLowerCase()) {
+    case 'team_member':
+      return (
+        <Text className="font-medium text-gray-700">Team member</Text>
+      );
+    case 'admin':
+      return (
+        <Text className="font-medium text-gray-700">Admin</Text>
+      );
+    default:
+      return (
+        <Text className="font-medium text-gray-700">-</Text>
       );
   }
 }
@@ -156,9 +173,7 @@ export const getColumns = ({
     dataIndex: 'reference_id',
     key: 'reference_id',
     width: 200,
-    render: (_: any, row: any) => (
-      <Text className="font-medium text-gray-700">{row?.reference_id?.role?.name}</Text>
-    ),
+    render: (value: Record<string, any>) => getRoleName(value?.role?.name),
   },
   {
     title: (
@@ -174,9 +189,6 @@ export const getColumns = ({
     key: 'status',
     width: 200,
     render: (value: string) => getStatusBadge(value),
-    // render: (_: any, row: any) => (
-    //   <Text className="font-medium text-gray-700">{row.status}</Text>
-    // ),
   },
   {
     title: (
@@ -208,13 +220,13 @@ export const getColumns = ({
       
         <CustomModalButton 
           icon={<PencilIcon className="h-4 w-4" />}
-          view={<AddTeamMemberForm title="Edit Team Member" row={row}/>}
+          view={<AddTeamMemberForm title="Edit Team member" row={row}/>}
           customSize="625px"
-          title='Edit Team Member'
+          title='Edit Team member'
         />
         <Tooltip
           size="sm"
-          content={() => 'View Team Member'}
+          content={() => 'View Team member'}
           placement="top"
           color="invert"
         >
@@ -225,7 +237,7 @@ export const getColumns = ({
           </Link>
         </Tooltip>
         <DeletePopover
-          title={`Delete the product`}
+          title={`Delete the Team member`}
           description={`Are you sure you want to delete?`}
           onDelete={() => onDeleteItem(row._id, currentPage, pageSize, data?.length <= 1 ? true : false, sortConfig, searchTerm)}
         />

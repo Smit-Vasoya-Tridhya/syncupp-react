@@ -5,8 +5,7 @@ import { Avatar } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Popover } from '@/components/ui/popover';
 import { Title, Text } from '@/components/ui/text';
-import { logoutUser } from '@/redux/slices/user/auth/signinSlice';
-import { logoutUserSignUp } from '@/redux/slices/user/auth/signupSlice';
+import { logoutUser, signOutUser } from '@/redux/slices/user/auth/signinSlice';
 import cn from '@/utils/class-names';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -22,10 +21,13 @@ function DropdownMenu() {
   const router = useRouter();
 
   const handleClick = () => {
-    router.replace('/signin');
-    dispatch(logoutUser())
-    dispatch(logoutUserSignUp())
-    localStorage.clear();
+    dispatch(signOutUser()).then((result: any) => {
+      if (signOutUser.fulfilled.match(result)) {
+        // router.replace('/signin');
+        window.location.href = routes?.signIn;
+        dispatch(logoutUser());
+      }
+    })
   }
 
   return (

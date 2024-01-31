@@ -23,7 +23,7 @@ import SelectBox from '@/components/ui/select';
 // });
 
 const typeOption = [
-  { name: 'Team Member', value: 'team_member' },
+  { name: 'Team member', value: 'team_member' },
   { name: 'Admin', value: 'admin' },
 ]
 
@@ -58,14 +58,14 @@ export default function AddTeamMemberForm(props: any) {
       name: data?.name,
       email: data?.email,
       contact_number: data?.contact_number,
-      role: data?.member_role === 'team_member' ? 'Team Member' : 'Admin'
+      role: data?.member_role === 'team_member' ? 'Team member' : 'Admin'
     };
   } else if(signIn?.role === 'client') {
     defaultValuess = {
       name: '',
       email: '',
       contact_number: '',
-      role: 'Admin'
+      role: 'Team member'
     };
   }else {
     defaultValuess = {
@@ -78,12 +78,12 @@ export default function AddTeamMemberForm(props: any) {
 
   const onSubmit: SubmitHandler<TeamMemberSchema> = (dataa) => {
     let formData = {};
-    if (title === 'New Team Member') {
+    if (title === 'New Team member') {
       formData = {
         name: dataa?.name ?? '',
         email: dataa?.email ?? '',
         contact_number: dataa?.contact_number ?? '',
-        role: dataa?.role === 'Team Member' ? 'team_member' : 'admin',
+        role: dataa?.role === 'Team member' ? 'team_member' : 'admin',
         agencyId: clientSliceData?.agencyId
       }
     } else {
@@ -91,7 +91,7 @@ export default function AddTeamMemberForm(props: any) {
         name: dataa?.name ?? '',
         email: dataa?.email ?? '',
         contact_number: dataa?.contact_number ?? '',
-        role: dataa?.role === 'Team Member' || dataa?.role === 'team_member' ? 'team_member' : 'admin',
+        role: dataa?.role === 'Team member' || dataa?.role === 'team_member' ? 'team_member' : 'admin',
         agencyId: clientSliceData?.agencyId
       }
     }
@@ -100,7 +100,7 @@ export default function AddTeamMemberForm(props: any) {
       Object.entries(formData).filter(([_, value]) => value !== undefined && value !== '')
     );
     const fullData = { ...filteredFormData }
-    if (title === 'New Team Member') {
+    if (title === 'New Team member') {
       dispatch(addTeamMember(fullData)).then((result: any) => {
         if (addTeamMember.fulfilled.match(result)) {
           setLoader(false);
@@ -129,7 +129,7 @@ export default function AddTeamMemberForm(props: any) {
   const handleSaveClick = () => {
     setSave(true);
   }
-  if (!teamMemberData?.teamMember && title === 'Edit Team Member') {
+  if (!teamMemberData?.teamMember && title === 'Edit Team member') {
     return (
       <div className='p-10 flex items-center justify-center'>
         <Spinner size="xl" tag='div' className='ms-3' />
@@ -181,7 +181,7 @@ export default function AddTeamMemberForm(props: any) {
                   color="info"
                   placeholder="Enter your email"
                   className="[&>label>span]:font-medium"
-                  disabled={title === 'Edit Team Member'}
+                  disabled={title === 'Edit Team member'}
                   {...register('email')}
                   error={errors.email?.message as string}
                 />
@@ -225,7 +225,7 @@ export default function AddTeamMemberForm(props: any) {
                     </Button>
                   </div>
                   <div className='float-right text-right'>
-                    {title === 'New Team Member' &&
+                    {title === 'New Team member' &&
                       <Button
                         //  type='submit'
                         className="hover:gray-700 @xl:w-auto dark:bg-gray-200 dark:text-white"
