@@ -76,7 +76,8 @@ export const viewProfileSlice = createSlice({
       .addCase(getViewProfiles.pending, (state) => {
         return{
           ...state,
-          loading: true
+          loading: true,
+          data: 'pending'
         }
       })
       .addCase(getViewProfiles.fulfilled, (state, action) => {

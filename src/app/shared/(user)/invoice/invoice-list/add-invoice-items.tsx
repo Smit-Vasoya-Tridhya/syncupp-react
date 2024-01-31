@@ -149,7 +149,7 @@ export function AddInvoiceItems({ watch, register, control, errors }: any) {
                     />
                   )}
                 />
-                <div className="flex items-start @xl:col-span-2 @2xl:col-span-1">
+                <div className="flex items-start @xl:col-span-2 @2xl:col-span-1 space-x-4">
                   <Input
                     label="Price"
                     type="number"
@@ -159,6 +159,14 @@ export function AddInvoiceItems({ watch, register, control, errors }: any) {
                     defaultValue={field.price}
                     error={errors?.items?.[index]?.price?.message}
                     className="w-full"
+                  />
+                  <Input
+                    type="number"
+                    label="Taxes"
+                    suffix={'%'}
+                    placeholder="15"
+                    {...register('taxes')}
+                    error={errors.taxes?.message}
                   />
 
                   <div className="ms-3 mt-9 flex items-start text-sm">
@@ -203,30 +211,7 @@ export function AddInvoiceItems({ watch, register, control, errors }: any) {
 
           <div className="grid w-full gap-2 @4xl:w-auto">
             <div className="grid grid-cols-3 gap-3 @lg:gap-4">
-              <Input
-                type="number"
-                label="Shipping"
-                prefix={'$'}
-                placeholder="10"
-                {...register('shipping')}
-                error={errors.shipping?.message}
-              />
-              <Input
-                type="number"
-                label="Discount"
-                prefix={'$'}
-                placeholder="50"
-                {...register('discount')}
-                error={errors.discount?.message}
-              />
-              <Input
-                type="number"
-                label="Taxes"
-                suffix={'%'}
-                placeholder="15"
-                {...register('taxes')}
-                error={errors.taxes?.message}
-              />
+              
             </div>
 
             <div className="ms-auto mt-6 grid w-full gap-3.5 text-sm text-gray-600 @xl:max-w-xs">
@@ -234,18 +219,6 @@ export function AddInvoiceItems({ watch, register, control, errors }: any) {
                 Subtotal:{' '}
                 <Text as="span" className="font-medium text-gray-700">
                   ${calculateSubTotal()}
-                </Text>
-              </Text>
-              <Text className="flex items-center justify-between">
-                Shipping:{' '}
-                <Text as="span" className="font-medium text-red">
-                  {shippingCost ? `$${shippingCost}` : '--'}
-                </Text>
-              </Text>
-              <Text className="flex items-center justify-between">
-                Discount:{' '}
-                <Text as="span" className="font-medium text-gray-700">
-                  {discount ? `$${discount}` : '--'}
                 </Text>
               </Text>
               <Text className="flex items-center justify-between">

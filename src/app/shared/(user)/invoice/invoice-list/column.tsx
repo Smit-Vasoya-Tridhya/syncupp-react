@@ -8,7 +8,8 @@ import EyeIcon from '@/components/icons/eye';
 import PencilIcon from '@/components/icons/pencil';
 import DeletePopover from '@/app/shared/delete-popover';
 import CustomModalButton from '@/app/shared/custom-modal-button';
-import { Badge } from 'rizzui';
+import { Badge, Button, Tooltip } from 'rizzui';
+import { routes } from '@/config/routes';
 // import AddFaqForm from '../create-edit/add-edit-faq-form';
 
 type Columns = {
@@ -217,6 +218,18 @@ export const getColumns = ({
           view={<AddFaqForm title="Edit FAQ" row={row} /> }
           customSize="800px"
         /> */}
+        <Tooltip
+          size="sm"
+          content={() => 'View Invoice'}
+          placement="top"
+          color="invert"
+        >
+          <Link href={routes.invoiceView}>
+            <Button size="sm" variant="outline" className='bg-white text-black' aria-label={'View Member'}>
+              <EyeIcon className="h-4 w-4" />
+            </Button>
+          </Link>
+        </Tooltip>
         <DeletePopover
           title={`Delete the FAQ`}
           description={`Are you sure you want to delete?`}
