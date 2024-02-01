@@ -35,16 +35,27 @@ type PutEditTeamMemberApiData = {
 
   type GetAllTeamMemberApiData = {
     page?: number;
-    itemsPerPage?: number;
-    sortOrder?: string;
-    sortField?: string;
+    items_per_page?: number;
+    sort_order?: string;
+    sort_field?: string;
     search?: string;
     agency_id?: string;
+    client_id?: string;
   }
 
   type GetTeamMemberProfileApiData = {
-    id: string;
-  }
+    _id: string;
+    name: string;
+    email: string;
+    status: string;
+    createdAt: string;
+    updatedAt: string;
+    first_name: string;
+    last_name: string;
+    user_type: string;
+    member_role: string;
+    agency_id?: string;
+  };
 
 
 // Add new team member API
@@ -73,7 +84,6 @@ export const PostTeamMemberVerifyApi = async (data: PostTeamMemberVerifyApiData)
 
 // Edit team member API
 export const PutEditTeamMemberApi = async (data: PutEditTeamMemberApiData) => {
-  // console.log("id in edit team api", data)
   const response = await AxiosDefault({
     url: `/api/v1/team-member/edit/${data.id}`,
     method: "PUT",
@@ -113,7 +123,7 @@ export const GetAllTeamMemberApi= async (data: GetAllTeamMemberApiData) => {
   // get team member profile
   export const GetTeamMemberProfileApi = async (data: GetTeamMemberProfileApiData ) => {
     const response = await AxiosDefault({
-      url: `/api/v1/team-member/details/${data.id}`,
+      url: `/api/v1/team-member/details/${data._id}`,
       method: "GET",
       data: data,
       contentType: "application/json", 

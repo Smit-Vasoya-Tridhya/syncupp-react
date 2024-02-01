@@ -4,16 +4,11 @@ import Link from 'next/link';
 import { HeaderCell } from '@/components/ui/table';
 import { Text } from '@/components/ui/text';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Tooltip } from '@/components/ui/tooltip';
-import { routes } from '@/config/routes';
-import EyeIcon from '@/components/icons/eye';
-import PencilIcon from '@/components/icons/pencil';
 import DeletePopover from '@/app/shared/delete-popover';
-import { Button, Switch } from 'rizzui';
+import { Switch } from 'rizzui';
 import { useDispatch } from 'react-redux';
 import { deleteAgency, getAllAgency } from '@/redux/slices/admin/agency/agencySlice';
 import { LuExternalLink } from "react-icons/lu";
-import { AiOutlineFilePdf } from "react-icons/ai";
 
 type Columns = {
     data: any[];
@@ -28,7 +23,6 @@ type Columns = {
     searchTerm?: string;
 };
 
-
 export const GetColumns = ({
     data,
     sortConfig,
@@ -41,21 +35,16 @@ export const GetColumns = ({
     pageSize,
     searchTerm
 }: Columns) => {
-
     const dispatch = useDispatch();
-
     const handleSwitchChange = async (id: string, event: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(event?.target?.checked, 'event')
         try {
             const res = await dispatch(deleteAgency({ agencies: id, status: event?.target?.checked }));
             if (res.payload.success === true) {
                 const reponse = await dispatch(getAllAgency({ page: currentPage, items_per_page: pageSize, sort_field: sortConfig?.key, sort_order: sortConfig?.direction }));
-                console.log("response after delete...", reponse)
             }
         } catch (error) {
             console.error(error);
         }
-
     };
 
     return [
@@ -86,7 +75,7 @@ export const GetColumns = ({
         {
             title: (
                 <HeaderCell
-                    title="Firs Name"
+                    title="First Name"
                     sortable
                     ascending={
                         sortConfig?.direction === 'asc' && sortConfig?.key === 'first_name'
@@ -170,7 +159,6 @@ export const GetColumns = ({
             key: 'reference_id',
             width: 200,
             render: (value: Record<string, string>) => (
-                console.log(value, '189'),
                 <Text className="font-medium text-gray-700">{value?.company_name && value?.company_name != "" ? value?.company_name : "-"}</Text>
             ),
         },

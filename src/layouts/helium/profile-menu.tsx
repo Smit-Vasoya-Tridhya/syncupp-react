@@ -5,29 +5,42 @@ import { Avatar } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Popover } from '@/components/ui/popover';
 import { Title, Text } from '@/components/ui/text';
-import { logoutUser } from '@/redux/slices/user/auth/signinSlice';
-import { logoutUserSignUp } from '@/redux/slices/user/auth/signupSlice';
+import { getUserProfile, logoutUser, signOutUser } from '@/redux/slices/user/auth/signinSlice';
 import cn from '@/utils/class-names';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import "./style.css"
 import ChangePasswordForm from '@/app/shared/(user)/forms/change-password-form';
 import { routes } from '@/config/routes';
 import Link from 'next/link';
+import Spinner from '@/components/ui/spinner';
 
 function DropdownMenu() {
 
   const dispatch = useDispatch();
   const router = useRouter();
+  useEffect(()=>{
+    dispatch(getUserProfile())
+  },[dispatch])
+  const { userProfile , loading} = useSelector((state: any) => state?.root?.signIn);
 
   const handleClick = () => {
-    router.replace('/signin');
-    dispatch(logoutUser())
-    dispatch(logoutUserSignUp())
-    localStorage.clear();
+    dispatch(signOutUser()).then((result: any) => {
+      if (signOutUser.fulfilled.match(result)) {
+        // router.replace('/signin');
+        window.location.href = routes?.signIn;
+        dispatch(logoutUser());
+      }
+    })
   }
-
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center p-10">
+        <Spinner size="xl" tag="div" className="ms-3" />
+      </div>
+    );
+  } else {
   return (
     <div className="w-64 text-left rtl:text-right">
       <div className="flex items-center border-b border-gray-300 px-6 pb-5 pt-6">
@@ -37,10 +50,12 @@ function DropdownMenu() {
           color="invert"
         />
         <div className="ms-3">
-          <Title as="h6" className="font-semibold">
-            Albert Flores
+          <Title as="h6" className="break-all text-sm font-semibold">
+            {`${userProfile?.first_name} ${userProfile?.last_name}`}
           </Title>
-          <Text className="text-gray-600">flores@doe.io</Text>
+          <Text className="break-all text-sm text-gray-600">
+            {`${userProfile?.email}`}
+          </Text>
         </div>
       </div>
       <div className="grid px-3.5 py-3.5 font-medium text-gray-700">
@@ -48,9 +63,7 @@ function DropdownMenu() {
           className="mt-0 justify-start bg-white text-gray-900"
           href={routes.viewProfile}
         >
-          <Button variant="text">
-            View Profile
-          </Button>
+          <Button variant="text">View Profile</Button>
         </Link>
 
         <ModalButton
@@ -60,7 +73,7 @@ function DropdownMenu() {
           className="mt-0 justify-start bg-white text-gray-900"
         />
       </div>
-      <div className="border-t border-gray-300 px-6 pb-6 pt-5">
+      <div className="border-t border-gray-300 px-6 py-4">
         <Button
           className="ml-2 h-auto w-full justify-start p-0 font-medium text-gray-700 outline-none focus-within:text-gray-600 hover:text-gray-900 focus-visible:ring-0"
           variant="text"
@@ -72,7 +85,7 @@ function DropdownMenu() {
     </div>
   );
 }
-
+}
 export default function ProfileMenu({
   buttonClassName,
   avatarClassName,
@@ -104,7 +117,7 @@ export default function ProfileMenu({
       >
         <Avatar
           src="https://isomorphic-furyroad.s3.amazonaws.com/public/avatars-blur/avatar-11.webp"
-          name="John Doe"
+          name=""
           color="invert"
           className={cn('!h-9 w-9 sm:!h-10 sm:w-10', avatarClassName)}
         />

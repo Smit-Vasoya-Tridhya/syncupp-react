@@ -1,5 +1,8 @@
+import { routes } from "@/config/routes";
 import axios, { AxiosRequestConfig } from "axios";
 import { isEmpty, isString } from "lodash";
+// import toast from "react-hot-toast";
+
 
 const AxiosDefaultSetting = async ({
   method,
@@ -14,6 +17,8 @@ const AxiosDefaultSetting = async ({
   contentType?: string;
   customHeaders?: Record<string, string>; // Additional headers
 }): Promise<any> => {
+
+
   const AxiosDefault = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API,
     timeout: 10000,
@@ -28,12 +33,11 @@ const AxiosDefaultSetting = async ({
     async (config) => {
       try {
         const userData: any = localStorage.getItem("token");
-        // console.log("Axios Default...", userData);
         if (isString(userData) && !isEmpty(userData)) {
           config.headers["Authorization"] = `Bearer ${userData}`;
         }
       } catch (error) {
-        console.log(error);
+        console.log('Axios default error',error);
       }
       return config;
     },
@@ -47,10 +51,18 @@ const AxiosDefaultSetting = async ({
       return response;
     },
     async (error) => {
-      if (error.response && error.response.status === 401) {
+
+
+      if (error?.response && error?.response?.status === 401) {
         try {
-          const expiryTime = new Date(new Date().getTime() - 100000);
+          // const expiryTime = new Date(new Date().getTime() - 100000);
           // You can handle the 401 error here
+
+          // toast.error(error?.response?.message)
+          localStorage.removeItem('token');
+          localStorage.clear();
+          window.location.href = routes?.signIn;
+
         } catch (e) {
           return Promise.reject(e);
         }

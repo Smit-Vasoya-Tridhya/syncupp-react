@@ -1,18 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import {
- PostForgotPassword,
-} from "../../../../api/user/auth/authApis";
+import {PostForgotPassword} from "../../../../api/user/auth/authApis";
 import toast, { Toast } from "react-hot-toast";
 
 type userEmail = {
   email :string,
 }
-
 interface PostForgotPasswordResponse {
   status : boolean;
   message : string
 }
-
 interface ForgotPasswordState {
   loading: boolean;
   user: any;
@@ -30,17 +26,14 @@ const initialState: ForgotPasswordState = {
 export const forgotPasswordUser : any = createAsyncThunk(
   "forgotPassword/forgotPasswordUser",
   async (data: userEmail) => {
-    // console.log("We are in forgotPassword slice.........", data)
     try {
       const response:any = await PostForgotPassword(data);
-      // console.log("Forgot password response......", response);
       return response;
     } catch (error:any) {
       return { status: false, message: error.response.data.message } as PostForgotPasswordResponse;
     }
   }
 );
-
 
 export const forgotPasswordSlice = createSlice({
   name: "forgotPassword",
@@ -56,7 +49,6 @@ export const forgotPasswordSlice = createSlice({
         }
       })
       .addCase(forgotPasswordUser.fulfilled, (state,action) => {
-        // console.log(action.payload);
         if(action.payload.success == true){
           toast.success(action.payload.message)
         } else {

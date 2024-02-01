@@ -15,7 +15,9 @@ export const routes = {
   client_team: '/client-team',
   invoice:'/invoice',
   invoiceForm:'/invoice/create-edit',
+  invoiceView:'/invoice/view-invoice',
   viewTeam:'/team/view-team',
+  task: '/task',
 
   teams: {
     verify: '/team/verify'
@@ -32,10 +34,13 @@ export const routes = {
     forgotPassword:'/admin/forgot-password',
     resetPassword:'/admin/reset-password',
     dashboard: '/admin/dashboard',
+    viewProfile: '/admin/profile',
     faq:'/admin/faq',
     agencylist:"/admin/agencylist",
     inquiry:"/admin/inquiry",
-    payment:"/admin/payment-transaction"
+    payment:"/admin/payment-transaction",
+    cms:'/admin/cms',
+    cmsTC:'/admin/cms/team-and-condition',
   },
 
 };

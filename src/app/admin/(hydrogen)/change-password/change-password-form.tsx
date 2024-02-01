@@ -1,14 +1,11 @@
 'use client';
 
-import { Title, Text } from '@/components/ui/text';
-import { Input } from '@/components/ui/input';
+import { Title } from '@/components/ui/text';
 import { Button } from '@/components/ui/button';
 import { SubmitHandler } from 'react-hook-form';
 import { Form } from '@/components/ui/form';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { routes } from '@/config/routes';
-import Link from 'next/link';
-import toast from 'react-hot-toast';
 import { useMedia } from '@/hooks/use-media';
 import { Password } from '@/components/ui/password';
 import { ChangePasswordSchema, changePasswordSchema } from '@/utils/validators/change-password.schema';
@@ -36,20 +33,15 @@ export default function ChangePasswordForm() {
 
   const router = useRouter();
   const changePassword = useSelector((state: any) => state?.root?.adminChangePassword)
-  console.log("changePassword state.....", changePassword)
-
 
   const onSubmit: SubmitHandler<ChangePasswordSchema> = (data) => {
-    console.log('Change password form data->', data);
     dispatch(changePasswordAdmin(data)).then((result: any) => {
       if (changePasswordAdmin.fulfilled.match(result)) {
-        // console.log('resultt', result)/
         if (result && result.payload.success === true ) {
           router.replace(routes.admin.dashboard);
         } 
       }
     })
-    // setReset({ ...initialValues });
   };
 
   return (

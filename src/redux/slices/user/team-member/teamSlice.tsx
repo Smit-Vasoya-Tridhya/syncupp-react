@@ -13,13 +13,27 @@ type TeamData = {
   page?: any;
   items_per_page?: number;
   search?: string;
-  agencyId?: string;
+  agency_id?: string;
+  client_id?: string;
 }
 
 type DeleteTeamMemberData = {
   teamMemberIds: string[];
-  agencyId?: string;
+  agency_id?: string;
 }
+type GetTeamMemberProfileApiData = {
+  _id: string;
+  name: string;
+  email: string;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+  first_name: string;
+  last_name: string;
+  user_type: string;
+  agency_id: string;
+  member_role: string;
+};
 
 type PostTeamMemberVerifyData = {
   email: string;
@@ -42,6 +56,8 @@ const initialState = {
   user: {},
   data:[],
   teamMember: '',
+  clientId: '',
+  clientName: '',
   getAllTeamMemberStatus: '',
   addTeamMemberStatus: '',
   editTeamMemberStatus: '',
@@ -59,7 +75,7 @@ export const addTeamMember: any = createAsyncThunk(
       name: data.name,
       contact_number: data.contact_number,
       role: data.role,
-      agency_id: data?.agencyId
+      agency_id: data?.agency_id
     }
     try {
       const response: any = await PostAddTeamMemberApi(apiData);
@@ -77,7 +93,7 @@ export const verifyTeamMember: any = createAsyncThunk(
       const response: any = await PostTeamMemberVerifyApi(data);
       return response;
     } catch (error: any) {
-      return { status: false, message: error.response.data.message } as TeamMemberDataResponse;
+      return { status: false, message: error.response.data.message, code: error.response.data.status } as any;
     }
   }
 );
@@ -91,7 +107,7 @@ export const editTeamMember: any = createAsyncThunk(
       name: data.name,
       contact_number: data.contact_number,
       role: data.role,
-      agency_id: data?.agencyId
+      agency_id: data?.agency_id
     }
     try {
       const response: any = await PutEditTeamMemberApi(apiData);
@@ -104,17 +120,8 @@ export const editTeamMember: any = createAsyncThunk(
 export const getAllTeamMember: any = createAsyncThunk(
   "teamMember/getAllTeamMember",
   async (data: TeamData) => {
-    console.log(data,'teamMember slice data..............................');
-    const apiData :any ={
-      sortField: data?.sort_field,
-      sortOrder: data?.sort_order,
-      search: data?.search,
-      page: data?.page,
-      itemsPerPage: data?.items_per_page,
-      agency_id: data?.agencyId
-    }
     try {
-      const response: any = await GetAllTeamMemberApi(apiData);
+      const response: any = await GetAllTeamMemberApi(data);
       return response;
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as TeamMemberDataResponse;
@@ -123,10 +130,20 @@ export const getAllTeamMember: any = createAsyncThunk(
 );
 export const getTeamMemberProfile: any = createAsyncThunk(
   "teamMember/getTeamMemberProfile",
-  async (data: TeamData) => {
-    const apiData={
-      id: data._id,
-    }
+  async (data: GetTeamMemberProfileApiData) => {
+    const apiData = {
+      _id: data?._id,
+      name: data?.name,
+      email: data?.email,
+      status: data?.status,
+      createdAt: data?.createdAt,
+      updatedAt: data?.updatedAt,
+      first_name: data?.first_name,
+      last_name: data?.last_name,
+      user_type: data?.user_type,
+      agency_id: data?.agency_id,
+      member_role: data?.member_role,
+    };
     try {
       const response: any = await GetTeamMemberProfileApi(apiData);
       return response;
@@ -141,7 +158,7 @@ export const deleteTeamMember: any = createAsyncThunk(
     try {
       const apiData = {
         teamMemberIds: data.teamMemberIds,
-        agency_id: data?.agencyId
+        agency_id: data?.agency_id
       }
       const response: any = await DeleteTeamMemberApi(data);
       return response;
@@ -150,6 +167,7 @@ export const deleteTeamMember: any = createAsyncThunk(
     }
   }
 );
+
 
 export const teamSlice = createSlice({
   name: "teamMember",
@@ -161,8 +179,7 @@ export const teamSlice = createSlice({
         ...state,
         teamMember: ''
       };
-  },
-
+    },
   },
   extraReducers: (builder) => {
       builder
@@ -174,7 +191,7 @@ export const teamSlice = createSlice({
           }
       })
       .addCase(addTeamMember.fulfilled, (state,action) => {
-        if(action.payload.success == true){
+        if(action.payload.success === true){
           toast.success(action.payload.message)
         } else {
           toast.error(action.payload.message)
@@ -206,6 +223,7 @@ export const teamSlice = createSlice({
       .addCase(verifyTeamMember.fulfilled, (state,action) => {
         if(action.payload.success == true){
           toast.success(action.payload.message)
+          localStorage.clear();
         } else {
           toast.error(action.payload.message)
         }

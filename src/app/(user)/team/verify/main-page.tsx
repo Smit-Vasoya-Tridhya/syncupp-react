@@ -3,44 +3,61 @@ import AuthWrapperTwo from '@/app/shared/(user)/auth-layout/auth-wrapper-two';
 import SetPasswordForm from './set-password-form';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { routes } from '@/config/routes';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import Spinner from '@/components/ui/spinner';
 import { verifyTeamMember } from '@/redux/slices/user/team-member/teamSlice';
+import WithAuthPublic from '@/utils/public-route-user';
+import { postClientRedirect } from '@/redux/slices/user/client/clientSlice';
 
-export default function MainPage() {
+function MainPage() {
 
     const dispatch = useDispatch();
     const router = useRouter();
-
     const searchParams = useSearchParams();
-    // console.log("search Params....", searchParams.get("email"))
-  
     const email = searchParams.get("email");
     const agency = searchParams.get("agency");
     const token = searchParams.get("token");
-    let redirectt = searchParams.get("redirect");
-    // console.log("redirect....", redirectt)
-    let redirect = (redirectt === 'true');
-    
-    // console.log("token....", token)
+    const [redirect, setRedirect] = useState(false);
 
-    useEffect(() => { redirect &&
-        dispatch(verifyTeamMember({email: email, agency_id: agency, redirect: redirect, token: token })).then((result: any) => {
-          if (verifyTeamMember.fulfilled.match(result)) {
-            // console.log('resultt', result)
-            if (result && result.payload.success === true ) {
-              router.replace(routes.signIn);
-            } 
+    useEffect(() => {
+      dispatch(postClientRedirect({ email: email })).then((result: any) => {
+        if (postClientRedirect.fulfilled.match(result)) {
+          if (result && result?.payload?.success === true) {
+            // console.log(result?.payload?.data?.password_required)
+            setRedirect(result?.payload?.data?.password_required)
+            if (!result?.payload?.data?.password_required) {
+              dispatch(verifyTeamMember({ email: email, agency_id: agency, token: token, redirect: true })).then((result: any) => {
+                if (verifyTeamMember.fulfilled.match(result)) {
+                  if (result && result.payload.success === true) {
+                    router.replace(routes.signIn);
+                  } else if(result && result.payload.code === 422){
+                    router.replace(routes.signIn);
+                  }
+                }
+              })
+            }
           }
-        })
-      }, [dispatch, router, agency, email, token, redirect]);
+        }
+      })
+    }, [dispatch, email, agency, router, token])
+  
+
+    // useEffect(() => { redirect &&
+    //     dispatch(verifyTeamMember({email: email, agency_id: agency, redirect: redirect, token: token })).then((result: any) => {
+    //       if (verifyTeamMember.fulfilled.match(result)) {
+    //         if (result && result.payload.success === true ) {
+    //           router.replace(routes.signIn);
+    //         } 
+    //       }
+    //     })
+    //   }, [dispatch, router, agency, email, token, redirect]);
 
   return (
     <>
-        { !redirect ? (
+        { redirect ? (
             <AuthWrapperTwo title="Set your password" isSocialLoginActive={false}>
-                <SetPasswordForm />
+                <SetPasswordForm redirect={!redirect} />
             </AuthWrapperTwo> ) : (
                 <div className='flex justify-center items-center col-span-full mt-3'><Spinner size='xl' /></div>
             )
@@ -48,3 +65,5 @@ export default function MainPage() {
     </>
   );
 }
+
+export default WithAuthPublic(MainPage)

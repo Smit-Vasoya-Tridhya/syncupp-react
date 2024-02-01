@@ -4,16 +4,12 @@ import { Title, ActionIcon } from '@/components/ui/text';
 import { Button } from '@/components/ui/button';
 import { Controller, SubmitHandler } from 'react-hook-form';
 import { Form } from '@/components/ui/form';
-import { useMedia } from '@/hooks/use-media';
 import { useDispatch, useSelector } from 'react-redux';
-import { useRouter } from 'next/navigation';
 import Spinner from '@/components/ui/spinner';
 import { useModal } from '@/app/shared/modal-views/use-modal';
 import cn from '@/utils/class-names';
 import { PiXBold } from 'react-icons/pi';
 import { Input } from '@/components/ui/input';
-import dynamic from 'next/dynamic';
-import SelectLoader from '@/components/loader/select-loader';
 import { TeamMemberSchema, teamMemberSchema } from '@/utils/validators/add-team-member.schema';
 import { addTeamMember, editTeamMember, getAllTeamMember, getTeamMemberProfile } from '@/redux/slices/user/team-member/teamSlice';
 import { useEffect, useState } from 'react';
@@ -24,69 +20,51 @@ import SelectBox from '@/components/ui/select';
 //   loading: () => <SelectLoader />,
 // });
 
-
-
 const typeOption = [
-  { name: 'Team Member', value: 'team_member' },
+  { name: 'Team member', value: 'team_member' },
   { name: 'Admin', value: 'admin' },
 ]
 
-
 export default function AddTeamMemberForm(props: any) {
-
   const { title, row } = props;
-
-  const isMedium = useMedia('(max-width: 1200px)', false);
   const dispatch = useDispatch();
   const { closeModal } = useModal();
-  const router = useRouter();
   const [save, setSave] = useState(false)
   const [loader, setLoader] = useState(true);
   const [reset, setReset] = useState({})
-
   const teamMemberData = useSelector(
     (state: any) => state?.root?.teamMember
   );
   const clientSliceData = useSelector((state: any) => state?.root?.client);
   const signIn = useSelector((state: any) => state?.root?.signIn)
-
-
-
-
-
-  // let data = row;
-
   const initialValues: TeamMemberSchema = {
     email: '',
     name: '',
     contact_number: '',
     role: ''
   };
-
+  // console.log("Row data....", row)
 
   useEffect(() => {
     row && dispatch(getTeamMemberProfile({ _id: row?._id }))
   }, [row, dispatch]);
-
   let [data] = teamMemberData?.teamMember;
-
   let defaultValuess = {};
-
   if (data) {
     defaultValuess = {
       name: data?.name,
       email: data?.email,
       contact_number: data?.contact_number,
-      role: data?.member_role === 'team_member' ? 'Team Member' : 'Admin'
+      role: data?.member_role === 'team_member' ? 'Team member' : 'Admin'
     };
-  } else if(signIn?.role === 'client') {
+  } else if (signIn?.role === 'client') {
     defaultValuess = {
       name: '',
       email: '',
       contact_number: '',
-      role: 'Admin'
+      role: 'Team member'
     };
-  }else {
+  } else {
     defaultValuess = {
       name: '',
       email: '',
@@ -95,49 +73,54 @@ export default function AddTeamMemberForm(props: any) {
     };
   }
 
-
-
-
   const onSubmit: SubmitHandler<TeamMemberSchema> = (dataa) => {
     let formData = {};
-    if (title === 'New Team Member') {
+    if (title === 'New Team member') {
       formData = {
         name: dataa?.name ?? '',
         email: dataa?.email ?? '',
         contact_number: dataa?.contact_number ?? '',
-        role: dataa?.role === 'Team Member' ? 'team_member' : 'admin',
-        agencyId: clientSliceData?.agencyId
+        role: dataa?.role === 'Team member' ? 'team_member' : 'admin',
+        agency_id: clientSliceData?.agencyId
       }
     } else {
       formData = {
         name: dataa?.name ?? '',
         email: dataa?.email ?? '',
         contact_number: dataa?.contact_number ?? '',
-        role: dataa?.role === 'Team Member' || dataa?.role === 'team_member' ? 'team_member' : 'admin',
-        agencyId: clientSliceData?.agencyId
+        role: dataa?.role === 'Team member' || dataa?.role === 'team_member' ? 'team_member' : 'admin',
+        agency_id: clientSliceData?.agencyId
       }
     }
-
-
     const filteredFormData = Object.fromEntries(
       Object.entries(formData).filter(([_, value]) => value !== undefined && value !== '')
     );
-
-
     const fullData = { ...filteredFormData }
-
-    // if(loader && !save) return
-
-    if (title === 'New Team Member') {
+    if (title === 'New Team member') {
       dispatch(addTeamMember(fullData)).then((result: any) => {
         if (addTeamMember.fulfilled.match(result)) {
           setLoader(false);
           setSave(false);
-
           if (result && result.payload.success === true) {
             save && closeModal();
-            setReset({ ...initialValues })
-            dispatch(getAllTeamMember({ sort_field: 'createdAt', sort_order: 'desc', agencyId: clientSliceData?.agencyId }));
+            setReset({ ...initialValues });
+            console.log("role..........", )
+            if (signIn?.role === 'client', signIn?.role) {
+              dispatch(
+                getAllTeamMember({
+                  sort_field: 'createdAt',
+                  sort_order: 'desc',
+                  agency_id: clientSliceData?.agencyId,
+                })
+              );
+            } else {
+              dispatch(
+                getAllTeamMember({
+                  sort_field: 'createdAt',
+                  sort_order: 'desc',
+                })
+              );
+            }
             setSave(false);
           }
         }
@@ -148,19 +131,31 @@ export default function AddTeamMemberForm(props: any) {
           if (result && result.payload.success === true) {
             save && closeModal();
             setSave(false);
-            dispatch(getAllTeamMember({ sort_field: 'createdAt', sort_order: 'desc', agencyId: clientSliceData?.agencyId }));
+            if (signIn?.role === 'client') {
+              dispatch(
+                getAllTeamMember({
+                  sort_field: 'createdAt',
+                  sort_order: 'desc',
+                  agency_id: clientSliceData?.agencyId,
+                })
+              );
+            } else {
+              dispatch(
+                getAllTeamMember({
+                  sort_field: 'createdAt',
+                  sort_order: 'desc',
+                })
+              );
+            }
           }
         }
       });
     }
-
   };
-
   const handleSaveClick = () => {
     setSave(true);
   }
-
-  if (!teamMemberData?.teamMember && title === 'Edit Team Member') {
+  if (!teamMemberData?.teamMember && title === 'Edit Team member') {
     return (
       <div className='p-10 flex items-center justify-center'>
         <Spinner size="xl" tag='div' className='ms-3' />
@@ -200,7 +195,7 @@ export default function AddTeamMemberForm(props: any) {
                   onKeyDown={handleKeyDown}
                   label="Name *"
                   color="info"
-                  placeholder="Enter your Name"
+                  placeholder="Enter your name"
                   className="[&>label>span]:font-medium"
                   {...register('name')}
                   error={errors.name?.message as string}
@@ -210,9 +205,9 @@ export default function AddTeamMemberForm(props: any) {
                   onKeyDown={handleKeyDown}
                   label="Email ID *"
                   color="info"
-                  placeholder="Enter your Email ID"
+                  placeholder="Enter your email"
                   className="[&>label>span]:font-medium"
-                  disabled={title === 'Edit Team Member'}
+                  disabled={title === 'Edit Team member'}
                   {...register('email')}
                   error={errors.email?.message as string}
                 />
@@ -221,7 +216,7 @@ export default function AddTeamMemberForm(props: any) {
                   onKeyDown={handleKeyContactDown}
                   label="Phone"
                   color="info"
-                  placeholder="Enter your Phone"
+                  placeholder="Enter phone number"
                   className="[&>label>span]:font-medium"
                   {...register('contact_number')}
                   error={errors.contact_number?.message as string}
@@ -235,6 +230,7 @@ export default function AddTeamMemberForm(props: any) {
                       value={value}
                       onChange={onChange}
                       label="Permisson *"
+                      placeholder='Select role'
                       color="info"
                       disabled={signIn?.role === 'client'}
                       error={errors?.role?.message as string}
@@ -255,14 +251,13 @@ export default function AddTeamMemberForm(props: any) {
                     </Button>
                   </div>
                   <div className='float-right text-right'>
-                    {title === 'New Team Member' &&
+                    {title === 'New Team member' &&
                       <Button
                         //  type='submit'
                         className="hover:gray-700 @xl:w-auto dark:bg-gray-200 dark:text-white"
                         disabled={Object.keys(errors).length === 0 && loader && isSubmitSuccessful && !save}
                         onClick={() => {
                           handleSubmit(onSubmit)();
-                          // console.log(errors, "errors....")
                           setLoader(true)
                         }}
                       >

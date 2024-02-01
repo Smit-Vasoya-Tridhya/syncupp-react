@@ -4,6 +4,7 @@ import {
   PiQuestionLight,
   PiUserPlusDuotone,
 } from 'react-icons/pi';
+import { SiPayloadcms } from "react-icons/si";
 
 // Note: do not add href in the label object, it is rendering as label
 export const menuItems = [
@@ -31,5 +32,10 @@ export const menuItems = [
     name: 'FAQ',
     href: routes.admin.faq,
     icon: <PiQuestionLight />,
+  },
+  {
+    name: 'CMS',
+    href: routes.admin.cms,
+    icon: <SiPayloadcms />,
   },
 ];

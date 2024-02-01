@@ -1,16 +1,12 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useRouter } from 'next/navigation';
 import CustomTable from '@/components/common-tables/table';
-import { deleteAgencyAgreement, getAllAgencyagreement } from '@/redux/slices/user/agreement/agreementSlice';
+import { deleteAgencyAgreement } from '@/redux/slices/user/agreement/agreementSlice';
 import PageHeader from '@/app/shared/page-header';
-import { Button } from 'rizzui';
 import { AgreementColumns } from '@/app/shared/(user)/agreement/columns';
 import { getAllclientagreement } from '@/redux/slices/user/client/agreement/clientAgreementSlice';
-
-
 
 const pageHeader = {
     title: 'Aggrement',
@@ -30,15 +26,9 @@ const Dummy_Data = [{
 
 }]
 
-
 export default function AgreementPage() {
-
     const dispatch = useDispatch();
-    const router = useRouter();
-
     const { agreementDetails, loading } = useSelector((state: any) => state?.root?.clienAgreement);
-    console.log("agreementDetails", agreementDetails, loading);
-
     const [pageSize, setPageSize] = useState(5)
 
     //Paggination Handler

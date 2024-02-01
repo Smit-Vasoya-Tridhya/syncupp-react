@@ -4,7 +4,6 @@ import { useCallback, useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useTable } from '@/hooks/use-table';
 import { useColumn } from '@/hooks/use-column';
-import { Button } from '@/components/ui/button';
 import ControlledTable from '@/components/controlled-table';
 import { GetColumns } from './columns';
 
@@ -43,11 +42,8 @@ export default function AgencyTable({
     page?: number;
     loading?: boolean
 }) {
-
-    console.log(loading, '47')
     const [pageSize, setPageSize] = useState(5);
     const [currentPage, setCurrentPage] = useState<number>(page as number);
-
     const onHeaderCellClick = (value: string) => ({
         onClick: () => {
             handleSort(value);
@@ -55,7 +51,6 @@ export default function AgencyTable({
     });
 
     const onDeleteItem = useCallback((id: string | string[], currentPage?: any, countPerPage?: number, Islastitem?: boolean, sortConfig?: Record<string, string>, searchTerm?: string) => {
-        console.log("Delete id...", id)
         handleDelete(id, currentPage, countPerPage, Islastitem, sortConfig, searchTerm);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

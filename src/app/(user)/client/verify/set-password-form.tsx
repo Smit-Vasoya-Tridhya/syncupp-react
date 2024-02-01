@@ -4,7 +4,6 @@ import { SubmitHandler } from 'react-hook-form';
 import { Password } from '@/components/ui/password';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useMedia } from '@/hooks/use-media';
 import { Form } from '@/components/ui/form';
 import { handleKeyDown } from '@/utils/common-functions';
 import { SetPasswordSchema, setPasswordSchema } from '@/utils/validators/set-password-schema';
@@ -13,27 +12,17 @@ import { postVerifyClient } from '@/redux/slices/user/client/clientSlice';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { routes } from '@/config/routes';
 import Spinner from '@/components/ui/spinner';
-
-
+import useMedia from 'react-use/lib/useMedia';
 
 export default function SetPasswordForm(props: any) {
+  const { redirect } = props;
   const isMedium = useMedia('(max-width: 1200px)', false);
-
-  
-  // console.log(formData)
   const dispatch = useDispatch();
   const router = useRouter();
-
   const clientSliceData = useSelector((state: any) => state?.root?.client);
-
   const searchParams = useSearchParams();
-  // console.log("search Params....", searchParams.get("email"))
-  
   const email = searchParams.get("email");
   const agency = searchParams.get("agency");
-  let redirectt = searchParams.get("redirect");
-  // console.log("redirect....", redirectt)
-  let redirect = (redirectt === 'true');
   
   const initialValues = {
     firstName: '',
@@ -44,8 +33,6 @@ export default function SetPasswordForm(props: any) {
   };
   
   const onSubmit: SubmitHandler<SetPasswordSchema> = (data) => {
-    console.log('set password form data', data);
-    
     const apiData = {
       email: email,
       agency_id: agency,
@@ -54,17 +41,13 @@ export default function SetPasswordForm(props: any) {
       last_name: data?.lastName,
       redirect: redirect
     }
-
-
     dispatch(postVerifyClient(apiData)).then((result: any) => {
       if (postVerifyClient.fulfilled.match(result)) {
-        // console.log('resultt', result)
         if (result && result.payload.success === true ) {
           router.replace(routes.signIn);
         } 
       }
     })
-
   };
 
     return (
@@ -73,6 +56,7 @@ export default function SetPasswordForm(props: any) {
           validationSchema={setPasswordSchema}
           onSubmit={onSubmit}
           useFormProps={{
+            mode: 'onTouched',
             defaultValues: initialValues,
           }}
         >
@@ -82,10 +66,10 @@ export default function SetPasswordForm(props: any) {
                 <Input
                   onKeyDown={handleKeyDown}
                   type="text"
-                  size={isMedium ? 'lg' : 'xl'}
                   label="First Name"
-                  placeholder="Enter First Name"
+                  placeholder="Enter first name"
                   rounded="pill"
+                  size={isMedium ? 'lg' : 'xl'}
                   color="info"
                   className="[&>label>span]:font-medium"
                   {...register('firstName')}
@@ -94,9 +78,9 @@ export default function SetPasswordForm(props: any) {
                 <Input
                   onKeyDown={handleKeyDown}
                   type="text"
-                  size={isMedium ? 'lg' : 'xl'}
                   label="Last Name"
-                  placeholder="Enter Last Name"
+                  placeholder="Enter last name"
+                  size={isMedium ? 'lg' : 'xl'}
                   rounded="pill"
                   color="info"
                   className="[&>label>span]:font-medium"
@@ -108,9 +92,9 @@ export default function SetPasswordForm(props: any) {
                 <Input
                   onKeyDown={handleKeyDown}
                   type="email"
-                  size={isMedium ? 'lg' : 'xl'}
                   label="Email ID"
-                  placeholder="Enter your email"
+                  placeholder="Enter your email"                  
+                  size={isMedium ? 'lg' : 'xl'}
                   rounded="pill"
                   color="info"
                   className="[&>label>span]:font-medium"
@@ -124,9 +108,9 @@ export default function SetPasswordForm(props: any) {
                   onKeyDown={handleKeyDown}
                   label="Password"
                   placeholder="Enter your password"
-                  size={isMedium ? 'lg' : 'xl'}
                   rounded="pill"
                   color="info"
+                  size={isMedium ? 'lg' : 'xl'}
                   className="[&>label>span]:font-medium"
                   {...register('password')}
                   error={errors.password?.message}
@@ -135,9 +119,9 @@ export default function SetPasswordForm(props: any) {
                   onKeyDown={handleKeyDown}
                   label="Confirm Password"
                   placeholder="Enter your password"
-                  size={isMedium ? 'lg' : 'xl'}
                   rounded="pill"
                   color="info"
+                  size={isMedium ? 'lg' : 'xl'}
                   className="[&>label>span]:font-medium"
                   {...register('confirmPassword')}
                   error={errors.confirmPassword?.message}
@@ -147,9 +131,9 @@ export default function SetPasswordForm(props: any) {
                 <Button
                   className="border-2 text-base font-medium float-end"
                   type="submit"
-                  size={isMedium ? 'lg' : 'xl'}
                   color="info"
                   rounded="pill"
+                  size={isMedium ? 'lg' : 'xl'}
                   disabled={clientSliceData?.loading}
                 >
                   Create Password

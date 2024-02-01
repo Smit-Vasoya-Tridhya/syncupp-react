@@ -1,17 +1,15 @@
-'use client';
-import WithAuthPublic from '@/utils/public-route-admin';
+
+import { metaObject } from '@/config/site.config';
 import ViewTeamMemberForm from './viewTeamMember';
 
-// import { metaObject } from '@/config/site.config';
+export const metadata = {
+  ...metaObject('Team'),
+};
 
-// export const metadata = {
-//   ...metaObject('Sign In 2'),
-// };
-
-function SignIn() {
+export default function Page() {
   return (
-      <ViewTeamMemberForm/>
+    <>
+      <ViewTeamMemberForm />
+    </>
   );
 }
-
-export default WithAuthPublic(SignIn);

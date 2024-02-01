@@ -11,7 +11,7 @@ import PencilIcon from '@/components/icons/pencil';
 import {TeamMemberType } from '@/data/products-data';
 import DeletePopover from '@/app/shared/delete-popover';
 import CustomModalButton from '@/app/shared/custom-modal-button';
-import AddTeamMemberForm from '../create-edit/add-team-member-form';
+import AddTeamMemberForm from '../create-edit/add-task-form';
 import { Badge, Button } from 'rizzui';
 import moment from 'moment';
 
@@ -29,7 +29,7 @@ type Columns = {
 };
 
 function getStatusBadge(status: string) {
-  switch (status.toLowerCase()) {
+  switch (status?.toLowerCase()) {
     case 'pending':
       return (
         <div className="flex items-center">
@@ -41,7 +41,7 @@ function getStatusBadge(status: string) {
       return (
         <div className="flex items-center">
           <Badge color="success" renderAsDot />
-          <Text className="ms-2 font-medium text-green-dark">Active</Text>
+          <Text className="ms-2 font-medium text-green-dark">{status}</Text>
         </div>
       );
     default:
@@ -54,7 +54,7 @@ function getStatusBadge(status: string) {
   }
 }
 
-export const getClientTeamColumns = ({
+export const getColumns = ({
   data,
   sortConfig,
   checkedItems,
@@ -84,8 +84,8 @@ export const getClientTeamColumns = ({
       <div className="inline-flex ps-3.5">
         <Checkbox
           className="cursor-pointer"
-          checked={checkedItems.includes(row._id)}
-          {...(onChecked && { onChange: () => onChecked(row._id) })}
+          checked={checkedItems.includes(row.id)}
+          {...(onChecked && { onChange: () => onChecked(row.id) })}
         />
       </div>
     ),
@@ -144,6 +144,23 @@ export const getClientTeamColumns = ({
   {
     title: (
     <HeaderCell
+    title="Permission"
+    sortable
+    ascending={
+      sortConfig?.direction === 'asc' && sortConfig?.key === 'member_role'
+    }
+    />),
+    onHeaderCell: () => onHeaderCellClick('member_role'),
+    dataIndex: 'member_role',
+    key: 'member_role',
+    width: 200,
+    render: (_: any, row: any) => (
+      <Text className="font-medium text-gray-700">{row.member_role}</Text>
+    ),
+  },
+  {
+    title: (
+    <HeaderCell
     title="Status"
     sortable
     ascending={
@@ -189,13 +206,13 @@ export const getClientTeamColumns = ({
       
         <CustomModalButton 
           icon={<PencilIcon className="h-4 w-4" />}
-          view={<AddTeamMemberForm title="Edit Team Member" row={row}/>}
+          view={<AddTeamMemberForm title="Edit Team member" row={row}/>}
           customSize="625px"
-          title='Edit Team Member'
+          title='Edit Team member'
         />
         <Tooltip
           size="sm"
-          content={() => 'View Team Member'}
+          content={() => 'View Team member'}
           placement="top"
           color="invert"
         >
@@ -206,7 +223,7 @@ export const getClientTeamColumns = ({
           </Link>
         </Tooltip>
         <DeletePopover
-          title={`Delete the product`}
+          title={`Delete the Task`}
           description={`Are you sure you want to delete?`}
           onDelete={() => onDeleteItem(row._id, currentPage, pageSize, data?.length <= 1 ? true : false, sortConfig, searchTerm)}
         />

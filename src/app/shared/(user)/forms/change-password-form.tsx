@@ -1,20 +1,14 @@
 'use client';
 
-import { Title, Text, ActionIcon } from '@/components/ui/text';
+import { Title, ActionIcon } from '@/components/ui/text';
 import { Button } from '@/components/ui/button';
 import { SubmitHandler } from 'react-hook-form';
 import { Form } from '@/components/ui/form';
-import { useEffect, useState } from 'react';
-import { routes } from '@/config/routes';
-import Link from 'next/link';
-import toast from 'react-hot-toast';
-import { useMedia } from '@/hooks/use-media';
 import { Password } from '@/components/ui/password';
 import { ChangePasswordSchema, changePasswordSchema } from '@/utils/validators/change-password.schema';
 import { useDispatch, useSelector } from 'react-redux';
 import { changePasswordUser } from '@/redux/slices/user/auth/changePasswordSlice';
 import { handleKeyDown } from '@/utils/common-functions';
-import { useRouter } from 'next/navigation';
 import Spinner from '@/components/ui/spinner';
 import { useModal } from '@/app/shared/modal-views/use-modal';
 import cn from '@/utils/class-names';
@@ -28,18 +22,10 @@ const initialValues: ChangePasswordSchema = {
 };
 
 export default function ChangePasswordForm() {
-  const isMedium = useMedia('(max-width: 1200px)', false);
   const dispatch = useDispatch();
   const { closeModal } = useModal();
-  const router = useRouter();
-
   const changePassword = useSelector((state: any) => state?.root?.changePassword)
-  // console.log("changePassword state.....", changePassword)
-
-
   const onSubmit: SubmitHandler<ChangePasswordSchema> = (data) => {
-    console.log('Change password form data->', data);
-
     const formData = {
       currentPassword: data?.oldPassword,
       newPassword: data?.newPassword,
@@ -47,9 +33,7 @@ export default function ChangePasswordForm() {
     }
     dispatch(changePasswordUser(formData)).then((result: any) => {
       if (changePasswordUser.fulfilled.match(result)) {
-        // console.log('resultt', result)
         if (result && result.payload.success === true ) {
-          // router.replace(routes.dashboard);
           closeModal();
         } 
       }
@@ -85,7 +69,6 @@ export default function ChangePasswordForm() {
                 onKeyDown={handleKeyDown}
                 label="Current Password"
                 placeholder="Enter your password"
-                size={isMedium ? 'lg' : 'xl'}
                 color="info"
                 className="[&>label>span]:font-medium"
                 {...register('oldPassword')}
@@ -95,7 +78,6 @@ export default function ChangePasswordForm() {
                 onKeyDown={handleKeyDown}
                 label="New Password"
                 placeholder="Enter your password"
-                size={isMedium ? 'lg' : 'xl'}
                 color="info"
                 className="[&>label>span]:font-medium"
                 {...register('newPassword')}
@@ -105,7 +87,6 @@ export default function ChangePasswordForm() {
                 onKeyDown={handleKeyDown}
                 label="Confirm New Password"
                 placeholder="Enter your password"
-                size={isMedium ? 'lg' : 'xl'}
                 color="info"
                 className="[&>label>span]:font-medium"
                 {...register('confirmedPassword')}

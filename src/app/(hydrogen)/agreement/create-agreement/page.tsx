@@ -1,20 +1,14 @@
 'use client';
 
-import { Title, Text, ActionIcon } from '@/components/ui/text';
 import { Button } from '@/components/ui/button';
 import { Controller, SubmitHandler } from 'react-hook-form';
 import { Form } from '@/components/ui/form';
 import React, { useEffect, useState } from 'react';
-import { routes } from '@/config/routes';
-import Link from 'next/link';
-import toast from 'react-hot-toast';
 import { useMedia } from '@/hooks/use-media';
 import { useDispatch, useSelector } from 'react-redux';
 import { DatePicker } from '@/components/ui/datepicker';
 import { handleKeyDown } from '@/utils/common-functions';
 import { useRouter } from 'next/navigation';
-import Spinner from '@/components/ui/spinner';
-import cn from '@/utils/class-names';
 import { AgrementFormTypes, agrementFormSchema } from '@/utils/validators/agreement.schema';
 import { Input } from 'rizzui';
 import SelectLoader from '@/components/loader/select-loader';
@@ -50,7 +44,6 @@ export default function ChangePasswordForm() {
 
     const { user } = useSelector((state: any) => state?.root?.signIn?.user?.data);
     const { clientlistDetails, loading } = useSelector((state: any) => state?.root?.agreement);
-    console.log(clientlistDetails?.data?.client, 'clientlistDetails')
 
     const clientOptions =
         clientlistDetails?.data?.client && clientlistDetails?.data?.client?.length > 0 ? clientlistDetails?.data?.client?.map((client: any) => ({
@@ -76,7 +69,7 @@ export default function ChangePasswordForm() {
 
     useEffect(() => {
         dispatch(getDropdownclientlist())
-    }, [])
+    }, [dispatch])
 
     // initial value State
     const initialValues: AgrementFormTypes = {
@@ -121,7 +114,6 @@ export default function ChangePasswordForm() {
         setformData(watch())
     };
 
-    console.log(preview, 'preview')
 
     return (
         <>
@@ -140,7 +132,6 @@ export default function ChangePasswordForm() {
                 >
                     {({ register, control, formState: { errors }, watch, handleSubmit }) => (
 
-                        console.log(watch(), 'watch'),
                         <div className="space-y-5">
                             <div className="grid grid-cols-1 gap-4 md:grid-cols-3 xl:gap-5 xl:pb-2 items-start">
                                 <Input
@@ -185,7 +176,6 @@ export default function ChangePasswordForm() {
                                         <Select
                                             options={clientOptions}
                                             onChange={(selectedOption: any) => {
-                                                console.log(selectedOption, 'selectedOption', value)
                                                 setselectedClient(selectedOption);
                                                 onChange(selectedOption?.name);
                                             }}

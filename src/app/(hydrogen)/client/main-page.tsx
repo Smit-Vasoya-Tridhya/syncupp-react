@@ -3,7 +3,7 @@
 import PageHeader from '@/app/shared/page-header';
 import ModalButton from '@/app/shared/modal-button';
 import AddClientForm from '@/app/shared/(user)/agency/client/create-edit/add-client-form';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteClient, getAllClient } from '@/redux/slices/user/client/clientSlice';
 import { useRouter } from 'next/navigation';
@@ -28,33 +28,36 @@ export default function ClientPage() {
   const [pageSize, setPageSize] = useState<number>(5);
 
 
+  // useEffect(() => {
+  //   dispatch(getAllClient({pagination: false}))
+  // }, [dispatch]);
+
 
   const handleChangePage = async (paginationParams: any) => {
     let { page, items_per_page, sort_field, sort_order, search } = paginationParams;
 
-    const response = await dispatch(getAllClient({ page, items_per_page, sort_field, sort_order, search }));
+    const response = await dispatch(getAllClient({ page, items_per_page, sort_field, sort_order, search, pagination: true }));
     const { data } = response?.payload;
     const maxPage: number = data?.page_count;
 
     if (page > maxPage) {
       page = maxPage > 0 ? maxPage : 1;
-      await dispatch(getAllClient({ page, items_per_page, sort_field, sort_order, search }));
-      return data?.client
+      await dispatch(getAllClient({ page, items_per_page, sort_field, sort_order, search, pagination: true }));
+      return data?.clients
     }
-    if(data && data?.client && data?.client?.length !== 0 ) {
-      return data?.client
+    if(data && data?.clients && data?.clients?.length !== 0 ) {
+      return data?.clients
     }
   };
 
   const handleDeleteById = async (id: string | string[], currentPage?: any, countPerPage?: number, sortConfig?: Record<string, string>, searchTerm?: string) => {
 
-    // console.log("delete id in main page....", id)
 
     try {
       const res = await dispatch(deleteClient({ client_ids: id }));
       if (res.payload.success === true) {
         closeModal();
-        const reponse = await dispatch(getAllClient({ page: currentPage, items_per_page: countPerPage, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm }));
+        const reponse = await dispatch(getAllClient({ page: currentPage, items_per_page: countPerPage, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm, pagination: true }));
       }
     } catch (error) {
       console.error(error);
@@ -78,7 +81,7 @@ export default function ClientPage() {
         </div>
       </PageHeader>
       <CustomTable
-        data={clientSliceData?.data?.client}
+        data={clientSliceData?.data?.clients}
         total={clientSliceData?.data?.page_count}
         loading={clientSliceData?.loading}
         pageSize={pageSize}

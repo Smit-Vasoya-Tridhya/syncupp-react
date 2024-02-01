@@ -4,23 +4,19 @@ import SelectLoader from '@/components/loader/select-loader';
 import dynamic from 'next/dynamic';
 import { Input } from '@/components/ui/input';
 import { Controller, useFormContext } from 'react-hook-form';
-import useMedia from 'react-use/lib/useMedia';
 import { handleKeyDown } from '@/utils/common-functions';
-
+import useMedia from 'react-use/lib/useMedia';
 
 const Select = dynamic(() => import('@/components/ui/select'), {
   ssr: false,
   loading: () => <SelectLoader />,
 });
-
-
 const peopleCountOptions = [
   { name: '1-50', value: '1-50' },
   { name: '51-200', value: '51-200' },
   { name: '201-500', value: '201-500' },
   { name: '501-1000', value: '501-1000' },
 ]
-
 const industryOptions = [
   { name: 'IT', value: 'IT' },
   { name: 'Marketing', value: 'Marketing' },
@@ -28,33 +24,26 @@ const industryOptions = [
 ]
 
 export default function CompanyDetailsForm(props: any) {
-
-  const { fdata, setFdata } = props;
-
   const isMedium = useMedia('(max-width: 1200px)', false);
-
+  const { fdata, setFdata } = props;
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("handleChange..");
     setFdata({
       ...fdata,
       [event.target.name]: event.target.value
     });
   };
-
   const peopleCountChange = (selectedOption: string) => {
     setFdata({
       ...fdata,
       peopleCount: selectedOption
     });
   };
-
   const industryChange = (selectedOption: string) => {
     setFdata({
       ...fdata,
       industry: selectedOption
     });
   };
-
   const {
     register,
     control,
@@ -68,10 +57,10 @@ export default function CompanyDetailsForm(props: any) {
           <Input
             onKeyDown={handleKeyDown}
             type="text"
-            size={isMedium ? 'lg' : 'xl'}
             label="Company Name"
-            placeholder="Enter Company Name"
+            placeholder="Enter company name"
             rounded="pill"
+            size={isMedium ? 'lg' : 'xl'}
             color="info"
             className="[&>label>span]:font-medium"
             {...register('companyName', { onChange: (e: any)=> handleChange(e)})}
@@ -80,10 +69,10 @@ export default function CompanyDetailsForm(props: any) {
           <Input
             onKeyDown={handleKeyDown}
             type="text"
-            size={isMedium ? 'lg' : 'xl'}
             label="Company Website"
-            placeholder="Enter Website url"
+            placeholder="Enter website url"
             rounded="pill"
+            size={isMedium ? 'lg' : 'xl'}
             color="info"
             className="[&>label>span]:font-medium"
             {...register('companyWebsite', { onChange: (e: any)=> handleChange(e)})}
@@ -102,10 +91,10 @@ export default function CompanyDetailsForm(props: any) {
                   peopleCountChange(selectedOption);
                 }}
                 value={value}
-                size={isMedium ? 'lg' : 'xl'}
                 label="How many people"
                 rounded="pill"
                 color="info"
+                size={isMedium ? 'lg' : 'xl'}
                 getOptionValue={(option) => option.value}
                 dropdownClassName="p-1 border w-12 border-gray-100 shadow-lg"
                 className="font-medium"
@@ -124,8 +113,8 @@ export default function CompanyDetailsForm(props: any) {
                   industryChange(selectedOption);
                 }}
                 value={value}
-                size={isMedium ? 'lg' : 'xl'}
                 label="Industry"
+                size={isMedium ? 'lg' : 'xl'}
                 rounded="pill"
                 color="info"
                 getOptionValue={(option) => option.value}

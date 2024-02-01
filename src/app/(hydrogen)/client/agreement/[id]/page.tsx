@@ -14,7 +14,7 @@ export default function AgreementDetailsPage({ params }: { params: { id: string 
 
     useEffect(() => {
         dispatch(getSingleClientAgreement(params?.id))
-    }, [params?.id])
+    }, [params?.id , dispatch])
 
     return (
         <>

@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Title } from '@/components/ui/text';
 import cn from '@/utils/class-names';
 import { useMedia } from '@/hooks/use-media';
+import { handleKeyDown } from '@/utils/common-functions';
 const Drawer = dynamic(
   () => import('@/components/ui/drawer').then((module) => module.Drawer),
   { ssr: false }
@@ -110,6 +111,7 @@ export default function TableFilter({
             value={searchTerm}
             onClear={onSearchClear}
             onChange={onSearchChange}
+            onKeyDown={handleKeyDown}
             inputClassName="h-9"
             clearable={true}
             prefix={<PiMagnifyingGlassBold className="h-4 w-4" />}
