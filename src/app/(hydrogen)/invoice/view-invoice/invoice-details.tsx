@@ -149,7 +149,6 @@ export default function InvoiceDetails() {
             <Text>Mar 22, 2013</Text>
           </div>
         </div>
-
         <div className="mt-4 xs:mt-0">
           <Title as="h6" className="mb-3.5 font-semibold">
             Bill To
@@ -168,20 +167,13 @@ export default function InvoiceDetails() {
             <Text>Mar 22, 2013</Text>
           </div>
         </div>
-
-        <div className="mt-4 flex sm:mt-6 md:mt-0 md:justify-end">
-          <QRCodeSVG
-            value="https://reactjs.org/"
-            className="h-28 w-28 lg:h-32 lg:w-32"
-          />
-        </div>
       </div>
 
       <InvoiceDetailsListTable />
 
       <div className="flex flex-col-reverse items-start justify-between border-t border-gray-200 pb-4 pt-8 xs:flex-row">
         <div className="mt-6 max-w-md pe-4 xs:mt-0">
-          <Title
+          {/* <Title
             as="h6"
             className="mb-1 text-xs font-semibold uppercase xs:mb-2 xs:text-sm"
           >
@@ -190,7 +182,7 @@ export default function InvoiceDetails() {
           <Text className="leading-[1.7]">
             We appreciate your business. Should you need us to add VAT or extra
             notes let us know!
-          </Text>
+          </Text> */}
         </div>
         <div className=" w-full max-w-sm">
           <Text className="flex items-center justify-between border-b border-gray-200 pb-3.5 lg:pb-5">

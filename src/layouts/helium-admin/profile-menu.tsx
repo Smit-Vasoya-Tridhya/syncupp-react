@@ -16,6 +16,7 @@ import "../helium/style.css"
 import { getViewProfiles } from '@/redux/slices/admin/auth/viewprofile/viewProfileSlice';
 import { useSelector } from 'react-redux';
 import Link from 'next/link';
+import Spinner from '@/components/ui/spinner';
 
 const menuItems = [
   {
@@ -43,10 +44,18 @@ function DropdownMenu() {
     dispatch(logoutUserAdmin(''));
     router.replace('/admin/signin');
   }
-  const { userData } = useSelector((state: any) => state?.root?.adminSignIn);
-  const [data, setData] = useState<UserProfileDTO>({} as UserProfileDTO);
-
-
+  useEffect(()=>{
+    dispatch(getViewProfiles())
+  }, [dispatch])
+  const { data: userData , loading } = useSelector((state: any) => state?.root?.viewProfile);
+  // const [data, setData] = useState<UserProfileDTO>({} as UserProfileDTO);
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center p-10">
+        <Spinner size="xl" tag="div" className="ms-3" />
+      </div>
+    );
+  } else {
   return (
     <div className="w-64 text-left rtl:text-right">
       <div className="flex items-center border-b border-gray-300 px-6 pb-5 pt-6">
@@ -57,11 +66,9 @@ function DropdownMenu() {
         />
         <div className="ms-3">
           <Title as="h6" className="font-semibold">
-          {`${data?.first_name} ${data?.last_name}`}
-          {/* {`${userData?.data?.user?.first_name} ${userData?.data?.user?.last_name}`} */}
+          {`${userData?.first_name} ${userData?.last_name}`}
           </Title>
-          <Text className="text-gray-600">{`${data?.email}`}</Text>
-          {/* <Text className="text-gray-600">{`${userData?.data?.user?.email}`}</Text> */}
+          <Text className="text-gray-600">{`${userData?.email}`}</Text>
         </div>
       </div>
       <Link
@@ -94,7 +101,7 @@ function DropdownMenu() {
       </div>
     </div>
   );
-}
+}}
 
 export default function ProfileMenu({
   buttonClassName,
