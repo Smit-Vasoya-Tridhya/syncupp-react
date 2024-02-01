@@ -415,7 +415,6 @@ export const clientSlice = createSlice({
         }
       })
       .addCase(getAllClient.fulfilled, (state, action) => {
-        console.log("client response in reducer", action.payload)
         if (action?.payload?.status == false) {
           toast.error(action.payload.message)
           return {

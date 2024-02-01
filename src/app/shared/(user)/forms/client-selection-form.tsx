@@ -59,7 +59,7 @@ export default function ClientSelectionForm() {
                     }}
                 >
                     {({ control, formState: { errors } }) => (
-                        <div className="space-y-5 float-right">
+                        <div className="w-[10rem] float-right">
                             <Controller
                                 control={control}
                                 name="client_selection"

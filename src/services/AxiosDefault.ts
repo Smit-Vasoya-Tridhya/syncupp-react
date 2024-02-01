@@ -52,7 +52,6 @@ const AxiosDefaultSetting = async ({
     },
     async (error) => {
 
-      console.log("401 error...", error)
 
       if (error?.response && error?.response?.status === 401) {
         try {

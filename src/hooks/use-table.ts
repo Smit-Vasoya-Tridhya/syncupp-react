@@ -25,9 +25,10 @@ export function useTable<T extends AnyObject>(
     direction: 'desc',
   });
   useEffect(() => {
-    if (initialData && initialData.length > 0) {
-      setData(initialData);
-    }
+    setData(initialData);
+    // if (initialData && initialData.length > 0) {
+    //   setData(initialData);
+    // }
     if (currentPage) {
       setCurrentPage(+currentPage);
     }

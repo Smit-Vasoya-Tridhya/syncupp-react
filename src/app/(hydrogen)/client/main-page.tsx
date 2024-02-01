@@ -27,6 +27,7 @@ export default function ClientPage() {
   
   const [pageSize, setPageSize] = useState<number>(5);
 
+
   // useEffect(() => {
   //   dispatch(getAllClient({pagination: false}))
   // }, [dispatch]);
@@ -42,10 +43,10 @@ export default function ClientPage() {
     if (page > maxPage) {
       page = maxPage > 0 ? maxPage : 1;
       await dispatch(getAllClient({ page, items_per_page, sort_field, sort_order, search, pagination: true }));
-      return data?.client
+      return data?.clients
     }
-    if(data && data?.client && data?.client?.length !== 0 ) {
-      return data?.client
+    if(data && data?.clients && data?.clients?.length !== 0 ) {
+      return data?.clients
     }
   };
 

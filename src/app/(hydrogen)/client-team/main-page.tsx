@@ -61,7 +61,8 @@ export default function TeamDataTablePage() {
           <Spinner size="xl" tag='div' className='ms-3' />
         </div>
       ) : (
-        <CustomTable
+        <div className='mt-5'>
+          <CustomTable
           data={teamMemberData && teamMemberData?.data?.teamMemberList}
           total={teamMemberData && teamMemberData?.data?.page_count}
           loading={teamMemberData && teamMemberData?.loading}
@@ -70,7 +71,9 @@ export default function TeamDataTablePage() {
           handleDeleteById={handleDeleteById}
           handleChangePage={handleChangePage}
           getColumns={getColumns}
-        />)
+        />
+        </div>
+        )
       }
     </>
   );

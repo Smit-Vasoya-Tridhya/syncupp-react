@@ -53,7 +53,7 @@ export default function AgencySelectionForm() {
                     }}
                 >
                     {({ control, formState: { errors } }) => (
-                        <div className="space-y-5 float-right">
+                        <div className="w-[10rem] float-right">
                             <Controller
                                 control={control}
                                 name="agency_selection"
@@ -68,7 +68,7 @@ export default function AgencySelectionForm() {
                                         placeholder='Select Agency'
                                         // getOptionValue={(option) => option.value}
                                         className="font-medium"
-                                        dropdownClassName="p-1 border w-auto border-gray-100 shadow-lg"
+                                        dropdownClassName="p-1 border w-auto border-gray-100 shadow-lg absolute"
                                     />
                                 )}
                             />

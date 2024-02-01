@@ -157,21 +157,21 @@ export const getColumns = ({
         <Text className="font-medium text-gray-700">{row.email}</Text>
       ),
     },
-    {
-      title: (
-        <HeaderCell
-          title="Permission"
-          sortable
-          ascending={
-            sortConfig?.direction === 'asc' && sortConfig?.key === 'reference_id.role.name'
-          }
-        />),
-      onHeaderCell: () => onHeaderCellClick('reference_id.role.name'),
-      dataIndex: 'reference_id',
-      key: 'reference_id',
-      width: 200,
-      render: (value: Record<string, any>) => getRoleName(value?.role?.name),
-    },
+    // {
+    //   title: (
+    //     <HeaderCell
+    //       title="Permission"
+    //       sortable
+    //       ascending={
+    //         sortConfig?.direction === 'asc' && sortConfig?.key === 'reference_id.role.name'
+    //       }
+    //     />),
+    //   onHeaderCell: () => onHeaderCellClick('reference_id.role.name'),
+    //   dataIndex: 'reference_id',
+    //   key: 'reference_id',
+    //   width: 200,
+    //   render: (value: Record<string, any>) => getRoleName(value?.role?.name),
+    // },
     {
       title: (
         <HeaderCell
@@ -184,7 +184,7 @@ export const getColumns = ({
       onHeaderCell: () => onHeaderCellClick('status'),
       dataIndex: 'status',
       key: 'status',
-      width: 200,
+      width: 150,
       render: (value: string) => getStatusBadge(value),
     },
     {
@@ -200,7 +200,7 @@ export const getColumns = ({
       onHeaderCell: () => onHeaderCellClick('createdAt'),
       dataIndex: 'createdAt',
       key: 'createdAt',
-      width: 200,
+      width: 150,
       render: (value: string) => {
         const date = moment(value).fromNow();
         return <Text className="font-medium text-gray-700">{date}</Text>
@@ -211,7 +211,7 @@ export const getColumns = ({
       title: <HeaderCell title="Actions" className="opacity-0" />,
       dataIndex: 'action',
       key: 'action',
-      width: 120,
+      width: 80,
       render: (_: string, row: TeamMemberType) => (
         <div className="flex items-center justify-end gap-3 pe-4">
           <Tooltip
@@ -226,11 +226,11 @@ export const getColumns = ({
               </Button>
             </Link>
           </Tooltip>
-          <DeletePopover
+          {/* <DeletePopover
             title={`Delete the Team member`}
             description={`Are you sure you want to delete?`}
             onDelete={() => onDeleteItem(row._id, currentPage, pageSize, data?.length <= 1 ? true : false, sortConfig, searchTerm)}
-          />
+          /> */}
         </div>
       ),
     },

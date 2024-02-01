@@ -53,8 +53,8 @@ type PutEditTeamMemberApiData = {
     first_name: string;
     last_name: string;
     user_type: string;
-    agency_id: string;
     member_role: string;
+    agency_id?: string;
   };
 
 
