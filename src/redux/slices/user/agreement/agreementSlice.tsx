@@ -196,22 +196,33 @@ interface AgencyAgreementInitialState {
     loading: boolean;
     agreementDetails: any;
     singleAgreementdetails: any,
-    clientlistDetails: any
+    clientlistDetails: any,
+    dropdownloader: boolean,
+    singleagreementloader: boolean
 }
 
 // Slice initial States
 const initialState: AgencyAgreementInitialState = {
     loading: false,
+    dropdownloader: false,
+    singleagreementloader: false,
     agreementDetails: {},
     singleAgreementdetails: {},
-    clientlistDetails: {}
+    clientlistDetails: {},
 };
 
 
 export const agencyAgreementSlice = createSlice({
     name: "agreement",
     initialState,
-    reducers: {},
+    reducers: {
+        removeAgreementdetails(state, action) {
+            return {
+                ...state,
+                singleAgreementdetails: {}
+            }
+        }
+    },
 
     extraReducers: (builder) => {
         // Agency Agreement list cases
@@ -327,7 +338,7 @@ export const agencyAgreementSlice = createSlice({
             .addCase(getSingleagreement.pending, (state) => {
                 return {
                     ...state,
-                    loading: true,
+                    singleagreementloader: true,
                 }
             })
             .addCase(getSingleagreement.fulfilled, (state, action) => {
@@ -337,13 +348,13 @@ export const agencyAgreementSlice = createSlice({
                 return {
                     ...state,
                     singleAgreementdetails: action.payload,
-                    loading: false,
+                    singleagreementloader: false,
                 }
             })
             .addCase(getSingleagreement.rejected, (state) => {
                 return {
                     ...state,
-                    loading: false,
+                    singleagreementloader: false,
                 }
             });
 
@@ -431,7 +442,7 @@ export const agencyAgreementSlice = createSlice({
             .addCase(getDropdownclientlist.pending, (state) => {
                 return {
                     ...state,
-                    loading: true,
+                    dropdownloader: true,
                 }
             })
             .addCase(getDropdownclientlist.fulfilled, (state, action) => {
@@ -440,18 +451,20 @@ export const agencyAgreementSlice = createSlice({
                 }
                 return {
                     ...state,
-                    loading: false,
+                    dropdownloader: false,
                     clientlistDetails: action.payload
                 }
             })
             .addCase(getDropdownclientlist.rejected, (state) => {
                 return {
                     ...state,
-                    loading: false,
+                    dropdownloader: false,
                 }
             });
 
     }
 });
 
+
+export const { removeAgreementdetails } = agencyAgreementSlice.actions;
 export default agencyAgreementSlice.reducer;

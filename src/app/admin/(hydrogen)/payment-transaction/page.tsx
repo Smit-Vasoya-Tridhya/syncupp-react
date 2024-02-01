@@ -4,24 +4,38 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import CustomTable from '@/components/common-tables/table';
-import { AgreementColumns } from '@/app/shared/agreement/columns';
 import { deleteAgencyAgreement, getAllAgencyagreement } from '@/redux/slices/user/agreement/agreementSlice';
 import PageHeader from '@/app/shared/page-header';
-import { Button } from 'rizzui';
+import { PaymentTransactionColumns } from '@/app/shared/(admin)/payment-transaction/columns';
 
+
+const DummyData = [{
+    name: "Payment Information",
+    date: "12/12/2023",
+    form_of_payment: "Credit card",
+    subscription_plan: "Platinum",
+    transaction_id: "T1234-5678-9012-3456",
+    status: "Success"
+}, {
+    name: "Payment Information",
+    date: "12/12/2023",
+    form_of_payment: "Credit card",
+    subscription_plan: "Platinum",
+    transaction_id: "T1234-5678-9012-3456",
+    status: "Success"
+}]
 
 const pageHeader = {
-    title: 'Aggrement',
+    title: 'Payment Information',
 };
 
 
-export default function AgreementPage() {
+export default function PaymentTransactionlistPage() {
 
     const dispatch = useDispatch();
     const router = useRouter();
 
     const { agreementDetails, loading } = useSelector((state: any) => state?.root?.agreement);
-    
     console.log("agreementDetails", agreementDetails, loading);
 
     const [pageSize, setPageSize] = useState(5)
@@ -56,21 +70,17 @@ export default function AgreementPage() {
     return (
         <>
             {/* <h1>Aggrement</h1> */}
-            <PageHeader title={pageHeader.title}>
-                <div className="mt-4 flex items-center gap-3 @lg:mt-0">
-                    <Button type='button' onClick={() => { router.push(`/agreement/create-agreement`) }} className='mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0'>Add Agreement</Button>
-                </div>
-            </PageHeader>
+            <PageHeader title={pageHeader.title} />
             {/* <Button type='button' onClick={() => { router.push(`/agreement/create-agreement`)}}>Add</Button> */}
             <CustomTable
-                data={agreementDetails?.data || []}
-                total={agreementDetails?.page_count || 1}
+                data={DummyData || []}
+                total={10}
                 loading={loading}
                 pageSize={pageSize}
                 setPageSize={setPageSize}
                 handleDeleteById={handleDeleteById}
                 handleChangePage={handleChangePage}
-                getColumns={AgreementColumns}
+                getColumns={PaymentTransactionColumns}
             />
         </>
     )

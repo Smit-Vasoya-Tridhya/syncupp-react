@@ -33,6 +33,9 @@ export const routes = {
     resetPassword:'/admin/reset-password',
     dashboard: '/admin/dashboard',
     faq:'/admin/faq',
+    agencylist:"/admin/agencylist",
+    inquiry:"/admin/inquiry",
+    payment:"/admin/payment-transaction"
   },
 
 };

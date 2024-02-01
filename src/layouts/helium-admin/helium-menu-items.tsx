@@ -9,12 +9,22 @@ import {
 export const menuItems = [
   {
     name: 'Dashboard',
-    href: '/home',
+    href: routes.admin.dashboard,
     icon: <PiFolderNotchDuotone />,
   },
   {
     name: 'Customer',
-    href: '/admin/agencylist',
+    href: routes.admin.agencylist,
+    icon: <PiUserPlusDuotone />,
+  },
+  {
+    name: 'Inquiry',
+    href: routes.admin.inquiry,
+    icon: <PiUserPlusDuotone />,
+  },
+  {
+    name: 'Payment',
+    href: routes.admin.payment,
     icon: <PiUserPlusDuotone />,
   },
   {
