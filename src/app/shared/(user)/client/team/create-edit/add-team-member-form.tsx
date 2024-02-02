@@ -55,7 +55,7 @@ export default function AddTeamMemberForm(props: any) {
       name: data?.name,
       email: data?.email,
       contact_number: data?.contact_number,
-      role: data?.member_role === 'team_member' ? 'Team member' : 'Admin'
+      role: data?.member_role?.name === 'team_member' ? 'Team member' : 'Admin'
     };
   } else if (signIn?.role === 'client') {
     defaultValuess = {
@@ -222,22 +222,22 @@ export default function AddTeamMemberForm(props: any) {
                   error={errors.contact_number?.message as string}
                 />
                 <Controller
-                  name="role"
-                  control={control}
-                  render={({ field: { onChange, value } }) => (
-                    <SelectBox
-                      options={typeOption}
-                      value={value}
-                      onChange={onChange}
-                      label="Permisson *"
-                      placeholder='Select role'
-                      color="info"
-                      disabled={signIn?.role === 'client'}
-                      error={errors?.role?.message as string}
-                      getOptionValue={(option) => option?.name}
-                    />
-                  )}
-                />
+                name="role"
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <SelectBox
+                    options={typeOption}
+                    value={signIn?.role === 'client' ? 'Team member' : value}
+                    onChange={onChange}
+                    label="Permisson *"
+                    placeholder='Select role'
+                    color="info"
+                    disabled={signIn?.role === 'client'}
+                    error={errors?.role?.message as string}
+                    getOptionValue={(option) => option?.name}
+                  />
+                )}
+              />
               </div>
               <div>
                 <div className={cn('grid grid-cols-2 gap-5 pt-5')}>
