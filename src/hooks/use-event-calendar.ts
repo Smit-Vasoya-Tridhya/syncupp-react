@@ -8,7 +8,7 @@ const event = [
     start: new Date(),
     end: new Date(),
     allDay: false,
-    title: 'Meeting with Paige',
+    title: '',
     description: 'About Planning',
     location: `At Paige's place`,
   },

@@ -18,6 +18,9 @@ export const routes = {
   invoiceView:'/invoice/view-invoice',
   viewTeam:'/team/view-team',
   task: '/task',
+  UserCalender: '/calender',
+  UserCalenderForm: '/calender/calender-form',
+  UserCalenderAddActivity: '/calender/create-edit',
 
   teams: {
     verify: '/team/verify'

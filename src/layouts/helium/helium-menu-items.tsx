@@ -3,7 +3,7 @@ import cn from '@/utils/class-names';
 import Link from 'next/link';
 import { Fragment } from 'react';
 import {PiFolderNotchDuotone,PiUser, PiUsersThree} from 'react-icons/pi';
-import { FaTasks, FaFileInvoiceDollar } from "react-icons/fa";
+import { FaTasks, FaFileInvoiceDollar, FaRegCalendarAlt } from "react-icons/fa";
 import { FaFilePen } from "react-icons/fa6";
 import { useSelector } from 'react-redux';
 import { Title } from '@/components/ui/text';
@@ -40,6 +40,11 @@ export const MenuItems = () => {
           name: 'Task',
           href: routes.task,
           icon: <FaTasks />,
+        },
+        {
+          name: 'Calender',
+          href: routes.UserCalender,
+          icon: <FaRegCalendarAlt />,
         },
         {
           name: 'Invoice',
