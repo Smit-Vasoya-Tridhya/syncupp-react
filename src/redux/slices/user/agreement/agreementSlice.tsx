@@ -181,7 +181,7 @@ export const getDropdownclientlist: any = createAsyncThunk(
     "agreement/getDropdownclientlist",
     async (data: any) => {
         try {
-            const response: any = await GetDropdownClienlist({});
+            const response: any = await GetDropdownClienlist({ pagination: false });
             return response;
         } catch (error: any) {
             return { status: false, message: error.response.data.message } as APIErrorResponse;
