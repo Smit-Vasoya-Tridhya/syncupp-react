@@ -104,8 +104,7 @@ export default function AddTeamMemberForm(props: any) {
           if (result && result.payload.success === true) {
             save && closeModal();
             setReset({ ...initialValues });
-            console.log("role..........", )
-            if (signIn?.role === 'client', signIn?.role) {
+            if (signIn?.role === 'client') {
               dispatch(
                 getAllTeamMember({
                   sort_field: 'createdAt',

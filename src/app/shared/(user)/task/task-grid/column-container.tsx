@@ -1,32 +1,19 @@
 import { SortableContext, useSortable } from "@dnd-kit/sortable";
-import TrashIcon from "./icon/trash-icon";
 import { Column, Id, Task } from "./types";
 // import { CSS } from "@dnd-kit/utilities";
 import { useMemo, useState } from "react";
-import PlusIcon from "./icon/plus-icon";
 import TaskCard from "./task-card";
+import SimpleBar from '@/components/ui/simplebar';
 
 interface Props {
   column: Column;
-  deleteColumn: (id: Id) => void;
-  updateColumn: (id: Id, title: string) => void;
-
-  createTask: (columnId: Id) => void;
-  updateTask: (id: Id, content: string) => void;
-  deleteTask: (id: Id) => void;
   tasks: Task[];
 }
 
 function ColumnContainer({
   column,
-  deleteColumn,
-  updateColumn,
-  createTask,
   tasks,
-  deleteTask,
-  updateTask,
 }: Props) {
-  const [editMode, setEditMode] = useState(false);
 
   const tasksIds = useMemo(() => {
     return tasks.map((task) => task.id);
@@ -45,7 +32,6 @@ function ColumnContainer({
       type: "Column",
       column,
     },
-    disabled: editMode,
   });
 
   const style = {
@@ -58,17 +44,7 @@ function ColumnContainer({
       <div
         ref={setNodeRef}
         style={style}
-        className="
-      opacity-40
-      border-2
-      w-[350px]
-      h-[500px]
-      max-h-[500px]
-      rounded-md
-      flex
-      flex-col
-      "
-      ></div>
+        className="opacity-40 border-2 w-[350px] h-[600px] max-h-[600px] rounded-md flex flex-col"></div>
     );
   }
 
@@ -76,69 +52,30 @@ function ColumnContainer({
     <div
       ref={setNodeRef}
       style={style}
-      className="
-  w-[350px]
-  h-[500px]
-  max-h-[500px]
-  rounded-md
-  flex
-  flex-col
-  "
-    >
+      className="w-[350px] h-[650px] max-h-[650px] rounded-md flex flex-col bg-gray-100">
       {/* Column title */}
       <div
         {...attributes}
         {...listeners}
-        onClick={() => {
-          setEditMode(true);
-        }}
-        className="
-      text-md
-      h-[60px]
-      cursor-grab
-      rounded-md
-      rounded-b-none
-      p-3
-      font-bold
-      border-4
-      flex
-      items-center
-      justify-between
-      "
-      >
+        className="bg-gray-100 text-md text-black h-[48px] cursor-grab border rounded-md rounded-b-none p-3 font-bold flex justify-center items-center">
         <div className="flex justify-center items-center">
-          {!editMode && column.title}
-          {editMode && (
-            <input
-              className=" border-none focus:border-none rounded outline-none px-2"
-              value={column.title}
-              onChange={(e) => updateColumn(column.id, e.target.value)}
-              autoFocus
-              onBlur={() => {
-                setEditMode(false);
-              }}
-              onKeyDown={(e) => {
-                if (e.key !== "Enter") return;
-                setEditMode(false);
-              }}
-            />
-          )}
+          {column.title}
         </div>
       </div>
 
       {/* Column task container */}
-      <div className="flex flex-grow flex-col gap-4 p-2 overflow-x-hidden overflow-y-auto">
+      <SimpleBar className="max-h-[600px]">
         <SortableContext items={tasksIds}>
           {tasks.map((task) => (
-            <TaskCard
+            <div key={task.id} className="px-2 pt-2">
+              <TaskCard
               key={task.id}
               task={task}
-              deleteTask={deleteTask}
-              updateTask={updateTask}
             />
+            </div>
           ))}
         </SortableContext>
-      </div>
+      </SimpleBar>
     </div>
   );
 }

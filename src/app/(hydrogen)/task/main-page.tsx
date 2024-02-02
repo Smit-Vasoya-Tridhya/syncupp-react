@@ -9,9 +9,9 @@ import { useRouter } from 'next/navigation';
 import { useModal } from '@/app/shared/modal-views/use-modal';
 import { getColumns } from '@/app/shared/(user)/client/team/team-list/columns';
 import CustomTable from '@/components/common-tables/table';
-import { PiGridFourFill, PiListBulletsBold, PiPlusBold } from 'react-icons/pi';
+import { PiGridFour, PiGridFourFill, PiListBullets, PiListBulletsBold, PiPlusBold } from 'react-icons/pi';
 import AddTaskForm from '@/app/shared/(user)/task/create-edit/add-task-form';
-import { Button } from 'rizzui';
+import { ActionIcon, Button } from 'rizzui';
 import cn from '@/utils/class-names';
 import { setGridView } from '@/redux/slices/user/task/taskSlice';
 import KanbanBoard from '@/app/shared/(user)/task/task-grid/kanban-board';
@@ -89,19 +89,40 @@ export default function TaskPage() {
           />
         </div>
       </PageHeader>
-      <div className="mt-2 flex justify-end items-center gap-2 @lg:mt-0 absolute top-[9.7rem] right-[2rem]">
-        <Button size="sm" variant="outline" className={cn(
-          "bg-white text-black p-2",
-          !gridView ? 'border-black bg-black text-white' : ' '
-        )} onClick={handleListView}>
-          <PiListBulletsBold className="h-6 w-6" />
-        </Button>
-        <Button size="sm" variant="outline" className={cn(
-          "bg-white text-black p-2",
-          gridView ? 'border-black bg-black text-white' : ' '
-        )} onClick={handleGridView}>
-          <PiGridFourFill className="h-6 w-6" />
-        </Button>
+
+      <div className="flex justify-end items-center gap-2 w-fit ms-auto rounded-lg border border-gray-200 p-1.5 px-1.5">
+        <ActionIcon
+          size="sm"
+          variant="flat"
+          className={cn(
+            'group bg-transparent hover:enabled:bg-gray-100 dark:hover:enabled:bg-gray-200',
+            !gridView && 'bg-gray-900 dark:bg-gray-200'
+          )}
+          onClick={handleListView}
+        >
+          <PiListBullets
+            className={cn(
+              'h-5 w-5 transition-colors group-hover:text-gray-900',
+              !gridView && 'text-white'
+            )}
+          />
+        </ActionIcon>
+        <ActionIcon
+          size="sm"
+          variant="flat"
+          className={cn(
+            'group bg-transparent hover:enabled:bg-gray-100  dark:hover:enabled:bg-gray-200',
+            gridView && 'bg-gray-900 dark:bg-gray-200'
+          )}
+          onClick={handleGridView}
+        >
+          <PiGridFour
+            className={cn(
+              'h-5 w-5 transition-colors group-hover:text-gray-900',
+              gridView && 'text-white'
+            )}
+          />
+        </ActionIcon>
       </div>
       {!gridView ? (
         <div>
@@ -117,8 +138,7 @@ export default function TaskPage() {
           />
         </div>
       ) : (
-        <div>
-          <h4>Grid View</h4>
+        <div className='mt-12'>
           <KanbanBoard />
         </div>
       )

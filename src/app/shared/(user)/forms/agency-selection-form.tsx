@@ -33,7 +33,7 @@ export default function AgencySelectionForm() {
         dispatch(getAllTeamMember({
             sort_field: 'createdAt',
             sort_order: 'desc',
-            agencyId: selectedOption?.value,
+            agency_id: selectedOption?.value,
         })
         );
     }

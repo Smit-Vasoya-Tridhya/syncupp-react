@@ -27,7 +27,7 @@ type Columns = {
 
 function getStatusBadge(status: string) {
   switch (status?.toLowerCase()) {
-    case 'requested':
+    case 'confirm_pending':
       return (
         <div className="flex items-center">
           <Badge color="warning" renderAsDot />

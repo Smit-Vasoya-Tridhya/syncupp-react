@@ -84,7 +84,7 @@ export default function AddTeamMemberForm(props: any) {
         email: dataa?.email ?? '',
         contact_number: dataa?.contact_number ?? '',
         role: dataa?.role === 'Team member' ? 'team_member' : 'admin',
-        agencyId: clientSliceData?.agencyId
+        agency_id: clientSliceData?.agencyId
       }
     } else {
       formData = {
@@ -92,7 +92,7 @@ export default function AddTeamMemberForm(props: any) {
         email: dataa?.email ?? '',
         contact_number: dataa?.contact_number ?? '',
         role: dataa?.role === 'Team member' || dataa?.role === 'team_member' ? 'team_member' : 'admin',
-        agencyId: clientSliceData?.agencyId
+        agency_id: clientSliceData?.agencyId
       }
     }
 
@@ -108,7 +108,7 @@ export default function AddTeamMemberForm(props: any) {
           if (result && result.payload.success === true) {
             save && closeModal();
             setReset({ ...initialValues })
-            dispatch(getAllTeamMember({ sort_field: 'createdAt', sort_order: 'desc', agencyId: clientSliceData?.agencyId }));
+            dispatch(getAllTeamMember({ sort_field: 'createdAt', sort_order: 'desc', agency_id: clientSliceData?.agencyId }));
             setSave(false);
           }
         }
@@ -119,7 +119,7 @@ export default function AddTeamMemberForm(props: any) {
           if (result && result.payload.success === true) {
             save && closeModal();
             setSave(false);
-            dispatch(getAllTeamMember({ sort_field: 'createdAt', sort_order: 'desc', agencyId: clientSliceData?.agencyId }));
+            dispatch(getAllTeamMember({ sort_field: 'createdAt', sort_order: 'desc', agency_id: clientSliceData?.agencyId }));
           }
         }
       });
