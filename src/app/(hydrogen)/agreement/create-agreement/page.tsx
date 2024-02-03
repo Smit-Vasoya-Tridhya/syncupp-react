@@ -45,8 +45,11 @@ export default function ChangePasswordForm() {
     const { user } = useSelector((state: any) => state?.root?.signIn?.user?.data);
     const { clientlistDetails, loading } = useSelector((state: any) => state?.root?.agreement);
 
+    console.log(clientlistDetails,'clientlistDetails')
+
+
     const clientOptions =
-        clientlistDetails?.data?.client && clientlistDetails?.data?.client?.length > 0 ? clientlistDetails?.data?.client?.map((client: any) => ({
+        clientlistDetails?.data && clientlistDetails?.data?.length > 0 ? clientlistDetails?.data?.map((client: any) => ({
             name: client?.name,
             value: client?._id,
             key: client
