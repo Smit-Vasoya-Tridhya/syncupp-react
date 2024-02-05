@@ -1,6 +1,6 @@
 'use client';
 import SignUpForm from './sign-up-form';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import CompanyForm from './company-form';
 import AuthWrapperTwo from '@/app/shared/(user)/auth-layout/auth-wrapper-two';
 import WithAuthPublic from '@/utils/public-route-user';
@@ -11,6 +11,13 @@ function SignUpPage() {
   const [title, setTitle] = useState('Sign Up!');
   const [nextBtn, setNextBtn] = useState(false);
   const [fdata, setFdata] = useState({})
+
+
+  // useEffect(() => {
+  //   if (true) {
+  //     window.location.href = "/signin"
+  //   }
+  // }, [])
 
 
   return (
