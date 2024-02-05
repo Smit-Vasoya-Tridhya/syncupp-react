@@ -2,7 +2,7 @@ import { routes } from '@/config/routes';
 import cn from '@/utils/class-names';
 import Link from 'next/link';
 import { Fragment } from 'react';
-import {PiFolderNotchDuotone,PiUser, PiUsersThree} from 'react-icons/pi';
+import { PiFolderNotchDuotone, PiUser, PiUsersThree } from 'react-icons/pi';
 import { FaTasks, FaFileInvoiceDollar, FaRegCalendarAlt } from "react-icons/fa";
 import { FaFilePen } from "react-icons/fa6";
 import { useSelector } from 'react-redux';
@@ -70,6 +70,11 @@ export const MenuItems = () => {
           name: 'Team',
           href: routes.team,
           icon: <PiUsersThree />,
+        },
+        {
+          name: 'Refferal',
+          href: routes.referal,
+          icon: <PiUsersThree />,
         }
       ];
       break;
@@ -80,6 +85,11 @@ export const MenuItems = () => {
           name: 'Dashboard',
           href: routes.dashboard,
           icon: <PiFolderNotchDuotone />,
+        },
+        {
+          name: 'Refferal',
+          href: routes.referal,
+          icon: <PiUsersThree />,
         }
       ];
       break;
