@@ -1,21 +1,12 @@
 'use client';
 
-import Link from 'next/link';
 import { HeaderCell } from '@/components/ui/table';
 import { Text } from '@/components/ui/text';
 import { Checkbox } from '@/components/ui/checkbox';
 import DeletePopover from '@/app/shared/delete-popover';
-import { useDispatch } from 'react-redux';
-import PencilIcon from '@/components/icons/pencil';
-import { ActionIcon, Button, Popover, Tooltip } from 'rizzui';
-import EyeIcon from '@/components/icons/eye';
-import { AiOutlineFilePdf } from "react-icons/ai";
-import { HiOutlineMail } from "react-icons/hi";
+import { useDispatch , useSelector } from 'react-redux';
 import moment from 'moment';
-import { downloadAgreement, getAllAgencyagreement, sendAgreement, updateagreementStatus } from '@/redux/slices/user/agreement/agreementSlice';
-import { useSelector } from 'react-redux';
-
-
+import { getAllAgencyagreement, updateagreementStatus } from '@/redux/slices/user/agreement/agreementSlice';
 
 type Columns = {
     data: any[];
