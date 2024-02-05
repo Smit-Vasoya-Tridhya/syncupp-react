@@ -64,17 +64,15 @@ function TaskCard({ task }: Props) {
     //   setMouseIsOver(false);
     // }}
     >
-      <div className=" h-full w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap">
+      <div className=" h-full w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap flex">
         <Title
           as="h4"
           className="ps-3 my-2 text-[20px] lg:text-xl 4xl:text-[22px]"
         >
           {task?.name}
         </Title>
-        <hr />
-        <hr className="mt-20" />
-        <div className="flex items-center float-right mt-[3px]">
-        <Popover
+        <div className="mt-1 ms-auto">
+          <Popover
             placement="left"
             className="z-[99] min-w-[135px] px-0 dark:bg-gray-100 [&>svg]:dark:fill-gray-100"
             content={({ setOpen }) => (
