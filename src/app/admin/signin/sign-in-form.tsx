@@ -13,6 +13,7 @@ import { postSignin } from '@/redux/slices/admin/auth/signin/signinSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import Spinner from '@/components/ui/spinner';
+import useMedia from 'react-use/lib/useMedia';
 
 const initialValues: LoginSchema = {
   email: '',
@@ -22,6 +23,7 @@ const initialValues: LoginSchema = {
 
 export default function SignInForm() {
   const dispatch = useDispatch();
+  const isMedium = useMedia('(max-width: 1200px)', false);
   const router = useRouter();
   const adminSignIn = useSelector((state: any) => state?.root?.adminSignIn)
 
@@ -56,6 +58,7 @@ export default function SignInForm() {
               placeholder="Enter your email"
               rounded="pill"
               color="info"
+              size={isMedium ? 'lg' : 'xl'}
               className="[&>label>span]:font-medium"
               {...register('email')}
               error={errors.email?.message}
@@ -65,6 +68,7 @@ export default function SignInForm() {
               placeholder="Enter your password"
               rounded="pill"
               color="info"
+              size={isMedium ? 'lg' : 'xl'}
               className="[&>label>span]:font-medium"
               {...register('password')}
               error={errors.password?.message}
@@ -89,6 +93,7 @@ export default function SignInForm() {
               type="submit"
               color="info"
               rounded="pill"
+              size={isMedium ? 'lg' : 'xl'}
               disabled={adminSignIn.loading}
 
             >

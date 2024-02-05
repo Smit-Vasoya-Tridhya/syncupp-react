@@ -39,6 +39,7 @@ export const routes = {
     dashboard: '/admin/dashboard',
     viewProfile: '/admin/profile',
     faq:'/admin/faq',
+    clientReview:'/admin/client-review',
     agencylist:"/admin/agencylist",
     inquiry:"/admin/inquiry",
     payment:"/admin/payment-transaction",

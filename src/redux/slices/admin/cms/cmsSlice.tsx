@@ -1,6 +1,4 @@
-import {
-    PostFaqEnroll,
-  } from '@/api/auth/faq/faqApis';
+import { PostTermAndCondotionEnroll } from '@/api/admin/cms/cmsApis';
   import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
   import { toast } from 'react-hot-toast';
   
@@ -19,6 +17,7 @@ import {
     title: string;
     description?: string;
     data: any;
+    addTermAndConditionStatus:any;
   }
   const initialState: TermAndConditionInitialState = {
     loading: false,
@@ -26,13 +25,14 @@ import {
     title: '',
     description: '',
     data: [],
+    addTermAndConditionStatus:''
   };
   
   export const postAddTermAndCondition: any = createAsyncThunk(
     'cms/postAddTermAndCondition',
     async (data: AddTermAndConditionData) => {
       try {
-        const response: any = await PostFaqEnroll(data);
+        const response: any = await PostTermAndCondotionEnroll(data);
         return response;
       } catch (error: any) {
         return {
@@ -79,7 +79,7 @@ import {
           return {
             ...state,
             loading: true,
-            addFaqStatus: 'pending',
+            addTermAndConditionStatus: 'pending',
           };
         })
         .addCase(postAddTermAndCondition.fulfilled, (state, action) => {
@@ -92,14 +92,14 @@ import {
             ...state,
             // data: action.payload,
             loading: false,
-            addFaqStatus: 'success',
+            addTermAndConditionStatus: 'success',
           };
         })
         .addCase(postAddTermAndCondition.rejected, (state) => {
           return {
             ...state,
             loading: false,
-            addFaqStatus: 'error',
+            addTermAndConditionStatus: 'error',
           };
         });
     
