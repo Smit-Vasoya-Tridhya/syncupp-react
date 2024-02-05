@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { PostChangePassword } from "../../../../../api/auth/signin/signin";
+import { PostChangePassword } from "../../../../../api/admin/signin/signin";
 import { toast } from 'react-hot-toast';
 
 type ChangePasswordData = {
