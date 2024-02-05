@@ -12,22 +12,11 @@ type ApiResponse = {
   token: string;
   data?: any 
 };
-// Add new FAQ API
+// Add new Term & condition API
 export const PostTermAndCondotionEnroll = async (data: AddTermAndConditionData): Promise<ApiResponse> => {
   const response = await AxiosDefault({
-    url: "/api/v1/admin/add-faq",
+    url: "/api/v1/admin/add-term-and-condition",
     method: "POST",
-    data: data,
-    contentType: "application/json", 
-  });
-  const responseData: ApiResponse = response.data;
-  return responseData;
-};
-// Update FAQ Data By ID
-export const UpdateFaqDataByID = async (data: AddTermAndConditionData): Promise<ApiResponse> => {
-  const response = await AxiosDefault({
-    url: `/api/v1/admin/update-faq/${data._id}`,
-    method: "PUT",
     data: data,
     contentType: "application/json", 
   });

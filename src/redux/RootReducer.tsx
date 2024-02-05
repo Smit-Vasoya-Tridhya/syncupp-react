@@ -19,6 +19,8 @@ import clientAgreementSlice from "./slices/user/client/agreement/clientAgreement
 import userAgencySlice from "./slices/user/agency/agencySlice";
 import invoiceSlice from "./slices/user/invoice/invoiceSlice";
 import taskSlice from "./slices/user/task/taskSlice";
+import clientReviewSlice from "./slices/admin/clientReview/clientReviewSlice";
+import cmsSlice from "./slices/admin/cms/cmsSlice";
 
 
 const combinedReducer = combineReducers({
@@ -35,6 +37,8 @@ const combinedReducer = combineReducers({
   client: clientSlice,
   adminChangePassword: adminChangePasswordSlice,
   adminFaq:adminfaqSlice,
+  adminClientReview:clientReviewSlice,
+  adminCms:cmsSlice,
   teamMember: teamSlice,
   adminAgency: agencySlice,
   userAgency:userAgencySlice,
