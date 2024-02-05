@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SubmitHandler, Controller } from 'react-hook-form';
 import { Form } from '@/components/ui/form';
 import { Title, Text } from '@/components/ui/text';
@@ -17,6 +17,9 @@ import {
   InvoiceFormInput,
   invoiceFormSchema,
 } from '@/utils/validators/create-invoice.schema';
+import { getInvoiceApi } from '@/redux/slices/user/invoice/invoiceSlice';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const invoiceItems = [
   { item: '', description: '', quantity: 1, price: undefined },
@@ -31,6 +34,13 @@ export default function CreateInvoice({
 }) {
   const [reset, setReset] = useState({});
   const [isLoading, setLoading] = useState(false);
+  const dispatch = useDispatch()
+  const invoiceSliceData = useSelector((state: any) => state?.root?.invoice);
+
+
+  const initialValues = {
+  
+  }
 
   const onSubmit: SubmitHandler<InvoiceFormInput> = (data) => {
     toast.success(
@@ -63,6 +73,23 @@ export default function CreateInvoice({
       }))
     : invoiceItems;
 
+
+
+
+
+
+
+
+
+    const typeOption = [
+      // { name: 'Team Member', value: 'team_member' },
+      // { name: 'Admin', value: 'admin' },
+      useEffect(() => {
+        dispatch(getInvoiceApi())
+    }, [dispatch])
+    ]
+    
+
   return (
     <Form<InvoiceFormInput>
       validationSchema={invoiceFormSchema}
@@ -71,7 +98,7 @@ export default function CreateInvoice({
       useFormProps={{
         defaultValues: {
           ...record,
-          invoiceNumber: 'INV-0071',
+          invoiceNumber: '',
           createDate: new Date(),
           // status: 'draft',
           items: newItems,
@@ -128,9 +155,24 @@ export default function CreateInvoice({
                 <Input
                   label="Name"
                   placeholder="Enter your name"
-                  {...register('toName')}
-                  error={errors.toName?.message}
+                  {...register('name')}
+                  error={errors.name?.message}
                 />
+                {/* <Controller
+                  name="assigned"
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
+                    <Select
+                      options={typeOption}
+                      value={value}
+                      onChange={onChange}
+                      label="Name"
+                      color= 'info'
+                      error={errors?.toName?.message as string}
+                      getOptionValue={(option) => option?.name}
+                    />
+                  )}
+                /> */}
                 <Controller
                   name="toPhone"
                   control={control}
@@ -158,7 +200,7 @@ export default function CreateInvoice({
                 description={'To he who will receive this invoice'}
                 className="pt-7 @2xl:pt-9 @3xl:pt-11"
               >
-                <div className="col-span-2 grid grid-cols-1 items-baseline gap-5 @lg:grid-cols-2 @5xl:grid-cols-4">
+                <div className="col-span-2 grid grid-cols-1 items-baseline gap-5 @lg:grid-cols-2 @5xl:grid-cols-3">
                   <Input
                     label="Invoice Number"
                     placeholder="Enter invoice number"
@@ -197,26 +239,6 @@ export default function CreateInvoice({
                       )}
                     />
                   </div>
-                  <Controller
-                    name="status"
-                    control={control}
-                    render={({ field: { name, onChange, value } }) => (
-                      <Select
-                        options={statusOptions}
-                        value={value}
-                        onChange={onChange}
-                        name={name}
-                        label="Status"
-                        error={errors?.status?.message}
-                        getOptionValue={(option) => option.value}
-                        displayValue={(selected: string) =>
-                          statusOptions.find(
-                            (option) => option.value === selected
-                          )?.label ?? selected
-                        }
-                      />
-                    )}
-                  />
                 </div>
               </FormBlockWrapper>
 

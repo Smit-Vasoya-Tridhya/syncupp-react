@@ -12,7 +12,7 @@ import { PiXBold } from 'react-icons/pi';
 import { Input } from '@/components/ui/input';
 import dynamic from 'next/dynamic';
 import SelectLoader from '@/components/loader/select-loader';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Textarea } from 'rizzui';
 import { ClientReviewSchema, clientReviewSchema } from '@/utils/validators/client-review.schema copy';
 import { getAllClientReview, getClientReviewDataByID, postClientReviewEnroll, updateClientReviewDataByID } from '@/redux/slices/admin/clientReview/clientReviewSlice';
@@ -29,12 +29,36 @@ export default function AddClientReviewForm(props: any) {
   const adminClientReview = useSelector((state: any) => state?.root?.adminClientReview);
   // let data = row;
   let initialValues: ClientReviewSchema = {
-    client_review_image:"",
-    customet_name: "",
+    client_review_image:undefined,
+    customer_name: "",
     company_name: "",
     review: "",
   }; 
 
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const handleFileChange = (e:any) => {
+    const file = e.target.files[0];
+
+    if (file && !['image/jpeg', 'image/png'].includes(file.type)) {
+      alert('Please upload only JPEG or PNG files.');
+      return;
+    }
+    if (file && file.size > 2 * 1024 * 1024) {
+      alert('File size exceeds 2MB limit. Please choose a smaller file.');
+      return;
+    }
+    setSelectedFile(file);
+    // image Preview
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event:any) => {
+        const previewUrl = event.target.result;
+        console.log('Preview URL:', previewUrl);
+      };
+      reader.readAsDataURL(file);
+    }
+  }
   useEffect(() => {
     row && dispatch(getClientReviewDataByID({ _id: row?._id }))
   }, [row, dispatch]); 
@@ -43,39 +67,50 @@ export default function AddClientReviewForm(props: any) {
   
   let defaultValuess = {
     client_review_image: data?.client_review_image,
-    customet_name: data?.customet_name,
+    customer_name: data?.customer_name,
     company_name: data?.company_name,
     review: data?.review,
   };
 
   const onSubmit: SubmitHandler<ClientReviewSchema> = (data) => {
-
-    const filteredFormData = Object.fromEntries(
-      Object.entries(data).filter(([_, value]) => value !== undefined && value !== '')
-    );
-
-    if(title === 'Client Review') {
-        dispatch(postClientReviewEnroll(filteredFormData)).then((result: any) => {
+    try{
+      let formData : any = new FormData();
+      if(selectedFile){
+         formData.append('client_review_image',selectedFile)
+      }
+      formData.append('customer_name',data.customer_name)
+      formData.append('company_name',data.company_name)
+      formData.append('review',data.review)
+      console.log([...formData.entries()],'safafssa');
+      if(title === 'Client Review') {
+        dispatch(postClientReviewEnroll(formData)).then((result: any) => {
           if(postClientReviewEnroll.fulfilled.match(result)) {
             if (result && result.payload.success === true) {
               closeModal();
-              dispatch(getAllClientReview());
+              dispatch(getAllClientReview(data));
             }
           }
         });
     } else {
-      dispatch(updateClientReviewDataByID({...filteredFormData,_id:row._id})).then((result: any) => {
+      let d = {
+        id: row._id,
+        formData
+      }
+      dispatch(updateClientReviewDataByID(d)).then((result: any) => {
         if(updateClientReviewDataByID.fulfilled.match(result)) {
           if (result && result.payload.success === true) {
             closeModal();  
-            dispatch(getAllClientReview());
+            dispatch(getAllClientReview(data));
           }
         }
       });
     }
+    }catch(error){
+      console.log(error)
+    }
   };
   
-  if(!adminClientReview?.faqData && title === 'Edit Client Review') {
+  if(!adminClientReview?.data && title === 'Edit Client Review') {
     return (
       <div className='p-10 flex items-center justify-center'>
         <Spinner size="xl" tag='div' className='ms-3' />
@@ -111,20 +146,38 @@ export default function AddClientReviewForm(props: any) {
             <div className={cn('grid grid-cols-1 gap-4')}>
               <input
                 type="file"
-                // label="Upload Image"
-                color="info"
-                className="[&>label>span]:font-medium"
-                // {...register('image')}
-                // error={errors?.image?.message}
+                onChange={handleFileChange}
+                accept=".jpeg, .jpg, .png"
               />
+              {/*preview Image*/}
+              {selectedFile ? (
+                <div>
+                  <p>Preview:</p>
+                  <img
+                    src={URL.createObjectURL(selectedFile)}
+                    alt="Preview"
+                    style={{ maxWidth: '100%', maxHeight: '100px' }}
+                  />
+                </div>
+              ): (
+                <div>
+                <p>Preview:</p>
+                <img
+                  src={`${process.env.NEXT_PUBLIC_API}${data?.client_review_image}`}
+                  alt="Preview"
+                  style={{ maxWidth: '100%', maxHeight: '100px' }}
+                />
+              </div>
+                
+              )}
               <Input
                 type="text"
                 label="Customer Name"
                 placeholder="Enter Customer Name here....."
                 color="info"
                 className="[&>label>span]:font-medium"
-                {...register('customet_name')}
-                error={errors?.customet_name?.message}
+                {...register('customer_name')}
+                error={errors?.customer_name?.message}
               />
               <Input
                 type="text"

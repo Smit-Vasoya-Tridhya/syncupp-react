@@ -28,16 +28,16 @@ export default function ClientReviewPage() {
         if (page > maxPage) {
             page = maxPage > 0 ? maxPage : 1;
             await dispatch(getAllClientReview({ page, items_per_page, sort_field, sort_order, search }));
-            return data.faqs
+            return data.ClientReviews
         }
-        return data.faqs
+        return data.ClientReviews
     };
 
     const handleDeleteById = async (_id: string | string[], currentPage?: any, countPerPage?: number) => {
         try {
-            const res = await dispatch(deleteClientReviewData({ faqIdsToDelete: _id, is_deleted: true }));
+            const res = await dispatch(deleteClientReviewData({ clientReviewIdsToDelete: _id, is_deleted: true }));
             if (res.payload.success === true) {
-              const reponse = await dispatch(getAllClientReview({ page: currentPage, items_per_page: countPerPage, sort_field: 'title', sort_order: 'description' }));
+              const reponse = await dispatch(getAllClientReview({ page: currentPage, items_per_page: countPerPage }));
             }
         } catch (error) {
             console.error(error);
@@ -57,7 +57,7 @@ export default function ClientReviewPage() {
         </div>
       </PageHeader>
             <CustomTable
-                data={adminClientReview?.data?.faqs}
+                data={adminClientReview?.data?.ClientReviews}
                 total={adminClientReview?.data?.pagination?.total_pages}
                 loading={adminClientReview?.loading}
                 pageSize={pageSize}
