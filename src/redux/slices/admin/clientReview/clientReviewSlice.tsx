@@ -51,10 +51,10 @@ const initialState: ClientReviewInitialState = {
 
 export const postClientReviewEnroll: any = createAsyncThunk(
   'clientReview/postClientReviewEnroll',
-  async (data: AddClientReviewData) => {
+  async (data: FormData) => {
     try {
       const response: any = await PostClientReviewEnroll(data);
-      return response;
+      return response.data;
     } catch (error: any) {
       return {
         status: false,
@@ -107,16 +107,10 @@ export const deleteClientReviewData: any = createAsyncThunk(
 );
 export const updateClientReviewDataByID: any = createAsyncThunk(
   'clientReview/updateClientReviewDataByID',
-  async (data: AddClientReviewData) => {
-    const apiData = {
-      _id: data._id,
-      client_review_image: data.client_review_image,
-      customer_name: data.customer_name,
-      company_name: data.company_name,
-      review: data.review,
-    };
+  async (data: any) => {
+    const {id, formData} = data;
     try {
-      const response: any = await UpdateClientReviewDataByID(data);
+      const response: any = await UpdateClientReviewDataByID(formData, id);
       return response;
     } catch (error: any) {
       return {

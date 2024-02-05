@@ -59,16 +59,28 @@ export const getColumns = ({
         title="Profile Picture"
         sortable
         ascending={
-          sortConfig?.direction === 'asc' && sortConfig?.key === 'profile_picture'
+          sortConfig?.direction === 'asc' &&
+          sortConfig?.key === 'client_review_image'
         }
       />
     ),
-    onHeaderCell: () => onHeaderCellClick('profile_picture'),
-    dataIndex: 'profile_picture',
-    key: 'profile_picture',
+    onHeaderCell: () => onHeaderCellClick('client_review_image'),
+    dataIndex: 'client_review_image',
+    key: 'client_review_image',
     width: 200,
     render: (value: string) => (
-      <Text className="font-medium text-gray-700">{value}</Text>
+      <div>
+      {value ? (
+        <img
+          src={`${process.env.NEXT_PUBLIC_API}${value}`}
+          alt="Profile"
+          className="h-15 w-20"
+          onError={() => console.error(`Failed to load image: ${value}`)}
+        />
+      ) : (
+        <Text className="font-medium text-gray-700">No Image</Text>
+      )}
+    </div>
     ),
   },
   {
@@ -134,10 +146,10 @@ export const getColumns = ({
     width: 120,
     render: (_: string, row: Record<string, string>) => (
       <div className="flex items-center justify-end gap-3 pe-4">
-        <CustomModalButton 
+        <CustomModalButton
           title="Edit Client Review"
           icon={<PencilIcon className="h-4 w-4" />}
-          view={<AddClientReviewForm title="Edit Client Review" row={row} /> }
+          view={<AddClientReviewForm title="Edit Client Review" row={row} />}
           customSize="800px"
         />
         <DeletePopover
