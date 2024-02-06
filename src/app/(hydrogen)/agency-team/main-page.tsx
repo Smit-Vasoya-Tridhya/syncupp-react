@@ -26,13 +26,13 @@ export default function TeamDataTablePage() {
   const handleChangePage = async (paginationParams: any) => {
     let { page, items_per_page, sort_field, sort_order, search } = paginationParams;
 
-    const response = await dispatch(getAllTeamMember({ page, items_per_page, sort_field, sort_order, search }));
+    const response = await dispatch(getAllTeamMember({ page, items_per_page, sort_field, sort_order, search, pagination: true }));
     const { data } = response?.payload;
     const maxPage: number = data?.page_count;
 
     if (page > maxPage) {
       page = maxPage > 0 ? maxPage : 1;
-      await dispatch(getAllTeamMember({ page, items_per_page, sort_field, sort_order, search }));
+      await dispatch(getAllTeamMember({ page, items_per_page, sort_field, sort_order, search, pagination: true }));
       return data?.teamMemberList;
     }
     if(data && data?.teamMemberList && data?.teamMemberList.length !== 0 ) {
@@ -45,7 +45,7 @@ export default function TeamDataTablePage() {
     try {
       const res = await dispatch(deleteTeamMember({ teamMemberIds: id }));
       if (res.payload.success === true) {
-        const reponse = await dispatch(getAllTeamMember({ page: currentPage, items_per_page: countPerPage, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm }));
+        const reponse = await dispatch(getAllTeamMember({ page: currentPage, items_per_page: countPerPage, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm, pagination: true }));
       }
     } catch (error) {
       console.error(error);

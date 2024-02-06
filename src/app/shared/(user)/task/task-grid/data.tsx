@@ -35,12 +35,12 @@ export const defaultTasks: Task[] = [
     columnId: "pending",
     content:
       "Develop user registration functionality with OTP delivered on SMS after email confirmation and phone number confirmation",
-      name: "Task 2",
-      date: "2 Dec, 23- 7:00PM ",
-      status: "Pending",
-      assigned_by: "John2 Doe",
-      assigned_to: "Mark2 Clerk",
-    },
+    name: "Task 2",
+    date: "2 Dec, 23- 7:00PM ",
+    status: "Pending",
+    assigned_by: "John2 Doe",
+    assigned_to: "Mark2 Clerk",
+  },
   {
     id: "3",
     columnId: "overdue",

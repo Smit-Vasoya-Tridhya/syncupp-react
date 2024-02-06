@@ -7,9 +7,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { deleteClient, getAllClient } from '@/redux/slices/user/client/clientSlice';
 import { useRouter } from 'next/navigation';
 import { useModal } from '@/app/shared/modal-views/use-modal';
-import { getColumns } from '@/app/shared/(user)/client/team/team-list/columns';
+import { GetColumns } from '@/app/shared/(user)/task/task-list/columns';
 import CustomTable from '@/components/common-tables/table';
-import { PiGridFour, PiGridFourFill, PiListBullets, PiListBulletsBold, PiPlusBold } from 'react-icons/pi';
+import { PiGridFour, PiListBullets, PiPlusBold } from 'react-icons/pi';
 import AddTaskForm from '@/app/shared/(user)/task/create-edit/add-task-form';
 import { ActionIcon, Button } from 'rizzui';
 import cn from '@/utils/class-names';
@@ -25,7 +25,7 @@ export default function TaskPage() {
   const dispatch = useDispatch();
   const router = useRouter();
   const { closeModal } = useModal();
-
+  const signIn = useSelector((state: any) => state?.root?.signIn)
   const clientSliceData = useSelector((state: any) => state?.root?.client);
   const { gridView } = useSelector((state: any) => state?.root?.task);
 
@@ -37,13 +37,13 @@ export default function TaskPage() {
   const handleChangePage = async (paginationParams: any) => {
     let { page, items_per_page, sort_field, sort_order, search } = paginationParams;
 
-    const response = await dispatch(getAllClient({ page, items_per_page, sort_field, sort_order, search }));
+    const response = await dispatch(getAllClient({ page, items_per_page, sort_field, sort_order, search, pagination: true }));
     const { data } = response?.payload;
     const maxPage: number = data?.page_count;
 
     if (page > maxPage) {
       page = maxPage > 0 ? maxPage : 1;
-      await dispatch(getAllClient({ page, items_per_page, sort_field, sort_order, search }));
+      await dispatch(getAllClient({ page, items_per_page, sort_field, sort_order, search, pagination: true }));
       return data?.client
     }
     if (data && data?.client && data?.client?.length !== 0) {
@@ -59,7 +59,7 @@ export default function TaskPage() {
       const res = await dispatch(deleteClient({ client_ids: id }));
       if (res.payload.success === true) {
         closeModal();
-        const reponse = await dispatch(getAllClient({ page: currentPage, items_per_page: countPerPage, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm }));
+        const reponse = await dispatch(getAllClient({ page: currentPage, items_per_page: countPerPage, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm, pagination: true }));
       }
     } catch (error) {
       console.error(error);
@@ -80,13 +80,15 @@ export default function TaskPage() {
     <>
       <PageHeader title={pageHeader.title}>
         <div className="mt-4 flex items-center gap-3 @lg:mt-0">
-          <ModalButton
+          {signIn?.role !== 'client' &&
+            <ModalButton
             label="Add Task"
             view={<AddTaskForm title="New Task" />}
             customSize="925px"
             className="mt-0 w-full hover:bg-gray-700 @lg:w-auto dark:bg-gray-100 dark:text-white dark:hover:bg-gray-200 dark:active:bg-gray-100"
             icon={<PiPlusBold className="me-1.5 h-[17px] w-[17px]" />}
           />
+          }
         </div>
       </PageHeader>
 
@@ -134,13 +136,11 @@ export default function TaskPage() {
             setPageSize={setPageSize}
             handleDeleteById={handleDeleteById}
             handleChangePage={handleChangePage}
-            getColumns={getColumns}
+            getColumns={GetColumns}
           />
         </div>
       ) : (
-        <div className='mt-12'>
-          <KanbanBoard />
-        </div>
+        <KanbanBoard />
       )
       }
     </>

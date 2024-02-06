@@ -110,6 +110,7 @@ export default function AddTeamMemberForm(props: any) {
                   sort_field: 'createdAt',
                   sort_order: 'desc',
                   agency_id: clientSliceData?.agencyId,
+                  pagination: true
                 })
               );
             } else {
@@ -117,6 +118,7 @@ export default function AddTeamMemberForm(props: any) {
                 getAllTeamMember({
                   sort_field: 'createdAt',
                   sort_order: 'desc',
+                  pagination: true
                 })
               );
             }
@@ -136,6 +138,7 @@ export default function AddTeamMemberForm(props: any) {
                   sort_field: 'createdAt',
                   sort_order: 'desc',
                   agency_id: clientSliceData?.agencyId,
+                  pagination: true
                 })
               );
             } else {
@@ -143,6 +146,7 @@ export default function AddTeamMemberForm(props: any) {
                 getAllTeamMember({
                   sort_field: 'createdAt',
                   sort_order: 'desc',
+                  pagination: true
                 })
               );
             }

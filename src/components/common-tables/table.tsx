@@ -54,7 +54,6 @@ export default function CustomTable({
         handleDelete(id, currentPage, countPerPage, Islastitem, sortConfig, searchTerm);
     }, []);
 
-
     const {
         isLoading,
         isFiltered,

@@ -4,6 +4,8 @@ import { Column, Id, Task } from "./types";
 import { useMemo, useState } from "react";
 import TaskCard from "./task-card";
 import SimpleBar from '@/components/ui/simplebar';
+import { Empty } from "rizzui";
+import { Text } from '@/components/ui/text';
 
 interface Props {
   column: Column;
@@ -66,14 +68,20 @@ function ColumnContainer({
       {/* Column task container */}
       <SimpleBar className="max-h-[600px]">
         <SortableContext items={tasksIds}>
-          {tasks.map((task) => (
-            <div key={task.id} className="px-2 pt-2">
-              <TaskCard
-              key={task.id}
-              task={task}
-            />
-            </div>
-          ))}
+          {tasks && tasks.length > 0 ?
+            (tasks.map((task) => (
+              <div key={task.id} className="px-2 pt-2">
+                <TaskCard
+                  key={task.id}
+                  task={task}
+                />
+              </div>
+            ))) : (
+              <div className="py-5 text-center lg:py-8">
+                <Empty /> <Text className="mt-3">No Data</Text>
+              </div>
+            )
+          }
         </SortableContext>
       </SimpleBar>
     </div>

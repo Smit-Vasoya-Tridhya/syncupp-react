@@ -41,6 +41,7 @@ type PutEditTeamMemberApiData = {
     search?: string;
     agency_id?: string;
     client_id?: string;
+    pagination?: boolean;
   }
 
   type GetTeamMemberProfileApiData = {

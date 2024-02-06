@@ -1,12 +1,18 @@
-import { Id, Task } from "./types";
+import { Task } from "./types";
 import { useSortable } from "@dnd-kit/sortable";
 import { ActionIcon } from '@/components/ui/action-icon';
 import { Button } from '@/components/ui/button';
 import { Popover } from '@/components/ui/popover';
 import { Title, Text } from '@/components/ui/text';
-import cn from '@/utils/class-names';
-import { PiCopySimple, PiDotsThreeOutlineVerticalFill, PiShareFat, PiTrashSimple } from "react-icons/pi";
+import { PiDotsThreeOutlineVerticalFill } from "react-icons/pi";
+import { BsPersonFill } from "react-icons/bs";
+import { FaPeopleGroup } from "react-icons/fa6";
+import { Tooltip } from '@/components/ui/tooltip';
+import EyeIcon from "@/components/icons/eye";
+import CustomModalButton from "@/app/shared/custom-modal-button";
+import ViewTaskForm from "../create-edit/view-task-form";
 // import { CSS } from "@dnd-kit/utilities";
+
 
 interface Props {
   task: Task;
@@ -64,53 +70,92 @@ function TaskCard({ task }: Props) {
     //   setMouseIsOver(false);
     // }}
     >
-      <div className=" h-full w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap flex">
-        <Title
-          as="h4"
-          className="ps-3 my-2 text-[20px] lg:text-xl 4xl:text-[22px]"
-        >
-          {task?.name}
-        </Title>
-        <div className="mt-1 ms-auto">
-          <Popover
-            placement="left"
-            className="z-[99] min-w-[135px] px-0 dark:bg-gray-100 [&>svg]:dark:fill-gray-100"
-            content={({ setOpen }) => (
-              <div className="px-2 text-gray-900">
-                <Button
-                  variant="text"
-                  onClick={() => setOpen(false)}
-                  className="flex w-full items-center justify-start px-2 py-2.5 hover:bg-gray-100 focus:outline-none dark:hover:bg-gray-50"
-                >
-                  {/* <PiCopySimple className="mr-2 h-5 w-5 text-gray-500" /> */}
-                  Pending
-                </Button>
-                <Button
-                  variant="text"
-                  onClick={() => setOpen(false)}
-                  className="flex w-full items-center justify-start px-2 py-2.5 hover:bg-gray-100 focus:outline-none dark:hover:bg-gray-50"
-                >
-                  {/* <PiShareFat className="mr-2 h-5 w-5 text-gray-500" /> */}
-                  Inprogress
-                </Button>
-                <Button
-                  variant="text"
-                  className="flex w-full items-center justify-start px-2 py-2.5 hover:bg-gray-100 focus:outline-none dark:hover:bg-gray-50"
-                  onClick={() => {
-                    // onDeleteItem(item.id);
-                    setOpen(false);
-                  }}
-                >
-                  {/* <PiTrashSimple className="mr-2 h-5 w-5 text-gray-500" /> */}
-                  Completed
-                </Button>
-              </div>
-            )}
+      <div className=" h-full w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap">
+        <div className="flex items-center mt-3">
+          <Title
+            as="h4"
+            className="ps-4 my-3 text-[20px] lg:text-xl 4xl:text-[22px]"
           >
-            <ActionIcon title={'More Options'} variant="text">
-              <PiDotsThreeOutlineVerticalFill className="h-5 w-5 text-gray-500" />
+            {task?.name}
+          </Title>
+          <div className="ms-auto">
+            <CustomModalButton
+              icon={<EyeIcon className="h-4 w-4" />}
+              view={<ViewTaskForm data={task} />}
+              customSize="600px"
+              title='View Task'
+            />
+            <Popover
+              placement="left"
+              className="z-[99] min-w-[135px] px-0 dark:bg-gray-100 [&>svg]:dark:fill-gray-100"
+              content={({ setOpen }) => (
+                <div className="px-2 text-gray-900">
+                  <Button
+                    variant="text"
+                    onClick={() => setOpen(false)}
+                    className="flex w-full items-center justify-start px-2 py-2.5 hover:bg-gray-100 focus:outline-none dark:hover:bg-gray-50"
+                  >
+                    {/* <PiCopySimple className="mr-2 h-5 w-5 text-gray-500" /> */}
+                    Pending
+                  </Button>
+                  <Button
+                    variant="text"
+                    onClick={() => setOpen(false)}
+                    className="flex w-full items-center justify-start px-2 py-2.5 hover:bg-gray-100 focus:outline-none dark:hover:bg-gray-50"
+                  >
+                    {/* <PiShareFat className="mr-2 h-5 w-5 text-gray-500" /> */}
+                    Inprogress
+                  </Button>
+                  <Button
+                    variant="text"
+                    className="flex w-full items-center justify-start px-2 py-2.5 hover:bg-gray-100 focus:outline-none dark:hover:bg-gray-50"
+                    onClick={() => {
+                      // onDeleteItem(item.id);
+                      setOpen(false);
+                    }}
+                  >
+                    {/* <PiTrashSimple className="mr-2 h-5 w-5 text-gray-500" /> */}
+                    Completed
+                  </Button>
+                </div>
+              )}
+            >
+              <ActionIcon title={'More Options'} variant="text">
+                <PiDotsThreeOutlineVerticalFill className="h-5 w-5 text-gray-500" />
+              </ActionIcon>
+            </Popover>
+          </div>
+        </div>
+
+        <div>
+          <Title
+            as="h4"
+            className="ps-4 my-3 truncate text-[13px] font-medium text-gray-800"
+          >
+            {task?.date}
+          </Title>
+        </div>
+        <div className="ps-3 my-3 flex items-center justify-start gap-3">
+          <Tooltip
+            size="sm"
+            content={() => task?.assigned_by}
+            placement="top"
+            color="invert"
+          >
+            <ActionIcon variant="text">
+              <BsPersonFill size='25px' />
             </ActionIcon>
-          </Popover>
+          </Tooltip>
+          <Tooltip
+            size="sm"
+            content={() => task?.assigned_to}
+            placement="top"
+            color="invert"
+          >
+            <ActionIcon variant="text">
+              <FaPeopleGroup size='25px' />
+            </ActionIcon>
+          </Tooltip>
         </div>
       </div>
 
