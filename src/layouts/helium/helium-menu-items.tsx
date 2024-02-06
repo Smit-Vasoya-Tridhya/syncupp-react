@@ -11,9 +11,11 @@ import { usePathname } from 'next/navigation';
 
 export const MenuItems = () => {
   const signIn = useSelector((state: any) => state?.root?.signIn);
+  const socialSignup = useSelector((state: any) => state?.root?.socialSignup);
+
   const pathname = usePathname();
   let menuItems: Record<string, any>[];
-  switch (signIn?.user?.data?.user?.role?.name) {
+  switch (signIn?.user?.data?.user?.role?.name || socialSignup?.user?.data?.user?.role?.name) {
     case "agency":
       menuItems = [
         {
@@ -70,7 +72,12 @@ export const MenuItems = () => {
           name: 'Team',
           href: routes.team,
           icon: <PiUsersThree />,
-        }
+        },
+        {
+          name: 'Task',
+          href: routes.task,
+          icon: <FaTasks />,
+        },
       ];
       break;
 
@@ -80,7 +87,12 @@ export const MenuItems = () => {
           name: 'Dashboard',
           href: routes.dashboard,
           icon: <PiFolderNotchDuotone />,
-        }
+        },
+        {
+          name: 'Task',
+          href: routes.task,
+          icon: <FaTasks />,
+        },
       ];
       break;
 

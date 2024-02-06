@@ -41,6 +41,7 @@ export const routes = {
     viewProfile: '/admin/profile',
     faq: '/admin/faq',
     agencylist: "/admin/agencylist",
+    clientReview: '/admin/client-review',
     inquiry: "/admin/inquiry",
     payment: "/admin/payment-transaction",
     cms: '/admin/cms',

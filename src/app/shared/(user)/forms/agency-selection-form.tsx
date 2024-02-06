@@ -1,6 +1,5 @@
 'use client';
 
-import SelectLoader from '@/components/loader/select-loader';
 import { Form } from '@/components/ui/form';
 import { getClientAgencies, setAgencyId, setAgencyName } from '@/redux/slices/user/client/clientSlice';
 import { getAllTeamMember } from '@/redux/slices/user/team-member/teamSlice';
@@ -8,11 +7,9 @@ import dynamic from 'next/dynamic';
 import { useEffect } from 'react';
 import { Controller } from 'react-hook-form';
 import { useDispatch, useSelector } from "react-redux";
+import Select from '@/components/ui/select';
+import SelectLoader from '@/components/loader/select-loader';
 
-const Select = dynamic(() => import('@/components/ui/select'), {
-    ssr: false,
-    loading: () => <SelectLoader />,
-});
 
 export default function AgencySelectionForm() {
     const dispatch = useDispatch();
@@ -33,7 +30,8 @@ export default function AgencySelectionForm() {
         dispatch(getAllTeamMember({
             sort_field: 'createdAt',
             sort_order: 'desc',
-            agencyId: selectedOption?.value,
+            agency_id: selectedOption?.value,
+            pagination: true
         })
         );
     }
