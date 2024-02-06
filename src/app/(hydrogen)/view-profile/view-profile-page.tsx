@@ -233,7 +233,7 @@ const cityHandleChange = (selectedOption: string) => {
               />
               <Input
                 onKeyDown={handleKeyDown}
-                type="text"
+                type="number"
                 label="How many people"
                 placeholder="Enter number of people Here..."
                 color="info"

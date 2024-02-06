@@ -51,10 +51,10 @@ const initialState: ClientReviewInitialState = {
 
 export const postClientReviewEnroll: any = createAsyncThunk(
   'clientReview/postClientReviewEnroll',
-  async (data: AddClientReviewData) => {
+  async (data: FormData) => {
     try {
       const response: any = await PostClientReviewEnroll(data);
-      return response;
+      return response.data;
     } catch (error: any) {
       return {
         status: false,
@@ -107,16 +107,10 @@ export const deleteClientReviewData: any = createAsyncThunk(
 );
 export const updateClientReviewDataByID: any = createAsyncThunk(
   'clientReview/updateClientReviewDataByID',
-  async (data: AddClientReviewData) => {
-    const apiData = {
-      _id: data._id,
-      client_review_image: data.client_review_image,
-      customer_name: data.customer_name,
-      company_name: data.company_name,
-      review: data.review,
-    };
+  async (data: any) => {
+    const {id, formData} = data;
     try {
-      const response: any = await UpdateClientReviewDataByID(data);
+      const response: any = await UpdateClientReviewDataByID(formData, id);
       return response;
     } catch (error: any) {
       return {
@@ -148,14 +142,14 @@ export const clientReviewSlice = createSlice({
         };
       })
       .addCase(postClientReviewEnroll.fulfilled, (state, action) => {
-        if (action.payload.status == true) {
+        if (action.payload.status == false) {
           toast.error(action.payload.message);
         } else {
           toast.success(action.payload.message);
         }
         return {
           ...state,
-          data: action.payload,
+          // data: action.payload,
           loading: false,
           addClientReviewStatus: 'success',
         };
@@ -176,7 +170,7 @@ export const clientReviewSlice = createSlice({
         };
       })
       .addCase(getAllClientReview.fulfilled, (state, action) => {
-        if (action.payload.status == true) {
+        if (action.payload.status === false) {
           toast.error(action.payload.message);
         }
         return {
@@ -202,7 +196,7 @@ export const clientReviewSlice = createSlice({
         };
       })
       .addCase(getClientReviewDataByID.fulfilled, (state, action) => {
-        if (action.payload.status == false) {
+        if (action.payload.status === false) {
           toast.error(action.payload.message);
         }
         return {
@@ -228,14 +222,14 @@ export const clientReviewSlice = createSlice({
         };
       })
       .addCase(deleteClientReviewData.fulfilled, (state, action) => {
-        if (action.payload.status == true) {
+        if (action.payload.status === false) {
           toast.error(action.payload.message);
         } else {
           toast.success(action.payload.message);
         }
         return {
           ...state,
-          data: action.payload,
+          // data: action.payload,
           loading: false,
           deleteClientReviewStatus: 'success',
         };
@@ -256,14 +250,14 @@ export const clientReviewSlice = createSlice({
         };
       })
       .addCase(updateClientReviewDataByID.fulfilled, (state, action) => {
-        if (action.payload.status == true) {
+        if (action.payload.status === false) {
           toast.error(action.payload.message);
         } else {
           toast.success(action.payload.message);
         }
         return {
           ...state,
-          data: action.payload,
+          // data: action.payload,
           loading: false,
           updateClientReviewStatus: 'success',
         };

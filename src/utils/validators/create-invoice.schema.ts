@@ -6,7 +6,7 @@ export const invoiceFormSchema = z.object({
   invoice_number: z.string().min(2, { message: messages.InvoiceNumberIsRequired }).max(10, { message: messages.InvoiceNumberMaxLength }),
   fromAddress: z.string().min(1, { message: messages.addressIsRequired }),
   fromPhone: z.string().optional(),
-  toName: z.string().min(1, { message: messages.nameIsRequired }),
+  name: z.string().min(1, { message: messages.nameIsRequired }),
   toAddress: z.string().min(1, { message: messages.addressIsRequired }),
   toPhone: z.string().optional(),
   invoiceNumber: z.string({

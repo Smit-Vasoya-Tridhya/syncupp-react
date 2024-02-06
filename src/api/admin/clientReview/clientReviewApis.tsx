@@ -2,7 +2,6 @@ import AxiosDefault from "../../../services/AxiosDefault";
 
 export type AddClientReviewData = {
   _id?: string;
-  image:string;
   client_review_image:string;
   customer_name: string;
   company_name?: string;
@@ -22,12 +21,12 @@ type ApiResponse = {
   data?: any 
 };
 // Add new Client Review API
-export const PostClientReviewEnroll = async (data: AddClientReviewData): Promise<ApiResponse> => {
+export const PostClientReviewEnroll = async (data: FormData): Promise<ApiResponse> => {
   const response = await AxiosDefault({
     url: "/api/v1/admin/add-client-review",
     method: "POST",
     data: data,
-    contentType: "application/json", 
+    contentType: "multipart/form-data", 
   });
   const responseData: ApiResponse = response.data;
   return responseData;
@@ -35,7 +34,7 @@ export const PostClientReviewEnroll = async (data: AddClientReviewData): Promise
 // Get All Client Review List
 export const GetAllClientReview = async (data: AddClientReviewData): Promise<ApiResponse> => {
   const response = await AxiosDefault({
-    url: "/api/v1/admin/get-all-client-review",
+    url: "/api/v1/admin/get-client-review",
     method: "POST",
     data: data,
     contentType: "application/json",  
@@ -66,12 +65,13 @@ export const DeleteClientReviewData = async (data: AddClientReviewData): Promise
   return responseData;
 };
 // Update Client Review Data By ID
-export const UpdateClientReviewDataByID = async (data: AddClientReviewData): Promise<ApiResponse> => {
+export const UpdateClientReviewDataByID = async (data: FormData, id: string): Promise<ApiResponse> => {
+  console.log(data,' slice data:..')
   const response = await AxiosDefault({
-    url: `/api/v1/admin/update-client-review/${data._id}`,
+    url: `/api/v1/admin/update-client-review/${id}`,
     method: "PUT",
     data: data,
-    contentType: "application/json", 
+    contentType: "multipart/form-data", 
   });
   const responseData: ApiResponse = response.data;
   return responseData;

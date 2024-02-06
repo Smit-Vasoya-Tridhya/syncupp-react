@@ -5,7 +5,7 @@ import { HeaderCell } from '@/components/ui/table';
 import { Text } from '@/components/ui/text';
 import { Checkbox } from '@/components/ui/checkbox';
 import DeletePopover from '@/app/shared/delete-popover';
-import { useDispatch } from 'react-redux';
+import { useDispatch , useSelector } from 'react-redux';
 import PencilIcon from '@/components/icons/pencil';
 import { ActionIcon, Button, Popover, Tooltip } from 'rizzui';
 import EyeIcon from '@/components/icons/eye';
@@ -16,7 +16,6 @@ import { FiSend } from "react-icons/fi";
 import { FaRegCheckCircle } from "react-icons/fa";
 import moment from 'moment';
 import { downloadAgreement, getAllAgencyagreement, sendAgreement, updateagreementStatus } from '@/redux/slices/user/agreement/agreementSlice';
-import { useSelector } from 'react-redux';
 
 
 

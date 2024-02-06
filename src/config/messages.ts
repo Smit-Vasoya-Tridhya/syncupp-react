@@ -25,6 +25,7 @@ export const messages = {
   companyWebsiteRequired: 'Company website is required',
   companyUrlInvalid: 'Company website url invalid',
   peopleCountRequired: 'People Count is required',
+  peopleCountMaximumLengthRequired: 'You can enter maximum 10 digit!',
   industryRequired: 'Industry name is required',
   phoneNumberIsRequired: 'Phone Number is required',
   customerNameIsRequired: 'Customer name is required',

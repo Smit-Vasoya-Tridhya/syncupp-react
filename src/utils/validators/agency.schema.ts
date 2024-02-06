@@ -35,9 +35,7 @@ pincode: z.string().trim().nullable().refine(value => {
 industry: z
     .string({ required_error: messages.industryRequired })
     .min(1, { message: messages.industryRequired }),
-    no_of_people: z
-    .string({ required_error: messages.peopleCountRequired })
-    .min(1, { message: messages.peopleCountRequired }),
+no_of_people: z.string().min(1, { message: messages.peopleCountRequired }).max(5, { message: messages.peopleCountMaximumLengthRequired }),
 })
 // generate form types from zod validation schema
 export type AgencyFormSchema = z.infer<typeof agencyFormSchema>;
