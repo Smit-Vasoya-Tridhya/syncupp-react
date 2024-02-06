@@ -9,7 +9,7 @@ import { deleteClient, getAllClient } from '@/redux/slices/user/client/clientSli
 import { useRouter } from 'next/navigation';
 // import toast from 'react-hot-toast';
 import { useModal } from '@/app/shared/modal-views/use-modal';
-import { getColumns } from '@/app/shared/(user)/agency/client/client-list/columns';
+import { GetColumns } from '@/app/shared/(user)/agency/client/client-list/columns';
 import CustomTable from '@/components/common-tables/table';
 import { PiPlusBold } from 'react-icons/pi';
 
@@ -88,7 +88,7 @@ export default function ClientPage() {
         setPageSize={setPageSize}
         handleDeleteById={handleDeleteById}
         handleChangePage={handleChangePage}
-        getColumns={getColumns}
+        getColumns={GetColumns}
       />
     </>
   );
