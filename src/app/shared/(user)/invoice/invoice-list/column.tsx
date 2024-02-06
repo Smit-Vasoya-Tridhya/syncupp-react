@@ -101,13 +101,13 @@ export const getColumns = ({
         title="Number"
         sortable
         ascending={
-          sortConfig?.direction === 'asc' && sortConfig?.key === 'number'
+          sortConfig?.direction === 'asc' && sortConfig?.key === 'invoice_number'
         }
       />
     ),
-    onHeaderCell: () => onHeaderCellClick('number'),
-    dataIndex: 'number',
-    key: 'number',
+    onHeaderCell: () => onHeaderCellClick('invoice_number'),
+    dataIndex: 'invoice_number',
+    key: 'invoice_number',
     width: 200,
     render: (value: string) => (
       <Text className="font-medium text-gray-700">{value}</Text>
@@ -119,13 +119,13 @@ export const getColumns = ({
         title="Customer"
         sortable
         ascending={
-          sortConfig?.direction === 'asc' && sortConfig?.key === 'customer'
+          sortConfig?.direction === 'asc' && sortConfig?.key === 'customer_name'
         }
       />
     ),
-    onHeaderCell: () => onHeaderCellClick('customer'),
-    dataIndex: 'customer',
-    key: 'customer',
+    onHeaderCell: () => onHeaderCellClick('customer_name'),
+    dataIndex: 'customer_name',
+    key: 'customer_name',
     width: 200,
     render: (value: string) => (
       <Text className="font-medium text-gray-700">{value}</Text>
@@ -137,13 +137,13 @@ export const getColumns = ({
         title="Amount"
         sortable
         ascending={
-          sortConfig?.direction === 'asc' && sortConfig?.key === 'amount'
+          sortConfig?.direction === 'asc' && sortConfig?.key === 'total'
         }
       />
     ),
-    onHeaderCell: () => onHeaderCellClick('amount'),
-    dataIndex: 'amount',
-    key: 'amount',
+    onHeaderCell: () => onHeaderCellClick('total'),
+    dataIndex: 'total',
+    key: 'total',
     width: 200,
     render: (value: string) => (
       <Text className="font-medium text-gray-700">{value}</Text>
@@ -185,24 +185,24 @@ export const getColumns = ({
       <Text className="font-medium text-gray-700">{value}</Text>
     ),
   },
-  {
-    title: (
-    <HeaderCell
-    title="Status"
-    sortable
-    ascending={
-      sortConfig?.direction === 'asc' && sortConfig?.key === 'status'
-    }
-    />),
-    onHeaderCell: () => onHeaderCellClick('status'),
-    dataIndex: 'status',
-    key: 'status',
-    width: 200,
-    render: (value: string) => getStatusBadge(value),
-    // render: (_: any, row: any) => (
-    //   <Text className="font-medium text-gray-700">{row.status}</Text>
-    // ),
-  },
+  // {
+  //   title: (
+  //   <HeaderCell
+  //   title="Status"
+  //   sortable
+  //   ascending={
+  //     sortConfig?.direction === 'asc' && sortConfig?.key === 'status'
+  //   }
+  //   />),
+  //   onHeaderCell: () => onHeaderCellClick('status'),
+  //   dataIndex: 'status',
+  //   key: 'status',
+  //   width: 200,
+  //   render: (value: string) => getStatusBadge(value),
+  //   // render: (_: any, row: any) => (
+  //   //   <Text className="font-medium text-gray-700">{row.status}</Text>
+  //   // ),
+  // },
 
   {
     // Need to avoid this issue -> <td> elements in a large <table> do not have table headers.

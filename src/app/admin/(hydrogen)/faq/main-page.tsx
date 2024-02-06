@@ -8,6 +8,7 @@ import { deleteFaqData, getAllFaq } from '@/redux/slices/admin/faq/faqSlice';
 import PageHeader from '@/app/shared/page-header';
 import ModalButton from '@/app/shared/modal-button';
 import AddFaqForm from '@/app/shared/(admin)/faq/create-edit/add-edit-faq-form';
+import { PiPlusBold } from 'react-icons/pi';
 
 
 const pageHeader = {
@@ -46,28 +47,29 @@ export default function FaqPage() {
     };
 
     return (
-        <>
+      <>
         <PageHeader title={pageHeader.title}>
           <div className="mt-4 flex items-center gap-3 @lg:mt-0">
-          <ModalButton
-            label="Add FAQ"
-            view={<AddFaqForm title="FAQ" />}
-            customSize="800px"
-            className="mt-0 w-full hover:bg-gray-700 @lg:w-auto dark:bg-gray-100 dark:text-white dark:hover:bg-gray-200 dark:active:bg-gray-100"
-          />
-        </div>
-      </PageHeader>
-            <CustomTable
-                data={adminFaqData?.data?.faqs}
-                total={adminFaqData?.data?.pagination?.total_pages}
-                loading={adminFaqData?.loading}
-                pageSize={pageSize}
-                setPageSize={setPageSize}
-                handleDeleteById={handleDeleteById}
-                handleChangePage={handleChangePage}
-                getColumns={getColumns}
+            <ModalButton
+              label="Add FAQ"
+              view={<AddFaqForm title="FAQ" />}
+              customSize="800px"
+              className="mt-0 w-full hover:bg-gray-700 @lg:w-auto dark:bg-gray-100 dark:text-white dark:hover:bg-gray-200 dark:active:bg-gray-100"
+              icon={<PiPlusBold className="me-1.5 h-[17px] w-[17px]" />}
             />
-        </>
-    )
+          </div>
+        </PageHeader>
+        <CustomTable
+          data={adminFaqData?.data?.faqs}
+          total={adminFaqData?.data?.pagination?.total_pages}
+          loading={adminFaqData?.loading}
+          pageSize={pageSize}
+          setPageSize={setPageSize}
+          handleDeleteById={handleDeleteById}
+          handleChangePage={handleChangePage}
+          getColumns={getColumns}
+        />
+      </>
+    );
 
 }

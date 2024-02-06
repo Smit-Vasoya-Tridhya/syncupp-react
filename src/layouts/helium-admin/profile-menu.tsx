@@ -47,7 +47,11 @@ function DropdownMenu() {
     dispatch(getViewProfiles())
   }, [dispatch])
   const { data: userData , loading } = useSelector((state: any) => state?.root?.viewProfile);
-  // const [data, setData] = useState<UserProfileDTO>({} as UserProfileDTO);
+
+  function capitalizeFirstLetter(str:any) {
+    if (!str) return '';
+    return  str.charAt(0).toUpperCase() + str.slice(1);
+  }
   if (loading) {
     return (
       <div className="flex items-center justify-center p-10">
@@ -65,7 +69,7 @@ function DropdownMenu() {
         />
         <div className="ms-3">
           <Title as="h6" className="font-semibold">
-          {`${userData?.first_name} ${userData?.last_name}`}
+          {`${capitalizeFirstLetter(userData?.first_name)} ${capitalizeFirstLetter(userData?.last_name)}`}
           </Title>
           <Text className="text-gray-600">{`${userData?.email}`}</Text>
         </div>
