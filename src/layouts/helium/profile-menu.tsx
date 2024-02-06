@@ -34,6 +34,10 @@ function DropdownMenu() {
       }
     })
   }
+  function capitalizeFirstLetter(str:any) {
+    if (!str) return '';
+    return  str.charAt(0).toUpperCase() + str.slice(1);
+  }
   if (loading) {
     return (
       <div className="flex items-center justify-center p-10">
@@ -51,7 +55,7 @@ function DropdownMenu() {
         />
         <div className="ms-3">
           <Title as="h6" className="break-all text-sm font-semibold">
-            {`${userProfile?.first_name} ${userProfile?.last_name}`}
+            {`${capitalizeFirstLetter(userProfile?.first_name)} ${capitalizeFirstLetter(userProfile?.last_name)}`}
           </Title>
           <Text className="break-all text-sm text-gray-600">
             {`${userProfile?.email}`}

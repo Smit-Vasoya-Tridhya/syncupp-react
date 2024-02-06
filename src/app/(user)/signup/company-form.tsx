@@ -40,12 +40,13 @@ export default function CompanyForm(props: any) {
 
     const onSubmit: SubmitHandler<CompanyDetailsSchema> = (data) => {
         dispatch(signUpUser({ ...signUpFormData, ...data })).then((result: any) => {
+            console.log(result.payload, 'result.payload')
             if (signUpUser.fulfilled.match(result)) {
                 if (result && result.payload.success === true) {
-                    // router.replace(routes.signIn);
-                    dispatch(signUpUserSubscription({})).then((result: any) => {
-                        initiateRazorpay(router, routes.signIn, result?.payload?.data?.token)
-                    })
+                    router.replace(routes.signIn);
+                    // dispatch(signUpUserSubscription({})).then((result: any) => {
+                    //     initiateRazorpay(router, routes.signIn, result?.payload?.data?.token)
+                    // })
                 }
             }
         })
@@ -54,13 +55,13 @@ export default function CompanyForm(props: any) {
 
     const handleClick = () => {
         dispatch(signUpUser({ ...signUpFormData })).then((result: any) => {
+            console.log(result.payload, 'result.payload')
             if (signUpUser.fulfilled.match(result)) {
                 if (result && result.payload.success === true) {
-                    console.log(result.payload, 'result.payload')
-                    // router.replace(routes.signIn);
-                    dispatch(signUpUserSubscription({})).then((result: any) => {
-                        initiateRazorpay(router, routes.signIn, result?.payload?.data?.token)
-                    })
+                    router.replace(routes.signIn);
+                    // dispatch(signUpUserSubscription({})).then((result: any) => {
+                    //     initiateRazorpay(router, routes.signIn, result?.payload?.data?.token)
+                    // })
                 }
                 setLoader(false)
             }
