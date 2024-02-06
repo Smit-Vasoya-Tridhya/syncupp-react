@@ -237,10 +237,10 @@ export const GetColumns = ({
       dataIndex: 'action',
       key: 'action',
       width: 120,
-      render: (_: string, row: Record<string, string>) => (
-        console.log(row, 'row'),
+      render: (_: string, row: any) => (
+        console.log(row?.reference_id?._id, 'row'),
         <>
-          {row?.status === "payment_pending" ? <div> <Button className='w-full' onClick={() => { initiateRazorpay(router, routes.client, token, row?.id) }}>Pay</Button></div> : <>
+          {row?.status === "payment_pending" ? <div> <Button className='w-full' onClick={() => { initiateRazorpay(router, routes.client, token, row?.reference_id?._id) }}>Pay</Button></div> : <>
             <div className="flex items-center justify-end gap-3 pe-4">
               <CustomModalButton
                 title="Edit Client"

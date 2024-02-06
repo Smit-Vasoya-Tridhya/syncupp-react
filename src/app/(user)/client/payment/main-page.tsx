@@ -29,7 +29,7 @@ export default function PaymentPage() {
                         <div>
                             <div className="text-gray-600 font-lato text-xl font-semibold pt-5">Your referral points</div>
                             <div className="font-lato font-semibold py-5 text-xl">2000</div>
-                            <button onClick={() => { initiateRazorpay(router, routes.client, token, addClientdetails?.data?.reference_id) }} className="cursor-pointer bg-gray-800 text-white font-lato px-4 py-2">Purchase</button>
+                            <button disabled onClick={() => { initiateRazorpay(router, routes.client, token, addClientdetails?.data?.reference_id) }} className="cursor-pointer bg-gray-800 text-white font-lato px-4 py-2">Purchase</button>
                         </div>
                     </div>
                     <div className="w-1/2 min-h-full p-10 flex items-start flex-col shadow-lg h-screen">
@@ -39,8 +39,8 @@ export default function PaymentPage() {
                         <div className="bg-gray-600 w-full h-px"></div>
                         <div>
                             <div className="text-gray-600 font-lato text-xl font-semibold pt-5">Subscription Details</div>
-                            <div className="font-lato font-semibold py-5 text-xl">Subscription Amount : 2000</div>
-                            <button className="cursor-pointer bg-gray-800 text-white font-lato px-4 py-2">Purchase</button>
+                            <div className="font-lato font-semibold py-5 text-xl">Subscription Amount : 6000</div>
+                            <button onClick={() => { initiateRazorpay(router, routes.client, token, addClientdetails?.data?.reference_id) }} className="cursor-pointer bg-gray-800 text-white font-lato px-4 py-2">Purchase</button>
                         </div>
                     </div>
 
