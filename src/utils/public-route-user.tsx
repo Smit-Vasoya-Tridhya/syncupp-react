@@ -22,13 +22,17 @@ const WithAuthPublic = (WrappedComponent: any) => {
 
       // console.log("####" ,token)
       if (token) {
-        if (signIn?.user?.data?.user?.role?.name === "agency" || signIn?.user?.data?.user?.role?.name === "client" || signIn?.user?.data?.user?.role?.name === "team_agency") {
+        if (signIn?.user?.data?.user?.role?.name === "client" || signIn?.user?.data?.user?.role?.name === "team_agency") {
           router.replace(routes.dashboard)
+        } else if (signIn?.user?.data?.user?.role?.name === "agency" && signIn?.user?.data?.user?.status != "payment_pending") {
+           router.replace(routes.dashboard)
+          console.log('else if', 29)
         } else if (socialSignup?.user?.data?.user?.role?.name === "agency" || socialSignup?.user?.data?.user?.role?.name === "client") {
           // window.location.href = subscriptionData.data?.payment_url;
           socialSignup?.user?.data?.user?.status != "payment_pending" && router.replace(routes.dashboard)
         } else {
-          router.replace(routes.admin.dashboard)
+          console.log('else',33)
+          // router.replace(routes.admin.dashboard)
         }
 
       } else {

@@ -1,4 +1,4 @@
-// paymentService.ts
+// clientpaymentService.ts
 import axios from "axios";
 import { toast } from 'react-hot-toast';
 import { routes } from '@/config/routes';
@@ -18,7 +18,7 @@ interface CustomWindow extends Window {
 
 declare var window: CustomWindow;
 
-const paymentService = {
+const clientpaymentService = {
     loadRazorpayScript: async (src: string): Promise<boolean> => {
         return new Promise((resolve) => {
             const script = document.createElement("script");
@@ -33,16 +33,15 @@ const paymentService = {
         });
     },
 
-    createSubscription: async (token: string): Promise<Object> => {
+    createSubscription: async (token: string, reference_id: string): Promise<Object> => {
         console.log(token, 'token')
         try {
-            const result = await axios.post<{ data: { payment_id: string } }>(`${process.env.NEXT_PUBLIC_API}/api/v1/payment/create-subscription`, {}, {
+            const result = await axios.post<{ data: { user_id: string } }>(`${process.env.NEXT_PUBLIC_API}/api/v1/payment/order`, { user_id: reference_id }, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     // Add any other headers if needed
                 },
             });
-            console.log(result?.data?.data?.payment_id, "result");
 
             return result?.data?.data || {};
         } catch (error: any) {
@@ -73,17 +72,17 @@ const paymentService = {
     },
 
     // New function to initiate Razorpay
-    initiateRazorpay: async (router: any, route: any, signupdata: any): Promise<void> => {
+    initiateRazorpay: async (router: any, route: any, signupdata: any, reference_id: any): Promise<void> => {
 
         try {
-            const subscriptiondata: any = await paymentService.createSubscription(signupdata);
+            const subscriptiondata: any = await clientpaymentService.createSubscription(signupdata, reference_id);
             console.log(subscriptiondata, 'subscriptiondata')
 
-            const res = await paymentService.loadRazorpayScript("https://checkout.razorpay.com/v1/checkout.js");
+            const res = await clientpaymentService.loadRazorpayScript("https://checkout.razorpay.com/v1/checkout.js");
             console.log(res, "24");
 
             if (!res) {
-                paymentService.displayPaymentToast("Razorpay SDK failed to load. Are you online?", 'error');
+                clientpaymentService.displayPaymentToast("Razorpay SDK failed to load. Are you online?", 'error');
                 return;
             }
 
@@ -94,29 +93,29 @@ const paymentService = {
                 currency: subscriptiondata?.currency,
                 name: "SyncUpp",
                 description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,",
-                subscription_id: subscriptiondata?.payment_id,
+                order_id: subscriptiondata?.payment_id,
                 handler: async (response: RazorpayResponse) => {
                     console.log(response, 'response');
                     const data = {
                         razorpay_payment_id: response.razorpay_payment_id,
-                        razorpay_order_id: response.razorpay_subscription_id,
+                        razorpay_order_id: response.razorpay_order_id,
                         razorpay_signature: response.razorpay_signature,
-                        subscription_id: response.razorpay_subscription_id,
+                        order_id: response.razorpay_subscription_id,
                         amount: subscriptiondata?.amount.toString(),
                         currency: subscriptiondata?.currency,
                         user_id: subscriptiondata?.user_id,
                         agency_id: subscriptiondata?.agency_id
                     };
 
-                    const verificationResult: any = await paymentService.verifyPaymentSignature(data);
+                    const verificationResult: any = await clientpaymentService.verifyPaymentSignature(data);
                     console.log(verificationResult, 'verificationResult')
 
 
                     if (verificationResult?.data?.success) {
-                        paymentService.displayPaymentToast(verificationResult?.message, 'success');
+                        clientpaymentService.displayPaymentToast(verificationResult?.message, 'success');
                         router.push(route)
                     } else {
-                        paymentService.displayPaymentToast(verificationResult?.message, 'error');
+                        clientpaymentService.displayPaymentToast(verificationResult?.message, 'error');
                     }
                 },
                 theme: {
@@ -128,10 +127,10 @@ const paymentService = {
             paymentObject.open();
         } catch (error: any) {
             console.error('Error during payment:', error.message);
-            paymentService.displayPaymentToast('Error during payment. Please try again.', 'error');
+            clientpaymentService.displayPaymentToast('Error during payment. Please try again.', 'error');
         }
     },
 };
 
 // Export the initiateRazorpay function
-export const initiateRazorpay = paymentService.initiateRazorpay;
+export const initiateRazorpay = clientpaymentService.initiateRazorpay;

@@ -180,9 +180,6 @@ function SocialAuth({
                 if (result && result.payload.success === true) {
                   // console.log(result?.payload?.user?.data?.user?.status === "payment_pending", 'result', result?.payload?.data?.user?.status)
                   if (result?.payload?.data?.user?.status === "payment_pending") {
-                    // dispatch(signUpUserSubscription({})).then((resulturl: any) => {
-                    //   window.location.href = resulturl?.payload?.data?.payment_url;
-                    // })
                     initiateRazorpay(router, routes.dashboard, result?.payload?.data?.token)
                   } else {
                     router.replace(routes.dashboard);

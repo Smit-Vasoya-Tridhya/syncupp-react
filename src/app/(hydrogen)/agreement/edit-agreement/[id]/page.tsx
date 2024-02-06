@@ -23,6 +23,8 @@ import QuillLoader from '@/components/loader/quill-loader';
 import PageHeader from '@/app/shared/page-header';
 import EyeIcon from '@/components/icons/eye';
 import { createagreement, getDropdownclientlist, getSingleagreement, updateagreement } from '@/redux/slices/user/agreement/agreementSlice';
+import moment from 'moment';
+
 
 const Select = dynamic(() => import('@/components/ui/select'), {
     ssr: false,
@@ -76,7 +78,8 @@ export default function ChangePasswordForm({ params }: { params: { id: string } 
 
     // get today date
     const today = new Date();
-    const [dueDate, setDueDate] = useState<Date | null>(new Date(singleAgreementdetails?.data?.due_date));
+    const [dueDate, setDueDate] = useState<Date | null>(moment(singleAgreementdetails?.data?.due_date).toDate());
+    // const [dueDate, setDueDate] = useState<Date | null>(new Date());
 
     // Dropdown API Call
     useEffect(() => {
@@ -99,7 +102,9 @@ export default function ChangePasswordForm({ params }: { params: { id: string } 
                 due_date: singleAgreementdetails?.data?.due_date, // Replace with the actual date in string format
                 description: singleAgreementdetails?.data?.agreement_content || "",
             })
-            setDueDate(new Date(singleAgreementdetails?.data?.due_date))
+            // setDueDate(new Date(singleAgreementdetails?.data?.due_date))
+            const parsedDate = moment(singleAgreementdetails?.data?.due_date).toDate();
+            setDueDate(parsedDate);
             setselectedClient(clientOptions.find((option: any) => option.value === singleAgreementdetails?.data?.receiver_id))
         }
 
@@ -163,6 +168,9 @@ export default function ChangePasswordForm({ params }: { params: { id: string } 
                             className=" [&_label]:font-medium p-10"
                         >
                             {({ register, control, formState: { errors }, watch }) => (
+                               
+                                console.log(errors,'errors'),
+
                                 <div className="space-y-5">
 
                                     <div className="grid grid-cols-1 gap-4 md:grid-cols-3 xl:gap-5 xl:pb-2 items-start">
@@ -218,22 +226,26 @@ export default function ChangePasswordForm({ params }: { params: { id: string } 
                                                     />
                                                 )}
                                             />
-                                            {errors.due_date && <span className="text-red-500">{errors.due_date.message}</span>}
+                                            {errors.due_date && <span className="text-red text-xs mt-0.5">{errors.due_date.message}</span>}
                                         </div>
                                     </div>
-                                    <Controller
-                                        control={control}
-                                        name="description"
-                                        render={({ field: { onChange, value } }) => (
-                                            <QuillEditor
-                                                value={value}
-                                                onChange={onChange}
-                                                label="Description"
-                                                className="col-span-full [&_.ql-editor]:min-h-[100px]"
-                                                labelClassName="font-medium text-gray-700 dark:text-gray-600 mb-1.5"
-                                            />
-                                        )}
-                                    />
+                                    <div>
+                                        <Controller
+                                            control={control}
+                                            name="description"
+                                            render={({ field: { onChange, value } }) => (
+                                                <QuillEditor
+                                                    value={value}
+                                                    onChange={onChange}
+                                                    label="Description"
+                                                    className="col-span-full [&_.ql-editor]:min-h-[100px]"
+                                                    labelClassName="font-medium text-gray-700 dark:text-gray-600 mb-1.5"
+                                                />
+                                            )}
+                                        />
+                                        {errors.description && <span className="text-red text-xs mt-0.5">{errors.description.message}</span>}
+                                    </div>
+
                                     <div className='flex justify-between mt-5 font-medium text-gray-700 dark:text-gray-600 mb-1.5'>
                                         <ul>
                                             <li>{user?.first_name}</li>
