@@ -5,10 +5,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import CustomTable from '@/components/common-tables/table';
 import { getColumns } from '@/app/shared/(user)/invoice/invoice-list/column';
-import { getAllTeamMember } from '@/redux/slices/user/team-member/teamSlice';
 import { Button } from 'rizzui';
 import Link from 'next/link';
 import { routes } from '@/config/routes';
+import { PiPlusBold } from 'react-icons/pi';
+import { DeleteInvoice, getAllInvoiceDataTable } from '@/redux/slices/user/invoice/invoiceSlice';
 
 const pageHeader = {
   title: 'Invoice',
@@ -20,13 +21,13 @@ export default function InvoiceDataTablePage() {
   const teamMemberData = useSelector((state: any) => state?.root?.teamMember);
   const handleChangePage = async (paginationParams: any) => {
     let { page, items_per_page, sort_field, sort_order, search } = paginationParams;
-    const response = await dispatch(getAllTeamMember({ page, items_per_page, sort_field, sort_order, search }));
+    const response = await dispatch(getAllInvoiceDataTable({ page, items_per_page, sort_field, sort_order, search }));
     const { data } = response?.payload;
     const maxPage: number = data?.page_count;
 
     if (page > maxPage) {
       page = maxPage > 0 ? maxPage : 1;
-      await dispatch(getAllTeamMember({ page, items_per_page, sort_field, sort_order, search }));
+      await dispatch(getAllInvoiceDataTable({ page, items_per_page, sort_field, sort_order, search }));
       return data?.teamMemberList;
     }
     if(data && data?.teamMemberList && data?.teamMemberList.length !== 0 ) {
@@ -35,14 +36,14 @@ export default function InvoiceDataTablePage() {
   };
 
   const handleDeleteById = async (id: string | string[], currentPage?: any, countPerPage?: number, sortConfig?: Record<string, string>, searchTerm?: string) => {
-    // try {
-    //   const res = await dispatch(deleteTeamMember({ _id: id }));
-    //   if (res.payload.success === true) {
-    //     const reponse = await dispatch(getAllTeamMember({ page: currentPage, items_per_page: countPerPage, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm }));
-    //   }
-    // } catch (error) {
-    //   console.error(error);
-    // }
+    try {
+      const res = await dispatch(DeleteInvoice({ _id: id }));
+      if (res.payload.success === true) {
+        const reponse = await dispatch(getAllInvoiceDataTable({ page: currentPage, items_per_page: countPerPage, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm }));
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -52,7 +53,9 @@ export default function InvoiceDataTablePage() {
         <Link href={routes.invoiceForm} className='w-full'>
         <Button
         className="mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0"
-        >Add Invoice</Button>
+        >
+          <PiPlusBold className="me-1.5 h-[17px] w-[17px]" />
+          Add Invoice</Button>
         </Link>
         </div>
       </PageHeader>
