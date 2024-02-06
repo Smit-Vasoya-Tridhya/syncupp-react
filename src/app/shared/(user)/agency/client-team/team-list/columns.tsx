@@ -11,6 +11,8 @@ import { TeamMemberType } from '@/data/products-data';
 import DeletePopover from '@/app/shared/delete-popover';
 import { Badge, Button } from 'rizzui';
 import moment from 'moment';
+import { MdOutlineDone } from 'react-icons/md';
+import { PiXBold } from 'react-icons/pi';
 
 type Columns = {
   data: any[];
@@ -216,15 +218,23 @@ export const getColumns = ({
         <div className="flex items-center justify-end gap-3 pe-4">
           <Tooltip
             size="sm"
-            content={() => 'View Team member'}
+            content={() => 'Approve'}
             placement="top"
             color="invert"
           >
-            <Link href={routes.viewTeam}>
-              <Button size="sm" variant="outline" className='bg-white text-black' aria-label={'View Member'}>
-                <EyeIcon className="h-4 w-4" />
+              <Button size="sm" variant="outline" className='bg-white text-black' aria-label={'Approve Team member'}>
+                <MdOutlineDone className="h-4 w-4" />
               </Button>
-            </Link>
+          </Tooltip>
+          <Tooltip
+            size="sm"
+            content={() => 'Reject'}
+            placement="top"
+            color="invert"
+          >
+              <Button size="sm" variant="outline" className='bg-white text-black' aria-label={'Reject Team member'}>
+                <PiXBold className="h-4 w-4" />
+              </Button>
           </Tooltip>
           {/* <DeletePopover
             title={`Delete the Team member`}

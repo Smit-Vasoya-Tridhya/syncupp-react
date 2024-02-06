@@ -1,20 +1,15 @@
 'use client';
 
-import SelectLoader from '@/components/loader/select-loader';
 import { Form } from '@/components/ui/form';
 import { getAllClient, setClientId, setClientName } from '@/redux/slices/user/client/clientSlice';
 import { getAllTeamMember } from '@/redux/slices/user/team-member/teamSlice';
-import dynamic from 'next/dynamic';
 import { useEffect } from 'react';
 import { Controller } from 'react-hook-form';
 import { useDispatch, useSelector } from "react-redux";
+import Select from '@/components/ui/select';
+import SelectLoader from '@/components/loader/select-loader';
 
 
-
-const Select = dynamic(() => import('@/components/ui/select'), {
-    ssr: false,
-    loading: () => <SelectLoader />,
-});
 
 
 export default function ClientSelectionForm() {
@@ -40,7 +35,7 @@ export default function ClientSelectionForm() {
         // console.log("selected option....", selectedOption)
         dispatch(setClientName(selectedOption?.name))
         dispatch(setClientId(selectedOption?.value))
-        dispatch(getAllTeamMember({ sort_field: 'createdAt', sort_order: 'desc', client_id: selectedOption?.value }))
+        dispatch(getAllTeamMember({ sort_field: 'createdAt', sort_order: 'desc', client_id: selectedOption?.value, pagination: true }))
     }
 
     const onSubmit = (data: any) => {

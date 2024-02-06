@@ -72,7 +72,12 @@ export const MenuItems = () => {
           name: 'Team',
           href: routes.team,
           icon: <PiUsersThree />,
-        }
+        },
+        {
+          name: 'Task',
+          href: routes.task,
+          icon: <FaTasks />,
+        },
       ];
       break;
 
@@ -82,7 +87,12 @@ export const MenuItems = () => {
           name: 'Dashboard',
           href: routes.dashboard,
           icon: <PiFolderNotchDuotone />,
-        }
+        },
+        {
+          name: 'Task',
+          href: routes.task,
+          icon: <FaTasks />,
+        },
       ];
       break;
 

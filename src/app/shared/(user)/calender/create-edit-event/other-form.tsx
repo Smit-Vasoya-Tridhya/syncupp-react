@@ -94,7 +94,7 @@ export default function CalenderOtherFrom(props: any) {
         if(postAddTask.fulfilled.match(result)) {
           if (result && result.payload.success === true) {
             closeModal();
-            // dispatch(getAllTeamMember({ sort_field: 'createdAt', sort_order: 'desc' }));
+            // dispatch(getAllTeamMember({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
           }
         }
       });
@@ -103,7 +103,7 @@ export default function CalenderOtherFrom(props: any) {
       //   if(editTeamMember.fulfilled.match(result)) {
       //     if (result && result.payload.success === true) {
       //       closeModal();
-      //       dispatch(getAllTeamMember({ sort_field: 'createdAt', sort_order: 'desc' }));
+      //       dispatch(getAllTeamMember({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
       //     }
       //   }
       // });

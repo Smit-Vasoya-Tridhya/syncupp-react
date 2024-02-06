@@ -18,6 +18,7 @@ import { useDispatch } from "react-redux";
 import { defaultCols, defaultTasks } from "./data";
 import SimpleBar from '@/components/ui/simplebar';
 import { getCountry } from "@/redux/slices/user/client/clientSlice";
+import KanbanSearch from "./kanban-search";
 
 
 
@@ -61,7 +62,7 @@ function KanbanBoard() {
   }
 
   function onDragEnd(event: DragEndEvent) {
-    // setActiveColumn(null);
+    setActiveColumn(null);
     // setActiveTask(null);
 
     // dispatch(getCountry())
@@ -79,14 +80,6 @@ function KanbanBoard() {
     if (!isActiveAColumn) return;
 
     console.log("DRAG END");
-
-    // setColumns((columns) => {
-    //   const activeColumnIndex = columns.findIndex((col) => col.id === activeId);
-
-    //   const overColumnIndex = columns.findIndex((col) => col.id === overId);
-
-    //   return arrayMove(columns, activeColumnIndex, overColumnIndex);
-    // });
 
     setColumns((prevColumns) => {
       const activeColumnIndex = prevColumns.findIndex((col) => col.id === activeId);
@@ -146,56 +139,51 @@ function KanbanBoard() {
 
 
   return (
-    // <div
-    //   className="
-    //     mt-6
-    //     w-full
-    //     overflow-x-auto
-    //     overflow-y-hidden
-    // "
-    // >
-    <div className="@container border rounded-md border-t-transparent shadow-sm">
-      <SimpleBar className="max-h-[600px]">
-      <DndContext
-        sensors={sensors}
-        onDragStart={onDragStart}
-        onDragEnd={onDragEnd}
-        onDragOver={onDragOver}
-      >
-        <div className="m-auto flex gap-4">
-          <div className="flex gap-4 min-h-[600px]">
-            <SortableContext items={columnsId}>
-              {columns.map((col) => (
-                <ColumnContainer
-                  key={col.id}
-                  column={col}
-                  tasks={tasks.filter((task) => task.columnId === col.id)}
-                />
-              ))}
-            </SortableContext>
-          </div>
-        </div>
+    <div>
+      <KanbanSearch />
+      <div className="@container border rounded-md border-t-transparent shadow-sm mt-4">
+        <SimpleBar className="max-h-[600px]">
+          <DndContext
+            sensors={sensors}
+            onDragStart={onDragStart}
+            onDragEnd={onDragEnd}
+            onDragOver={onDragOver}
+          >
+            <div className="m-auto flex gap-4">
+              <div className="flex gap-4 min-h-[600px]">
+                <SortableContext items={columnsId}>
+                  {columns.map((col) => (
+                    <ColumnContainer
+                      key={col.id}
+                      column={col}
+                      tasks={tasks.filter((task) => task.columnId === col.id)}
+                    />
+                  ))}
+                </SortableContext>
+              </div>
+            </div>
 
-        {createPortal(
-          <DragOverlay>
-            {activeColumn && (
-              <ColumnContainer
-                column={activeColumn}
-                tasks={tasks.filter(
-                  (task) => task.columnId === activeColumn.id
+            {createPortal(
+              <DragOverlay>
+                {activeColumn && (
+                  <ColumnContainer
+                    column={activeColumn}
+                    tasks={tasks.filter(
+                      (task) => task.columnId === activeColumn.id
+                    )}
+                  />
                 )}
-              />
+                {activeTask && (
+                  <TaskCard
+                    task={activeTask}
+                  />
+                )}
+              </DragOverlay>,
+              document.body
             )}
-            {activeTask && (
-              <TaskCard
-                task={activeTask}
-              />
-            )}
-          </DragOverlay>,
-          document.body
-        )}
-      </DndContext>
-    </SimpleBar>
+          </DndContext>
+        </SimpleBar>
+      </div>
     </div>
   );
 }
