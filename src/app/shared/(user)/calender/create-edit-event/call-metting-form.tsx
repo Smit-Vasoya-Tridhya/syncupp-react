@@ -64,8 +64,8 @@ export default function CalenderCallMettingFrom(props: any) {
   const initialValues: AddCalenderSchema = {
     title: '',
     description: '',
-    start_date:new Date(),
-    due_date: new Date(),
+    start_date:undefined,
+    due_date: undefined,
     client: '',
     assigned: '',
     done: false

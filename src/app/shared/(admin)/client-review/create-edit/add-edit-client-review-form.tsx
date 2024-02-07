@@ -160,7 +160,7 @@ export default function AddClientReviewForm(props: any) {
                       <img
                         src={URL.createObjectURL(selectedFile)}
                         alt="Preview"
-                        style={{ maxWidth: '100px', maxHeight: '100px' }}
+                        style={{ maxWidth: '100%', maxHeight: '100px' }}
                       />
                     </div>
                   ) : null
