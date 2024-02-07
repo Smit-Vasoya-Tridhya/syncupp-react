@@ -33,7 +33,7 @@ const clientpaymentService = {
         });
     },
 
-    createSubscription: async (token: string, reference_id: string): Promise<Object> => {
+    ClientcreateSubscription: async (token: string, reference_id: string, router: any): Promise<Object> => {
         console.log(token, 'token')
         try {
             const result = await axios.post<{ data: { user_id: string } }>(`${process.env.NEXT_PUBLIC_API}/api/v1/payment/order`, { user_id: reference_id }, {
@@ -46,6 +46,7 @@ const clientpaymentService = {
             return result?.data?.data || {};
         } catch (error: any) {
             console.error('Error creating subscription:', error.message);
+            // router.push(routes.signIn)
             throw new Error('Error creating subscription');
         }
     },
@@ -72,10 +73,10 @@ const clientpaymentService = {
     },
 
     // New function to initiate Razorpay
-    initiateRazorpay: async (router: any, route: any, signupdata: any, reference_id: any): Promise<void> => {
+    initiateRazorpay: async (router: any, route: any, signupdata: any, reference_id: any, ClintlistAPIcall: any): Promise<void> => {
 
         try {
-            const subscriptiondata: any = await clientpaymentService.createSubscription(signupdata, reference_id);
+            const subscriptiondata: any = await clientpaymentService.ClientcreateSubscription(signupdata, reference_id, router);
             console.log(subscriptiondata, 'subscriptiondata')
 
             const res = await clientpaymentService.loadRazorpayScript("https://checkout.razorpay.com/v1/checkout.js");
@@ -113,6 +114,7 @@ const clientpaymentService = {
 
                     if (verificationResult?.data?.success) {
                         clientpaymentService.displayPaymentToast(verificationResult?.message, 'success');
+                        ClintlistAPIcall()
                         router.push(route)
                     } else {
                         clientpaymentService.displayPaymentToast(verificationResult?.message, 'error');

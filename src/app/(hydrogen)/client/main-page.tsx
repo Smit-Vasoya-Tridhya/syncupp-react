@@ -5,7 +5,7 @@ import ModalButton from '@/app/shared/modal-button';
 import AddClientForm from '@/app/shared/(user)/agency/client/create-edit/add-client-form';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteClient, getAllClient } from '@/redux/slices/user/client/clientSlice';
+import { deleteClient, getAllClient, setPagginationParams } from '@/redux/slices/user/client/clientSlice';
 import { useRouter } from 'next/navigation';
 // import toast from 'react-hot-toast';
 import { useModal } from '@/app/shared/modal-views/use-modal';
@@ -24,7 +24,7 @@ export default function ClientPage() {
   const { closeModal } = useModal();
 
   const clientSliceData = useSelector((state: any) => state?.root?.client);
-  
+
   const [pageSize, setPageSize] = useState<number>(5);
 
 
@@ -36,6 +36,8 @@ export default function ClientPage() {
   const handleChangePage = async (paginationParams: any) => {
     let { page, items_per_page, sort_field, sort_order, search } = paginationParams;
 
+    await dispatch(setPagginationParams(paginationParams))
+    
     const response = await dispatch(getAllClient({ page, items_per_page, sort_field, sort_order, search, pagination: true }));
     const { data } = response?.payload;
     const maxPage: number = data?.page_count;
@@ -45,7 +47,7 @@ export default function ClientPage() {
       await dispatch(getAllClient({ page, items_per_page, sort_field, sort_order, search, pagination: true }));
       return data?.clients
     }
-    if(data && data?.clients && data?.clients?.length !== 0 ) {
+    if (data && data?.clients && data?.clients?.length !== 0) {
       return data?.clients
     }
   };
