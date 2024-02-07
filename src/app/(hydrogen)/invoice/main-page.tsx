@@ -18,7 +18,8 @@ const pageHeader = {
 export default function InvoiceDataTablePage() {
   const dispatch = useDispatch();
   const [pageSize, setPageSize] = useState(5);
-  const teamMemberData = useSelector((state: any) => state?.root?.teamMember);
+  const invoiceData = useSelector((state: any) => state?.root?.invoice);
+
   const handleChangePage = async (paginationParams: any) => {
     let { page, items_per_page, sort_field, sort_order, search } = paginationParams;
     const response = await dispatch(getAllInvoiceDataTable({ page, items_per_page, sort_field, sort_order, search }));
@@ -28,16 +29,16 @@ export default function InvoiceDataTablePage() {
     if (page > maxPage) {
       page = maxPage > 0 ? maxPage : 1;
       await dispatch(getAllInvoiceDataTable({ page, items_per_page, sort_field, sort_order, search }));
-      return data?.teamMemberList;
+      return data?.invoiceList;
     }
-    if(data && data?.teamMemberList && data?.teamMemberList.length !== 0 ) {
-      return data?.teamMemberList
+    if(data && data?.invoiceList && data?.invoiceList.length !== 0 ) {
+      return data?.invoiceList
     }
   };
 
   const handleDeleteById = async (id: string | string[], currentPage?: any, countPerPage?: number, sortConfig?: Record<string, string>, searchTerm?: string) => {
     try {
-      const res = await dispatch(DeleteInvoice({ _id: id }));
+      const res = await dispatch(DeleteInvoice({ invoiceIdsToDelete: id}));
       if (res.payload.success === true) {
         const reponse = await dispatch(getAllInvoiceDataTable({ page: currentPage, items_per_page: countPerPage, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm }));
       }
@@ -60,9 +61,9 @@ export default function InvoiceDataTablePage() {
         </div>
       </PageHeader>
       <CustomTable
-        data={teamMemberData && teamMemberData?.data?.teamMemberList}
-        total={teamMemberData && teamMemberData?.data?.page_count}
-        loading={teamMemberData && teamMemberData?.loading}
+        data={invoiceData && invoiceData?.data?.invoiceList}
+        total={invoiceData && invoiceData?.data?.page_count}
+        loading={invoiceData && invoiceData?.loading}
         pageSize={pageSize}
         setPageSize={setPageSize}
         handleDeleteById={handleDeleteById}
