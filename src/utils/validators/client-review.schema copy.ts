@@ -4,9 +4,9 @@ import { messages } from '@/config/messages';
 // form zod validation schema
 export const clientReviewSchema = z.object({
   client_review_image:z.string().optional(),
-  customer_name: z.string().min(1, { message: messages.customerNameRequired }),
-  company_name: z.string().min(5, { message: messages.companyNameRequired }),
-  review: z.string().min(5, { message: messages.reviewIsRequired }).max(100, { message:messages.descriptionLength }),
+  customer_name: z.string().min(1, { message: messages.customerNameRequired }).max(15, { message: messages.customerNameMaxLength }),
+  company_name: z.string().min(5, { message: messages.companyNameRequired }).max(30, { message: messages.companyNameMaxLength }),
+  review: z.string().min(5, { message: messages.reviewIsRequired }).max(150, { message:messages.reviewMaxLength }),
 });
 
 // generate form types from zod validation schema
