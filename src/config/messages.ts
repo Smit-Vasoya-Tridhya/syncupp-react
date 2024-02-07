@@ -98,8 +98,8 @@ export const messages = {
   clientRequired: 'Client is required',
   teamMemberRequired: 'Team member is required',
   dueDateTimeIsRequired: 'Due date & time is required',
-  firstNameLength: 'Maximum first name length is 15!',
+  firstNameMaxLength: 'Maximum first name length is 15!',
   lastNameLength: 'Maximum last name length is 15!',
-  companyNameLength: 'Maximum company name length is 30!',
+  companyNameMaxLength: 'Maximum company name length is 30!',
   nameLength: 'Maximum name length is 20!',
 };

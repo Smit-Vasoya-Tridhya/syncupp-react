@@ -9,7 +9,7 @@ import {
 
 // form zod validation schema
 export const signUpSchema = z.object({
-  firstName: z.string().min(1, { message: messages.firstNameRequired }).max(15, { message: messages.firstNameLength }),
+  firstName: z.string().min(1, { message: messages.firstNameRequired }).max(15, { message: messages.firstNameMaxLength }),
   lastName: z.string().min(1, { message: messages.lastNameRequired }).max(15, { message: messages.lastNameLength }),
   email: validateEmail,
   contact: validateContactNumber,
@@ -27,7 +27,7 @@ export type SignUpSchema = z.infer<typeof signUpSchema>;
 
 // form zod validation schema
 export const companyDetailsSchema = z.object({
-  companyName: z.string().min(1, { message: messages.companyNameRequired }).max(30, { message: messages.companyNameLength }),
+  companyName: z.string().min(1, { message: messages.companyNameRequired }).max(30, { message: messages.companyNameMaxLength }),
   companyWebsite: z.string().min(1, { message: messages.companyWebsiteRequired }).url({ message: messages.companyUrlInvalid }),
   peopleCount: z
     .string({ required_error: messages.peopleCountRequired })
