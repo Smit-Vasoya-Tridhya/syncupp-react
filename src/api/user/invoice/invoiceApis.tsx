@@ -7,7 +7,7 @@ type PostAddInvoiceApiData = {
     role?: string;
   }
 type DeleteInvoice = {
-  invoiceIdsToDelete: string | string[]
+  invoiceIdsToDelete: [string]
   }
 type UpdateInvoiceStatusByID = {
   _id:string,
@@ -152,10 +152,6 @@ type GetInvoiceApiData = {
   name: string;
   }
 
-  type GetInvoiceDataClient ={
-    client_id:string
-  }
-
    // GET ALL CLIENT LIST APIs
    export const GetInvoiceApi = async (data: GetInvoiceApiData) => {
     const response = await AxiosDefault({
@@ -179,7 +175,7 @@ type GetInvoiceApiData = {
     return responseData;
   };
   //  Get All INVOICE DATA
-  export const GetInvoiceDataApi = async (data: GetInvoiceDataClient) => {
+  export const GetInvoiceDataApi = async (data: GetInvoiceData) => {
     const response = await AxiosDefault({
       url: "/api/v1/invoice/get-invoice-data",
       method: "POST",

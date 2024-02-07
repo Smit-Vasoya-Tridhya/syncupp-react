@@ -8,7 +8,7 @@ type GetInvoiceApiData = {
   name: string;
 };
 type DeleteInvoice = {
-  invoiceIdsToDelete:  string | string[]
+  invoiceIdsToDelete: [string]
   }
 type UpdateInvoiceStatusByID = {
   _id:string,
@@ -128,9 +128,6 @@ type SendInvoice = {
       }
     }
   }
-  type GetInvoiceDataClient ={
-    client_id:string
-  }
 type GetInvoiceData = {
     _id: string,
     company_name: string,
@@ -159,6 +156,9 @@ interface invoiceInitialState {
     loading: boolean;
     data: any;
     invoice: any;
+    countries: any;
+    states: any;
+    cities: any;
     getInvoiceStatus: string;
     getInvoiceApidata:any; 
     getInvoiceDataByIDdata:any; 
@@ -176,6 +176,9 @@ const initialState:invoiceInitialState = {
     loading: false,
     data: '',
     invoice: '',
+    countries: '',
+    states: '',
+    cities: '',
     getInvoiceStatus: '',
     getInvoiceApidata:'',
     getInvoiceDataByIDdata:'',
@@ -213,7 +216,7 @@ const initialState:invoiceInitialState = {
   );
   export const getInvoiceData: any = createAsyncThunk(
     "invoice/getInvoiceData",
-    async (data:GetInvoiceDataClient) => {
+    async (data:GetInvoiceData) => {
       try {
         const response: any = await GetInvoiceDataApi(data);
         return response;
@@ -381,7 +384,6 @@ const initialState:invoiceInitialState = {
           }
       })
       .addCase(getInvoiceData.fulfilled, (state,action) => {
-        console.log("invoice slice....", action.payload)
         if(action.payload.status == false){
             toast.error(action.payload.message)
         } else {
@@ -389,7 +391,7 @@ const initialState:invoiceInitialState = {
         }
         return{
           ...state,
-          data: action.payload.data,
+          getInvoiceData: action.payload,
           loading: false,
           getInvoiceStatus: 'success'
         }
@@ -445,7 +447,7 @@ const initialState:invoiceInitialState = {
         }
         return{
           ...state,
-          data: action.payload.data,
+          getAllInvoiceDataTableData: action.payload,
           loading: false,
           getInvoiceStatus: 'success'
         }

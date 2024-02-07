@@ -15,15 +15,19 @@ export const invoiceFormSchema = z.object({
   createDate: z.date({
     required_error: messages.createDateIsRequired,
   }),
-  // Recipient: z.date({
-  //   required_error: messages.RecipientIsRequired,
-  // }),
+  Recipient: z.date({
+    required_error: messages.RecipientIsRequired,
+  }),
   dueDate: z.date({
     required_error: messages.dueDateIsRequired,
   }),
   status: z.string({
     required_error: messages.statusIsRequired,
   }),
+  shipping: z.coerce
+    .number()
+    .min(1, { message: messages.shippingPriceIsRequired }),
+  discount: z.coerce.number().min(1, { message: messages.discountIsRequired }),
   taxes: z.coerce.number().min(1, { message: messages.taxIsRequired }),
   items: z.array(
     z.object({

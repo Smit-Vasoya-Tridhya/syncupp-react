@@ -17,6 +17,8 @@ import { addTeamMember, editTeamMember, getAllTeamMember, getTeamMemberProfile }
 import { useEffect, useState } from 'react';
 import { handleKeyContactDown, handleKeyDown } from '@/utils/common-functions';
 import SelectBox from '@/components/ui/select';
+import { useRouter } from 'next/navigation';
+import { routes } from '@/config/routes';
 // const Select = dynamic(() => import('@/components/ui/select'), {
 //   ssr: false,
 //   loading: () => <SelectLoader />,
@@ -30,6 +32,7 @@ const typeOption = [
 export default function AddTeamMemberForm(props: any) {
   const { title, row } = props;
   const dispatch = useDispatch();
+  const router = useRouter()
   const { closeModal } = useModal();
   const [save, setSave] = useState(false)
   const [loader, setLoader] = useState(true);
@@ -60,14 +63,14 @@ export default function AddTeamMemberForm(props: any) {
       contact_number: data?.contact_number,
       role: data?.member_role?.name === 'team_member' ? 'Team member' : 'Admin'
     };
-  } else if(signIn?.role === 'client') {
+  } else if (signIn?.role === 'client') {
     defaultValuess = {
       name: '',
       email: '',
       contact_number: '',
       role: 'Team member'
     };
-  }else {
+  } else {
     defaultValuess = {
       name: '',
       email: '',
@@ -106,6 +109,7 @@ export default function AddTeamMemberForm(props: any) {
           setLoader(false);
           setSave(false);
           if (result && result.payload.success === true) {
+            router.push(routes.agency_team_payment)
             save && closeModal();
             setReset({ ...initialValues })
             dispatch(getAllTeamMember({ sort_field: 'createdAt', sort_order: 'desc', agency_id: clientSliceData?.agencyId, pagination: true }));

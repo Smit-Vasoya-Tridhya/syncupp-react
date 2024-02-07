@@ -12,6 +12,7 @@ export const routes = {
   client: '/client',
   team: '/team',
   agency_team: '/agency-team',
+  agency_team_payment: '/agency-team/payment',
   client_team: '/client-team',
   invoice: '/invoice',
   invoiceForm: '/invoice/create-edit',
