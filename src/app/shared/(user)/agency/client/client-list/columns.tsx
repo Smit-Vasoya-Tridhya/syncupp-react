@@ -13,6 +13,12 @@ import AddClientForm from '../create-edit/add-client-form';
 import { Badge, Button } from 'rizzui';
 import { LuExternalLink } from "react-icons/lu";
 import moment from 'moment'
+import { initiateRazorpay } from '@/services/clientpaymentService';
+import { useRouter } from 'next/navigation';
+import { routes } from '@/config/routes';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { getAllClient } from '@/redux/slices/user/client/clientSlice';
 
 type Columns = {
   data: any[];
@@ -60,7 +66,7 @@ function getStatusBadge(status: string) {
   }
 }
 
-export const getColumns = ({
+export const GetColumns = ({
   data,
   sortConfig,
   checkedItems,
@@ -71,7 +77,23 @@ export const getColumns = ({
   currentPage,
   pageSize,
   searchTerm
-}: Columns) => [
+}: Columns) => {
+  const token = localStorage.getItem('token')
+  const router = useRouter()
+  const dispatch = useDispatch()
+
+  const paginationParams = useSelector((state: any) => state?.root?.client?.paginationParams);
+
+  console.log(paginationParams, 'paginationParams')
+
+
+  const ClintlistAPIcall = async () => {
+    let { page, items_per_page, sort_field, sort_order, search } = paginationParams;
+    await dispatch(getAllClient({ page, items_per_page, sort_field, sort_order, search, pagination: true }));
+
+  }
+
+  return [
     {
       title: (
         <div className="ps-3.5">
@@ -200,7 +222,7 @@ export const getColumns = ({
       dataIndex: 'status',
       key: 'status',
       width: 200,
-      render: (value: string) => getStatusBadge(value),
+      render: (value: string) => getStatusBadge(value && value === "payment_pending" ? "Payment Pending" : value),
     },
     {
       title: (
@@ -231,32 +253,38 @@ export const getColumns = ({
       dataIndex: 'action',
       key: 'action',
       width: 120,
-      render: (_: string, row: Record<string, string>) => (
-        <div className="flex items-center justify-end gap-3 pe-4">
-          <CustomModalButton
-            title="Edit Client"
-            icon={<PencilIcon className="h-4 w-4" />}
-            view={<AddClientForm title="Edit Client" row={row} />}
-            customSize="800px"
-          />
-          <Tooltip
-            size="sm"
-            content={() => 'View Client'}
-            placement="top"
-            color="invert"
-          >
-            {/* <Link href={routes.editTeam}> */}
-            <Button size="sm" variant="outline" className='bg-white text-black' aria-label={'View Member'}>
-              <EyeIcon className="h-4 w-4" />
-            </Button>
-            {/* </Link> */}
-          </Tooltip>
-          <DeletePopover
-            title={`Delete the Client`}
-            description={`Are you sure you want to delete?`}
-            onDelete={() => onDeleteItem(row._id, currentPage, pageSize, data?.length <= 1 ? true : false, sortConfig, searchTerm)}
-          />
-        </div>
+      render: (_: string, row: any) => (
+        console.log(row?.reference_id?._id, 'row'),
+        <>
+          {row?.status === "payment_pending" ? <div> <Button className='w-full' onClick={() => { initiateRazorpay(router, routes.client, token, row?.reference_id?._id, ClintlistAPIcall) }}>Pay</Button></div> : <>
+            <div className="flex items-center justify-end gap-3 pe-4">
+              <CustomModalButton
+                title="Edit Client"
+                icon={<PencilIcon className="h-4 w-4" />}
+                view={<AddClientForm title="Edit Client" row={row} />}
+                customSize="800px"
+              />
+              <Tooltip
+                size="sm"
+                content={() => 'View Client'}
+                placement="top"
+                color="invert"
+              >
+                {/* <Link href={routes.editTeam}> */}
+                <Button size="sm" variant="outline" className='bg-white text-black' aria-label={'View Member'}>
+                  <EyeIcon className="h-4 w-4" />
+                </Button>
+                {/* </Link> */}
+              </Tooltip>
+              <DeletePopover
+                title={`Delete the Client`}
+                description={`Are you sure you want to delete?`}
+                onDelete={() => onDeleteItem(row._id, currentPage, pageSize, data?.length <= 1 ? true : false, sortConfig, searchTerm)}
+              />
+            </div>
+          </>}
+        </>
       ),
     },
-  ];
+  ]
+}

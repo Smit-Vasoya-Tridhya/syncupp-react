@@ -97,5 +97,11 @@ export const messages = {
   emailSentSuccessfully: 'Your email has been sent successfully.',
   contactRequired: 'Contact is required',
   contactLengthMin: 'Contact must be number with length between 10 to 13',
-  nameRequired: 'Name is required'
+  nameRequired: 'Name is required',
+  clientRequired: 'Client is required',
+  teamMemberRequired: 'Team member is required',
+  dueDateTimeIsRequired: 'Due date & time is required',
+  firstNameMaxLength: 'Maximum first name length is 15!',
+  lastNameLength: 'Maximum last name length is 15!',
+  nameLength: 'Maximum name length is 20!',
 };

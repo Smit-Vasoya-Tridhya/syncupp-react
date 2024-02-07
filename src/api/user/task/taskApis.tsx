@@ -4,7 +4,6 @@ type PostAddTaskApiData = {
   title: string;
   internal_info?: string;
   due_date?: string;
-  due_time?: string;
   client_id?: string;
   assign_to?: string;
   mark_as_done ?: boolean;
@@ -74,7 +73,7 @@ export const PatchEditTaskApi = async (data: PatchEditTaskApiData) => {
 
 export const GetAllTaskApi = async (data: GetAllTaskApiData) => {
   const response = await AxiosDefault({
-    url: "/api/v1/agency/clients",
+    url: "/api/v1/activity/task-list",
     method: "POST",
     data: data,
     contentType: "application/json", 

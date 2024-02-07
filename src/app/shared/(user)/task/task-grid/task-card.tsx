@@ -11,6 +11,9 @@ import { Tooltip } from '@/components/ui/tooltip';
 import EyeIcon from "@/components/icons/eye";
 import CustomModalButton from "@/app/shared/custom-modal-button";
 import ViewTaskForm from "../create-edit/view-task-form";
+import { FaUserCircle } from "react-icons/fa";
+import { MdOutlineCalendarMonth } from "react-icons/md";
+import { formatDate } from '@/utils/format-date';
 // import { CSS } from "@dnd-kit/utilities";
 
 
@@ -71,13 +74,22 @@ function TaskCard({ task }: Props) {
     // }}
     >
       <div className=" h-full w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap">
-        <div className="flex items-center mt-3">
-          <Title
-            as="h4"
-            className="ps-4 my-3 text-[20px] lg:text-xl 4xl:text-[22px]"
+        <div className="flex items-center gap-2 mt-4">
+          <Tooltip
+            size="sm"
+            content={() => task?.name}
+            placement="top-start"
+            color="invert"
           >
-            {task?.name}
-          </Title>
+            <ActionIcon variant="text" className="w-[13rem] text-left">
+            <Title
+              as="h4"
+              className="ps-4 my-3 w-[13rem] text-[20px] lg:text-xl 4xl:text-[22px] truncate"
+            >
+              {task?.name}
+            </Title>
+            </ActionIcon>
+          </Tooltip>
           <div className="ms-auto">
             <CustomModalButton
               icon={<EyeIcon className="h-4 w-4" />}
@@ -127,18 +139,27 @@ function TaskCard({ task }: Props) {
           </div>
         </div>
 
-        <div>
-          <Title
-            as="h4"
-            className="ps-4 my-3 truncate text-[13px] font-medium text-gray-800"
-          >
-            {task?.date}
-          </Title>
+        <div className="flex items-center gap-2 ps-4 mt-6">
+            <MdOutlineCalendarMonth className="h-5 w-5" />
+            {/* <span>Deadline: </span> */}
+            <span className="font-medium text-gray-1000 mt-1">
+              {task?.date}
+            </span>
         </div>
-        <div className="ps-3 my-3 flex items-center justify-start gap-3">
-          <Tooltip
+        <div className="ps-3 mt-6 flex items-center justify-start gap-3">
+        <Tooltip
             size="sm"
             content={() => task?.assigned_by}
+            placement="top"
+            color="invert"
+          >
+            <ActionIcon variant="text">
+              <FaUserCircle  size='25px' />
+            </ActionIcon>
+          </Tooltip>
+          <Tooltip
+            size="sm"
+            content={() => task?.client}
             placement="top"
             color="invert"
           >

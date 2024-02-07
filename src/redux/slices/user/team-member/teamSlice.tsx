@@ -59,6 +59,7 @@ const initialState = {
   teamMember: '',
   clientId: '',
   clientName: '',
+  teamList: '',
   getAllTeamMemberStatus: '',
   addTeamMemberStatus: '',
   editTeamMemberStatus: '',
@@ -123,7 +124,7 @@ export const getAllTeamMember: any = createAsyncThunk(
   async (data: TeamData) => {
     try {
       const response: any = await GetAllTeamMemberApi(data);
-      return response;
+      return { response: response, pagination: data?.pagination};
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as TeamMemberDataResponse;
     }
@@ -281,14 +282,25 @@ export const teamSlice = createSlice({
           }
       })
       .addCase(getAllTeamMember.fulfilled, (state,action) => {
-        if(action.payload.status == false){
+        if (action?.payload?.status == false) {
           toast.error(action.payload.message)
-        } 
-        return{
-          ...state,
-          data: action.payload.data,
-          loading: false,
-          getAllTeamMemberStatus: 'success'
+          return {
+            ...state,
+            loading: false
+          }
+        } else if(action?.payload?.pagination) {
+          return {
+            ...state,
+            data: action?.payload?.response?.data,
+            loading: false,
+            getAllTeamMemberStatus: 'success'
+          }
+        } else {
+          return {
+            ...state,
+            loading: false,
+            teamList: action?.payload?.response?.data,
+          }
         }
       })
       .addCase(getAllTeamMember.rejected, (state) => {

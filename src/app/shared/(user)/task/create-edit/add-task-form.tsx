@@ -14,7 +14,7 @@ import { Input } from '@/components/ui/input';
 import dynamic from 'next/dynamic';
 import SelectLoader from '@/components/loader/select-loader';
 import { useEffect, useState } from 'react';
-import { handleKeyContactDown, handleKeyDown } from '@/utils/common-functions';
+import { handleKeyDown } from '@/utils/common-functions';
 // import SelectBox from '@/components/ui/select';
 import { AddTaskSchema, addTaskSchema } from '@/utils/validators/add-task.schema';
 import QuillLoader from '@/components/loader/quill-loader';
@@ -22,11 +22,10 @@ import { DatePicker } from '@/components/ui/datepicker';
 import EventCalendarView from './calendar';
 import { Checkbox } from '@/components/ui/checkbox';
 import { postAddTask } from '@/redux/slices/user/task/taskSlice';
+import Select from '@/components/ui/select';
+import { getAllClient, setClientId, setClientName } from '@/redux/slices/user/client/clientSlice';
+import { getAllTeamMember } from '@/redux/slices/user/team-member/teamSlice';
 
-const Select = dynamic(() => import('@/components/ui/select'), {
-  ssr: false,
-  loading: () => <SelectLoader />,
-});
 const QuillEditor = dynamic(() => import('@/components/ui/quill-editor'), {
   ssr: false,
   loading: () => <QuillLoader className="col-span-full h-[143px]" />,
@@ -48,11 +47,19 @@ export default function AddTaskForm(props: any) {
   const dispatch = useDispatch();
   const { closeModal } = useModal();
   const router = useRouter();
+  const [clientId, setClientId] = useState('');
+  const [teamId, setTeamId] = useState('');
 
-  const taskData = useSelector(
-    (state: any) => state?.root?.task
-  );
+  const clientSliceData = useSelector((state: any) => state?.root?.client);
+  const teamMemberData = useSelector((state: any) => state?.root?.teamMember);
+  const taskData = useSelector((state: any) => state?.root?.task);
 
+  // api call for get clients and team member
+
+  useEffect(() => {
+    dispatch(getAllClient({ pagination: false }))
+    dispatch(getAllTeamMember({ pagination: false }))
+  }, [dispatch]);
 
 
 
@@ -61,12 +68,31 @@ export default function AddTaskForm(props: any) {
   const initialValues: AddTaskSchema = {
     title: '',
     description: '',
-    due_date: undefined,
+    due_date: new Date(),
     client: '',
     assigned: '',
     done: false
   };
 
+  let clientOptions: Record<string, any>[] = clientSliceData?.clientList && clientSliceData?.clientList?.length > 0 ? clientSliceData?.clientList?.map((client: Record<string, any>) => {
+    let client_name = client?.first_name + " " + client?.last_name
+    return { name: client_name, value: client?.reference_id, key: client }
+  }) : [];
+
+  let teamOptions: Record<string, any>[] = teamMemberData?.teamList && teamMemberData?.teamList?.length > 0 ? teamMemberData?.teamList?.map((team: Record<string, any>) => {
+    let team_name = team?.first_name + " " + team?.last_name
+    return { name: team_name, value: team?.reference_id, key: team }
+  }) : [];
+
+  // const handleClientChange = (selectedOption: Record<string, any>) => {
+  //   // console.log("selected option....", selectedOption)
+  //   dispatch(getAllTeamMember({ sort_field: 'createdAt', sort_order: 'desc', client_id: selectedOption?.value, pagination: true }))
+  // }
+
+  // const handleTeamChange = (selectedOption: Record<string, any>) => {
+  //   // console.log("selected option....", selectedOption)
+  //   dispatch(getAllTeamMember({ sort_field: 'createdAt', sort_order: 'desc', client_id: selectedOption?.value, pagination: true }))
+  // }
 
   // useEffect(() => {
   //   row && dispatch(getTeamMemberProfile({ _id: row?._id }))
@@ -91,8 +117,11 @@ export default function AddTaskForm(props: any) {
     const formData = {
       ...dataa,
       due_date: new String(dataa?.due_date),
-      due_time: new String(dataa?.due_time),
+      client: clientId,
+      assigned: teamId
     }
+
+    console.log('Add task form dataa---->', formData);
 
     const filteredFormData = Object.fromEntries(
       Object.entries(formData).filter(([_, value]) => value !== undefined && value !== '')
@@ -101,7 +130,7 @@ export default function AddTaskForm(props: any) {
 
     if (title === 'New Task') {
       dispatch(postAddTask(filteredFormData)).then((result: any) => {
-        if(postAddTask.fulfilled.match(result)) {
+        if (postAddTask.fulfilled.match(result)) {
           if (result && result.payload.success === true) {
             closeModal();
             // dispatch(getAllTeamMember({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
@@ -135,12 +164,12 @@ export default function AddTaskForm(props: any) {
         validationSchema={addTaskSchema}
         onSubmit={onSubmit}
         useFormProps={{
-          mode: 'all',
+          mode: 'onTouched',
           defaultValues: initialValues,
         }}
         className=" p-10 [&_label]:font-medium"
       >
-        {({ register, control, formState: { errors, isSubmitSuccessful }, handleSubmit }) => (
+        {({ register, control, formState: { errors },  }) => (
           <div className="space-y-5">
             <div className="mb-6 flex items-center justify-between">
               <Title as="h3" className="text-xl xl:text-2xl">
@@ -174,81 +203,81 @@ export default function AddTaskForm(props: any) {
                     <QuillEditor
                       value={value}
                       onChange={onChange}
+                      placeholder='Enter description'
                       label="Description"
                       className="col-span-full [&_.ql-editor]:min-h-[100px]"
                       labelClassName="font-medium text-gray-700 dark:text-gray-600 mb-1.5"
                     />
                   )}
                 />
-                <div className={cn('grid grid-cols-2 gap-5 pt-5')}>
-                  <Controller
-                    name="due_date"
-                    control={control}
-                    render={({ field: { value, onChange } }) => (
-                      <DatePicker
-                        selected={value}
-                        inputProps={{
-                          label: 'Due Date',
-                          color: 'info'
-                        }}
-                        placeholderText='Select due date'
-                        onChange={onChange}
-                        selectsStart
-                        startDate={value}
-                        minDate={new Date()}
-                        dateFormat="MMMM d, yyyy"
-                      />
-                    )}
-                  />
-                  <Controller
-                    name="due_time"
-                    control={control}
-                    render={({ field: { value, onChange } }) => (
-                      <DatePicker
-                        selected={value}
-                        inputProps={{
-                          label: 'Due Time',
-                          color: 'info'
-                        }}
-                        placeholderText='Select due time'
-                        onChange={onChange}
-                        showTimeSelect
-                        showTimeSelectOnly
-                        dateFormat="h:mm aa"
-                      />
-                    )}
-                  />
-                </div>
                 <Controller
-                  name="client"
+                  name="due_date"
                   control={control}
-                  render={({ field: { onChange, value } }) => (
-                    <Select
-                      options={typeOption}
-                      value={value}
+                  render={({ field: { value, onChange } }) => (
+                    <DatePicker
+                      selected={value}
+                      inputProps={{
+                        label: 'Due Date & Time',
+                        color: 'info'
+                      }}
+                      placeholderText='Select due date & time'
                       onChange={onChange}
-                      label="Client"
-                      color= 'info'
-                      error={errors?.client?.message as string}
-                      getOptionValue={(option) => option?.name}
+                      selectsStart
+                      startDate={value}
+                      minDate={new Date()}
+                      showTimeSelect
+                      dateFormat="MMMM d, yyyy h:mm aa"
                     />
                   )}
                 />
-                <Controller
-                  name="assigned"
-                  control={control}
-                  render={({ field: { onChange, value } }) => (
-                    <Select
-                      options={typeOption}
-                      value={value}
-                      onChange={onChange}
-                      label="Assigned"
-                      color= 'info'
-                      error={errors?.assigned?.message as string}
-                      getOptionValue={(option) => option?.name}
-                    />
-                  )}
-                />
+                {clientSliceData?.clientList?.length === 0 ? (<SelectLoader />) : (
+                  <Controller
+                    control={control}
+                    name="client"
+                    render={({ field: { onChange, value } }) => (
+                      <Select
+                        options={clientOptions}
+                        onChange={(selectedOption: Record<string, any>) => {
+                          onChange(selectedOption?.name);
+                          setClientId(selectedOption?.value);
+                          // handleClientChange(selectedOption);
+                        }}
+                        value={value}
+                        placeholder='Select Client'
+                        label='Client'
+                        error={errors?.client?.message as string}
+                        color='info'
+                        // getOptionValue={(option) => option.value}
+                        className="font-medium"
+                        dropdownClassName="p-1 border w-auto border-gray-100 shadow-lg"
+                      />
+                    )}
+                  />
+                )}
+                {teamMemberData?.teamList?.length === 0 ? (<SelectLoader />) : (
+                  <Controller
+                    control={control}
+                    name="assigned"
+                    render={({ field: { onChange, value } }) => (
+                      <Select
+                        options={teamOptions}
+                        onChange={(selectedOption: Record<string, any>) => {
+                          onChange(selectedOption?.name);
+                          setTeamId(selectedOption?.value);
+                          // handleTeamChange(selectedOption);
+                        }}
+                        value={value}
+                        placeholder='Select Team member'
+                        label='Assigned'
+                        error={errors?.assigned?.message as string}
+                        color='info'
+                        // getOptionValue={(option) => option.value}
+                        className="font-medium"
+                        dropdownClassName="p-1 border w-auto border-gray-100 shadow-lg"
+                      />
+                    )}
+                  />
+                )}
               </div>
               <div className='grid gap-4'>
                 <EventCalendarView />
@@ -266,7 +295,7 @@ export default function AddTaskForm(props: any) {
                   </Button>
                 </div>
                 <div className='flex justify-end items-center gap-2'>
-                    <Checkbox
+                  <Checkbox
                     {...register('done')}
                     label="Mark as done"
                     color="info"
@@ -276,10 +305,10 @@ export default function AddTaskForm(props: any) {
                   <Button
                     type="submit"
                     className="hover:gray-700 @xl:w-auto dark:bg-gray-200 dark:text-white"
-                  // disabled={(teamMemberData?.addTeamMemberStatus === 'pending' || teamMemberData?.editTeamMemberStatus === 'pending') && save}
+                    disabled={taskData?.loading}
                   >
                     Save
-                    {/* { (teamMemberData?.addTeamMemberStatus === 'pending' || teamMemberData?.editTeamMemberStatus === 'pending') && save && (<Spinner size="sm" tag='div' className='ms-3' color='white' />)  } */}
+                    {taskData?.loading && <Spinner size="sm" tag='div' className='ms-3' color='white' />}
                   </Button>
                 </div>
               </div>
