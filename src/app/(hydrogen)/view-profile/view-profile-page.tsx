@@ -23,6 +23,18 @@ const Select = dynamic(() => import('@/components/ui/select'), {
   loading: () => <SelectLoader />,
 });
 
+const peopleCountOptions = [
+  { name: '1-50', value: '1-50' },
+  { name: '51-200', value: '51-200' },
+  { name: '201-500', value: '201-500' },
+  { name: '501-1000', value: '501-1000' },
+]
+const industryOptions = [
+  { name: 'IT', value: 'IT' },
+  { name: 'Marketing', value: 'Marketing' },
+  { name: 'Digital Marketing', value: 'Digital Marketing' },
+]
+
 export default function UserViewProfileForm(props:any) {
   const [reset, setReset] = useState({});
   const [isOpenEditMode, setIsOpenEditMode] = useState<boolean>(false);
@@ -30,14 +42,13 @@ export default function UserViewProfileForm(props:any) {
   const signIn = useSelector((state: any) => state?.root?.signIn);
   const router = useRouter();
   const clientSliceData = useSelector((state: any) => state?.root?.client);
-
-useEffect(() => {
-    dispatch(getUserProfile())
+  useEffect(() => {
+    dispatch(getUserProfile());
   }, [dispatch]);
 
-useEffect(()=>{
-  dispatch(getCountry());
-},[dispatch ,isOpenEditMode])
+  useEffect(() => {
+    dispatch(getCountry());
+  }, [dispatch, isOpenEditMode]);
 
 const data = signIn?.userProfile
 
@@ -147,20 +158,33 @@ const cityHandleChange = (selectedOption: string) => {
         }}
         className=" p-10 [&_label]:font-medium"
       >
-        {({ register, control,formState: { errors } }) => (
+        {({ register, control, formState: { errors } }) => (
           <div className="space-y-5">
-            <h4>Personal information</h4>
-            <span className="inline-flex gap-5">
-              {!isOpenEditMode && (
-                <ActionIcon
-                  size="sm"
-                  variant="text"
-                  onClick={() => setIsOpenEditMode(!isOpenEditMode)}
-                  className="p-0 text-gray-500 hover:!text-gray-900"
-                >
-                  <PiNotePencilDuotone className="h-[30px] w-[30px]" />
-                </ActionIcon>)}
-            </span>
+            <div className="flex items-center justify-between">
+              <div>
+                <h4>Personal information</h4>
+              </div>
+              <div className="mr-8">
+                {!isOpenEditMode && (
+                  <ActionIcon
+                    size="sm"
+                    variant="text"
+                    onClick={() => setIsOpenEditMode(!isOpenEditMode)}
+                    className="p-0 text-gray-500 hover:!text-gray-900"
+                  >
+                    <Button
+                      className="hover:gray-700 float-end @xl:w-auto dark:bg-gray-200 dark:text-white text-lg"
+                      onClick={() => {
+                        setIsOpenEditMode(false);
+                      }}
+                    >
+                      <PiNotePencilDuotone className="h-[25px] w-[25px]" />
+                      Edit
+                    </Button>
+                  </ActionIcon>
+                )}
+              </div>
+            </div>
             <div className="grid grid-cols-2 gap-4 pt-5">
               <Input
                 onKeyDown={handleKeyDown}
@@ -175,7 +199,7 @@ const cityHandleChange = (selectedOption: string) => {
               />
               <Input
                 onKeyDown={handleKeyDown}
-                type="text"
+                type="number"
                 label="Contact number"
                 placeholder="Enter Contact number Here..."
                 color="info"
@@ -185,7 +209,7 @@ const cityHandleChange = (selectedOption: string) => {
                 disabled={!isOpenEditMode}
               />
               <Input
-                onKeyDown={handleKeyDown}
+                // onKeyDown={handleKeyDown}
                 type="text"
                 label="First Name"
                 placeholder="Enter First Name"
@@ -231,27 +255,45 @@ const cityHandleChange = (selectedOption: string) => {
                 error={errors.company_website?.message}
                 disabled={!isOpenEditMode}
               />
-              <Input
-                onKeyDown={handleKeyDown}
-                type="number"
-                label="How many people"
-                placeholder="Enter number of people Here..."
-                color="info"
-                className="[&>label>span]:font-medium"
-                {...register('no_of_people')}
-                error={errors.no_of_people?.message}
-                disabled={!isOpenEditMode}
+              <Controller
+                control={control}
+                name="no_of_people"
+                render={({ field: { onChange, value } }) => (
+                  <Select
+                    options={peopleCountOptions}
+                    onChange={(selectedOption: string) => {
+                      onChange(selectedOption);
+                    }}
+                    value={value}
+                    label="How many people"
+                    color="info"
+                    getOptionValue={(option) => option.value}
+                    dropdownClassName="p-1 border w-12 border-gray-100 shadow-lg"
+                    className="font-medium"
+                    error={errors?.no_of_people?.message as string}
+                    disabled={!isOpenEditMode}
+                  />
+                )}
               />
-              <Input
-                onKeyDown={handleKeyDown}
-                type="text"
-                label="Industry"
-                placeholder="Enter industry name Here..."
-                color="info"
-                className="[&>label>span]:font-medium"
-                {...register('industry')}
-                error={errors.industry?.message}
-                disabled={!isOpenEditMode}
+              <Controller
+                control={control}
+                name="industry"
+                render={({ field: { onChange, value } }) => (
+                  <Select
+                    options={industryOptions}
+                    onChange={(selectedOption: string) => {
+                      onChange(selectedOption);
+                    }}
+                    value={value}
+                    label="Industry"
+                    color="info"
+                    getOptionValue={(option) => option.value}
+                    dropdownClassName="p-1 border w-12 border-gray-100 shadow-lg"
+                    className="font-medium"
+                    error={errors?.industry?.message as string}
+                    disabled={!isOpenEditMode}
+                  />
+                )}
               />
             </div>
             <h4>General Information</h4>
@@ -360,7 +402,6 @@ const cityHandleChange = (selectedOption: string) => {
                     <Spinner size="sm" tag="div" className="ms-3" />
                   )}
                 </Button>
-                
               </div>
             )}
           </div>

@@ -92,6 +92,7 @@ interface ClientInitialState {
   editClientStatus: string;
   deleteClientStatus: string;
   getClientProfileStatus: string;
+  addClientdetails: any
 }
 
 const initialState: ClientInitialState = {
@@ -116,6 +117,7 @@ const initialState: ClientInitialState = {
   editClientStatus: '',
   deleteClientStatus: '',
   getClientProfileStatus: '',
+  addClientdetails: {}
 };
 
 export const postAddClient: any = createAsyncThunk(
@@ -171,7 +173,7 @@ export const getAllClient: any = createAsyncThunk(
   async (data: GetAllClientData) => {
     try {
       const response: any = await GetAllClientApi(data);
-      return { response: response, pagination: data?.pagination};
+      return { response: response, pagination: data?.pagination };
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as PostAPIResponse;
     }
@@ -310,7 +312,7 @@ export const clientSlice = createSlice({
         }
         return {
           ...state,
-          //   data: action.payload,
+          addClientdetails: action.payload,
           loading: false,
           addClientStatus: 'success'
         }
@@ -351,30 +353,30 @@ export const clientSlice = createSlice({
           verifyClientStatus: 'error'
         }
       });
-       // new cases for client redirect
+    // new cases for client redirect
     builder
-    .addCase(postClientRedirect.pending, (state) => {
-      return {
-        ...state,
-        loading: true,
-        clientRedirectStatus: 'pending'
-      }
-    })
-    .addCase(postClientRedirect.fulfilled, (state, action) => {
-      return {
-        ...state,
-        redirect: action?.payload?.data?.password_required,
-        loading: false,
-        clientRedirectStatus: 'success'
-      }
-    })
-    .addCase(postClientRedirect.rejected, (state) => {
-      return {
-        ...state,
-        loading: false,
-        clientRedirectStatus: 'error'
-      }
-    });
+      .addCase(postClientRedirect.pending, (state) => {
+        return {
+          ...state,
+          loading: true,
+          clientRedirectStatus: 'pending'
+        }
+      })
+      .addCase(postClientRedirect.fulfilled, (state, action) => {
+        return {
+          ...state,
+          redirect: action?.payload?.data?.password_required,
+          loading: false,
+          clientRedirectStatus: 'success'
+        }
+      })
+      .addCase(postClientRedirect.rejected, (state) => {
+        return {
+          ...state,
+          loading: false,
+          clientRedirectStatus: 'error'
+        }
+      });
     // new cases for Edit client
     builder
       .addCase(patchEditClient.pending, (state) => {
@@ -422,7 +424,7 @@ export const clientSlice = createSlice({
             loading: false
           }
         }
-        else if(action?.payload?.pagination) {
+        else if (action?.payload?.pagination) {
           return {
             ...state,
             data: action?.payload?.response?.data,
@@ -430,7 +432,7 @@ export const clientSlice = createSlice({
             getAllClientStatus: 'success'
           }
         } else {
-        const fullName = action?.payload?.response?.data[0]?.first_name + " " + action?.payload?.response?.data[0]?.last_name
+          const fullName = action?.payload?.response?.data[0]?.first_name + " " + action?.payload?.response?.data[0]?.last_name
           return {
             ...state,
             loading: false,
@@ -485,11 +487,11 @@ export const clientSlice = createSlice({
           deleteClientStatus: 'pending'
         }
       })
-      .addCase(deleteClient.fulfilled, (state,action) => {
-        if(action.payload.status == false){
-            toast.error(action.payload.message)
-            return{
-              ...state,
+      .addCase(deleteClient.fulfilled, (state, action) => {
+        if (action.payload.status == false) {
+          toast.error(action.payload.message)
+          return {
+            ...state,
             //   data: action.payload,
             loading: false,
             deleteClientStatus: 'error'

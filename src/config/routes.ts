@@ -7,16 +7,16 @@ export const routes = {
   signUp: '/signup',
   forgotPassword: '/forgot-password',
   resetPassword: '/reset-password',
-  viewProfile:'/view-profile',
+  viewProfile: '/view-profile',
   dashboard: '/dashboard',
   client: '/client',
   team: '/team',
   agency_team: '/agency-team',
   client_team: '/client-team',
-  invoice:'/invoice',
-  invoiceForm:'/invoice/create-edit',
-  invoiceView:'/invoice/view-invoice',
-  viewTeam:'/team/view-team',
+  invoice: '/invoice',
+  invoiceForm: '/invoice/create-edit',
+  invoiceView: '/invoice/view-invoice',
+  viewTeam: '/team/view-team',
   task: '/task',
   UserCalender: '/calender',
   UserCalenderForm: '/calender/calender-form',
@@ -26,7 +26,8 @@ export const routes = {
     verify: '/team/verify'
   },
   clients: {
-    verify: '/client/verify'
+    verify: '/client/verify',
+    payment: '/client/payment'
   },
   agreement: '/agreement',
 
@@ -34,17 +35,17 @@ export const routes = {
   admin: {
     signIn: '/admin/signin',
     signUp: '/admin/signup',
-    forgotPassword:'/admin/forgot-password',
-    resetPassword:'/admin/reset-password',
+    forgotPassword: '/admin/forgot-password',
+    resetPassword: '/admin/reset-password',
     dashboard: '/admin/dashboard',
     viewProfile: '/admin/profile',
-    faq:'/admin/faq',
-    clientReview:'/admin/client-review',
-    agencylist:"/admin/agencylist",
-    inquiry:"/admin/inquiry",
-    payment:"/admin/payment-transaction",
-    cms:'/admin/cms',
-    cmsTC:'/admin/cms/team-and-condition',
+    faq: '/admin/faq',
+    agencylist: "/admin/agencylist",
+    clientReview: '/admin/client-review',
+    inquiry: "/admin/inquiry",
+    payment: "/admin/payment-transaction",
+    cms: '/admin/cms',
+    cmsTC: '/admin/cms/team-and-condition',
   },
 
 };

@@ -1,0 +1,19 @@
+{
+    "agency": {
+        "dashboard": {},
+        "client": {},
+        "agenct_team": {},
+        "invoice": {},
+        "agreement": {
+            "table": {
+                "title": "Agreement",
+                "columns": {
+                    "title": "TITLE"
+                }
+            }
+        }
+    },
+    "admin": {},
+    "client": {},
+    "team": {}
+}
