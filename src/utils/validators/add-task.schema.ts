@@ -8,6 +8,9 @@ export const addTaskSchema = z.object({
   due_date: z.date({
     required_error: messages.dueDateTimeIsRequired,
   }), 
+  due_time: z.date({
+    required_error: messages.dueDateTimeIsRequired,
+  }).optional(), 
   client: z
   .string({ required_error: messages.clientRequired })
   .min(1, { message: messages.clientRequired }),
