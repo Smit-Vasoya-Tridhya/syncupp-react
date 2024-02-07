@@ -261,7 +261,7 @@ export const GetclientteamColumns = ({
               placement="top"
               color="invert"
             >
-              <Button onClick={() => { initiateRazorpay(router, routes.client_team, token, row?.reference_id?._id, ClintteamlistAPIcall) }} size="sm" variant="outline" className='bg-white text-black' aria-label={'Approve Team member'}>
+              <Button disabled={loading} onClick={() => { initiateRazorpay(router, routes.client_team, token, row?.reference_id?._id, ClintteamlistAPIcall) }} size="sm" variant="outline" className='bg-white text-black' aria-label={'Approve Team member'}>
                 <MdOutlineDone className="h-4 w-4" />
               </Button>
             </Tooltip>
