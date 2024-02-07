@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { handleKeyDown } from '@/utils/common-functions';
 import { useRouter } from 'next/navigation';
 import { PiNotePencilDuotone, PiXBold } from 'react-icons/pi';
-import { ActionIcon } from 'rizzui';
+import { ActionIcon, Title } from 'rizzui';
 import cn from '@/utils/class-names';
 import Spinner from '@/components/ui/spinner';
 import { AgencyFormSchema, agencyFormSchema } from '@/utils/validators/agency.schema';
@@ -160,6 +160,7 @@ const cityHandleChange = (selectedOption: string) => {
       >
         {({ register, control, formState: { errors } }) => (
           <div className="space-y-5">
+            <Title>{isOpenEditMode ? 'Edit Profile' : 'View Profile'}</Title>
             <div className="flex items-center justify-between">
               <div>
                 <h4>Personal information</h4>
@@ -173,12 +174,12 @@ const cityHandleChange = (selectedOption: string) => {
                     className="p-0 text-gray-500 hover:!text-gray-900"
                   >
                     <Button
-                      className="hover:gray-700 float-end @xl:w-auto dark:bg-gray-200 dark:text-white text-lg"
+                      className="hover:gray-700 float-end @xl:w-auto dark:bg-gray-200 dark:text-white"
                       onClick={() => {
                         setIsOpenEditMode(false);
                       }}
                     >
-                      <PiNotePencilDuotone className="h-[25px] w-[25px]" />
+                      <PiNotePencilDuotone className="h-[20px] w-[20px] mr-1" />
                       Edit
                     </Button>
                   </ActionIcon>

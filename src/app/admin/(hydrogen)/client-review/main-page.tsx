@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import CustomTable from '@/components/common-tables/table';
-import { getColumns } from '@/app/shared/(admin)/client-review/client-review-list/columns';
+import { ClientReviewColumns } from '@/app/shared/(admin)/client-review/client-review-list/columns';
 import PageHeader from '@/app/shared/page-header';
 import ModalButton from '@/app/shared/modal-button';
 import AddClientReviewForm from '@/app/shared/(admin)/client-review/create-edit/add-edit-client-review-form';
@@ -51,7 +51,7 @@ export default function ClientReviewPage() {
           <div className="mt-4 flex items-center gap-3 @lg:mt-0">
             <ModalButton
               label="Add Client Review"
-              view={<AddClientReviewForm title="Client Review" />}
+              view={<AddClientReviewForm title="Add Client Review" />}
               customSize="800px"
               className="mt-0 w-full hover:bg-gray-700 @lg:w-auto dark:bg-gray-100 dark:text-white dark:hover:bg-gray-200 dark:active:bg-gray-100"
               icon={<PiPlusBold className="me-1.5 h-[17px] w-[17px]" />}
@@ -66,7 +66,7 @@ export default function ClientReviewPage() {
           setPageSize={setPageSize}
           handleDeleteById={handleDeleteById}
           handleChangePage={handleChangePage}
-          getColumns={getColumns}
+          getColumns={ClientReviewColumns}
         />
       </>
     );
