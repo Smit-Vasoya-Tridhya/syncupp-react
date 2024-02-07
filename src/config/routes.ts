@@ -46,5 +46,8 @@ export const routes = {
     payment: '/admin/payment-transaction',
     cms: '/admin/cms',
     cmsTC: '/admin/cms/team-and-condition',
+    couponManagement: '/admin/coupon-management',
+    createCouponManagement: `/admin/coupon-management/create`,
+    UpdateCouponManagement: `/admin/coupon-management/update`,
   },
 };
