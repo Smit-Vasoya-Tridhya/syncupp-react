@@ -11,6 +11,7 @@ export const routes = {
   client: '/client',
   team: '/team',
   agency_team: '/agency-team',
+  agency_team_payment: '/agency-team/payment',
   client_team: '/client-team',
   invoice: '/invoice',
   invoiceForm: '/invoice/create-edit',
@@ -26,6 +27,7 @@ export const routes = {
   },
   clients: {
     verify: '/client/verify',
+    payment: '/client/payment',
   },
   agreement: '/agreement',
 
@@ -38,14 +40,11 @@ export const routes = {
     dashboard: '/admin/dashboard',
     viewProfile: '/admin/profile',
     faq: '/admin/faq',
-    clientReview: '/admin/client-review',
     agencylist: '/admin/agencylist',
+    clientReview: '/admin/client-review',
     inquiry: '/admin/inquiry',
     payment: '/admin/payment-transaction',
     cms: '/admin/cms',
     cmsTC: '/admin/cms/team-and-condition',
-    couponManagement: '/admin/coupon-management',
-    createCouponManagement: `/admin/coupon-management/create`,
-    UpdateCouponManagement: `/admin/coupon-management/update`,
   },
 };

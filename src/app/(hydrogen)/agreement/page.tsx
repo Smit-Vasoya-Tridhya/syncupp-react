@@ -8,14 +8,17 @@ import { AgreementColumns } from '@/app/shared/agreement/columns';
 import { deleteAgencyAgreement, getAllAgencyagreement } from '@/redux/slices/user/agreement/agreementSlice';
 import PageHeader from '@/app/shared/page-header';
 import { Button } from 'rizzui';
+import Jsondata from '@/locales/en/translation.json'
 
 
 const pageHeader = {
-    title: 'Aggrement',
+    title: Jsondata.agency?.agreement?.table?.title,
 };
 
 
 export default function AgreementPage() {
+
+    console.log(Jsondata.agency?.agreement?.table?.title)
 
     const dispatch = useDispatch();
     const router = useRouter();

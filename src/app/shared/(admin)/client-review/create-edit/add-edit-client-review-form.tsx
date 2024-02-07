@@ -12,7 +12,7 @@ import { PiXBold } from 'react-icons/pi';
 import { Input } from '@/components/ui/input';
 import dynamic from 'next/dynamic';
 import SelectLoader from '@/components/loader/select-loader';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Textarea } from 'rizzui';
 import {
   ClientReviewSchema,
@@ -24,6 +24,7 @@ import {
   postClientReviewEnroll,
   updateClientReviewDataByID,
 } from '@/redux/slices/admin/clientReview/clientReviewSlice';
+import UploadIcon from '@/components/shape/upload';
 
 const Select = dynamic(() => import('@/components/ui/select'), {
   ssr: false,
@@ -38,10 +39,12 @@ export default function AddClientReviewForm(props: any) {
     (state: any) => state?.root?.adminClientReview
   );
 
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [isImageDeleted, setIsImageDeleted] = useState(false);
   console.log(selectedFile, 'selected.....');
   const handleFileChange = (e: any) => {
-    const file = e.target.files[0];
+    const file = e.target.files?.[0];
     if (file && !['image/jpeg', 'image/png'].includes(file.type)) {
       alert('Please upload only JPEG or PNG files.');
       return;
@@ -50,7 +53,8 @@ export default function AddClientReviewForm(props: any) {
       alert('File size exceeds 2MB limit. Please choose a smaller file.');
       return;
     }
-    setSelectedFile(file);
+    setSelectedFile(file || null);
+    setIsImageDeleted(false)
     // image Preview
     if (file) {
       const reader = new FileReader();
@@ -61,9 +65,18 @@ export default function AddClientReviewForm(props: any) {
       reader.readAsDataURL(file);
     }
   };
+  const handleClickUpload = () => {
+    inputRef.current?.click(); // Use optional chaining to safely access inputRef.current
+  };
+  const handleDeleteImage = () => {
+    setSelectedFile(null);
+    
+  }
+
   useEffect(() => {
     row && dispatch(getClientReviewDataByID({ _id: row?._id }));
   }, [row, dispatch]);
+
 
   let data = adminClientReview?.clientReviewData;
 
@@ -79,21 +92,23 @@ export default function AddClientReviewForm(props: any) {
   const onSubmit: SubmitHandler<ClientReviewSchema> = (data) => {
     try {
       let formData: any = new FormData();
-      if (title === 'Client Review') {
+      if (title === 'Add Client Review' ||  title === 'Edit Client Review') {
         formData.append('client_review_image', selectedFile);
       }
       formData.append('customer_name', data.customer_name);
       formData.append('company_name', data.company_name);
       formData.append('review', data.review);
       if (title === 'Client Review') {
-        dispatch(postClientReviewEnroll()).then((result: any) => {
+        dispatch(postClientReviewEnroll(formData)).then((result: any) => {
           if (postClientReviewEnroll.fulfilled.match(result)) {
             if (result && result.payload.success === true) {
-              closeModal();
-              dispatch(getAllClientReview(data));
             }
           }
-        });
+        })
+        .finally(() => {
+          closeModal();
+          dispatch(getAllClientReview(data));
+      });
       } else {
         let d = {
           id: row._id,
@@ -102,11 +117,13 @@ export default function AddClientReviewForm(props: any) {
         dispatch(updateClientReviewDataByID(d)).then((result: any) => {
           if (updateClientReviewDataByID.fulfilled.match(result)) {
             if (result && result.payload.success === true) {
-              closeModal();
-              dispatch(getAllClientReview(data));
             }
           }
-        });
+        })
+        .finally(() => {
+          closeModal();
+          dispatch(getAllClientReview(data));
+      });
       }
     } catch (error) {
       console.log(error);
@@ -147,36 +164,6 @@ export default function AddClientReviewForm(props: any) {
                 </ActionIcon>
               </div>
               <div className={cn('grid grid-cols-1 gap-4')}>
-                <input
-                  type="file"
-                  onChange={handleFileChange}
-                  accept=".jpeg, .jpg, .png"
-                />
-                {/*preview Image*/}
-                {
-                  selectedFile ? (
-                    <div>
-                      <p>Preview:</p>
-                      <img
-                        src={URL.createObjectURL(selectedFile)}
-                        alt="Preview"
-                        style={{ maxWidth: '100%', maxHeight: '100px' }}
-                      />
-                    </div>
-                  ) : null
-                }
-                {
-                  title === 'Edit Client Review' && data?.client_review_image ? (
-                    <div>
-                      <p>Preview:</p>
-                      <img
-                        src={`${process.env.NEXT_PUBLIC_API}${data?.client_review_image}`}
-                        alt="Preview"
-                        style={{ maxWidth: '100%', maxHeight: '100px' }}
-                      />
-                    </div>
-                  ) : null
-                }
                 <Input
                   type="text"
                   label="Customer Name"
@@ -205,6 +192,50 @@ export default function AddClientReviewForm(props: any) {
                   {...register('review')}
                   error={errors?.review?.message}
                 />
+              </div>
+              <div className="flex gap-10">
+                <UploadIcon
+                  className="h-12 w-12 cursor-pointer"
+                  onClick={handleClickUpload}
+                />
+                <input
+                  type="file"
+                  onChange={handleFileChange}
+                  accept=".jpeg, .jpg, .png"
+                  style={{ display: 'none' }}
+                  ref={inputRef}
+                />
+                {/*preview Image*/}
+                {selectedFile ? (
+                  <div className="flex gap-2">
+                    <img
+                      src={URL.createObjectURL(selectedFile)}
+                      alt="Preview"
+                      style={{
+                        width: '100px',
+                        height: '100px',
+                        borderRadius: '10px',
+                      }}
+                    />
+                    {/* <PiTrashFill className="h-[18px] w-[18px] cursor-pointer"onClick={handleDeleteImage}  /> */}
+                  </div>
+                ) : null}
+                {title === 'Edit Client Review' &&
+                data?.client_review_image &&
+                !selectedFile ? (
+                  <div className="flex gap-2">
+                    <img
+                      src={`${process.env.NEXT_PUBLIC_API}${data?.client_review_image}`}
+                      alt="Preview"
+                      style={{
+                        width: '100px',
+                        height: '100px',
+                        borderRadius: '10px',
+                      }}
+                    />
+                    {/* <PiTrashFill className="h-[18px] w-[18px] cursor-pointer" onClick={handleDeleteImage}/> */}
+                  </div>
+                ) : null}
               </div>
               <div>
                 <div className={cn('grid grid-cols-2 gap-2 pt-5')}>

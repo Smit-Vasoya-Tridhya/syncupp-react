@@ -12,7 +12,7 @@ import SelectLoader from '@/components/loader/select-loader';
 
 
 
-export default function ClientSelectionForm() {
+export default function TeamSelectionForm() {
 
     const dispatch = useDispatch();
     const clientSliceData = useSelector((state: any) => state?.root?.client);
@@ -31,8 +31,6 @@ export default function ClientSelectionForm() {
         return { name: client_name, value: client?.reference_id, key: client }
     }) : [];
 
-    console.log(clientOptions,'clientOptions')
-
     const handleClientChange = (selectedOption: Record<string, any>) => {
         // console.log("selected option....", selectedOption)
         dispatch(setClientName(selectedOption?.name))
@@ -44,7 +42,7 @@ export default function ClientSelectionForm() {
         // console.log('form data', data);
     };
 
-    if (clientSliceData?.loading) {
+    if (clientSliceData?.clientList?.length === 0) {
         return <SelectLoader />
     } else {
         return (
@@ -59,7 +57,7 @@ export default function ClientSelectionForm() {
                         <div className="w-[10rem] float-right">
                             <Controller
                                 control={control}
-                                name="client_selection"
+                                name="assigned"
                                 render={({ field: { onChange, value } }) => (
                                     <Select
                                         options={clientOptions}
@@ -69,7 +67,10 @@ export default function ClientSelectionForm() {
                                         }}
                                         value={value}
                                         placeholder='Select Client'
-                                        getOptionValue={(option) => option.value}
+                                        label='Assigned'
+                                        error={errors?.assigned?.message as string}
+                                        color='info'
+                                        // getOptionValue={(option) => option.value}
                                         className="font-medium"
                                         dropdownClassName="p-1 border w-auto border-gray-100 shadow-lg"
                                     />

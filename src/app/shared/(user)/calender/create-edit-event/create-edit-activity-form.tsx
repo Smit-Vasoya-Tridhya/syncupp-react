@@ -62,7 +62,7 @@ export default function AddTaskFormPage(props: any) {
   const initialValues: AddTaskSchema = {
     title: '',
     description: '',
-    due_date: undefined,
+    due_date: new Date(),
     client: '',
     assigned: '',
     done: false

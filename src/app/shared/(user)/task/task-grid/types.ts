@@ -12,6 +12,7 @@ export type Task = {
   name?: string;
   date?: string;
   status?: string;
+  client?: string;
   assigned_by?: string;
   assigned_to?: string;
 };

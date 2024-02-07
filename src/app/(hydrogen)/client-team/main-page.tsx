@@ -18,9 +18,10 @@ export default function TeamDataTablePage() {
   const [pageSize, setPageSize] = useState(5);
   const teamMemberData = useSelector((state: any) => state?.root?.teamMember);
   const clientSliceData = useSelector((state: any) => state?.root?.client);
+  const loading = useSelector((state: any) => state?.root?.client);
 
   // console.log("client data.....", clientSliceData?.data)
-  // console.log("client list data.....", clientSliceData?.clientList)
+  console.log("loading", loading)
 
   const handleChangePage = async (paginationParams: any) => {
     let { page, items_per_page, sort_field, sort_order, search } = paginationParams;
@@ -56,7 +57,7 @@ export default function TeamDataTablePage() {
           <ClientSelectionForm />
         </div>
       </PageHeader>
-      {clientSliceData && clientSliceData?.clientList?.length === 0 ? (
+      {clientSliceData?.loading && teamMemberData?.loading ? (
         <div className='p-10 flex items-center justify-center'>
           <Spinner size="xl" tag='div' className='ms-3' />
         </div>

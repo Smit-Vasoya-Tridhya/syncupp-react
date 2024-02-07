@@ -81,12 +81,14 @@ export default function ViewProfileForm(props: any) {
         >
           {({ register, formState: { errors } }) => (
             <div className="space-y-5">
+              <div className="flex items-center justify-between">
               <div className="mb-6 flex items-center justify-between">
-                <Title as="h3" className="text-xl xl:text-2xl">
+              <Title>{isOpenEditMode ? 'Edit Profile' : 'View Profile'}</Title>
+                {/* <Title as="h3" className="text-xl xl:text-2xl">
                   View Profile
-                </Title>
+                </Title> */}
               </div>
-              <div>
+              <div className="mr-8">
                 {!isOpenEditMode && (
                   <ActionIcon
                     size="sm"
@@ -94,9 +96,18 @@ export default function ViewProfileForm(props: any) {
                     onClick={() => {setIsOpenEditMode(!isOpenEditMode);}}
                     className="p-0 text-gray-500 hover:!text-gray-900"
                   >
-                    <PiNotePencilDuotone className="h-[30px] w-[30px]" />
+                    <Button
+                      className="hover:gray-700 float-end @xl:w-auto dark:bg-gray-200 dark:text-white"
+                      onClick={() => {
+                        setIsOpenEditMode(false);
+                      }}
+                    >
+                      <PiNotePencilDuotone className="h-[20px] w-[20px] mr-1" />
+                      Edit
+                    </Button>
                   </ActionIcon>
                 )}
+              </div>
               </div>
               <h4>Personal information</h4>
               <div className="grid grid-cols-2 gap-4 pt-5">
@@ -149,10 +160,10 @@ export default function ViewProfileForm(props: any) {
               </div>
               {/* )} */}
               {isOpenEditMode && (
-                <div className={cn('flex space-x-4')}>
+                <div className={cn('flex space-x-4 float-end')}>
                   <Button
                     variant="outline"
-                    className="w-full @xl:w-auto dark:hover:border-gray-400"
+                    className="@xl:w-auto dark:hover:border-gray-400"
                     onClick={() => {
                       setIsOpenEditMode(false);
                     }}
@@ -161,7 +172,7 @@ export default function ViewProfileForm(props: any) {
                   </Button>
                   <Button
                     type="submit"
-                    className="hover:gray-700 w-full  @xl:w-auto dark:bg-gray-200 dark:text-white"
+                    className="hover:gray-700 @xl:w-auto dark:bg-gray-200 dark:text-white"
                     disabled={viewProfile.loading}
                   >
                     Save

@@ -18,6 +18,7 @@ import TitleSeparation from './title-separation';
 import { ClientSchema, clientSchema } from '@/utils/client-schema';
 import { RemoveRegionalData, getAllClient, getCities, getClientById, getCountry, getState, patchEditClient, postAddClient } from '@/redux/slices/user/client/clientSlice';
 import { useEffect, useState } from 'react';
+import { routes } from '@/config/routes';
 
 const Select = dynamic(() => import('@/components/ui/select'), {
   ssr: false,
@@ -134,6 +135,7 @@ export default function AddClientForm(props: any) {
           setLoader(false);
           setSave(false);
           if (result && result.payload.success === true) {
+            router.push(routes.clients.payment)
             save && closeModal();
             setReset({...initialValues})
             dispatch(getAllClient({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
