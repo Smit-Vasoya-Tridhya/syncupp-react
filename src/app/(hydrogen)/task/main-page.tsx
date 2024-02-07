@@ -13,7 +13,7 @@ import { PiGridFour, PiListBullets, PiPlusBold } from 'react-icons/pi';
 import AddTaskForm from '@/app/shared/(user)/task/create-edit/add-task-form';
 import { ActionIcon, Button } from 'rizzui';
 import cn from '@/utils/class-names';
-import { setGridView } from '@/redux/slices/user/task/taskSlice';
+import { getAllTask, setGridView } from '@/redux/slices/user/task/taskSlice';
 import KanbanBoard from '@/app/shared/(user)/task/task-grid/kanban-board';
 
 const pageHeader = {
@@ -27,6 +27,7 @@ export default function TaskPage() {
   const { closeModal } = useModal();
   const signIn = useSelector((state: any) => state?.root?.signIn)
   const clientSliceData = useSelector((state: any) => state?.root?.client);
+  const taskData = useSelector((state: any) => state?.root?.task);
   const { gridView } = useSelector((state: any) => state?.root?.task);
 
   // console.log("Grid view....", gridView)
@@ -37,13 +38,13 @@ export default function TaskPage() {
   const handleChangePage = async (paginationParams: any) => {
     let { page, items_per_page, sort_field, sort_order, search } = paginationParams;
 
-    const response = await dispatch(getAllClient({ page, items_per_page, sort_field, sort_order, search, pagination: true }));
+    const response = await dispatch(getAllTask({ page, items_per_page, sort_field, sort_order, search }));
     const { data } = response?.payload;
     const maxPage: number = data?.page_count;
 
     if (page > maxPage) {
       page = maxPage > 0 ? maxPage : 1;
-      await dispatch(getAllClient({ page, items_per_page, sort_field, sort_order, search, pagination: true }));
+      await dispatch(getAllTask({ page, items_per_page, sort_field, sort_order, search }));
       return data?.client
     }
     if (data && data?.client && data?.client?.length !== 0) {
@@ -59,7 +60,7 @@ export default function TaskPage() {
       const res = await dispatch(deleteClient({ client_ids: id }));
       if (res.payload.success === true) {
         closeModal();
-        const reponse = await dispatch(getAllClient({ page: currentPage, items_per_page: countPerPage, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm, pagination: true }));
+        const reponse = await dispatch(getAllTask({ page: currentPage, items_per_page: countPerPage, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm }));
       }
     } catch (error) {
       console.error(error);
@@ -129,9 +130,9 @@ export default function TaskPage() {
       {!gridView ? (
         <div>
           <CustomTable
-            data={clientSliceData?.data?.clients}
-            total={clientSliceData?.data?.page_count}
-            loading={clientSliceData?.loading}
+            data={taskData && taskData?.data?.activity}
+            total={taskData && taskData?.data?.page_count}
+            loading={taskData && taskData?.loading}
             pageSize={pageSize}
             setPageSize={setPageSize}
             handleDeleteById={handleDeleteById}

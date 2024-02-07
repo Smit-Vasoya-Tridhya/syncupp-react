@@ -6,7 +6,6 @@ type AddTaskData = {
   title: string;
   description?: string;
   due_date?: string;
-  due_time?: string;
   client?: string;
   assigned?: string;
   done?: boolean;
@@ -81,9 +80,8 @@ export const postAddTask: any = createAsyncThunk(
         title: data?.title,
         internal_info: data?.description,
         due_date: data?.due_date,
-        due_time: data?.due_time,
-        client_id: '659aa86bd4c6c56ca7ccac14',
-        assign_to: '659ed6ca5c7429be94d1d935',
+        client_id: data?.client,
+        assign_to: data?.assigned,
         mark_as_done: data?.done
       }
       const response: any = await PostAddTaskApi(apiData);
@@ -240,7 +238,7 @@ export const taskSlice = createSlice({
       })
       .addCase(getAllTask.fulfilled, (state, action) => {
         // console.log(action.payload);
-        if (action.payload.status == false) {
+        if (action.payload.status === false) {
           toast.error(action.payload.message)
         }
         return {

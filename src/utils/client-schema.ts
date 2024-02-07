@@ -12,14 +12,14 @@ import {
 
 // form zod validation schema
 export const clientSchema = z.object({
-    name: z.string().min(1, { message: messages.nameRequired }),
+    name: z.string().min(1, { message: messages.nameRequired }).max(20, { message: messages.nameLength }),
     email: validateEmail,
     contact_number: z.string().trim().nullable().refine(value => {
         return !value || /^[0-9]{10,13}$/.test(value);
     }, {
         message: messages.contactLengthMin,
     }),
-    company_name: z.string().min(1, { message: messages.companyNameRequired }),
+    company_name: z.string().min(1, { message: messages.companyNameRequired }).max(30, { message: messages.companyNameLength }),
     company_website: z.string().trim().nullable().refine(value => {
         return !value || /^(https?:\/\/)([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d{1,5})?(\/[^\s]*)?$/.test(value);
     }, {
@@ -29,7 +29,7 @@ export const clientSchema = z.object({
     city: z.string().optional(),
     state: z.string().optional(),
     country: z.string().optional(),
-    title: z.string().optional(),
+    title: z.string().max(30, { message: messages.titleLength }).optional(),
     pincode: z.string().trim().nullable().refine(value => {
         return !value || /^[0-9]{0,6}$/.test(value);
     }, {
