@@ -36,7 +36,7 @@ function getStatusBadge(status: string) {
           <Text className="ms-2 font-medium text-orange-dark">{status}</Text>
         </div>
       );
-    case 'confirmed':
+    case 'completed':
       return (
         <div className="flex items-center">
           <Badge color="success" renderAsDot />
@@ -147,16 +147,33 @@ export const GetColumns = ({
     {
       title: (
         <HeaderCell
+          title="Client"
+          sortable
+          ascending={
+            sortConfig?.direction === 'asc' && sortConfig?.key === 'client_name'
+          }
+        />),
+      onHeaderCell: () => onHeaderCellClick('client_name'),
+      dataIndex: 'client_name',
+      key: 'client_name',
+      width: 200,
+      render: (value: any) => (
+        <Text className="font-medium text-gray-700">{value}</Text>
+      ),
+    },
+    {
+      title: (
+        <HeaderCell
           title="Assigned By"
           sortable
           ascending={
-            sortConfig?.direction === 'asc' && sortConfig?.key === 'assigned_by'
+            sortConfig?.direction === 'asc' && sortConfig?.key === 'assigned_by_name'
           }
         />
       ),
-      onHeaderCell: () => onHeaderCellClick('assigned_by'),
-      dataIndex: 'assigned_by',
-      key: 'assigned_by',
+      onHeaderCell: () => onHeaderCellClick('assigned_by_name'),
+      dataIndex: 'assigned_by_name',
+      key: 'assigned_by_name',
       width: 200,
       render: (value: string) => {
         // const date = moment(value).fromNow();
@@ -169,13 +186,13 @@ export const GetColumns = ({
           title="Assigned To"
           sortable
           ascending={
-            sortConfig?.direction === 'asc' && sortConfig?.key === 'assigned_to'
+            sortConfig?.direction === 'asc' && sortConfig?.key === 'assign_to_name'
           }
         />
       ),
-      onHeaderCell: () => onHeaderCellClick('assigned_to'),
-      dataIndex: 'assigned_to',
-      key: 'assigned_to',
+      onHeaderCell: () => onHeaderCellClick('assign_to_name'),
+      dataIndex: 'assign_to_name',
+      key: 'assign_to_name',
       width: 200,
       render: (value: string) => {
         // const date = moment(value).fromNow();
@@ -214,7 +231,7 @@ export const GetColumns = ({
                 <CustomModalButton
                   icon={<PencilIcon className="h-4 w-4" />}
                   view={<AddTaskForm title="Edit Task" row={row} />}
-                  customSize="625px"
+                  customSize="925px"
                   title='Edit Task'
                 />
                 <Tooltip
