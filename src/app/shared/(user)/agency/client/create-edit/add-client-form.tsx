@@ -78,6 +78,7 @@ export default function AddClientForm(props: any) {
     state: data?.client?.state?.id,
     country: data?.client?.country?.id
   });  
+  
   let countryOptions: Record<string, string>[] = [];
   clientSliceData?.countries !== '' && clientSliceData?.countries?.map((country: Record<string, string>) => {
     countryOptions.push({ name: country?.name, value: country?.name }) 

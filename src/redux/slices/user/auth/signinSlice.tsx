@@ -9,23 +9,23 @@ type UserData = {
 }
 type GetUserProfileData = {
   _id: string,
-    first_name: string,
-    last_name: string,
-    email: string,
-    is_google_signup: false,
-    is_facebook_signup: false,
-    remember_me: false,
-    is_deleted: false,
-    role: string,
-    reference_id: {
-      _id: string,
-      createdAt: Date,
-      updatedAt: Date,
-      company_name: string
-    },
-    status: string,
+  first_name: string,
+  last_name: string,
+  email: string,
+  is_google_signup: false,
+  is_facebook_signup: false,
+  remember_me: false,
+  is_deleted: false,
+  role: string,
+  reference_id: {
+    _id: string,
     createdAt: Date,
     updatedAt: Date,
+    company_name: string
+  },
+  status: string,
+  createdAt: Date,
+  updatedAt: Date,
 };
 type UpdateUserProfileData = {
   first_name: string,
@@ -50,11 +50,12 @@ interface PostSigninResponse {
 interface SigninState {
   loading: boolean;
   user: any;
-  userProfile:any;
+  userProfile: any;
   role: string;
+  teamMemberRole: string;
   loginUserStatus: string;
-  getUserProfileStatus:string;
-  updateUserProfileStatus:string;
+  getUserProfileStatus: string;
+  updateUserProfileStatus: string;
   loginUserError: string;
   logoutUserStatus: string;
 }
@@ -63,13 +64,14 @@ interface SigninState {
 const initialState: SigninState = {
   loading: false,
   user: {},
-  userProfile:{},
+  userProfile: {},
   role: '',
+  teamMemberRole: '',
   loginUserStatus: '',
   loginUserError: '',
   logoutUserStatus: '',
-  getUserProfileStatus:'',
-  updateUserProfileStatus:''
+  getUserProfileStatus: '',
+  updateUserProfileStatus: ''
 };
 
 export const signInUser: any = createAsyncThunk(
@@ -150,6 +152,7 @@ export const signinSlice: any = createSlice({
           ...state,
           user: action?.payload,
           role: action?.payload?.data?.user?.role?.name,
+          teamMemberRole: action?.payload?.data?.user?.team_agency_detail?.role?.name,
           loading: false,
           loginUserStatus: 'success'
         }
@@ -161,27 +164,27 @@ export const signinSlice: any = createSlice({
           loginUserStatus: 'error'
         }
       });
-      builder.addCase(signOutUser.fulfilled, (state) => {
+    builder.addCase(signOutUser.fulfilled, (state) => {
+      return {
+        ...state,
+        logoutUserStatus: 'success'
+      }
+    });
+    builder
+      .addCase(getUserProfile.pending, (state) => {
         return {
           ...state,
-          logoutUserStatus: 'success'
-        }
-      });
-      builder
-      .addCase(getUserProfile.pending, (state) => {
-        return{
-            ...state,
-            loading: true,
-            getUserProfileStatus: 'pending'
+          loading: true,
+          getUserProfileStatus: 'pending'
         }
       })
-      .addCase(getUserProfile.fulfilled, (state,action) => {
+      .addCase(getUserProfile.fulfilled, (state, action) => {
         // if(action.payload.success == true){
         //   toast.success(action.payload.message)
         // } else {
         //   toast.error(action.payload.message)
         // }
-        return{
+        return {
           ...state,
           userProfile: action?.payload?.data,
           loading: false,
@@ -189,32 +192,32 @@ export const signinSlice: any = createSlice({
         }
       })
       .addCase(getUserProfile.rejected, (state, action) => {
-        if(action.payload.success == true){
+        if (action.payload.success == true) {
           toast.success(action.payload.message)
         } else {
           toast.error(action.payload.message)
         }
-        return{
+        return {
           ...state,
           loading: false,
           getUserProfileStatus: 'error'
         }
       });
-      builder
+    builder
       .addCase(updateUserProfile.pending, (state) => {
-        return{
-            ...state,
-            loading: true,
-            updateUserProfileStatus: 'pending'
+        return {
+          ...state,
+          loading: true,
+          updateUserProfileStatus: 'pending'
         }
       })
-      .addCase(updateUserProfile.fulfilled, (state,action) => {
-        if(action.payload.success == true){
+      .addCase(updateUserProfile.fulfilled, (state, action) => {
+        if (action.payload.success == true) {
           toast.success(action.payload.message)
         } else {
           toast.error(action.payload.message)
         }
-        return{
+        return {
           ...state,
           userProfile: action?.payload?.data,
           loading: false,
@@ -222,12 +225,12 @@ export const signinSlice: any = createSlice({
         }
       })
       .addCase(updateUserProfile.rejected, (state, action) => {
-        if(action.payload.success == true){
+        if (action.payload.success == true) {
           toast.success(action.payload.message)
         } else {
           toast.error(action.payload.message)
         }
-        return{
+        return {
           ...state,
           loading: false,
           updateUserProfileStatus: 'error'

@@ -12,18 +12,13 @@ type AddTaskData = {
 }
 
 type EditTaskData = {
-  clientId: string,
-  name: string;
-  email: string;
-  company_name: string;
-  company_website?: string;
-  address?: string;
-  city?: string;
-  state?: string;
-  country?: string;
-  pincode?: string;
+  _id: string;
   title?: string;
-  contact_number?: string;
+  description?: string;
+  due_date?: string;
+  client?: string;
+  assigned?: string;
+  done?: boolean;
 }
 
 type GetAllTaskData = {
@@ -35,11 +30,11 @@ type GetAllTaskData = {
 }
 
 type GetTaskByIdData = {
-  clientId: string;
+  taskId: string;
 }
 
 type DeleteTaskData = {
-  client_ids: string[];
+  taskIdsToDelete: string[];
 }
 
 interface PostAPIResponse {
@@ -149,7 +144,7 @@ export const deleteTask: any = createAsyncThunk(
   }
 );
 
-export const taskSlice = createSlice({
+export const taskSlice: any = createSlice({
   name: "task",
   initialState,
   reducers: {

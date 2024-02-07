@@ -13,7 +13,7 @@ import { PiGridFour, PiListBullets, PiPlusBold } from 'react-icons/pi';
 import AddTaskForm from '@/app/shared/(user)/task/create-edit/add-task-form';
 import { ActionIcon, Button } from 'rizzui';
 import cn from '@/utils/class-names';
-import { getAllTask, setGridView } from '@/redux/slices/user/task/taskSlice';
+import { deleteTask, getAllTask, setGridView } from '@/redux/slices/user/task/taskSlice';
 import KanbanBoard from '@/app/shared/(user)/task/task-grid/kanban-board';
 
 const pageHeader = {
@@ -38,13 +38,14 @@ export default function TaskPage() {
   const handleChangePage = async (paginationParams: any) => {
     let { page, items_per_page, sort_field, sort_order, search } = paginationParams;
 
-    const response = await dispatch(getAllTask({ page, items_per_page, sort_field, sort_order, search }));
+    const response = signIn?.role !== 'client' ? await dispatch(getAllTask({ page, items_per_page, sort_field, sort_order, search, pagination: true })) : await dispatch(getAllTask({ page, items_per_page, sort_field, sort_order, search, agency_id: clientSliceData?.agencyId, pagination: true }));
     const { data } = response?.payload;
     const maxPage: number = data?.page_count;
 
     if (page > maxPage) {
       page = maxPage > 0 ? maxPage : 1;
-      await dispatch(getAllTask({ page, items_per_page, sort_field, sort_order, search }));
+      // await dispatch(getAllTask({ page, items_per_page, sort_field, sort_order, search, pagination: true }));
+      signIn?.role !== 'client' ? await dispatch(getAllTask({ page, items_per_page, sort_field, sort_order, search, pagination: true })) : await dispatch(getAllTask({ page, items_per_page, sort_field, sort_order, search, agency_id: clientSliceData?.agencyId, pagination: true }));
       return data?.client
     }
     if (data && data?.client && data?.client?.length !== 0) {
@@ -57,10 +58,10 @@ export default function TaskPage() {
     // console.log("delete id in main page....", id)
 
     try {
-      const res = await dispatch(deleteClient({ client_ids: id }));
+      const res = await dispatch(deleteTask({ taskIdsToDelete: id }));
       if (res.payload.success === true) {
         closeModal();
-        const reponse = await dispatch(getAllTask({ page: currentPage, items_per_page: countPerPage, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm }));
+        const reponse = signIn?.role !== 'client' ? await dispatch(getAllTask({ page: currentPage, items_per_page: countPerPage, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm, pagination: true })) : await dispatch(getAllTask({ page: currentPage, items_per_page: countPerPage, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm, agency_id: clientSliceData?.agencyId, pagination: true }));
       }
     } catch (error) {
       console.error(error);

@@ -33,14 +33,28 @@ function getStatusBadge(status: string) {
       return (
         <div className="flex items-center">
           <Badge color="warning" renderAsDot />
-          <Text className="ms-2 font-medium text-orange-dark">{status}</Text>
+          <Text className="ms-2 font-medium text-orange-dark">Pending</Text>
         </div>
       );
     case 'completed':
       return (
         <div className="flex items-center">
           <Badge color="success" renderAsDot />
-          <Text className="ms-2 font-medium text-green-dark">{status}</Text>
+          <Text className="ms-2 font-medium text-green-dark">Completed</Text>
+        </div>
+      );
+      case 'overdue':
+      return (
+        <div className="flex items-center">
+          <Badge color="danger" renderAsDot />
+          <Text className="ms-2 font-medium text-red-dark">Overdue</Text>
+        </div>
+      );
+      case 'in_progress':
+      return (
+        <div className="flex items-center">
+          <Badge className="bg-gray-400" renderAsDot />
+          <Text className="ms-2 font-medium text-gray-600">Inprogress</Text>
         </div>
       );
     default:
@@ -87,8 +101,8 @@ export const GetColumns = ({
         <div className="inline-flex ps-3.5">
           <Checkbox
             className="cursor-pointer"
-            checked={checkedItems.includes(row.id)}
-            {...(onChecked && { onChange: () => onChecked(row.id) })}
+            checked={checkedItems.includes(row._id)}
+            {...(onChecked && { onChange: () => onChecked(row._id) })}
           />
         </div>
       ),
@@ -150,12 +164,12 @@ export const GetColumns = ({
           title="Client"
           sortable
           ascending={
-            sortConfig?.direction === 'asc' && sortConfig?.key === 'client_name'
+            sortConfig?.direction === 'asc' && sortConfig?.key === 'client_first_name'
           }
         />),
-      onHeaderCell: () => onHeaderCellClick('client_name'),
-      dataIndex: 'client_name',
-      key: 'client_name',
+      onHeaderCell: () => onHeaderCellClick('client_first_name'),
+      dataIndex: 'client_fullName',
+      key: 'client_fullName',
       width: 200,
       render: (value: any) => (
         <Text className="font-medium text-gray-700">{value}</Text>
@@ -167,11 +181,11 @@ export const GetColumns = ({
           title="Assigned By"
           sortable
           ascending={
-            sortConfig?.direction === 'asc' && sortConfig?.key === 'assigned_by_name'
+            sortConfig?.direction === 'asc' && sortConfig?.key === 'assigned_by_first_name'
           }
         />
       ),
-      onHeaderCell: () => onHeaderCellClick('assigned_by_name'),
+      onHeaderCell: () => onHeaderCellClick('assigned_by_first_name'),
       dataIndex: 'assigned_by_name',
       key: 'assigned_by_name',
       width: 200,
@@ -186,11 +200,11 @@ export const GetColumns = ({
           title="Assigned To"
           sortable
           ascending={
-            sortConfig?.direction === 'asc' && sortConfig?.key === 'assign_to_name'
+            sortConfig?.direction === 'asc' && sortConfig?.key === 'assigned_to_first_name'
           }
         />
       ),
-      onHeaderCell: () => onHeaderCellClick('assign_to_name'),
+      onHeaderCell: () => onHeaderCellClick('assigned_to_first_name'),
       dataIndex: 'assign_to_name',
       key: 'assign_to_name',
       width: 200,

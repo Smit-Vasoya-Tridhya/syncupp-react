@@ -10,22 +10,17 @@ type PostAddTaskApiData = {
 }
   
 type PatchEditTaskApiData = {
-    clientId: string,
-    name: string;
-    email: string;
-    company_name: string;
-    company_website?: string;
-    address?: string;
-    city?: string;
-    state?: string;
-    country?: string;
-    pincode?: string;
-    title?: string;
-    contact_number?: string;
+  _id: string;
+  title?: string;
+  description?: string;
+  due_date?: string;
+  client?: string;
+  assigned?: string;
+  done?: boolean;
 }
 
 type DeleteTaskApiData = {
-  client_ids: string[];
+  taskIdsToDelete: string[];
 }
 
 type GetAllTaskApiData = {
@@ -37,7 +32,7 @@ type GetAllTaskApiData = {
 }
 
 type GetTaskByIdApiData = {
-  clientId: string;
+  taskId: string;
 }
 
 
@@ -62,8 +57,8 @@ export const PostAddTaskApi = async (data: PostAddTaskApiData) => {
 
 export const PatchEditTaskApi = async (data: PatchEditTaskApiData) => {
     const response = await AxiosDefault({
-      url: `/api/v1/agency/update-client/${data.clientId}`,
-      method: "PATCH",
+      url: `/api/v1/activity/update-task/${data._id}`,
+      method: "PUT",
       data: data,
       contentType: "application/json", 
     });
@@ -84,7 +79,7 @@ export const GetAllTaskApi = async (data: GetAllTaskApiData) => {
 
 export const GetTaskByIdApi = async (data: GetTaskByIdApiData) => {
   const response = await AxiosDefault({
-    url: `/api/v1/agency/get-client/${data.clientId}`,
+    url: `/api/v1/activity/get-task/${data.taskId}`,
     method: "GET",
     // data: data,
     contentType: "application/json", 
@@ -95,7 +90,7 @@ export const GetTaskByIdApi = async (data: GetTaskByIdApiData) => {
 
 export const DeleteTaskApi = async (data: DeleteTaskApiData) => {
   const response = await AxiosDefault({
-    url: `/api/v1/agency/delete-client`,
+    url: `/api/v1/activity/delete-task`,
     method: "DELETE",
     data: data,
     contentType: "application/json", 
