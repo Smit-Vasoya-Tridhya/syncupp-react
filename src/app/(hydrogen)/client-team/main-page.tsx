@@ -4,7 +4,7 @@ import PageHeader from '@/app/shared/page-header';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import CustomTable from '@/components/common-tables/table';
-import { getColumns } from '@/app/shared/(user)/agency/client-team/team-list/columns';
+import { GetclientteamColumns } from '@/app/shared/(user)/agency/client-team/team-list/columns';
 import { deleteTeamMember, getAllTeamMember } from '@/redux/slices/user/team-member/teamSlice';
 import ClientSelectionForm from '@/app/shared/(user)/forms/client-selection-form';
 import Spinner from '@/components/ui/spinner';
@@ -18,9 +18,10 @@ export default function TeamDataTablePage() {
   const [pageSize, setPageSize] = useState(5);
   const teamMemberData = useSelector((state: any) => state?.root?.teamMember);
   const clientSliceData = useSelector((state: any) => state?.root?.client);
+  const loading = useSelector((state: any) => state?.root?.client);
 
   // console.log("client data.....", clientSliceData?.data)
-  // console.log("client list data.....", clientSliceData?.clientList)
+  console.log("loading", loading)
 
   const handleChangePage = async (paginationParams: any) => {
     let { page, items_per_page, sort_field, sort_order, search } = paginationParams;
@@ -56,7 +57,7 @@ export default function TeamDataTablePage() {
           <ClientSelectionForm />
         </div>
       </PageHeader>
-      {clientSliceData && clientSliceData?.clientList?.length === 0 ? (
+      {clientSliceData?.loading && teamMemberData?.loading ? (
         <div className='p-10 flex items-center justify-center'>
           <Spinner size="xl" tag='div' className='ms-3' />
         </div>
@@ -70,7 +71,7 @@ export default function TeamDataTablePage() {
           setPageSize={setPageSize}
           handleDeleteById={handleDeleteById}
           handleChangePage={handleChangePage}
-          getColumns={getColumns}
+          getColumns={GetclientteamColumns}
         />
         </div>
         )

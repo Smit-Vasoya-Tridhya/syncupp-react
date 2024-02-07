@@ -33,7 +33,7 @@ const paymentService = {
         });
     },
 
-    createSubscription: async (token: string): Promise<Object> => {
+    createSubscription: async (token: string, router: any): Promise<Object> => {
         console.log(token, 'token')
         try {
             const result = await axios.post<{ data: { payment_id: string } }>(`${process.env.NEXT_PUBLIC_API}/api/v1/payment/create-subscription`, {}, {
@@ -47,6 +47,7 @@ const paymentService = {
             return result?.data?.data || {};
         } catch (error: any) {
             console.error('Error creating subscription:', error.message);
+            router.push(routes.signIn)
             throw new Error('Error creating subscription');
         }
     },
@@ -76,7 +77,7 @@ const paymentService = {
     initiateRazorpay: async (router: any, route: any, signupdata: any): Promise<void> => {
 
         try {
-            const subscriptiondata: any = await paymentService.createSubscription(signupdata);
+            const subscriptiondata: any = await paymentService.createSubscription(signupdata, router);
             console.log(subscriptiondata, 'subscriptiondata')
 
             const res = await paymentService.loadRazorpayScript("https://checkout.razorpay.com/v1/checkout.js");

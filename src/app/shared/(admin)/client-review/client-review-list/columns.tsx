@@ -1,14 +1,13 @@
 'use client';
 
-import Link from 'next/link';
 import { HeaderCell } from '@/components/ui/table';
 import { Text } from '@/components/ui/text';
 import { Checkbox } from '@/components/ui/checkbox';
-import EyeIcon from '@/components/icons/eye';
 import PencilIcon from '@/components/icons/pencil';
 import DeletePopover from '@/app/shared/delete-popover';
 import CustomModalButton from '@/app/shared/custom-modal-button';
 import AddClientReviewForm from '../create-edit/add-edit-client-review-form';
+import Image from 'next/image';
 
 type Columns = {
   data: any[];
@@ -20,7 +19,7 @@ type Columns = {
   onChecked?: (id: string) => void;
 };
 
-export const getColumns = ({
+export const ClientReviewColumns = ({
   data,
   sortConfig,
   checkedItems,
@@ -28,7 +27,8 @@ export const getColumns = ({
   onHeaderCellClick,
   handleSelectAll,
   onChecked,
-}: Columns) => [
+}: Columns) => {
+  return[
   {
     title: (
       <div className="ps-3.5">
@@ -71,14 +71,27 @@ export const getColumns = ({
     render: (value: string) => (
       <div>
       {value ? (
-        <img
+        <>
+        <figure className="relative aspect-square w-12 overflow-hidden rounded-lg bg-gray-100">
+        <Image
+          alt=''
           src={`${process.env.NEXT_PUBLIC_API}${value}`}
-          alt="Profile"
-          className="h-15 w-20"
-          onError={() => console.error(`Failed to load image: ${value}`)}
+          fill
+          sizes="(max-width: 768px) 100vw"
+          className="object-cover"
         />
+      </figure>
+      </>
       ) : (
-        <Text className="font-medium text-gray-700">No Image</Text>
+        <figure className="relative aspect-square w-12 overflow-hidden rounded-lg bg-gray-100">
+        <Image
+          alt=''
+          src='https://isomorphic-furyroad.s3.amazonaws.com/public/avatars-blur/avatar-11.webp'
+          fill
+          sizes="(max-width: 768px) 100vw"
+          className="object-cover"
+        />
+      </figure>
       )}
     </div>
     ),
@@ -160,4 +173,4 @@ export const getColumns = ({
       </div>
     ),
   },
-];
+];}

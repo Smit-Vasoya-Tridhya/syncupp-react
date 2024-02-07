@@ -92,7 +92,8 @@ interface ClientInitialState {
   editClientStatus: string;
   deleteClientStatus: string;
   getClientProfileStatus: string;
-  addClientdetails: any
+  addClientdetails: any,
+  paginationParams?: any
 }
 
 const initialState: ClientInitialState = {
@@ -117,7 +118,8 @@ const initialState: ClientInitialState = {
   editClientStatus: '',
   deleteClientStatus: '',
   getClientProfileStatus: '',
-  addClientdetails: {}
+  addClientdetails: {},
+  paginationParams: {}
 };
 
 export const postAddClient: any = createAsyncThunk(
@@ -274,6 +276,12 @@ export const clientSlice = createSlice({
       return {
         ...state,
         agencyId: action.payload
+      }
+    },
+    setPagginationParams(state, action) {
+      return {
+        ...state,
+        paginationParams: action.payload
       }
     },
     setAgencyName(state, action) {
@@ -551,5 +559,5 @@ export const clientSlice = createSlice({
   },
 });
 
-export const { RemoveRegionalData, RemoveClientData, setAgencyId, setAgencyName, setClientId, setClientName } = clientSlice.actions;
+export const { RemoveRegionalData, RemoveClientData, setAgencyId, setAgencyName, setClientId, setClientName, setPagginationParams } = clientSlice.actions;
 export default clientSlice.reducer;

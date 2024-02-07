@@ -43,9 +43,11 @@ export default function CompanyForm(props: any) {
             console.log(result.payload, 'result.payload')
             if (signUpUser.fulfilled.match(result)) {
                 if (result && result.payload.success === true) {
-                    router.replace(routes.signIn);
+                    // router.replace(routes.signIn);
+                    localStorage.setItem("token", result?.payload?.data?.token);
+                    initiateRazorpay(router, routes.dashboard, result?.payload?.data?.token)
                     // dispatch(signUpUserSubscription({})).then((result: any) => {
-                    //     initiateRazorpay(router, routes.signIn, result?.payload?.data?.token)
+                    //     initiateRazorpay(router, routes.dashboard, result?.payload?.data?.token)
                     // })
                 }
             }
@@ -58,9 +60,10 @@ export default function CompanyForm(props: any) {
             console.log(result.payload, 'result.payload')
             if (signUpUser.fulfilled.match(result)) {
                 if (result && result.payload.success === true) {
-                    router.replace(routes.signIn);
+                    // router.replace(routes.signIn);
+                    localStorage.setItem("token", result?.payload?.data?.token);
+                    initiateRazorpay(router, routes.dashboard, result?.payload?.data?.token)
                     // dispatch(signUpUserSubscription({})).then((result: any) => {
-                    //     initiateRazorpay(router, routes.signIn, result?.payload?.data?.token)
                     // })
                 }
                 setLoader(false)

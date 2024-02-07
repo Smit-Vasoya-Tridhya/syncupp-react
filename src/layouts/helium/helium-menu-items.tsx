@@ -15,7 +15,7 @@ export const MenuItems = () => {
 
   const pathname = usePathname();
   let menuItems: Record<string, any>[];
-  switch (signIn?.user?.data?.user?.role?.name || socialSignup?.user?.data?.user?.role?.name) {
+  switch (signIn?.user?.data?.user?.role?.name || socialSignup?.user?.data?.user?.role?.name || signIn?.role ) {
     case "agency":
       menuItems = [
         {

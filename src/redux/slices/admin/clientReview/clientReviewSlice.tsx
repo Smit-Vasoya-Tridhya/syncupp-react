@@ -111,7 +111,7 @@ export const updateClientReviewDataByID: any = createAsyncThunk(
     const {id, formData} = data;
     try {
       const response: any = await UpdateClientReviewDataByID(formData, id);
-      return response;
+      return response.data;
     } catch (error: any) {
       return {
         status: false,
@@ -149,7 +149,7 @@ export const clientReviewSlice = createSlice({
         }
         return {
           ...state,
-          // data: action.payload,
+          data: action.payload,
           loading: false,
           addClientReviewStatus: 'success',
         };
@@ -257,7 +257,7 @@ export const clientReviewSlice = createSlice({
         }
         return {
           ...state,
-          // data: action.payload,
+          data: action.payload,
           loading: false,
           updateClientReviewStatus: 'success',
         };

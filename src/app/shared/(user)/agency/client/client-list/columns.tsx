@@ -16,6 +16,9 @@ import moment from 'moment'
 import { initiateRazorpay } from '@/services/clientpaymentService';
 import { useRouter } from 'next/navigation';
 import { routes } from '@/config/routes';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { getAllClient } from '@/redux/slices/user/client/clientSlice';
 
 type Columns = {
   data: any[];
@@ -77,6 +80,19 @@ export const GetColumns = ({
 }: Columns) => {
   const token = localStorage.getItem('token')
   const router = useRouter()
+  const dispatch = useDispatch()
+
+  const paginationParams = useSelector((state: any) => state?.root?.client?.paginationParams);
+
+  console.log(paginationParams, 'paginationParams')
+
+
+  const ClintlistAPIcall = async () => {
+    let { page, items_per_page, sort_field, sort_order, search } = paginationParams;
+    await dispatch(getAllClient({ page, items_per_page, sort_field, sort_order, search, pagination: true }));
+
+  }
+
   return [
     {
       title: (
@@ -240,7 +256,7 @@ export const GetColumns = ({
       render: (_: string, row: any) => (
         console.log(row?.reference_id?._id, 'row'),
         <>
-          {row?.status === "payment_pending" ? <div> <Button className='w-full' onClick={() => { initiateRazorpay(router, routes.client, token, row?.reference_id?._id) }}>Pay</Button></div> : <>
+          {row?.status === "payment_pending" ? <div> <Button className='w-full' onClick={() => { initiateRazorpay(router, routes.client, token, row?.reference_id?._id, ClintlistAPIcall) }}>Pay</Button></div> : <>
             <div className="flex items-center justify-end gap-3 pe-4">
               <CustomModalButton
                 title="Edit Client"

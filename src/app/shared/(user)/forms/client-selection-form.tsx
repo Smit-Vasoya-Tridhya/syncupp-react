@@ -31,6 +31,8 @@ export default function ClientSelectionForm() {
         return { name: client_name, value: client?.reference_id, key: client }
     }) : [];
 
+    console.log(clientOptions,'clientOptions')
+
     const handleClientChange = (selectedOption: Record<string, any>) => {
         // console.log("selected option....", selectedOption)
         dispatch(setClientName(selectedOption?.name))
@@ -42,7 +44,7 @@ export default function ClientSelectionForm() {
         // console.log('form data', data);
     };
 
-    if (clientSliceData?.clientList?.length === 0) {
+    if (clientSliceData?.loading) {
         return <SelectLoader />
     } else {
         return (
@@ -67,7 +69,7 @@ export default function ClientSelectionForm() {
                                         }}
                                         value={value}
                                         placeholder='Select Client'
-                                        // getOptionValue={(option) => option.value}
+                                        getOptionValue={(option) => option.value}
                                         className="font-medium"
                                         dropdownClassName="p-1 border w-auto border-gray-100 shadow-lg"
                                     />

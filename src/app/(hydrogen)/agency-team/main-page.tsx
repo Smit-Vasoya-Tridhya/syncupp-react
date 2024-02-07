@@ -6,8 +6,8 @@ import AddTeamMemberForm from '@/app/shared/(user)/agency/agency-team/create-edi
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import CustomTable from '@/components/common-tables/table';
-import { getColumns } from '@/app/shared/(user)/agency/agency-team/team-list/columns';
-import { deleteTeamMember, getAllTeamMember } from '@/redux/slices/user/team-member/teamSlice';
+import { GetclientTeamColumns } from '@/app/shared/(user)/agency/agency-team/team-list/columns';
+import { deleteTeamMember, getAllTeamMember, setPagginationParams } from '@/redux/slices/user/team-member/teamSlice';
 import { PiPlusBold } from 'react-icons/pi';
 
 
@@ -22,10 +22,11 @@ export default function TeamDataTablePage() {
   const teamMemberData = useSelector((state: any) => state?.root?.teamMember);
   // const clientSliceData = useSelector((state: any) => state?.root?.client);
 
-  
+
   const handleChangePage = async (paginationParams: any) => {
     let { page, items_per_page, sort_field, sort_order, search } = paginationParams;
 
+    await dispatch(setPagginationParams(paginationParams))
     const response = await dispatch(getAllTeamMember({ page, items_per_page, sort_field, sort_order, search, pagination: true }));
     const { data } = response?.payload;
     const maxPage: number = data?.page_count;
@@ -35,7 +36,7 @@ export default function TeamDataTablePage() {
       await dispatch(getAllTeamMember({ page, items_per_page, sort_field, sort_order, search, pagination: true }));
       return data?.teamMemberList;
     }
-    if(data && data?.teamMemberList && data?.teamMemberList.length !== 0 ) {
+    if (data && data?.teamMemberList && data?.teamMemberList.length !== 0) {
       return data?.teamMemberList
     }
   };
@@ -52,19 +53,19 @@ export default function TeamDataTablePage() {
     }
   };
 
- 
+
 
   return (
     <>
       <PageHeader title={pageHeader.title}>
         <div className="mt-4 flex items-center gap-3 @lg:mt-0">
           <ModalButton
-          label="Add Team member"
-          view={<AddTeamMemberForm title="New Team member" />}
-          customSize="625px"
-          className="mt-0 w-full hover:bg-gray-700 @lg:w-auto dark:bg-gray-100 dark:text-white dark:hover:bg-gray-200 dark:active:bg-gray-100"
-          icon={<PiPlusBold className="me-1.5 h-[17px] w-[17px]" />}
-        />
+            label="Add Team member"
+            view={<AddTeamMemberForm title="New Team member" />}
+            customSize="625px"
+            className="mt-0 w-full hover:bg-gray-700 @lg:w-auto dark:bg-gray-100 dark:text-white dark:hover:bg-gray-200 dark:active:bg-gray-100"
+            icon={<PiPlusBold className="me-1.5 h-[17px] w-[17px]" />}
+          />
         </div>
       </PageHeader>
       <CustomTable
@@ -75,7 +76,7 @@ export default function TeamDataTablePage() {
         setPageSize={setPageSize}
         handleDeleteById={handleDeleteById}
         handleChangePage={handleChangePage}
-        getColumns={getColumns}
+        getColumns={GetclientTeamColumns}
       />
     </>
   );

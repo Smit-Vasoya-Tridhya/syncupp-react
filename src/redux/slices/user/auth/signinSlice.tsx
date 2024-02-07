@@ -132,6 +132,12 @@ export const signinSlice: any = createSlice({
         loginUserError: '',
       };
     },
+    setRoleonSingup(state, action) {
+      return {
+        ...state,
+        role: action.payload
+      }
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -239,5 +245,5 @@ export const signinSlice: any = createSlice({
   },
 });
 
-export const { logoutUser } = signinSlice.actions;
+export const { logoutUser, setRoleonSingup } = signinSlice.actions;
 export default signinSlice.reducer;

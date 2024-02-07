@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { PostSignup, SignupSubscription } from "../../../../api/user/auth/authApis";
 import { toast } from 'react-hot-toast';
+import { setRoleonSingup } from "./signinSlice";
 
 type UserData = {
   firstName: string;
@@ -41,7 +42,7 @@ const initialState: SignUpState = {
 
 export const signUpUser: any = createAsyncThunk(
   "signup/signUpUser",
-  async (data: UserData) => {
+  async (data: UserData, { dispatch }) => {
     const apiData = {
       first_name: data.firstName,
       last_name: data.lastName,
@@ -55,6 +56,9 @@ export const signUpUser: any = createAsyncThunk(
     }
     try {
       const response: any = await PostSignup(apiData);
+      console.log(response?.data?.user?.role?.name, 'response', response)
+      localStorage.setItem("token", response.data?.token);
+      await dispatch(setRoleonSingup(response?.data?.user?.role?.name))
       return response;
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as PostSignUpResponse;
@@ -65,9 +69,12 @@ export const signUpUser: any = createAsyncThunk(
 
 export const signUpUserSubscription: any = createAsyncThunk(
   "signup/signUpUserSubscription",
-  async (data: any) => {
+  async (data: any, { dispatch }) => {
     try {
       const response: any = await SignupSubscription(data);
+      console.log(response, 'response')
+      // localStorage.setItem("token", result?.payload?.data?.token);
+      // await dispatch(setRoleonSingup())
       return response;
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as PostSignUpResponse;

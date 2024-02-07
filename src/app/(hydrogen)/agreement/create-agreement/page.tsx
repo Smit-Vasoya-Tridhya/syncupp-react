@@ -17,6 +17,7 @@ import QuillLoader from '@/components/loader/quill-loader';
 import PageHeader from '@/app/shared/page-header';
 import EyeIcon from '@/components/icons/eye';
 import { createagreement, getDropdownclientlist } from '@/redux/slices/user/agreement/agreementSlice';
+import Spinner from '@/components/ui/spinner';
 
 const Select = dynamic(() => import('@/components/ui/select'), {
     ssr: false,
@@ -254,8 +255,9 @@ export default function ChangePasswordForm() {
                                 </Button>
                                 <Button disabled={loading} type="submit" className="bg-none text-xs sm:text-sm">
                                     Save
+                                        {loading && <Spinner size="sm" tag='div' className='ms-3' color='white' />}
                                 </Button>
-                                <Button type="submit" onClick={SendHandler} variant="outline" className="bg-none text-xs sm:text-sm">
+                                    <Button type="submit" disabled={loading} onClick={SendHandler} variant="outline" className="bg-none text-xs sm:text-sm">
                                     Send
                                 </Button>
                                 {/* Add your disabled button here if needed */}
