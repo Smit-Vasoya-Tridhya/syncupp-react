@@ -55,8 +55,8 @@ export default function CalenderOtherFrom(props: any) {
   const initialValues: AddCalenderSchema = {
     title: '',
     description: '',
-    start_date:undefined,
-    due_date: undefined,
+    start_date:new Date(),
+    due_date: new Date(),
     client: '',
     assigned: '',
     done: false
