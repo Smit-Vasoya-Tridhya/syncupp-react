@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { toast } from 'react-hot-toast';
-import { DeleteTeamMemberApi, GetAllTeamMemberApi, GetTeamMemberProfileApi, PostAddTeamMemberApi, PostTeamMemberVerifyApi, PutEditTeamMemberApi } from "@/api/user/team-member/teamApis";
+import { DeleteTeamMemberApi, GetAllTeamMemberApi, GetTeamMemberProfileApi, MemberStatusChangeApi, PostAddTeamMemberApi, PostTeamMemberVerifyApi, PutEditTeamMemberApi } from "@/api/user/team-member/teamApis";
 
 type TeamData = {
   _id: string;
@@ -47,6 +47,10 @@ type PostTeamMemberVerifyData = {
   last_name?: string;
 }
 
+type StatusChange = {
+  id: string;
+};
+
 interface TeamMemberDataResponse {
   status: boolean;
   message: string
@@ -86,6 +90,18 @@ export const addTeamMember: any = createAsyncThunk(
       return response;
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as TeamMemberDataResponse;
+    }
+  }
+);
+
+export const clientteamStatuschange: any = createAsyncThunk(
+  "team/clientteamStatuschange",
+  async (data: StatusChange) => {
+    try {
+      const response: any = await MemberStatusChangeApi(data);
+      return response;
+    } catch (error: any) {
+      return { status: false, message: error.response.data.message, code: error.response.data.status } as any;
     }
   }
 );
@@ -318,6 +334,34 @@ export const teamSlice = createSlice({
           getAllTeamMemberStatus: 'error'
         }
       });
+
+    //clientteamMembers Status change 
+
+    builder
+      .addCase(clientteamStatuschange.pending, (state) => {
+        return {
+          ...state,
+          loading: true,
+        }
+      })
+      .addCase(clientteamStatuschange.fulfilled, (state, action) => {
+        if (action?.payload?.status == true) {
+          toast.error(action.payload.message)
+        } else {
+          toast.success(action.payload.message)
+        }
+        return {
+          ...state,
+          loading: false,
+        }
+      })
+      .addCase(clientteamStatuschange.rejected, (state) => {
+        return {
+          ...state,
+          loading: false,
+        }
+      });
+
     // new cases for get team member profile
     builder
       .addCase(getTeamMemberProfile.pending, (state) => {
@@ -342,6 +386,7 @@ export const teamSlice = createSlice({
           getTeamMemberProfileStatus: 'error'
         }
       });
+
     // new cases for delete team member profile
     builder
       .addCase(deleteTeamMember.pending, (state) => {

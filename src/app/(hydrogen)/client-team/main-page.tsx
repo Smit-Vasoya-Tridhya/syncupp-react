@@ -4,7 +4,7 @@ import PageHeader from '@/app/shared/page-header';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import CustomTable from '@/components/common-tables/table';
-import { getColumns } from '@/app/shared/(user)/agency/client-team/team-list/columns';
+import { GetclientteamColumns } from '@/app/shared/(user)/agency/client-team/team-list/columns';
 import { deleteTeamMember, getAllTeamMember } from '@/redux/slices/user/team-member/teamSlice';
 import ClientSelectionForm from '@/app/shared/(user)/forms/client-selection-form';
 import Spinner from '@/components/ui/spinner';
@@ -71,7 +71,7 @@ export default function TeamDataTablePage() {
           setPageSize={setPageSize}
           handleDeleteById={handleDeleteById}
           handleChangePage={handleChangePage}
-          getColumns={getColumns}
+          getColumns={GetclientteamColumns}
         />
         </div>
         )

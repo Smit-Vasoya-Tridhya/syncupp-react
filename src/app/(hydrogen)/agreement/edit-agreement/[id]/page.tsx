@@ -265,10 +265,11 @@ export default function ChangePasswordForm({ params }: { params: { id: string } 
                                             <EyeIcon className="h-5 w-5 mr-2" />
                                             Preview
                                         </Button>
-                                        <Button type="submit" className="bg-none text-xs sm:text-sm">
+                                            <Button disabled={loading} type="submit" className="bg-none text-xs sm:text-sm">
                                             Save
+                                                {loading && <Spinner size="sm" tag='div' className='ms-3' color='white' />}
                                         </Button>
-                                        <Button type="submit" onClick={SendHandler} variant="outline" className="bg-none text-xs sm:text-sm">
+                                        <Button type="submit" disabled={loading} onClick={SendHandler} variant="outline" className="bg-none text-xs sm:text-sm">
                                             Send
                                         </Button>
                                     </div>
