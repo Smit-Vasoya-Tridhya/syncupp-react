@@ -11,7 +11,7 @@ export default function AgreementDetailsPage({ params }: { params: { id: string 
     const dispatch = useDispatch()
 
     const { singleAgreementdetails, loading } = useSelector((state: any) => state?.root?.agreement);
-    console.log(singleAgreementdetails, 'singleAgreementdetails')
+    // console.log(singleAgreementdetails, 'singleAgreementdetails')
 
 
 

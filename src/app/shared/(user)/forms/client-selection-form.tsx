@@ -27,16 +27,15 @@ export default function ClientSelectionForm() {
     }
 
     let clientOptions: Record<string, any>[] = clientSliceData?.clientList && clientSliceData?.clientList?.length > 0 ? clientSliceData?.clientList?.map((client: Record<string, any>) => (
-        { name: client?.first_name + " " + client?.last_name, value: client?.reference_id, key: client }
+        { name: client?.name, value: client?.reference_id, key: client }
     )) : [];
 
-    console.log(clientOptions, 'clientOptions')
+    // console.log(clientOptions, 'clientOptions')
 
     const handleClientChange = (selectedOption: Record<string, any>) => {
         // console.log("selected option....", selectedOption)
         dispatch(setClientName(selectedOption?.name))
         dispatch(setClientId(selectedOption?.value))
-        console.log("we are changing client id....", selectedOption?.value);
         dispatch(getAllTeamMember({ sort_field: 'createdAt', sort_order: 'desc', client_id: selectedOption?.value, pagination: true }))
     }
 

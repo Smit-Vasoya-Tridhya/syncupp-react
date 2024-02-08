@@ -15,7 +15,7 @@ export default function PaymentPage() {
 
     const { addClientteamdetails } = useSelector((state: any) => state?.root?.teamMember);
     const paginationParams = useSelector((state: any) => state?.root?.teamMember?.paginationParams);
-    console.log(addClientteamdetails, 'addClientteamdetails')
+    // console.log(addClientteamdetails, 'addClientteamdetails')
 
     const ClintteamlistAPIcall = async () => {
         let { page, items_per_page, sort_field, sort_order, search } = paginationParams;

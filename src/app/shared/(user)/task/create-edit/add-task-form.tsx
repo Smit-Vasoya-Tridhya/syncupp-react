@@ -111,13 +111,11 @@ export default function AddTaskForm(props: any) {
 
 
   let clientOptions: Record<string, any>[] = clientSliceData?.clientList && clientSliceData?.clientList?.length > 0 ? clientSliceData?.clientList?.map((client: Record<string, any>) => {
-    let client_name = client?.first_name + " " + client?.last_name
-    return { name: client_name, value: client?.reference_id, key: client }
+    return { name: client?.name, value: client?.reference_id, key: client }
   }) : [];
 
   let teamOptions: Record<string, any>[] = teamMemberData?.teamList && teamMemberData?.teamList?.length > 0 ? teamMemberData?.teamList?.map((team: Record<string, any>) => {
-    let team_name = team?.first_name + " " + team?.last_name
-    return { name: team_name, value: team?.reference_id, key: team }
+    return { name: team?.name, value: team?.reference_id, key: team }
   }) : [];
 
   // const handleClientChange = (selectedOption: Record<string, any>) => {
@@ -136,7 +134,7 @@ export default function AddTaskForm(props: any) {
 
 
   const onSubmit: SubmitHandler<AddTaskSchema> = (dataa) => {
-    console.log('Add task dataa---->', dataa);
+    // console.log('Add task dataa---->', dataa);
 
     const formData = {
       ...dataa,
@@ -145,7 +143,7 @@ export default function AddTaskForm(props: any) {
       assigned: teamId
     }
 
-    console.log('Add task form dataa---->', formData);
+    // console.log('Add task form dataa---->', formData);
 
     const filteredFormData = Object.fromEntries(
       Object.entries(formData).filter(([_, value]) => value !== undefined && value !== '')

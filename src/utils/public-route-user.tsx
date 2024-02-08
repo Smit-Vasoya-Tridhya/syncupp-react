@@ -13,7 +13,7 @@ const WithAuthPublic = (WrappedComponent: any) => {
     const signIn = useSelector((state: any) => state?.root?.signIn);
     const socialSignup = useSelector((state: any) => state?.root?.socialSignup);
     const { subscriptionData } = useSelector((state: any) => state?.root?.signUp)
-    console.log(subscriptionData, 'subscriptionData', socialSignup)
+    // console.log(subscriptionData, 'subscriptionData', socialSignup)
     const token = localStorage.getItem('token');
     // console.log("signin slice data",signIn)
 
@@ -26,12 +26,12 @@ const WithAuthPublic = (WrappedComponent: any) => {
           router.replace(routes.dashboard)
         } else if (signIn?.user?.data?.user?.role?.name === "agency" && signIn?.user?.data?.user?.status != "payment_pending") {
            router.replace(routes.dashboard)
-          console.log('else if', 29)
+          // console.log('else if', 29)
         } else if (socialSignup?.user?.data?.user?.role?.name === "agency" || socialSignup?.user?.data?.user?.role?.name === "client") {
           // window.location.href = subscriptionData.data?.payment_url;
           socialSignup?.user?.data?.user?.status != "payment_pending" && router.replace(routes.dashboard)
         } else {
-          console.log('else',33)
+          // console.log('else',33)
           // router.replace(routes.admin.dashboard)
         }
 

@@ -46,7 +46,7 @@ export default function ChangePasswordForm() {
     const { user } = useSelector((state: any) => state?.root?.signIn?.user?.data);
     const { clientlistDetails, loading } = useSelector((state: any) => state?.root?.agreement);
 
-    console.log(clientlistDetails, 'clientlistDetails')
+    // console.log(clientlistDetails, 'clientlistDetails')
 
 
     const clientOptions =
@@ -136,7 +136,7 @@ export default function ChangePasswordForm() {
                 >
                     {({ register, control, formState: { errors }, watch, handleSubmit }) => (
 
-                        console.log(errors, 'errors'),
+                        // console.log(errors, 'errors'),
 
                         <div className="space-y-5">
                             <div className="grid grid-cols-1 gap-4 md:grid-cols-3 xl:gap-5 xl:pb-2 items-start">

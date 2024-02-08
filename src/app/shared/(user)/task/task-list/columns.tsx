@@ -165,12 +165,12 @@ export const GetColumns = ({
           title="Client"
           sortable
           ascending={
-            sortConfig?.direction === 'asc' && sortConfig?.key === 'client_first_name'
+            sortConfig?.direction === 'asc' && sortConfig?.key === 'client_name'
           }
         />),
-      onHeaderCell: () => onHeaderCellClick('client_first_name'),
-      dataIndex: 'client_fullName',
-      key: 'client_fullName',
+      onHeaderCell: () => onHeaderCellClick('client_name'),
+      dataIndex: 'client_name',
+      key: 'client_name',
       width: 200,
       render: (value: any) => (
         <Text className="font-medium text-gray-700">{value}</Text>
@@ -182,11 +182,11 @@ export const GetColumns = ({
           title="Assigned By"
           sortable
           ascending={
-            sortConfig?.direction === 'asc' && sortConfig?.key === 'assigned_by_first_name'
+            sortConfig?.direction === 'asc' && sortConfig?.key === 'assigned_by_name'
           }
         />
       ),
-      onHeaderCell: () => onHeaderCellClick('assigned_by_first_name'),
+      onHeaderCell: () => onHeaderCellClick('assigned_by_name'),
       dataIndex: 'assigned_by_name',
       key: 'assigned_by_name',
       width: 200,
@@ -201,13 +201,13 @@ export const GetColumns = ({
           title="Assigned To"
           sortable
           ascending={
-            sortConfig?.direction === 'asc' && sortConfig?.key === 'assigned_to_first_name'
+            sortConfig?.direction === 'asc' && sortConfig?.key === 'assigned_to_name'
           }
         />
       ),
-      onHeaderCell: () => onHeaderCellClick('assigned_to_first_name'),
-      dataIndex: 'assign_to_name',
-      key: 'assign_to_name',
+      onHeaderCell: () => onHeaderCellClick('assigned_to_name'),
+      dataIndex: 'assigned_to_name',
+      key: 'assigned_to_name',
       width: 200,
       render: (value: string) => {
         // const date = moment(value).fromNow();
