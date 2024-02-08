@@ -16,6 +16,7 @@ import Spinner from '@/components/ui/spinner';
 import { useRouter } from 'next/navigation';
 import { routes } from '@/config/routes';
 import Link from 'next/link';
+import { FormBlockWrapper } from '@/app/shared/(user)/invoice/invoice-list/form-utils';
 
 export default function CouponMangementform(props: any) {
   const dispatch = useDispatch();
@@ -144,6 +145,7 @@ export default function CouponMangementform(props: any) {
           )
         )}
       </Form>
+      {/* </FormBlockWrapper> */}
     </>
   );
 }

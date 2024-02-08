@@ -10,19 +10,17 @@ import { CouponManagementForm } from '@/utils/validators/coupon-management.schem
 import PageHeader from '@/app/shared/page-header';
 import Uploadfile from '../../create/Uploadfile';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   GetCoupenListbyId,
   UpdateCoupenListbyId,
 } from '@/redux/slices/admin/coupon-managemnt/couponManagementSlice';
-import { useParams } from 'next/navigation';
-import { useSelector } from 'react-redux';
+import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { routes } from '@/config/routes';
-import { useRouter } from 'next/navigation';
 import Spinner from '@/components/ui/spinner';
 
-export default function updateform(props: any) {
+export default function Updateform(props: any) {
   const dispatch = useDispatch();
   const { id } = useParams();
   const router = useRouter();

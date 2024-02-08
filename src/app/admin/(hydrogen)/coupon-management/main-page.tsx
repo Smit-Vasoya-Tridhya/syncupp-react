@@ -114,6 +114,7 @@ export default function CouponManagementPage() {
         <div className="mt-4 flex items-center gap-3 @lg:mt-0">
           <Link href={routes.admin.createCouponManagement}>
             <Button className="hover:gray-700 ms-3 @xl:w-auto dark:bg-gray-200 dark:text-white">
+              <PiPlusBold className="me-1.5 h-[17px] w-[17px]" />
               Add
             </Button>
           </Link>

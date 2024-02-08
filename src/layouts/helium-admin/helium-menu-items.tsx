@@ -5,7 +5,7 @@ import {
   PiUserPlusDuotone,
 } from 'react-icons/pi';
 import { SiPayloadcms } from 'react-icons/si';
-import { FaRegStar } from 'react-icons/fa';
+import { FaRegStar, FaTicketAlt } from 'react-icons/fa';
 
 // Note: do not add href in the label object, it is rendering as label
 export const menuItems = [
@@ -47,6 +47,6 @@ export const menuItems = [
   {
     name: 'Coupon Management',
     href: routes.admin.couponManagement,
-    icon: <SiPayloadcms />,
+    icon: <FaTicketAlt />,
   },
 ];
