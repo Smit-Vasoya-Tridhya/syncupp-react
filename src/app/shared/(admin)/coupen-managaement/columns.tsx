@@ -95,8 +95,6 @@ export const getColumns = ({
     key: 'brand',
     width: 200,
     render: (value: string, row: any) => {
-      console.log(value, data, row, 'value');
-
       return <Text className="font-medium text-gray-700">{value}</Text>;
     },
   },
@@ -173,6 +171,7 @@ export const getColumns = ({
         }
       />
     ),
+    onHeaderCell: () => onHeaderCellClick('siteURL'),
     dataIndex: 'siteURL',
     key: 'siteURL',
     width: 200,

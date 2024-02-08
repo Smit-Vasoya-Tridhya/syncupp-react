@@ -316,7 +316,7 @@ export const clientSlice = createSlice({
         if (action.payload.status == false) {
           toast.error(action.payload.message)
         } else {
-          toast.success(action.payload.message)
+          // toast.success(action.payload.message)
         }
         return {
           ...state,

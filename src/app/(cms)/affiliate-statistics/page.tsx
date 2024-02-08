@@ -1,15 +1,14 @@
-import HomePage from '@/app/shared/home-page';
-
 import { metaObject } from '@/config/site.config';
+import AffiliateStatistics from './AffiliateStatistics';
 
 export const metadata = {
-  ...metaObject('Home'),
+  ...metaObject('Affiliate Statistics'),
 };
 
 export default function BlankPage() {
   return (
     <>
-      <HomePage />
+      <AffiliateStatistics></AffiliateStatistics>
     </>
   );
 }

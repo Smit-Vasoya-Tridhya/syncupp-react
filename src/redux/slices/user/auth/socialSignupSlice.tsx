@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { PostSignup, PostSocialSignupFacebook, PostSocialSignupGoogle } from "../../../../api/user/auth/authApis";
 import { toast } from 'react-hot-toast';
+import { getUserProfile } from "./signinSlice";
 
 type GoogleUserData = {
   signupId: string;
@@ -36,9 +37,10 @@ const initialState:SignUpState = {
 
 export const googleSignUpUser: any = createAsyncThunk(
   "socialSignup/googleSignUpUser",
-  async (data: GoogleUserData) => {
+  async (data: GoogleUserData,{dispatch}) => {
     try {
       const response: any = await PostSocialSignupGoogle(data);
+      // await dispatch(getUserProfile())
       return response;
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as PostSignUpResponse;
@@ -48,9 +50,10 @@ export const googleSignUpUser: any = createAsyncThunk(
 
 export const facebookSignUpUser: any = createAsyncThunk(
   "socialSignup/facebookSignUpUser",
-  async (data: FacebookUserData) => {
+  async (data: FacebookUserData,{dispatch}) => {
     try {
       const response: any = await PostSocialSignupFacebook(data);
+      // await dispatch(getUserProfile())
       return response;
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as PostSignUpResponse;

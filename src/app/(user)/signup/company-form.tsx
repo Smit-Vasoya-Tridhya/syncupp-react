@@ -45,7 +45,7 @@ export default function CompanyForm(props: any) {
                 if (result && result.payload.success === true) {
                     // router.replace(routes.signIn);
                     localStorage.setItem("token", result?.payload?.data?.token);
-                    initiateRazorpay(router, routes.dashboard, result?.payload?.data?.token)
+                    initiateRazorpay(router, routes.dashboard, result?.payload?.data?.token, dispatch)
                     // dispatch(signUpUserSubscription({})).then((result: any) => {
                     //     initiateRazorpay(router, routes.dashboard, result?.payload?.data?.token)
                     // })
@@ -62,7 +62,7 @@ export default function CompanyForm(props: any) {
                 if (result && result.payload.success === true) {
                     // router.replace(routes.signIn);
                     localStorage.setItem("token", result?.payload?.data?.token);
-                    initiateRazorpay(router, routes.dashboard, result?.payload?.data?.token)
+                    initiateRazorpay(router, routes.dashboard, result?.payload?.data?.token, dispatch)
                     // dispatch(signUpUserSubscription({})).then((result: any) => {
                     // })
                 }

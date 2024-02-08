@@ -36,7 +36,6 @@ export default function CouponMangementform(props: any) {
       formData.append('brandLogo', data.brandLogo);
     }
     const result = await dispatch(AddCoupon(formData));
-    console.log(result, 'result');
     if (result.payload && result.payload.success === true) {
       router.push(routes.admin.couponManagement);
     }
@@ -56,93 +55,86 @@ export default function CouponMangementform(props: any) {
         className=" p-10 [&_label]:font-medium"
       >
         {({ register, control, formState: { errors }, setValue, setError }) => (
-          console.log('err', errors),
-          (
-            <div className="space-y-5">
-              <div className="mb-6 flex items-center justify-between">
-                <Title as="h3" className="text-xl xl:text-2xl">
-                  Add Coupon
-                </Title>
-              </div>
-              <div
-                className={cn(
-                  'grid grid-cols-4 gap-4 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4'
-                )}
-              >
-                <Input
-                  label="Brand Name"
-                  placeholder="Enter here"
-                  color="info"
-                  className="[&>label>span]:font-medium"
-                  {...register('brand')}
-                  error={errors?.brand?.message}
-                />
-                <Input
-                  label="Coupon code"
-                  placeholder="Enter here."
-                  color="info"
-                  className="[&>label>span]:font-medium"
-                  {...register('couponCode')}
-                  error={errors?.couponCode?.message}
-                />
-                <Input
-                  label="Discount Title"
-                  placeholder="Enter here"
-                  color="info"
-                  className="[&>label>span]:font-medium"
-                  {...register('discountTitle')}
-                  error={errors?.discountTitle?.message}
-                />
-                <Input
-                  label="Website Url"
-                  placeholder="Enter here."
-                  color="info"
-                  className="[&>label>span]:font-medium"
-                  {...register('siteURL')}
-                  error={errors?.siteURL?.message}
-                />
-                <Uploadfile
-                  initialPath={false}
-                  name="brandLogo"
-                  readonly={false}
-                  user={true}
-                  setFieldValue={setValue}
-                  errors={setError}
-                />
-              </div>
-              <div>
-                {/* <div> */}
-                {/* </div> */}
-              </div>
-              <p style={{ color: 'red' }}>
-                {String(errors.brandLogo?.message || '')}
-              </p>
-              <div>
-                <div className={cn('grid grid-cols-2 gap-2 pt-5')}>
-                  <div>
-                    <Link href={routes.admin.couponManagement}>
-                      <Button
-                        variant="outline"
-                        className="@xl:w-auto dark:hover:border-gray-400"
-                      >
-                        Cancel
-                      </Button>
-                    </Link>
+          <div className="space-y-5">
+            <div className="mb-6 flex items-center justify-between">
+              <Title as="h3" className="text-xl xl:text-2xl">
+                Add Coupon
+              </Title>
+            </div>
+            <div
+              className={cn(
+                'grid grid-cols-4 gap-4 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4'
+              )}
+            >
+              <Input
+                label="Brand Name"
+                placeholder="Enter here"
+                color="info"
+                className="[&>label>span]:font-medium"
+                {...register('brand')}
+                error={errors?.brand?.message}
+              />
+              <Input
+                label="Coupon code"
+                placeholder="Enter here."
+                color="info"
+                className="[&>label>span]:font-medium"
+                {...register('couponCode')}
+                error={errors?.couponCode?.message}
+              />
+              <Input
+                label="Discount Title"
+                placeholder="Enter here"
+                color="info"
+                className="[&>label>span]:font-medium"
+                {...register('discountTitle')}
+                error={errors?.discountTitle?.message}
+              />
+              <Input
+                label="Website Url"
+                placeholder="Enter here."
+                color="info"
+                className="[&>label>span]:font-medium"
+                {...register('siteURL')}
+                error={errors?.siteURL?.message}
+              />
+              <Uploadfile
+                initialPath={false}
+                name="brandLogo"
+                readonly={false}
+                user={true}
+                setFieldValue={setValue}
+                errors={setError}
+              />
+            </div>
+            <p style={{ color: 'red' }}>
+              {String(errors.brandLogo?.message || '')}
+            </p>
+            <div>
+              <div className={cn('grid grid-cols-2 gap-2 pt-5')}>
+                <div>
+                  <Link href={routes.admin.couponManagement}>
                     <Button
-                      type="submit"
-                      className="hover:gray-700 ms-3 @xl:w-auto dark:bg-gray-200 dark:text-white"
-                      disabled={loading}
+                      variant="outline"
+                      className="@xl:w-auto dark:hover:border-gray-400"
                     >
-                      Save
-                      {loading && (
-                        <Spinner size="sm" tag="div" className="ms-3" />
-                      )}
+                      Cancel
                     </Button>
-                  </div>
+                  </Link>
+                  <Button
+                    type="submit"
+                    className="hover:gray-700 ms-3 @xl:w-auto dark:bg-gray-200 dark:text-white"
+                    disabled={loading}
+                  >
+                    Save
+                    {loading && (
+                      <Spinner size="sm" tag="div" className="ms-3" />
+                    )}
+                  </Button>
                 </div>
               </div>
             </div>
-          )
+          </div>
         )}
       </Form>
       {/* </FormBlockWrapper> */}

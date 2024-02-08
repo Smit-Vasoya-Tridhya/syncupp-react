@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   GetCoupenListbyId,
   UpdateCoupenListbyId,
+  clearCouponSingleData,
 } from '@/redux/slices/admin/coupon-managemnt/couponManagementSlice';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -50,6 +51,9 @@ export default function Updateform(props: any) {
 
   useEffect(() => {
     dispatch(GetCoupenListbyId(id)).unwrap();
+    return () => {
+      dispatch(clearCouponSingleData());
+    };
   }, [dispatch]);
 
   let intialValue = {
