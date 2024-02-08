@@ -56,7 +56,7 @@ export const signUpUser: any = createAsyncThunk(
     }
     try {
       const response: any = await PostSignup(apiData);
-      console.log(response?.data?.user?.role?.name, 'response', response)
+      // console.log(response?.data?.user?.role?.name, 'response', response)
       localStorage.setItem("token", response.data?.token);
       await dispatch(setRoleonSingup(response?.data?.user?.role?.name))
       return response;
@@ -72,7 +72,7 @@ export const signUpUserSubscription: any = createAsyncThunk(
   async (data: any, { dispatch }) => {
     try {
       const response: any = await SignupSubscription(data);
-      console.log(response, 'response')
+      // console.log(response, 'response')
       // localStorage.setItem("token", result?.payload?.data?.token);
       // await dispatch(setRoleonSingup())
       return response;

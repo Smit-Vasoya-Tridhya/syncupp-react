@@ -11,12 +11,12 @@ type PostAddTaskApiData = {
   
 type PatchEditTaskApiData = {
   _id: string;
-  title?: string;
-  description?: string;
+  title: string;
+  internal_info?: string;
   due_date?: string;
-  client?: string;
-  assigned?: string;
-  done?: boolean;
+  client_id?: string;
+  assign_to?: string;
+  mark_as_done ?: boolean;
 }
 
 type putTaskStatusChangeApiData = {
@@ -47,7 +47,7 @@ type GetTaskByIdApiData = {
 // };
 
 export const PostAddTaskApi = async (data: PostAddTaskApiData) => {
-  console.log(data)
+  // console.log(data)
   const response = await AxiosDefault({
     url: "/api/v1/activity/create-task",
     method: "POST",

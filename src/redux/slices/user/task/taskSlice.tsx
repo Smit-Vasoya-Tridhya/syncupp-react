@@ -13,7 +13,7 @@ type AddTaskData = {
 
 type EditTaskData = {
   _id: string;
-  title?: string;
+  title: string;
   description?: string;
   due_date?: string;
   client?: string;
@@ -74,7 +74,6 @@ const initialState: TaskInitialState = {
 export const postAddTask: any = createAsyncThunk(
   "task/postAddTask",
   async (data: AddTaskData) => {
-    console.log("We are in task slice.........", data)
     try {
       const apiData = {
         title: data?.title,
@@ -85,7 +84,6 @@ export const postAddTask: any = createAsyncThunk(
         mark_as_done: data?.done
       }
       const response: any = await PostAddTaskApi(apiData);
-      console.log("add task response....", response);
       return response;
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as PostAPIResponse;
@@ -96,10 +94,17 @@ export const postAddTask: any = createAsyncThunk(
 export const patchEditTask: any = createAsyncThunk(
   "task/patchEditTask",
   async (data: EditTaskData) => {
-    console.log("We are in task slice.........", data)
     try {
-      const response: any = await PatchEditTaskApi(data);
-      console.log("edit task response....", response);
+      const apiData = {
+        _id: data?._id,
+        title: data?.title,
+        internal_info: data?.description,
+        due_date: data?.due_date,
+        client_id: data?.client,
+        assign_to: data?.assigned,
+        mark_as_done: data?.done
+      }
+      const response: any = await PatchEditTaskApi(apiData);
       return response;
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as PostAPIResponse;
@@ -110,10 +115,8 @@ export const patchEditTask: any = createAsyncThunk(
 export const getAllTask: any = createAsyncThunk(
   "task/getAllTask",
   async (data: GetAllTaskData) => {
-    console.log("We are in task slice.........", data)
     try {
       const response: any = await GetAllTaskApi(data);
-      console.log("get all task response....", response);
       return response;
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as PostAPIResponse;
@@ -124,10 +127,8 @@ export const getAllTask: any = createAsyncThunk(
 export const getTaskById: any = createAsyncThunk(
   "task/getTaskById",
   async (data: GetTaskByIdData) => {
-    console.log("We are in task slice.........", data)
     try {
       const response: any = await GetTaskByIdApi(data);
-      console.log("get task by id response....", response);
       return response;
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as PostAPIResponse;
@@ -138,10 +139,8 @@ export const getTaskById: any = createAsyncThunk(
 export const deleteTask: any = createAsyncThunk(
   "task/deleteTask",
   async (data: DeleteTaskData) => {
-    console.log("We are in task slice.........", data)
     try {
       const response: any = await DeleteTaskApi(data);
-      console.log("delete task response....", response);
       return response;
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as PostAPIResponse;
@@ -152,10 +151,8 @@ export const deleteTask: any = createAsyncThunk(
 export const putTaskStatusChange: any = createAsyncThunk(
   "task/putTaskStatusChange",
   async (data: putTaskStatusChangeData) => {
-    console.log("We are in task slice.........", data)
     try {
       const response: any = await putTaskStatusChangeApi(data);
-      console.log("delete task response....", response);
       return response;
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as PostAPIResponse;

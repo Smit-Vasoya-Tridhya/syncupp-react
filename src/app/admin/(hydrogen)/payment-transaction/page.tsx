@@ -36,7 +36,7 @@ export default function PaymentTransactionlistPage() {
     const router = useRouter();
 
     const { agreementDetails, loading } = useSelector((state: any) => state?.root?.agreement);
-    console.log("agreementDetails", agreementDetails, loading);
+    // console.log("agreementDetails", agreementDetails, loading);
 
     const [pageSize, setPageSize] = useState(5)
 

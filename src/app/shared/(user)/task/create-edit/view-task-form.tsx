@@ -20,7 +20,7 @@ import Spinner from '@/components/ui/spinner';
 
 export default function ViewTaskForm(props: any) {
   const { data } = props;
-  console.log("data in task card", data)
+  // console.log("data in task card", data)
 
   const { closeModal } = useModal();
   const dispatch = useDispatch();
@@ -41,6 +41,47 @@ export default function ViewTaskForm(props: any) {
   let [dataa] = taskData?.task;
 
 
+  function getStatusBadge(status: string) {
+    switch (status?.toLowerCase()) {
+      case 'pending':
+        return (
+          <div className="flex items-center">
+            <Badge color="warning" renderAsDot />
+            <Text className="ms-2 font-medium text-orange-dark">Pending</Text>
+          </div>
+        );
+      case 'completed':
+        return (
+          <div className="flex items-center">
+            <Badge color="success" renderAsDot />
+            <Text className="ms-2 font-medium text-green-dark">Completed</Text>
+          </div>
+        );
+      case 'overdue':
+        return (
+          <div className="flex items-center">
+            <Badge color="danger" renderAsDot />
+            <Text className="ms-2 font-medium text-red-dark">Overdue</Text>
+          </div>
+        );
+      case 'in_progress':
+        return (
+          <div className="flex items-center">
+            <Badge className="bg-gray-400" renderAsDot />
+            <Text className="ms-2 font-medium text-gray-600">Inprogress</Text>
+          </div>
+        );
+      default:
+        return (
+          <div className="flex items-center">
+            <Badge renderAsDot className="bg-gray-400" />
+            <Text className="ms-2 font-medium text-gray-600">{status}</Text>
+          </div>
+        );
+    }
+  }
+
+
   if (!taskData?.task) {
     return (
       <div className='p-10 flex items-center justify-center'>
@@ -56,6 +97,9 @@ export default function ViewTaskForm(props: any) {
               {dataa?.title}
             </Title>
             <div className='ms-auto flex items-center gap-3'>
+              <div>
+                { getStatusBadge(dataa?.status) }
+              </div>
               {signIn?.role !== 'client' &&
                 <Popover
                   placement="left"
@@ -118,7 +162,7 @@ export default function ViewTaskForm(props: any) {
                 <FaUserCircle className="h-5 w-5" />
                 <span>Client: </span>
                 <span className="font-medium text-gray-1000">
-                  {dataa?.client_fullName}
+                  {dataa?.client_name}
                 </span>
               </li>
               <li className="flex gap-2">
@@ -132,14 +176,8 @@ export default function ViewTaskForm(props: any) {
                 <FaPeopleGroup className="h-5 w-5" />
                 <span>Assigned to: </span>
                 <span className="font-medium text-gray-1000">
-                  {dataa?.assign_to_name}
+                  {dataa?.assigned_to_name}
                 </span>
-              </li>
-              <li className="flex gap-2">
-                <div className="flex items-center">
-                  <Badge color="warning" renderAsDot />
-                  <Text className="ms-2 font-medium text-orange-dark">{dataa?.status}</Text>
-                </div>
               </li>
               <li className="flex gap-2">
                 <MdOutlineCalendarMonth className="h-5 w-5" />

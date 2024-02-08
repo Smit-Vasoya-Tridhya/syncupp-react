@@ -16,7 +16,7 @@ export default function PaymentPage() {
     const { addClientdetails } = useSelector((state: any) => state?.root?.client);
     const paginationParams = useSelector((state: any) => state?.root?.client?.paginationParams);
 
-    console.log(addClientdetails?.data?.reference_id, 'addClientdetails', addClientdetails)
+    // console.log(addClientdetails?.data?.reference_id, 'addClientdetails', addClientdetails)
 
     const ClintlistAPIcall = async () => {
         let { page, items_per_page, sort_field, sort_order, search } = paginationParams;

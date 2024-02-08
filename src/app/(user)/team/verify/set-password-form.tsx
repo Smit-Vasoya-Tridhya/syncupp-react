@@ -31,8 +31,8 @@ export default function SetPasswordForm(props: any) {
   const token = searchParams.get("token");
 
   const initialValues = {
-    firstName: '',
-    lastName: '',
+    // firstName: '',
+    // lastName: '',
     email: email ?? '',
     password: '',
     confirmPassword: '',
@@ -44,8 +44,8 @@ export default function SetPasswordForm(props: any) {
       agency_id: agencyId,
       token: token,
       password: data?.password,
-      first_name: data?.firstName,
-      last_name: data?.lastName,
+      // first_name: data?.firstName,
+      // last_name: data?.lastName,
       redirect: redirect
     }
 
@@ -78,7 +78,7 @@ export default function SetPasswordForm(props: any) {
             >
               {agency} invited you to their Syncupp. Setup your password to join {agency} on Syncupp.
             </Title> <br />
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:gap-5 xl:pb-2">
+            {/* <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:gap-5 xl:pb-2">
               <Input
                 onKeyDown={handleKeyDown}
                 type="text"
@@ -103,7 +103,7 @@ export default function SetPasswordForm(props: any) {
                 {...register('lastName')}
                 error={errors?.lastName?.message}
               />
-            </div>
+            </div> */}
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:gap-5 xl:pb-2">
               <Input
                 onKeyDown={handleKeyDown}

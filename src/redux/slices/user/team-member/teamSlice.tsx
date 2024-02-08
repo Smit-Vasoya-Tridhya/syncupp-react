@@ -43,8 +43,8 @@ type PostTeamMemberVerifyData = {
   token?: string;
   client_id?: string;
   password?: string;
-  first_name?: string;
-  last_name?: string;
+  // first_name?: string;
+  // last_name?: string;
 }
 
 type StatusChange = {
