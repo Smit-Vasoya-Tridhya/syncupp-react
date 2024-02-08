@@ -188,16 +188,25 @@ export const getColumns = ({
     width: 120,
     render: (_: string, row: Record<string, string>) => (
       <div className="flex items-center justify-end gap-3 pe-4">
-        <Link href={`${routes.admin.UpdateCouponManagement}/${row._id}`}>
-          <Button
-            title="Edit Client"
-            className="border-[1px] border-black bg-white"
-          >
-            <PencilIcon className="h-3 w-3 text-xl text-black" />
-          </Button>
-        </Link>
+        <Tooltip
+          size="sm"
+          content={() => 'Edit'}
+          placement="top"
+          color="invert"
+        >
+          <Link href={`${routes.admin.UpdateCouponManagement}/${row._id}`}>
+            <Button
+              size="sm"
+              variant="outline"
+              className="bg-white text-black"
+              aria-label={'View Member'}
+            >
+              <PencilIcon className="h-4 w-4" />
+            </Button>
+          </Link>
+        </Tooltip>
         <DeletePopover
-          title={`Delete the Client`}
+          title={`Delete the Coupon`}
           description={`Are you sure you want to delete?`}
           onDelete={() =>
             onDeleteItem(

@@ -123,7 +123,7 @@ export default function CouponManagementPage() {
       <CustomTable
         data={CouponlistDetails?.data?.coupon || []}
         total={CouponlistDetails?.data?.page_count}
-        loading={clientSliceData?.loading}
+        loading={loading}
         pageSize={pageSize}
         setPageSize={setPageSize}
         handleDeleteById={handleDeleteById}
