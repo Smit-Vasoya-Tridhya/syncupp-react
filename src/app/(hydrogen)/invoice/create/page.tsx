@@ -1,5 +1,5 @@
 import { metaObject } from '@/config/site.config';
-import AddInvoiceForm from './add-edit-invoice-form';
+import AddInvoiceForm from './create-invoice-form';
 
 export const metadata = {
   ...metaObject('Invoice'),

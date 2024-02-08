@@ -55,7 +55,7 @@ export default function ViewProfileForm(props: any) {
     dispatch(postEditProfile(formData)).then((result: any) => {
       if (postEditProfile.fulfilled.match(result)) {
         if (result && result.payload.success === true) {
-          router.replace(routes.admin.dashboard);
+          setIsOpenEditMode(false)
         }
       }
     });

@@ -134,7 +134,7 @@ const cityHandleChange = (selectedOption: string) => {
     dispatch(updateUserProfile(fullData)).then((result: any) => {
       if (updateUserProfile.fulfilled.match(result)) {
         if (result && result.payload.success === true ) {
-          router.replace(routes.dashboard);
+          setIsOpenEditMode(false)
         } 
       }
     })
@@ -210,7 +210,7 @@ const cityHandleChange = (selectedOption: string) => {
                 disabled={!isOpenEditMode}
               />
               <Input
-                // onKeyDown={handleKeyDown}
+                onKeyDown={handleKeyDown}
                 type="text"
                 label="First Name"
                 placeholder="Enter First Name"

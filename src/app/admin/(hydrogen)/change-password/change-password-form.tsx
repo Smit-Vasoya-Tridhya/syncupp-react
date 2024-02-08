@@ -38,7 +38,7 @@ export default function ChangePasswordForm() {
     dispatch(changePasswordAdmin(data)).then((result: any) => {
       if (changePasswordAdmin.fulfilled.match(result)) {
         if (result && result.payload.success === true ) {
-          router.replace(routes.admin.dashboard);
+        closeModal();
         } 
       }
     })

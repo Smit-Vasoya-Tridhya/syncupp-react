@@ -42,29 +42,29 @@ export default function PaymentTransactionlistPage() {
 
     //Paggination Handler
     const handleChangePage = async (paginationParams: any) => {
-        let { page, items_per_page, sort_field, sort_order, search } = paginationParams;
-        const response = await dispatch(getAllAgencyagreement({ page, items_per_page, sort_field, sort_order, search }));
-        const { data } = response?.payload;
-        const maxPage: number = data?.page_count;
+        // let { page, items_per_page, sort_field, sort_order, search } = paginationParams;
+        // const response = await dispatch(getAllAgencyagreement({ page, items_per_page, sort_field, sort_order, search }));
+        // const { data } = response?.payload;
+        // const maxPage: number = data?.page_count;
 
-        if (page > maxPage) {
-            page = maxPage > 0 ? maxPage : 1;
-            await dispatch(getAllAgencyagreement({ page, items_per_page, sort_field, sort_order, search }));
-            return data?.client
-        }
-        return data?.client
+        // if (page > maxPage) {
+        //     page = maxPage > 0 ? maxPage : 1;
+        //     await dispatch(getAllAgencyagreement({ page, items_per_page, sort_field, sort_order, search }));
+        //     return data?.client
+        // }
+        // return data?.client
     };
 
     // Delete Handler
     const handleDeleteById = async (id: string | string[], currentPage?: any, countPerPage?: number) => {
-        try {
-            const res = await dispatch(deleteAgencyAgreement({ agreementIdsToDelete: id }));
-            if (res.payload.success === true) {
-                const reponse = await dispatch(getAllAgencyagreement({ page: currentPage, items_per_page: countPerPage, sort_field: 'createdAt', sort_order: 'desc' }));
-            }
-        } catch (error) {
-            console.error(error);
-        }
+        // try {
+        //     const res = await dispatch(deleteAgencyAgreement({ agreementIdsToDelete: id }));
+        //     if (res.payload.success === true) {
+        //         const reponse = await dispatch(getAllAgencyagreement({ page: currentPage, items_per_page: countPerPage, sort_field: 'createdAt', sort_order: 'desc' }));
+        //     }
+        // } catch (error) {
+        //     console.error(error);
+        // }
     };
 
     return (

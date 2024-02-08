@@ -6,214 +6,265 @@ import { Badge } from '@/components/ui/badge';
 import { Title, Text } from '@/components/ui/text';
 import Table from '@/components/ui/table';
 import { siteConfig } from '@/config/site.config';
+import { InvoiceFormInput } from '@/utils/validators/create-invoice.schema';
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { getInvoiceDataByID } from '@/redux/slices/user/invoice/invoiceSlice';
+import { useRouter } from 'next/router';
+import { useSearchParams } from 'next/navigation';
+import Link from 'next/link';
+import { Button } from 'rizzui';
+import { FaArrowLeft } from 'react-icons/fa';
+import { routes } from '@/config/routes';
 
-const invoiceItems = [
-  {
-    id: '1',
-    product: {
-      title: 'ChawkBazar Laravel Flutter Mobile App',
-      description:
-        'Along With Wordpress Themes & Plugins, We always try to use latest trending techs like React, Next Js, Gatsby Js, GraphQl, Shopify etc to make our products special.',
-    },
-    quantity: 2,
-    unitPrice: 100,
-    total: 200,
-  },
-  {
-    id: '2',
-    product: {
-      title: 'Borobazar React Next Grocery Template',
-      description:
-        'Our rich tech choice will help you to build high performance applications. We are also known to provide great customer supports to our customers.',
-    },
-    quantity: 2,
-    unitPrice: 100,
-    total: 200,
-  },
-  {
-    id: '3',
-    product: {
-      title: 'Superprops React Modern Landing Page Template',
-      description:
-        'Our rich tech choice will help you to build high performance applications. We are also known to provide great customer supports to our customers.',
-    },
-    quantity: 3,
-    unitPrice: 100,
-    total: 300,
-  },
-];
+export default function InvoiceDetails(props: any) {
+  const invoiceSliceData = useSelector((state: any) => state?.root?.invoice);
+  const dispatch = useDispatch();
+  const router = useSearchParams();
+  const _id  = router.get('_id');
+  
+  useEffect(() => {
+    dispatch(getInvoiceDataByID({ _id: _id }))
+  }, [_id , dispatch]); 
+  const data  = invoiceSliceData?.getInvoiceDataByIDdata?.data?.[0];
 
-const columns = [
-  {
-    title: '#',
-    dataIndex: 'id',
-    key: 'id',
-    width: 50,
-  },
-  {
-    title: 'Item',
-    dataIndex: 'product',
-    key: 'product',
-    width: 250,
-    render: (product: any) => (
-      <>
-        <Title as="h6" className="mb-0.5 text-sm font-medium">
-          {product.title}
-        </Title>
-        <Text
-          as="p"
-          className=" max-w-[250px] overflow-hidden truncate text-sm text-gray-500"
-        >
-          {product.description}
-        </Text>
-      </>
-    ),
-  },
+  const defaultValuess = {
+      invoice_number: data?.invoice_number ?? '',
+      due_date: data?.due_date ?? '',
+      invoice_date: data?.invoice_date ?? '',
+      invoice_content: 
+        {
+          item: data?.invoice_content?.item ?? '',
+          qty: data?.invoice_content?.qty ?? '',
+          rate: data?.invoice_content?.rate ?? '',
+          tax: data?.invoice_content?.tax ?? '',
+          amount: data?.invoice_content?.amount ?? '',
+          description: data?.invoice_content?.description ?? '',
+        },
+      
+      sub_total: data?.sub_total ?? 0,
+      total: data?.total ?? 0,
+      createdAt: data?.createdAt ?? '',
+      updatedAt: data?.updatedAt ?? '',
+      status: data?.status ?? '',
+      from: {
+        name: data?.from?.name ?? '',
+        company_name: data?.from?.company_name ?? '',
+        address: data?.from?.address ?? '',
+        pincode: data?.from?.pincode ?? 0,
+        state: {
+          name: data?.from?.state?.name ?? '',
+        },
+        city: {
+          name: data?.from?.city?.name ?? '',
+        },
+        country: {
+          name: data?.from?.country?.name ?? '',
+        },
+      },
+      to: {
+        name: data?.to?.name ?? '',
+        company_name: data?.to?.company_name ?? '',
+        address: data?.to?.address ?? '',
+        pincode: data?.to?.pincode ?? 0,
+        state: {
+          name: data?.to?.state?.name ?? '',
+        },
+        city: {
+          name: data?.to?.city?.name ?? '',
+        },
+        country: {
+          name: data?.to?.country?.name ?? '',
+        },
+      },
+  };
 
-  {
-    title: 'Quantity',
-    dataIndex: 'quantity',
-    key: 'quantity',
-    width: 200,
-  },
-  {
-    title: 'Unit Price',
-    dataIndex: 'unitPrice',
-    key: 'unitPrice',
-    width: 200,
-    render: (value: string) => <Text className="font-medium">${value}</Text>,
-  },
-  {
-    title: 'Total',
-    dataIndex: 'total',
-    key: 'total',
-    width: 200,
-    render: (value: string) => <Text className="font-medium">${value}</Text>,
-  },
-];
-
-function InvoiceDetailsListTable() {
-  return (
-    <Table
-      data={invoiceItems}
-      columns={columns}
-      variant="minimal"
-      rowKey={(record) => record.id}
-      scroll={{ x: 660 }}
-      className="mb-11"
-    />
-  );
-}
-
-export default function InvoiceDetails() {
-  return (
-    <div className="w-full rounded-xl border border-gray-200 p-5 text-sm sm:p-6 lg:p-8 2xl:p-10">
-      <div className="mb-12 flex flex-col-reverse items-start justify-between md:mb-16 md:flex-row">
-        <Image
-          src={siteConfig.logo}
-          alt={siteConfig.title}
-          height={30}
-          width={30}
-          className="dark:invert"
-          priority
-        />
-        <div className="mb-4 md:mb-0">
-          <Badge
-            variant="flat"
-            color="success"
-            rounded="md"
-            className="mb-3 md:mb-2"
-          >
-            Paid
-          </Badge>
-          <Title as="h6">INV - #246098</Title>
-          <Text className="mt-0.5 text-gray-500">Invoice Number</Text>
-        </div>
-      </div>
-
-      <div className="mb-12 grid gap-4 xs:grid-cols-2 sm:grid-cols-3 sm:grid-rows-1">
-        <div className="">
-          <Title as="h6" className="mb-3.5 font-semibold">
-            From
+  const columns = [
+    {
+      title: 'item',
+      key: 'item',
+      width: 250,
+      render: (product: any) => (
+        <>
+          <Title as="h6" className="mb-0.5 text-sm font-medium">
+            {product?.item}
           </Title>
-          <Text className="mb-1.5 text-sm font-semibold uppercase">
-            REDQ, INC
-          </Text>
-          <Text className="mb-1.5">Jerome Bell</Text>
-          <Text className="mb-1.5">
-            4140 Parker Rd. Allentown, <br /> New Mexico 31134
-          </Text>
-          <Text className="mb-4 sm:mb-6 md:mb-8">(302) 555-0107</Text>
-          <div>
-            <Text className="mb-2 text-sm font-semibold">Creation Date</Text>
-            <Text>Mar 22, 2013</Text>
+        </>
+      ),
+    },
+    {
+      title: 'Quentity',
+      key: 'qty',
+      width: 250,
+      render: (product: any) => (
+        <>
+          <Title as="h6" className="mb-0.5 text-sm font-medium">
+            {product?.qty}
+          </Title>
+        </>
+      ),
+    },
+    {
+      title: 'Rate',
+      key: 'rate',
+      width: 250,
+      render: (product: any) => (
+        <>
+          <Title as="h6" className="mb-0.5 text-sm font-medium">
+            {product?.rate}
+          </Title>
+        </>
+      ),
+    },
+    {
+      title: 'Taxes',
+      key: 'tax',
+      width: 250,
+      render: (product: any) => (
+        <>
+          <Title as="h6" className="mb-0.5 text-sm font-medium">
+            {product?.tax}
+          </Title>
+        </>
+      ),
+    },
+    {
+      title: 'Amount',
+      key: 'amount',
+      width: 250,
+      render: (product: any) => (
+        <>
+          <Title as="h6" className="mb-0.5 text-sm font-medium">
+            {product?.amount}
+          </Title>
+        </>
+      ),
+    },
+    {
+      title: 'Description',
+      key: 'description',
+      width: 250,
+      render: (product: any) => (
+        <>
+          <Title as="h6" className="mb-0.5 text-sm font-medium">
+            {product?.description}
+          </Title>
+        </>
+      ),
+    },
+  ];
+  function InvoiceDetailsListTable() {
+    return (
+      <Table
+        data={data?.invoice_content}
+        columns={columns}
+        variant="minimal"
+        rowKey={(record) => record.id}
+        scroll={{ x: 660 }}
+        className="mb-11"
+      />
+    );
+  }
+  function formatDate(dateString: string) {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+  return (
+    <>
+      <Link href={routes.invoice} className="w-full">
+        <Button className="float-end mb-2 mt-5 bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0">
+          <FaArrowLeft className="me-1.5 h-[17px] w-[17px]" />
+          Back
+        </Button>
+      </Link>
+      <div className="w-full rounded-xl border border-gray-200 p-5 text-sm sm:p-6 lg:p-8 2xl:p-10">
+        <div className="mb-12 flex flex-col-reverse items-start justify-between md:mb-16 md:flex-row">
+          <Image
+            src={siteConfig.logo}
+            alt={siteConfig.title}
+            height={30}
+            width={30}
+            className="dark:invert"
+            priority
+          />
+          <div className="mb-4 md:mb-0">
+            <Badge
+              variant="flat"
+              color={
+                data?.status === 'draft'
+                  ? 'primary'
+                  : data?.status === 'paid'
+                  ? 'success'
+                  : data?.status === 'unpaid'
+                  ? 'warning'
+                  : data?.status === 'overdue'
+                  ? 'danger'
+                  : 'primary'
+              }
+              rounded="md"
+              className="mb-3 md:mb-2"
+            >
+              {data?.status}
+            </Badge>
+            <Title as="h6">{data.invoice_number}</Title>
+            <Text className="mt-0.5 text-gray-500">Invoice Number</Text>
           </div>
         </div>
-        <div className="mt-4 xs:mt-0">
-          <Title as="h6" className="mb-3.5 font-semibold">
-            Bill To
-          </Title>
-          <Text className="mb-1.5 text-sm font-semibold uppercase">
-            TRANSPORT LLC
-          </Text>
-          <Text className="mb-1.5">Albert Flores</Text>
-          <Text className="mb-1.5">
-            2715 Ash Dr. San Jose, <br />
-            South Dakota 83475
-          </Text>
-          <Text className="mb-4 sm:mb-6 md:mb-8">(671) 555-0110</Text>
-          <div>
-            <Text className="mb-2 text-sm font-semibold">Due Date</Text>
-            <Text>Mar 22, 2013</Text>
+
+        <div className="mb-12 grid gap-4 xs:grid-cols-2 sm:grid-cols-3 sm:grid-rows-1">
+          <div className="">
+            <Title as="h6" className="mb-3.5 font-semibold">
+              From
+            </Title>
+            <Text className="mb-1.5 text-sm font-semibold uppercase">
+              {data?.from?.name}
+            </Text>
+            <Text className="mb-1.5">{data?.from?.company_name}</Text>
+            <Text className="mb-1.5">
+              {data?.from?.address}, <br /> {data?.from?.city.name},{' '}
+              {data?.from?.state.name}, {data?.from?.country.name}
+            </Text>
+            <Text className="mb-4 sm:mb-6 md:mb-8">{data?.from?.pincode}</Text>
+            <div>
+              <Text className="mb-2 text-sm font-semibold">Creation Date</Text>
+              <Text>{data?.createdAt ? formatDate(data.createdAt) : ''}</Text>
+            </div>
+          </div>
+          <div className="mt-4 xs:mt-0">
+            <Title as="h6" className="mb-3.5 font-semibold">
+              Bill To
+            </Title>
+            <Text className="mb-1.5 text-sm font-semibold uppercase">
+              {data?.to?.name}
+            </Text>
+            <Text className="mb-1.5">{data?.to?.company_name}</Text>
+            <Text className="mb-1.5">
+              {data?.to?.address}, <br /> {data?.to?.city.name},{' '}
+              {data?.to?.state.name}, {data?.to?.country.name}
+            </Text>
+            <Text className="mb-4 sm:mb-6 md:mb-8">{data?.to?.pincode}</Text>
+            <div>
+              <Text className="mb-2 text-sm font-semibold">Due Date</Text>
+              <Text>{data?.due_date ? formatDate(data.due_date) : ''}</Text>
+            </div>
+          </div>
+        </div>
+
+        <InvoiceDetailsListTable />
+
+        <div className="flex flex-col-reverse items-start justify-between border-t border-gray-200 pb-4 pt-8 xs:flex-row">
+          <div className="mt-6 max-w-md pe-4 xs:mt-0"></div>
+          <div className=" w-full max-w-sm">
+            <Text className="flex items-center justify-between pt-4 text-base font-semibold text-gray-900 lg:pt-5">
+              Total: <Text as="span">${data?.total}</Text>
+            </Text>
           </div>
         </div>
       </div>
-
-      <InvoiceDetailsListTable />
-
-      <div className="flex flex-col-reverse items-start justify-between border-t border-gray-200 pb-4 pt-8 xs:flex-row">
-        <div className="mt-6 max-w-md pe-4 xs:mt-0">
-          {/* <Title
-            as="h6"
-            className="mb-1 text-xs font-semibold uppercase xs:mb-2 xs:text-sm"
-          >
-            Notes
-          </Title>
-          <Text className="leading-[1.7]">
-            We appreciate your business. Should you need us to add VAT or extra
-            notes let us know!
-          </Text> */}
-        </div>
-        <div className=" w-full max-w-sm">
-          <Text className="flex items-center justify-between border-b border-gray-200 pb-3.5 lg:pb-5">
-            Subtotal:{' '}
-            <Text as="span" className="font-semibold">
-              $700
-            </Text>
-          </Text>
-          <Text className="flex items-center justify-between border-b border-gray-200 py-3.5 lg:py-5">
-            Shipping:{' '}
-            <Text as="span" className="font-semibold">
-              $142
-            </Text>
-          </Text>
-          <Text className="flex items-center justify-between border-b border-gray-200 py-3.5 lg:py-5">
-            Discount:{' '}
-            <Text as="span" className="font-semibold">
-              $250
-            </Text>
-          </Text>
-          <Text className="flex items-center justify-between border-b border-gray-200 py-3.5 lg:py-5">
-            Taxes:
-            <Text as="span" className="font-semibold">
-              15%
-            </Text>
-          </Text>
-          <Text className="flex items-center justify-between pt-4 text-base font-semibold text-gray-900 lg:pt-5">
-            Total: <Text as="span">$659.5</Text>
-          </Text>
-        </div>
-      </div>
-    </div>
+    </>
   );
 }

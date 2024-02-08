@@ -17,6 +17,9 @@ import QuillLoader from '@/components/loader/quill-loader';
 import PageHeader from '@/app/shared/page-header';
 import EyeIcon from '@/components/icons/eye';
 import { createagreement, getDropdownclientlist } from '@/redux/slices/user/agreement/agreementSlice';
+import Link from 'next/link';
+import { FaArrowLeft } from 'react-icons/fa';
+import { routes } from '@/config/routes';
 
 const Select = dynamic(() => import('@/components/ui/select'), {
     ssr: false,
@@ -119,39 +122,57 @@ export default function ChangePasswordForm() {
 
 
     return (
-        <>
+      <>
+        {/* Agreement forms */}
+        {!preview && (
+          <>
+            <div>
+              <PageHeader title="Agreement">
+                <div className="mr-11">
+                  <Link href={routes.agreement} className="w-full">
+                    <Button className="float-end mt-5 bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0">
+                      <FaArrowLeft className="me-1.5 h-[17px] w-[17px]" />
+                      Back
+                    </Button>
+                  </Link>
+                </div>
+              </PageHeader>
+            </div>
 
-            {/* Agreement forms */}
-            {!preview && <>
-                <PageHeader title="Agreement" />
-                <Form<AgrementFormTypes>
-                    validationSchema={agrementFormSchema}
-                    onSubmit={onSubmit}
-                    useFormProps={{
-                        defaultValues: initialValues,
-                        mode: "all"
-                    }}
-                    className=" [&_label]:font-medium p-10"
-                >
-                    {({ register, control, formState: { errors }, watch, handleSubmit }) => (
-
-                        console.log(errors, 'errors'),
-
-                        <div className="space-y-5">
-                            <div className="grid grid-cols-1 gap-4 md:grid-cols-3 xl:gap-5 xl:pb-2 items-start">
-                                <Input
-                                    onKeyDown={handleKeyDown}
-                                    type="text"
-                                    // size={isMedium ? 'lg' : 'xl'}
-                                    label="Enter Title"
-                                    placeholder="Website Agreement"
-                                    // rounded="pill"
-                                    color="info"
-                                    className="[&>label>span]:font-medium  w-full"
-                                    {...register('title')}
-                                    error={errors.title?.message}
-                                />
-                                {/* <Controller
+            <Form<AgrementFormTypes>
+              validationSchema={agrementFormSchema}
+              onSubmit={onSubmit}
+              useFormProps={{
+                defaultValues: initialValues,
+                mode: 'all',
+              }}
+              className=" p-10 [&_label]:font-medium"
+            >
+              {({
+                register,
+                control,
+                formState: { errors },
+                watch,
+                handleSubmit,
+              }) => (
+                console.log(errors, 'errors'),
+                (
+                  <>
+                    <div className="space-y-5">
+                      <div className="grid grid-cols-1 items-start gap-4 md:grid-cols-3 xl:gap-5 xl:pb-2">
+                        <Input
+                          onKeyDown={handleKeyDown}
+                          type="text"
+                          // size={isMedium ? 'lg' : 'xl'}
+                          label="Enter Title"
+                          placeholder="Website Agreement"
+                          // rounded="pill"
+                          color="info"
+                          className="w-full  [&>label>span]:font-medium"
+                          {...register('title')}
+                          error={errors.title?.message}
+                        />
+                        {/* <Controller
                                     control={control}
                                     name="recipient"
                                     render={({ field: { onChange, value } }) => (
@@ -174,120 +195,190 @@ export default function ChangePasswordForm() {
                                         />
                                     )}
                                 /> */}
-                                <Controller
-                                    control={control}
-                                    name="recipient"
-                                    render={({ field: { onChange, value } }) => (
-                                        <Select
-                                            options={clientOptions}
-                                            onChange={(selectedOption: any) => {
-                                                setselectedClient(selectedOption);
-                                                onChange(selectedOption?.name);
-                                            }}
-                                            value={value}
-                                            label="Recipient*"
-                                            color="info"
-                                            // Remove getOptionLabel and getOptionValue props
-                                            dropdownClassName="p-1 border w-12 border-gray-100 shadow-lg"
-                                            className="font-medium"
-                                            error={errors?.recipient?.message}
-                                        />
-                                    )}
-                                />
-                                <div className="flex flex-col">
-                                    <label htmlFor="due_date" className="font-medium text-gray-700 dark:text-gray-600 mb-1.5">
-                                        Due Date
-                                    </label>
-                                    <Controller
-                                        name="due_date"
-                                        control={control}
-                                        render={({ field: { onChange, value } }) => (
-                                            <DatePicker
-                                                selected={dueDate}
-                                                onChange={(date: Date) => {
-                                                    setDueDate(date);
-                                                    onChange(date.toISOString()); // convert date to string
-                                                }}
-                                                minDate={today}
-                                                placeholderText="Select Date"
-                                            />
-                                        )}
-                                    />
-                                    {errors.due_date && <span className="text-red text-xs mt-0.5">{errors.due_date.message}</span>}
-                                </div>
-                            </div>
-                            <div>
-                                <Controller
-                                    control={control}
-                                    name="description"
-                                    render={({ field: { onChange, value } }) => (
-                                        <QuillEditor
-                                            value={value}
-                                            onChange={onChange}
-                                            label="Description"
-                                            className="col-span-full [&_.ql-editor]:min-h-[100px]"
-                                            labelClassName="font-medium text-gray-700 dark:text-gray-600 mb-1.5"
-                                        />
-                                    )}
-                                />
-                                {errors.description && <span className="text-red text-xs mt-0.5">{errors.description.message}</span>}
-                            </div>
-
-                            <div className='flex justify-between mt-5 font-medium text-gray-700 dark:text-gray-600 mb-1.5'>
-                                <ul>
-                                    <li>{user?.first_name}</li>
-                                    <li>{user?.email}</li>
-                                    <li>{user?.contact_number}</li>
-                                </ul>
-                                <ul>
-                                    <li>{selectedClient?.key?.name && selectedClient?.key?.name != "" ? selectedClient?.key?.name : "[Receiver Name]"}</li>
-                                    <li>{selectedClient?.key?.email && selectedClient?.key?.email != "" ? selectedClient?.key?.email : "[Receiver Email]"}</li>
-                                    <li>{selectedClient?.key?.contact_number && selectedClient?.key?.contact_number != "" ? selectedClient?.key?.contact_number : "[Receiver Phone]"}</li>
-                                </ul>
-                            </div>
-
-
-                            <div className="flex justify-end space-x-4 mt-90">
-                                <Button type="button" onClick={() => { handlePreview(watch) }} variant="outline" className="bg-none text-xs sm:text-sm">
-                                    <EyeIcon className="h-5 w-5 mr-2" />
-                                    Preview
-                                </Button>
-                                <Button disabled={loading} type="submit" className="bg-none text-xs sm:text-sm">
-                                    Save
-                                </Button>
-                                <Button type="submit" onClick={SendHandler} variant="outline" className="bg-none text-xs sm:text-sm">
-                                    Send
-                                </Button>
-                                {/* Add your disabled button here if needed */}
-                            </div>
-
+                        <Controller
+                          control={control}
+                          name="recipient"
+                          render={({ field: { onChange, value } }) => (
+                            <Select
+                              options={clientOptions}
+                              onChange={(selectedOption: any) => {
+                                setselectedClient(selectedOption);
+                                onChange(selectedOption?.name);
+                              }}
+                              value={value}
+                              label="Recipient*"
+                              color="info"
+                              // Remove getOptionLabel and getOptionValue props
+                              dropdownClassName="p-1 border w-12 border-gray-100 shadow-lg"
+                              className="font-medium"
+                              error={errors?.recipient?.message}
+                            />
+                          )}
+                        />
+                        <div className="flex flex-col">
+                          <label
+                            htmlFor="due_date"
+                            className="mb-1.5 font-medium text-gray-700 dark:text-gray-600"
+                          >
+                            Due Date
+                          </label>
+                          <Controller
+                            name="due_date"
+                            control={control}
+                            render={({ field: { onChange, value } }) => (
+                              <DatePicker
+                                selected={dueDate}
+                                onChange={(date: Date) => {
+                                  setDueDate(date);
+                                  onChange(date.toISOString()); // convert date to string
+                                }}
+                                minDate={today}
+                                placeholderText="Select Date"
+                              />
+                            )}
+                          />
+                          {errors.due_date && (
+                            <span className="mt-0.5 text-xs text-red">
+                              {errors.due_date.message}
+                            </span>
+                          )}
                         </div>
-                    )}
-                </Form>
-            </>}
+                      </div>
+                      <div>
+                        <Controller
+                          control={control}
+                          name="description"
+                          render={({ field: { onChange, value } }) => (
+                            <QuillEditor
+                              value={value}
+                              onChange={onChange}
+                              label="Description"
+                              className="col-span-full [&_.ql-editor]:min-h-[100px]"
+                              labelClassName="font-medium text-gray-700 dark:text-gray-600 mb-1.5"
+                            />
+                          )}
+                        />
+                        {errors.description && (
+                          <span className="mt-0.5 text-xs text-red">
+                            {errors.description.message}
+                          </span>
+                        )}
+                      </div>
 
-            {/* Priview of Agreement */}
-            {preview && <>
-                <h3 className='flex justify-between items-center border-2 rounded border-solid border-gray-300 bg-gray-100 p-3'>
-                    <span>Introduction</span>
-                    <Button type="button" onClick={() => { setpreview(false) }} className="bg-none text-xs sm:text-sm">
-                        Back
-                    </Button>
-                </h3>
-                <div className='mt-5' dangerouslySetInnerHTML={{ __html: formdata?.description }} />
-                <div className='flex justify-between mt-5 font-medium text-gray-700 dark:text-gray-600 mb-1.5'>
-                    <ul>
-                        <li>{user?.first_name}</li>
-                        <li>{user?.email}</li>
-                        <li>{user?.contact_number}</li>
-                    </ul>
-                    <ul>
-                        <li>{selectedClient?.key?.name && selectedClient?.key?.name != "" ? selectedClient?.key?.name : "[Receiver Name]"}</li>
-                        <li>{selectedClient?.key?.email && selectedClient?.key?.email != "" ? selectedClient?.key?.email : "[Receiver Email]"}</li>
-                        <li>{selectedClient?.key?.contact_number && selectedClient?.key?.contact_number != "" ? selectedClient?.key?.contact_number : "[Receiver Phone]"}</li>
-                    </ul>
-                </div>
-            </>}
-        </>
+                      <div className="mb-1.5 mt-5 flex justify-between font-medium text-gray-700 dark:text-gray-600">
+                        <ul>
+                          <li>{user?.first_name}</li>
+                          <li>{user?.email}</li>
+                          <li>{user?.contact_number}</li>
+                        </ul>
+                        <ul>
+                          <li>
+                            {selectedClient?.key?.name &&
+                            selectedClient?.key?.name != ''
+                              ? selectedClient?.key?.name
+                              : '[Receiver Name]'}
+                          </li>
+                          <li>
+                            {selectedClient?.key?.email &&
+                            selectedClient?.key?.email != ''
+                              ? selectedClient?.key?.email
+                              : '[Receiver Email]'}
+                          </li>
+                          <li>
+                            {selectedClient?.key?.contact_number &&
+                            selectedClient?.key?.contact_number != ''
+                              ? selectedClient?.key?.contact_number
+                              : '[Receiver Phone]'}
+                          </li>
+                        </ul>
+                      </div>
+
+                      <div className="mt-90 flex justify-end space-x-4">
+                        <Button
+                          type="button"
+                          onClick={() => {
+                            handlePreview(watch);
+                          }}
+                          variant="outline"
+                          className="bg-none text-xs sm:text-sm"
+                        >
+                          <EyeIcon className="mr-2 h-5 w-5" />
+                          Preview
+                        </Button>
+                        <Button
+                          disabled={loading}
+                          type="submit"
+                          className="bg-none text-xs sm:text-sm"
+                        >
+                          Save
+                        </Button>
+                        <Button
+                          type="submit"
+                          onClick={SendHandler}
+                          variant="outline"
+                          className="bg-none text-xs sm:text-sm"
+                        >
+                          Send
+                        </Button>
+                        {/* Add your disabled button here if needed */}
+                      </div>
+                    </div>
+                  </>
+                )
+              )}
+            </Form>
+          </>
+        )}
+
+        {/* Priview of Agreement */}
+        {preview && (
+          <>
+            <h3 className="flex items-center justify-between rounded border-2 border-solid border-gray-300 bg-gray-100 p-3">
+              <span>Introduction</span>
+              <Button
+                type="button"
+                onClick={() => {
+                  setpreview(false);
+                }}
+                className="bg-none text-xs sm:text-sm"
+              >
+                <FaArrowLeft className="me-1.5 h-[17px] w-[17px]" />
+                Back
+              </Button>
+
+            </h3>
+            <div
+              className="mt-5"
+              dangerouslySetInnerHTML={{ __html: formdata?.description }}
+            />
+            <div className="mb-1.5 mt-5 flex justify-between font-medium text-gray-700 dark:text-gray-600">
+              <ul>
+                <li>{user?.first_name}</li>
+                <li>{user?.email}</li>
+                <li>{user?.contact_number}</li>
+              </ul>
+              <ul>
+                <li>
+                  {selectedClient?.key?.name && selectedClient?.key?.name != ''
+                    ? selectedClient?.key?.name
+                    : '[Receiver Name]'}
+                </li>
+                <li>
+                  {selectedClient?.key?.email &&
+                  selectedClient?.key?.email != ''
+                    ? selectedClient?.key?.email
+                    : '[Receiver Email]'}
+                </li>
+                <li>
+                  {selectedClient?.key?.contact_number &&
+                  selectedClient?.key?.contact_number != ''
+                    ? selectedClient?.key?.contact_number
+                    : '[Receiver Phone]'}
+                </li>
+              </ul>
+            </div>
+          </>
+        )}
+      </>
     );
 }
