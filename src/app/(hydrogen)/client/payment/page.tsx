@@ -55,6 +55,7 @@ export default function ClientPaymentPage() {
                             <div className="rounded-lg border border-gray-200">
                                 <div className="px-3 py-2">
                                     <input
+                                        disabled
                                         style={{ cursor: "not-allowed" }}
                                         type="radio"
                                         id="option1"

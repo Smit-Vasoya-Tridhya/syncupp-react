@@ -59,7 +59,7 @@ export const signUpUser: any = createAsyncThunk(
       // console.log(response?.data?.user?.role?.name, 'response', response)
       localStorage.setItem("token", response.data?.token);
       await dispatch(setRoleonSingup(response?.data?.user?.role?.name))
-      await dispatch(getUserProfile())
+      // await dispatch(getUserProfile())
       return response;
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as PostSignUpResponse;

@@ -40,7 +40,7 @@ export const googleSignUpUser: any = createAsyncThunk(
   async (data: GoogleUserData,{dispatch}) => {
     try {
       const response: any = await PostSocialSignupGoogle(data);
-      await dispatch(getUserProfile())
+      // await dispatch(getUserProfile())
       return response;
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as PostSignUpResponse;
@@ -53,7 +53,7 @@ export const facebookSignUpUser: any = createAsyncThunk(
   async (data: FacebookUserData,{dispatch}) => {
     try {
       const response: any = await PostSocialSignupFacebook(data);
-      await dispatch(getUserProfile())
+      // await dispatch(getUserProfile())
       return response;
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as PostSignUpResponse;

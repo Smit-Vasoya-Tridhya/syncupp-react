@@ -79,7 +79,7 @@ export const signInUser: any = createAsyncThunk(
   async (data: UserData, { dispatch }) => {
     try {
       const response: any = await PostSignin(data);
-      await dispatch(getUserProfile())
+      // await dispatch(getUserProfile())
       return response;
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as PostSigninResponse;
