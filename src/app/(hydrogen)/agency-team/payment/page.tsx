@@ -27,7 +27,7 @@ export default function ClientPaymentPage() {
     const { loading } = useSelector((state: any) => state?.root?.payment);
     console.log(loading,'loading')
     
-
+    const [loadingflag, setloadingflag] = useState(false)
     const [selectedValue, setSelectedValue] = useState('option2Value');
 
     const ClintteamlistAPIcall = async () => {
@@ -123,13 +123,13 @@ export default function ClientPaymentPage() {
                                     <Text>{userProfile?.payable_amount}</Text>
                                 </div>
                                 <Button
-                                    disabled={loading}
-                                    onClick={() => { initiateRazorpay(router, routes.agency_team, token, addClientteamdetails?.data?.reference_id, ClintteamlistAPIcall,dispatch) }}
+                                    disabled={loadingflag}
+                                    onClick={() => { initiateRazorpay(router, routes.agency_team, token, addClientteamdetails?.data?.reference_id, ClintteamlistAPIcall, setloadingflag) }}
                                     type="button"
                                     className="mt-3 w-full text-base @md:h-12 dark:bg-gray-100 dark:text-white dark:active:bg-gray-100"
                                 >
                                     Check out
-                                    {loading && <Spinner size="sm" tag='div' className='ms-3' color='white' />}
+                                    {loadingflag && <Spinner size="sm" tag='div' className='ms-3' color='white' />}
                                 </Button>
                             </div>
                         </div>

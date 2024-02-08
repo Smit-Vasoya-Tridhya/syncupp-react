@@ -23,7 +23,9 @@ export default function ClientPaymentPage() {
     const { userProfile } = useSelector((state: any) => state?.root?.signIn);
     const paginationParams = useSelector((state: any) => state?.root?.client?.paginationParams);
     const { loading } = useSelector((state: any) => state?.root?.payment);
-    
+
+    const [loadingflag, setloadingflag] = useState(false)
+
 
     const [selectedValue, setSelectedValue] = useState('option2Value');
 
@@ -120,12 +122,13 @@ export default function ClientPaymentPage() {
                                     <Text>{userProfile?.payable_amount}</Text>
                                 </div>
                                 <Button
-                                    onClick={() => { initiateRazorpay(router, routes.client, token, addClientdetails?.data?.reference_id, ClintlistAPIcall, dispatch) }}
+                                    disabled={loadingflag}
+                                    onClick={() => { initiateRazorpay(router, routes.client, token, addClientdetails?.data?.reference_id, ClintlistAPIcall, setloadingflag) }}
                                     type="button"
                                     className="mt-3 w-full text-base @md:h-12 dark:bg-gray-100 dark:text-white dark:active:bg-gray-100"
                                 >
                                     Check out
-                                    {loading && <Spinner size="sm" tag='div' className='ms-3' color='white' />}
+                                    {loadingflag && <Spinner size="sm" tag='div' className='ms-3' color='white' />}
                                 </Button>
                             </div>
                         </div>
