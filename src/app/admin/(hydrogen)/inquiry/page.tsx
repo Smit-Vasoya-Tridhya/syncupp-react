@@ -4,10 +4,11 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import CustomTable from '@/components/common-tables/table';
-import { deleteAgencyAgreement, getAllAgencyagreement } from '@/redux/slices/user/agreement/agreementSlice';
+
 import PageHeader from '@/app/shared/page-header';
 import { Button } from 'rizzui';
 import { InquiryColumns } from '@/app/shared/(admin)/inquiry/columns';
+import { deleteInquiry, getAllinquiry } from '@/redux/slices/admin/inquiry/inquirySlice';
 
 
 const DummyData = [{
@@ -28,21 +29,22 @@ export default function AdmininquirylistPage() {
     const dispatch = useDispatch();
     const router = useRouter();
 
-    const { agreementDetails, loading } = useSelector((state: any) => state?.root?.agreement);
-    console.log("agreementDetails", agreementDetails, loading);
+    const { inquirylistDetails, loading } = useSelector((state: any) => state?.root?.inquiry);
+    console.log(inquirylistDetails, 'inquirylistDetails')
+
 
     const [pageSize, setPageSize] = useState(5)
 
     //Paggination Handler
     const handleChangePage = async (paginationParams: any) => {
         let { page, items_per_page, sort_field, sort_order, search } = paginationParams;
-        const response = await dispatch(getAllAgencyagreement({ page, items_per_page, sort_field, sort_order, search }));
+        const response = await dispatch(getAllinquiry({ page, items_per_page, sort_field, sort_order, search }));
         const { data } = response?.payload;
         const maxPage: number = data?.page_count;
 
         if (page > maxPage) {
             page = maxPage > 0 ? maxPage : 1;
-            await dispatch(getAllAgencyagreement({ page, items_per_page, sort_field, sort_order, search }));
+            await dispatch(getAllinquiry({ page, items_per_page, sort_field, sort_order, search }));
             return data?.client
         }
         return data?.client
@@ -51,9 +53,9 @@ export default function AdmininquirylistPage() {
     // Delete Handler
     const handleDeleteById = async (id: string | string[], currentPage?: any, countPerPage?: number) => {
         try {
-            const res = await dispatch(deleteAgencyAgreement({ agreementIdsToDelete: id }));
+            const res = await dispatch(deleteInquiry({ inquiryIdsToDelete: id }));
             if (res.payload.success === true) {
-                const reponse = await dispatch(getAllAgencyagreement({ page: currentPage, items_per_page: countPerPage, sort_field: 'createdAt', sort_order: 'desc' }));
+                const reponse = await dispatch(getAllinquiry({ page: currentPage, items_per_page: countPerPage, sort_field: 'createdAt', sort_order: 'desc' }));
             }
         } catch (error) {
             console.error(error);
@@ -66,8 +68,8 @@ export default function AdmininquirylistPage() {
             <PageHeader title={pageHeader.title} />
             {/* <Button type='button' onClick={() => { router.push(`/agreement/create-agreement`)}}>Add</Button> */}
             <CustomTable
-                data={DummyData || []}
-                total={10}
+                data={inquirylistDetails?.data?.inquiries || []}
+                total={inquirylistDetails?.data?.page_count || 1}
                 loading={loading}
                 pageSize={pageSize}
                 setPageSize={setPageSize}

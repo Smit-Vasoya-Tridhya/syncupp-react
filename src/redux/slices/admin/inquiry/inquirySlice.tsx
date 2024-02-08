@@ -1,4 +1,4 @@
-import { GetAllinquiryApi } from "@/commonAPIs/adminAPIs/Inquiry/agencyAPIs";
+import { DeleteInquirysApi, GetAllinquiryApi } from "@/commonAPIs/adminAPIs/Inquiry/agencyAPIs";
 import { DeleteAgencysApi, GetAllAgencyApi } from "@/commonAPIs/adminAPIs/agency/agencyAPIs";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { toast } from 'react-hot-toast';
@@ -23,7 +23,7 @@ type GetAllinquiryApiData = {
 
 // Inquiry list api Call
 export const getAllinquiry: any = createAsyncThunk(
-    "adminAgency/getAllAgency",
+    "inquiry/getAllinquiry",
     async (data: GetAllinquiryApiData) => {
         try {
             const response: any = await GetAllinquiryApi(data);
@@ -36,18 +36,16 @@ export const getAllinquiry: any = createAsyncThunk(
 
 
 /* Inquiry Delete */
-type DeleteAgency = {
-    agencies: string[];
-    status?: string | boolean
-    delete?: boolean
+type DeleteInquiry = {
+    inquiryIdsToDelete: string[];
 }
 
 
 export const deleteInquiry: any = createAsyncThunk(
-    "adminAgency/deleteInquiry",
-    async (data: DeleteAgency) => {
+    "inquiry/inquiry",
+    async (data: DeleteInquiry) => {
         try {
-            const response: any = await DeleteAgencysApi(data);
+            const response: any = await DeleteInquirysApi(data);
             return response;
         } catch (error: any) {
             return { status: false, message: error.response.data.message } as APIErrorResponse;

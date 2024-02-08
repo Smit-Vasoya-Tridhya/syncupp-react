@@ -12,7 +12,7 @@ type GetAllinquiryApiData = {
 
 export const GetAllinquiryApi = async (data: GetAllinquiryApiData) => {
     const response = await AxiosDefault({
-        url: "/api/v1/admin/agencies",
+        url: "/api/v1/inquiry/get-all",
         method: "POST",
         data: data,
         contentType: "application/json",
@@ -24,17 +24,14 @@ export const GetAllinquiryApi = async (data: GetAllinquiryApiData) => {
 
 
 //Delete Inquiry list
-
-type DeleteAgency = {
-    inquiries: string[];
-    status?: string | boolean
-    delete?: boolean
+type DeleteInquiry = {
+    inquiryIdsToDelete: string[];
 }
 
-export const DeleteAgencysApi = async (data: DeleteAgency) => {
+export const DeleteInquirysApi = async (data: DeleteInquiry) => {
     const response = await AxiosDefault({
-        url: `/api/v1/admin/update-agency`,
-        method: "PATCH",
+        url: `/api/v1/inquiry`,
+        method: "DELETE",
         data: data,
         contentType: "application/json",
     });

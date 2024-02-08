@@ -22,6 +22,7 @@ import taskSlice from "./slices/user/task/taskSlice";
 import clientReviewSlice from "./slices/admin/clientReview/clientReviewSlice";
 import cmsSlice from "./slices/admin/cms/cmsSlice";
 import paymentSlice from "./slices/payment/paymentSlice";
+import inquirySlice from "./slices/admin/inquiry/inquirySlice";
 
 
 const combinedReducer = combineReducers({
@@ -47,7 +48,8 @@ const combinedReducer = combineReducers({
   agreement: agencyAgreementSlice,
   clienAgreement: clientAgreementSlice,
   task: taskSlice,
-  payment: paymentSlice
+  payment: paymentSlice,
+  inquiry: inquirySlice
 });
 
 const rootReducer = (state: any, action: any) => {
