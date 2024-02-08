@@ -210,7 +210,7 @@ export default function InvoiceDetails(props: any) {
             >
               {data?.status}
             </Badge>
-            <Title as="h6">{data.invoice_number}</Title>
+            <Title as="h6">{data?.invoice_number}</Title>
             <Text className="mt-0.5 text-gray-500">Invoice Number</Text>
           </div>
         </div>
