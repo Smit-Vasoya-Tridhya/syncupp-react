@@ -4,7 +4,7 @@ import PageHeader from '@/app/shared/page-header';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import CustomTable from '@/components/common-tables/table';
-import { invoiceColumns } from '@/app/shared/(user)/invoice/invoice-list/column';
+import { InvoiceColumns } from '@/app/shared/(user)/invoice/invoice-list/column';
 import { Button } from 'rizzui';
 import Link from 'next/link';
 import { routes } from '@/config/routes';
@@ -68,7 +68,7 @@ export default function InvoiceDataTablePage() {
         setPageSize={setPageSize}
         handleDeleteById={handleDeleteById}
         handleChangePage={handleChangePage}
-        getColumns={invoiceColumns}
+        getColumns={InvoiceColumns}
       />
     </>
   );

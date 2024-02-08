@@ -11,8 +11,7 @@ import { ActionIcon, Badge, Button, Popover, Tooltip } from 'rizzui';
 import { routes } from '@/config/routes';
 import dynamic from 'next/dynamic';
 import SelectLoader from '@/components/loader/select-loader';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
+import { useDispatch , useSelector} from 'react-redux';
 import { useState } from 'react';
 const Select = dynamic(() => import('@/components/ui/select'), {
   ssr: false,
@@ -82,7 +81,7 @@ function getStatusBadge(status: string) {
     }
   }
 
-export const invoiceColumns = ({
+export const InvoiceColumns = ({
   data,
   sortConfig,
   checkedItems,
