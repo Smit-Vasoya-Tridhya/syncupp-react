@@ -87,7 +87,6 @@ export const GetColumns = ({
 
   const paginationParams = useSelector((state: any) => state?.root?.client?.paginationParams);
 
-  console.log(paginationParams, 'paginationParams')
 
 
   const ClintlistAPIcall = async () => {

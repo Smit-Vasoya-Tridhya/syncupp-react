@@ -52,6 +52,7 @@ interface SigninState {
   user: any;
   userProfile: any;
   role: string;
+  teamMemberRole: string;
   loginUserStatus: string;
   getUserProfileStatus: string;
   updateUserProfileStatus: string;
@@ -65,6 +66,7 @@ const initialState: SigninState = {
   user: {},
   userProfile: {},
   role: '',
+  teamMemberRole: '',
   loginUserStatus: '',
   loginUserError: '',
   logoutUserStatus: '',
@@ -157,6 +159,7 @@ export const signinSlice: any = createSlice({
           ...state,
           user: action?.payload,
           role: action?.payload?.data?.user?.role?.name,
+          teamMemberRole: action?.payload?.data?.user?.team_agency_detail?.role?.name,
           loading: false,
           loginUserStatus: 'success'
         }

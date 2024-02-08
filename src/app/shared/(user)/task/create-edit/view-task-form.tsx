@@ -9,125 +9,212 @@ import { FaPeopleGroup } from "react-icons/fa6";
 import { Tooltip } from '@/components/ui/tooltip';
 import { useModal } from '@/app/shared/modal-views/use-modal';
 import { MdOutlineCalendarMonth } from 'react-icons/md';
+import { FaUserCircle } from 'react-icons/fa';
+import { Badge } from 'rizzui';
+import { useDispatch, useSelector } from 'react-redux';
+import { getTaskById, putTaskStatusChange } from '@/redux/slices/user/task/taskSlice';
+import moment from 'moment';
+import { useEffect } from 'react';
+import Spinner from '@/components/ui/spinner';
 
 
 export default function ViewTaskForm(props: any) {
-  const { closeModal } = useModal();
   const { data } = props;
+  // console.log("data in task card", data)
 
-  return (
-    <>
-      <div className=" h-full w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap">
-        <div className="mb-6 flex items-center justify-between p-6">
-          <Title as="h3" className="text-xl xl:text-2xl">
-            {data?.name}
-          </Title>
-          <ActionIcon
-            size="sm"
-            variant="text"
-            onClick={() => closeModal()}
-            className="p-0 text-gray-500 hover:!text-gray-900"
-          >
-            <PiXBold className="h-[18px] w-[18px]" />
-          </ActionIcon>
-        </div>
+  const { closeModal } = useModal();
+  const dispatch = useDispatch();
+  const signIn = useSelector((state: any) => state?.root?.signIn);
+  const taskData = useSelector((state: any) => state?.root?.task);
 
-        <div>
-          {/* <Title as="h4" className="text-lg font-medium xl:text-xl xl:leading-7">
-            {event.title}
-          </Title>
-          {event.description && (
-            <Text className="mt-3 xl:leading-6">{event.description}</Text>
-          )} */}
+  useEffect(() => {
+    data && dispatch(getTaskById({ taskId: data?._id })).then((result: any) => {
+      if (getTaskById.fulfilled.match(result)) {
+        if (result && result.payload.success === true) {
+          // setClientId(result?.payload?.data[0]?.client_id);
+          // setTeamId(result?.payload?.data[0]?.assign_to);
+        }
+      }
+    });
+  }, [data, dispatch]);
 
-          <ul className="mt-7 flex flex-col gap-[18px] text-gray-600">
-            <li className="flex gap-2">
-              <MdOutlineCalendarMonth className="h-5 w-5" />
-              {/* <span>Deadline: </span> */}
-              <span className="font-medium text-gray-1000 mt-1">
-                {data?.date}
-              </span>
-            </li>
-            <li className="flex gap-2">
-              <MdOutlineCalendarMonth className="h-5 w-5" />
-              {/* <span>Deadline: </span> */}
-              <span className="font-medium text-gray-1000 mt-1">
-                {data?.date}
-              </span>
-            </li>
-            {/* {event.location && (
+  let [dataa] = taskData?.task;
+
+
+  function getStatusBadge(status: string) {
+    switch (status?.toLowerCase()) {
+      case 'pending':
+        return (
+          <div className="flex items-center">
+            <Badge color="warning" renderAsDot />
+            <Text className="ms-2 font-medium text-orange-dark">Pending</Text>
+          </div>
+        );
+      case 'completed':
+        return (
+          <div className="flex items-center">
+            <Badge color="success" renderAsDot />
+            <Text className="ms-2 font-medium text-green-dark">Completed</Text>
+          </div>
+        );
+      case 'overdue':
+        return (
+          <div className="flex items-center">
+            <Badge color="danger" renderAsDot />
+            <Text className="ms-2 font-medium text-red-dark">Overdue</Text>
+          </div>
+        );
+      case 'in_progress':
+        return (
+          <div className="flex items-center">
+            <Badge className="bg-gray-400" renderAsDot />
+            <Text className="ms-2 font-medium text-gray-600">Inprogress</Text>
+          </div>
+        );
+      default:
+        return (
+          <div className="flex items-center">
+            <Badge renderAsDot className="bg-gray-400" />
+            <Text className="ms-2 font-medium text-gray-600">{status}</Text>
+          </div>
+        );
+    }
+  }
+
+
+  if (!taskData?.task) {
+    return (
+      <div className='p-10 flex items-center justify-center'>
+        <Spinner size="xl" tag='div' className='ms-3' />
+      </div>
+    )
+  } else {
+    return (
+      <>
+        <div className=" h-full w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap">
+          <div className="flex items-center pt-6 px-6">
+            <Title as="h3" className="text-xl xl:text-2xl">
+              {dataa?.title}
+            </Title>
+            <div className='ms-auto flex items-center gap-3'>
+              <div>
+                { getStatusBadge(dataa?.status) }
+              </div>
+              {signIn?.role !== 'client' &&
+                <Popover
+                  placement="left"
+                  className=" min-w-[135px] px-0 dark:bg-gray-100 [&>svg]:dark:fill-gray-100 "
+                  content={({ setOpen }) => (
+                    <div className="px-2 text-gray-900">
+                      <Button
+                        variant="text"
+                        onClick={() => dispatch(putTaskStatusChange({ status: 'pending' }))}
+                        className="flex w-full items-center justify-start px-2 py-2.5 hover:bg-gray-100 focus:outline-none dark:hover:bg-gray-50"
+                      >
+                        {/* <PiCopySimple className="mr-2 h-5 w-5 text-gray-500" /> */}
+                        Pending
+                      </Button>
+                      <Button
+                        variant="text"
+                        onClick={() => dispatch(putTaskStatusChange({ status: 'in_progress' }))}
+                        className="flex w-full items-center justify-start px-2 py-2.5 hover:bg-gray-100 focus:outline-none dark:hover:bg-gray-50"
+                      >
+                        {/* <PiShareFat className="mr-2 h-5 w-5 text-gray-500" /> */}
+                        Inprogress
+                      </Button>
+                      <Button
+                        variant="text"
+                        className="flex w-full items-center justify-start px-2 py-2.5 hover:bg-gray-100 focus:outline-none dark:hover:bg-gray-50"
+                        onClick={() => dispatch(putTaskStatusChange({ status: 'completed' }))}
+                      >
+                        {/* <PiTrashSimple className="mr-2 h-5 w-5 text-gray-500" /> */}
+                        Completed
+                      </Button>
+                    </div>
+                  )}
+                >
+                  <ActionIcon title={'More Options'} variant="text">
+                    <PiDotsThreeOutlineVerticalFill className="h-5 w-5 text-gray-500" />
+                  </ActionIcon>
+                </Popover>
+              }
+              <ActionIcon
+                size="sm"
+                variant="text"
+                onClick={() => closeModal()}
+                className="p-0 text-gray-500 hover:!text-gray-900"
+              >
+                <PiXBold className="h-[18px] w-[18px]" />
+              </ActionIcon>
+            </div>
+          </div>
+
+          <div className='mb-10'>
+            {/* <Title as="h4" className="text-lg font-medium xl:text-xl xl:leading-7">
+              {event.title}
+            </Title>
+            {event.description && (
+              <Text className="mt-3 xl:leading-6">{event.description}</Text>
+            )} */}
+
+            <ul className="mt-7 px-6 flex flex-col gap-[18px] text-gray-600">
               <li className="flex gap-2">
-                <PiMapPin className="h-5 w-5" />
-                <span>Address:</span>
+                <FaUserCircle className="h-5 w-5" />
+                <span>Client: </span>
                 <span className="font-medium text-gray-1000">
-                  {event.location}
+                  {dataa?.client_name}
                 </span>
               </li>
-            )} */}
-          </ul>
-          {/* <div className={cn('grid grid-cols-2 gap-4 pt-5 ')}>
-            <Button
-              variant="outline"
-              onClick={() => handleDelete(event.id as string)}
-              className="dark:hover:border-gray-400"
-            >
-              Delete
-            </Button>
-            <Button
-              className="hover:bg-gray-700 dark:bg-gray-200 dark:text-white dark:hover:bg-gray-300 dark:active:bg-gray-100"
-              onClick={handleEditModal}
-            >
-              Edit
-            </Button>
-          </div> */}
-        </div>
-        <div className="flex items-center mt-3">
-          <div className="ms-auto">
-            <Popover
-              placement="left"
-              className="z-[99] min-w-[135px] px-0 dark:bg-gray-100 [&>svg]:dark:fill-gray-100"
-              content={({ setOpen }) => (
-                <div className="px-2 text-gray-900">
-                  <Button
-                    variant="text"
-                    onClick={() => setOpen(false)}
-                    className="flex w-full items-center justify-start px-2 py-2.5 hover:bg-gray-100 focus:outline-none dark:hover:bg-gray-50"
-                  >
-                    {/* <PiCopySimple className="mr-2 h-5 w-5 text-gray-500" /> */}
-                    Pending
-                  </Button>
-                  <Button
-                    variant="text"
-                    onClick={() => setOpen(false)}
-                    className="flex w-full items-center justify-start px-2 py-2.5 hover:bg-gray-100 focus:outline-none dark:hover:bg-gray-50"
-                  >
-                    {/* <PiShareFat className="mr-2 h-5 w-5 text-gray-500" /> */}
-                    Inprogress
-                  </Button>
-                  <Button
-                    variant="text"
-                    className="flex w-full items-center justify-start px-2 py-2.5 hover:bg-gray-100 focus:outline-none dark:hover:bg-gray-50"
-                    onClick={() => {
-                      // onDeleteItem(item.id);
-                      setOpen(false);
-                    }}
-                  >
-                    {/* <PiTrashSimple className="mr-2 h-5 w-5 text-gray-500" /> */}
-                    Completed
-                  </Button>
-                </div>
-              )}
-            >
-              <ActionIcon title={'More Options'} variant="text">
-                <PiDotsThreeOutlineVerticalFill className="h-5 w-5 text-gray-500" />
-              </ActionIcon>
-            </Popover>
+              <li className="flex gap-2">
+                <BsPersonFill className="h-5 w-5" />
+                <span>Assigned by: </span>
+                <span className="font-medium text-gray-1000">
+                  {dataa?.assigned_by_name}
+                </span>
+              </li>
+              <li className="flex gap-2">
+                <FaPeopleGroup className="h-5 w-5" />
+                <span>Assigned to: </span>
+                <span className="font-medium text-gray-1000">
+                  {dataa?.assigned_to_name}
+                </span>
+              </li>
+              <li className="flex gap-2">
+                <MdOutlineCalendarMonth className="h-5 w-5" />
+                <span>Created: </span>
+                <span className="font-medium text-gray-1000">
+                  {moment(dataa?.createdAt).format("DD MMM, YY - hh:mm A")}
+                </span>
+              </li>
+              <li className="flex gap-2">
+                <MdOutlineCalendarMonth className="h-5 w-5" />
+                <span>Deadline: </span>
+                <span className="font-medium text-gray-1000">
+                  {moment(dataa?.due_date).format("DD MMM, YY - hh:mm A")}
+                </span>
+              </li>
+
+            </ul>
+            {/* <div className={cn('grid grid-cols-2 gap-4 pt-5 ')}>
+              <Button
+                variant="outline"
+                onClick={() => handleDelete(event.id as string)}
+                className="dark:hover:border-gray-400"
+              >
+                Delete
+              </Button>
+              <Button
+                className="hover:bg-gray-700 dark:bg-gray-200 dark:text-white dark:hover:bg-gray-300 dark:active:bg-gray-100"
+                onClick={handleEditModal}
+              >
+                Edit
+              </Button>
+            </div> */}
           </div>
         </div>
-
-      </div>
-    </>
-  );
+      </>
+    );
+  }
 }
 
 

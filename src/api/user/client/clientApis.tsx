@@ -18,8 +18,8 @@ type PostAddClientApiData = {
       email: string;
       agency_id: string;
       password?: string;
-      first_name?: string;
-      last_name?: string;
+      // first_name?: string;
+      // last_name?: string;
       redirect: boolean;
   }
 

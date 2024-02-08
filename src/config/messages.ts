@@ -94,7 +94,7 @@ export const messages = {
   roleNameLengthMin: 'Role name must be at least 3 letters',
   errorSendingEmail: 'Error sending email',
   emailSentSuccessfully: 'Your email has been sent successfully.',
-  contactRequired: 'Contact is required',
+  contactRequired: 'Contact Number is required',
   contactLengthMin: 'Contact must be number with length between 10 to 13',
   nameRequired: 'Name is required',
   clientRequired: 'Client is required',

@@ -15,8 +15,8 @@ type PostTeamMemberVerifyApiData = {
   token?: string;
   client_id?: string;
   password?: string;
-  first_name?: string;
-  last_name?: string;
+  // first_name?: string;
+  // last_name?: string;
 }
 
 type PutEditTeamMemberApiData = {

@@ -13,6 +13,7 @@ import { Badge, Button } from 'rizzui';
 import moment from 'moment';
 import AddTaskForm from '../create-edit/add-task-form';
 import { useSelector } from 'react-redux';
+import ViewTaskForm from '../create-edit/view-task-form';
 
 type Columns = {
   data: any[];
@@ -33,14 +34,28 @@ function getStatusBadge(status: string) {
       return (
         <div className="flex items-center">
           <Badge color="warning" renderAsDot />
-          <Text className="ms-2 font-medium text-orange-dark">{status}</Text>
+          <Text className="ms-2 font-medium text-orange-dark">Pending</Text>
         </div>
       );
     case 'completed':
       return (
         <div className="flex items-center">
           <Badge color="success" renderAsDot />
-          <Text className="ms-2 font-medium text-green-dark">{status}</Text>
+          <Text className="ms-2 font-medium text-green-dark">Completed</Text>
+        </div>
+      );
+    case 'overdue':
+      return (
+        <div className="flex items-center">
+          <Badge color="danger" renderAsDot />
+          <Text className="ms-2 font-medium text-red-dark">Overdue</Text>
+        </div>
+      );
+    case 'in_progress':
+      return (
+        <div className="flex items-center">
+          <Badge className="bg-gray-400" renderAsDot />
+          <Text className="ms-2 font-medium text-gray-600">Inprogress</Text>
         </div>
       );
     default:
@@ -87,8 +102,8 @@ export const GetColumns = ({
         <div className="inline-flex ps-3.5">
           <Checkbox
             className="cursor-pointer"
-            checked={checkedItems.includes(row.id)}
-            {...(onChecked && { onChange: () => onChecked(row.id) })}
+            checked={checkedItems.includes(row._id)}
+            {...(onChecked && { onChange: () => onChecked(row._id) })}
           />
         </div>
       ),
@@ -107,7 +122,7 @@ export const GetColumns = ({
       key: 'title',
       width: 200,
       render: (value: string) => (
-        <Text className="font-medium text-gray-700">{value}</Text>
+        <Text className="font-medium text-gray-700 truncate">{value}</Text>
       ),
     },
     {
@@ -122,9 +137,9 @@ export const GetColumns = ({
       onHeaderCell: () => onHeaderCellClick('createdAt'),
       dataIndex: 'createdAt',
       key: 'createdAt',
-      width: 200,
+      width: 300,
       render: (value: string) => (
-        <Text className="font-medium text-gray-700">{value}</Text>
+        <Text className="font-medium text-gray-700">{moment(value).format("DD MMM, YY - hh:mm A")}</Text>
       ),
     },
     {
@@ -139,9 +154,9 @@ export const GetColumns = ({
       onHeaderCell: () => onHeaderCellClick('due_date'),
       dataIndex: 'due_date',
       key: 'due_date',
-      width: 200,
+      width: 300,
       render: (value: any) => (
-        <Text className="font-medium text-gray-700">{value}</Text>
+        <Text className="font-medium text-gray-700">{moment(value).format("DD MMM, YY - hh:mm A")}</Text>
       ),
     },
     {
@@ -186,13 +201,13 @@ export const GetColumns = ({
           title="Assigned To"
           sortable
           ascending={
-            sortConfig?.direction === 'asc' && sortConfig?.key === 'assign_to_name'
+            sortConfig?.direction === 'asc' && sortConfig?.key === 'assigned_to_name'
           }
         />
       ),
-      onHeaderCell: () => onHeaderCellClick('assign_to_name'),
-      dataIndex: 'assign_to_name',
-      key: 'assign_to_name',
+      onHeaderCell: () => onHeaderCellClick('assigned_to_name'),
+      dataIndex: 'assigned_to_name',
+      key: 'assigned_to_name',
       width: 200,
       render: (value: string) => {
         // const date = moment(value).fromNow();
@@ -234,16 +249,12 @@ export const GetColumns = ({
                   customSize="925px"
                   title='Edit Task'
                 />
-                <Tooltip
-                  size="sm"
-                  content={() => 'View Task'}
-                  placement="top"
-                  color="invert"
-                >
-                  <Button size="sm" variant="outline" className='bg-white text-black' aria-label={'View Member'}>
-                    <EyeIcon className="h-4 w-4" />
-                  </Button>
-                </Tooltip>
+                <CustomModalButton
+                  icon={<EyeIcon className="h-4 w-4" />}
+                  view={<ViewTaskForm data={row} />}
+                  customSize="600px"
+                  title='View Task'
+                />
                 <DeletePopover
                   title={`Delete the Task`}
                   description={`Are you sure you want to delete?`}

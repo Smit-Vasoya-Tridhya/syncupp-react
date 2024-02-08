@@ -190,7 +190,7 @@ export default function AddTeamMemberForm(props: any) {
                   error={errors.email?.message as string}
                 />
                 <Input
-                  type="number"
+                  type="text"
                   onKeyDown={handleKeyContactDown}
                   label="Phone"
                   color="info"
@@ -207,7 +207,7 @@ export default function AddTeamMemberForm(props: any) {
                       options={typeOption}
                       value={value}
                       onChange={onChange}
-                      label="Permisson *"
+                      label="Role *"
                       placeholder='Select role'
                       color="info"
                       disabled={signIn?.role === 'client'}

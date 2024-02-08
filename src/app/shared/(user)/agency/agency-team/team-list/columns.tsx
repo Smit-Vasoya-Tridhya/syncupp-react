@@ -97,7 +97,6 @@ export const GetclientTeamColumns = ({
   const [loadingflag, setloadingflag] = useState(false)
 
   const paginationParams = useSelector((state: any) => state?.root?.teamMember?.paginationParams);
-  console.log(paginationParams, 'paginationParams')
 
   const ClintteamlistAPIcall = async () => {
     let { page, items_per_page, sort_field, sort_order, search } = paginationParams;

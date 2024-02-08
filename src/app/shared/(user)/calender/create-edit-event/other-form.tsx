@@ -77,7 +77,6 @@ export default function CalenderOtherFrom(props: any) {
   // };
 
   const onSubmit: SubmitHandler<AddCalenderSchema> = (dataa) => {
-    console.log('Add task dataa---->', dataa);
 
     const formData = {
       ...dataa,

@@ -15,7 +15,7 @@ export const clientSchema = z.object({
     name: z.string().min(1, { message: messages.nameRequired }).max(20, { message: messages.nameLength }),
     email: validateEmail,
     contact_number: z.string().trim().nullable().refine(value => {
-        return !value || /^[0-9]{10,13}$/.test(value);
+        return !value || /^[0-9+-]{10,13}$/.test(value);
     }, {
         message: messages.contactLengthMin,
     }),
