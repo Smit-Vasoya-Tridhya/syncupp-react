@@ -237,7 +237,7 @@ export const GetclientTeamColumns = ({
       width: 120,
       render: (_: string, row: any) => (
         <>
-          {row?.status === "payment_pending" ? <div> <Button className='w-full' onClick={() => { initiateRazorpay(router, routes.agency_team, token, row?.reference_id?._id, ClintteamlistAPIcall) }}>Pay</Button></div> :
+          {row?.status === "payment_pending" ? <div> <Button className='w-full' onClick={() => { initiateRazorpay(router, routes.agency_team, token, row?.reference_id?._id, ClintteamlistAPIcall, dispatch) }}>Pay</Button></div> :
 
             <div className="flex items-center justify-end gap-3 pe-4">
 

@@ -14,13 +14,14 @@ import teamSlice from "./slices/user/team-member/teamSlice";
 import adminChangePasswordSlice from "./slices/admin/auth/updatePassword/changePasswordSlice";
 import adminfaqSlice from "./slices/admin/faq/faqSlice";
 import agencySlice from "./slices/admin/agency/agencySlice";
-import  agencyAgreementSlice from "./slices/user/agreement/agreementSlice";
+import agencyAgreementSlice from "./slices/user/agreement/agreementSlice";
 import clientAgreementSlice from "./slices/user/client/agreement/clientAgreementSlice";
 import userAgencySlice from "./slices/user/agency/agencySlice";
 import invoiceSlice from "./slices/user/invoice/invoiceSlice";
 import taskSlice from "./slices/user/task/taskSlice";
 import clientReviewSlice from "./slices/admin/clientReview/clientReviewSlice";
 import cmsSlice from "./slices/admin/cms/cmsSlice";
+import paymentSlice from "./slices/payment/paymentSlice";
 
 
 const combinedReducer = combineReducers({
@@ -36,22 +37,23 @@ const combinedReducer = combineReducers({
   viewProfile: viewProfileSlice,
   client: clientSlice,
   adminChangePassword: adminChangePasswordSlice,
-  adminFaq:adminfaqSlice,
-  adminClientReview:clientReviewSlice,
-  adminCms:cmsSlice,
+  adminFaq: adminfaqSlice,
+  adminClientReview: clientReviewSlice,
+  adminCms: cmsSlice,
   teamMember: teamSlice,
   adminAgency: agencySlice,
-  userAgency:userAgencySlice,
-  invoice:invoiceSlice,
+  userAgency: userAgencySlice,
+  invoice: invoiceSlice,
   agreement: agencyAgreementSlice,
   clienAgreement: clientAgreementSlice,
-  task: taskSlice
+  task: taskSlice,
+  payment: paymentSlice
 });
 
- const rootReducer = (state: any, action: any) => {
+const rootReducer = (state: any, action: any) => {
   if (action.type === "signin/logoutUser") {
     state = undefined;
-  } else if(action.type === "signup/lologoutUserSignUp") {
+  } else if (action.type === "signup/lologoutUserSignUp") {
     state = undefined;
   }
   return combinedReducer(state, action);

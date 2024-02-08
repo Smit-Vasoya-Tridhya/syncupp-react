@@ -2,6 +2,7 @@
 import axios from "axios";
 import { toast } from 'react-hot-toast';
 import { routes } from '@/config/routes';
+import { Paymentloader } from "@/redux/slices/payment/paymentSlice";
 
 
 interface RazorpayResponse {
@@ -19,32 +20,42 @@ interface CustomWindow extends Window {
 declare var window: CustomWindow;
 
 const clientpaymentService = {
-    loadRazorpayScript: async (src: string): Promise<boolean> => {
+    loadRazorpayScript: async (src: string, dispatch: any): Promise<boolean> => {
         return new Promise((resolve) => {
+            dispatch(Paymentloader(true))
             const script = document.createElement("script");
             script.src = src;
             script.onload = () => {
                 resolve(true);
+                dispatch(Paymentloader(false))
             };
             script.onerror = () => {
                 resolve(false);
+                dispatch(Paymentloader(false))
             };
             document.body.appendChild(script);
         });
     },
 
-    ClientcreateSubscription: async (token: string, reference_id: string, router: any): Promise<Object> => {
+    ClientcreateSubscription: async (token: string, reference_id: string, router: any, dispatch: any): Promise<Object> => {
         console.log(token, 'token')
         try {
-            const result = await axios.post<{ data: { user_id: string } }>(`${process.env.NEXT_PUBLIC_API}/api/v1/payment/order`, { user_id: reference_id }, {
+            const result: any = await axios.post<{ data: { user_id: string } }>(`${process.env.NEXT_PUBLIC_API}/api/v1/payment/order`, { user_id: reference_id }, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     // Add any other headers if needed
                 },
             });
 
+            if (result?.data?.success) {
+                dispatch(Paymentloader(true))
+            }
+
+            console.log(result?.data?.success, 'result')
+
             return result?.data?.data || {};
         } catch (error: any) {
+            dispatch(Paymentloader(true))
             console.error('Error creating subscription:', error.message);
             // router.push(routes.signIn)
             throw new Error('Error creating subscription');
@@ -73,13 +84,15 @@ const clientpaymentService = {
     },
 
     // New function to initiate Razorpay
-    initiateRazorpay: async (router: any, route: any, signupdata: any, reference_id: any, ClintlistAPIcall: any): Promise<void> => {
+    initiateRazorpay: async (router: any, route: any, signupdata: any, reference_id: any, ClintlistAPIcall: any, dispatch: any): Promise<void> => {
 
         try {
-            const subscriptiondata: any = await clientpaymentService.ClientcreateSubscription(signupdata, reference_id, router);
+
+
+            const subscriptiondata: any = await clientpaymentService.ClientcreateSubscription(signupdata, reference_id, router, dispatch);
             console.log(subscriptiondata, 'subscriptiondata')
 
-            const res = await clientpaymentService.loadRazorpayScript("https://checkout.razorpay.com/v1/checkout.js");
+            const res = await clientpaymentService.loadRazorpayScript("https://checkout.razorpay.com/v1/checkout.js", dispatch);
             console.log(res, "24");
 
             if (!res) {

@@ -140,7 +140,7 @@ function SocialAuth({
         if (result && result.payload.success === true) {
           // router.replace(routes.dashboard);
           if (result?.payload?.data?.user?.status === "payment_pending") {
-            initiateRazorpay(router, routes.dashboard, result?.payload?.data?.token)
+            initiateRazorpay(router, routes.dashboard, result?.payload?.data?.token, dispatch)
             // dispatch(signUpUserSubscription({})).then((resulturl: any) => {
             //   // window.location.href = resulturl?.payload?.data?.payment_url;
             // })
@@ -180,7 +180,7 @@ function SocialAuth({
                 if (result && result.payload.success === true) {
                   // console.log(result?.payload?.user?.data?.user?.status === "payment_pending", 'result', result?.payload?.data?.user?.status)
                   if (result?.payload?.data?.user?.status === "payment_pending") {
-                    initiateRazorpay(router, routes.dashboard, result?.payload?.data?.token)
+                    initiateRazorpay(router, routes.dashboard, result?.payload?.data?.token, dispatch)
                   } else {
                     router.replace(routes.dashboard);
                   }

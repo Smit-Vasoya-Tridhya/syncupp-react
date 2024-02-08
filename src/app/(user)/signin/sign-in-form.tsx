@@ -37,7 +37,7 @@ export default function SignInForm() {
         if (result && result.payload.success === true) {
           // router.replace(routes.dashboard);
           if (result?.payload?.data?.user?.status === "payment_pending" && result?.payload?.data?.user?.role?.name === "agency") {
-            initiateRazorpay(router, routes.dashboard, result?.payload?.data?.token)
+            initiateRazorpay(router, routes.dashboard, result?.payload?.data?.token, dispatch)
           } else {
             router.replace(routes.dashboard);
           }
