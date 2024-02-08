@@ -78,6 +78,7 @@ export default function ResetPasswordForm() {
               type="submit"
               color="info"
               rounded="pill"
+              size={isMedium ? 'lg' : 'xl'}
               disabled={resetPassword?.loading}
             >
               Reset Password

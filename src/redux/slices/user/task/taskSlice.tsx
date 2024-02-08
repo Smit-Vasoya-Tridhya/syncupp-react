@@ -38,6 +38,7 @@ type DeleteTaskData = {
 }
 
 type putTaskStatusChangeData = {
+  _id: string;
   status: string;
 }
 interface PostAPIResponse {
