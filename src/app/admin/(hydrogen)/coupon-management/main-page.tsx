@@ -107,7 +107,6 @@ export default function CouponManagementPage() {
       console.error(error);
     }
   };
-
   return (
     <>
       <PageHeader title={pageHeader.title}>

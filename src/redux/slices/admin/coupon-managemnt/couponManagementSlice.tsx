@@ -5,7 +5,7 @@ import {
   GetcoupenDataByid,
   UpadatecoupenDataByid,
 } from '@/commonAPIs/adminAPIs/coupon-management/couponManagementAPIs';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { toast } from 'react-hot-toast';
 
 //API error response type
@@ -40,6 +40,8 @@ export const getAllCoupone: any = createAsyncThunk(
     }
   }
 );
+
+export const clearCouponSingleData = createAction('couponMangemnt/clearState');
 
 export const AddCoupon: any = createAsyncThunk(
   'couponMangemnt/addCoupone',
@@ -121,6 +123,12 @@ export const CouponSlice = createSlice({
   reducers: {},
 
   extraReducers: (builder) => {
+    builder.addCase(clearCouponSingleData, (state) => {
+      return {
+        ...state,
+        CouponSingledata: {},
+      };
+    });
     builder
       .addCase(AddCoupon.pending, (state) => {
         return {
