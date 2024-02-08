@@ -84,6 +84,7 @@ export const GetColumns = ({
   const router = useRouter()
   const dispatch = useDispatch()
   const [loadingflag, setloadingflag] = useState(false)
+  const [showloaderflag, setshowloaderflag] = useState(null)
 
   const paginationParams = useSelector((state: any) => state?.root?.client?.paginationParams);
 
@@ -258,7 +259,12 @@ export const GetColumns = ({
       render: (_: string, row: any) => (
         console.log(row?.reference_id?._id, 'row'),
         <>
-          {row?.status === "payment_pending" ? <div> <Button disabled={loadingflag} className='w-full' onClick={() => { initiateRazorpay(router, routes.client, token, row?.reference_id?._id, ClintlistAPIcall, setloadingflag) }}>Pay {loadingflag && <Spinner size="sm" tag='div' className='ms-3' color='white' />}</Button></div> : <>
+          {row?.status === "payment_pending" ? <div> <Button disabled={loadingflag} className='w-full' onClick={() => {
+            initiateRazorpay(router, routes.client, token, row?.reference_id?._id, ClintlistAPIcall, setloadingflag)
+            setshowloaderflag(row?._id)
+          }}>Pay
+            {loadingflag && showloaderflag === row?._id && <Spinner size="sm" tag='div' className='ms-3' color='white' />}
+          </Button></div> : <>
             <div className="flex items-center justify-end gap-3 pe-4">
               <CustomModalButton
                 title="Edit Client"
