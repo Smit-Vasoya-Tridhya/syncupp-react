@@ -85,7 +85,7 @@ export default function ChangePasswordForm({ params }: { params: { id: string } 
     useEffect(() => {
         dispatch(getDropdownclientlist())
     }, [])
-    console.log(singleAgreementdetails, 'singleAgreementdetails')
+    // console.log(singleAgreementdetails, 'singleAgreementdetails')
 
     //get single Details API call
     useEffect(() => {
@@ -113,7 +113,7 @@ export default function ChangePasswordForm({ params }: { params: { id: string } 
 
     // OnSubmit Handler
     const onSubmit: SubmitHandler<AgrementFormTypes> = (data) => {
-        console.log(' form data->', data);
+        // console.log(' form data->', data);
         const agreementData = {
             client_id: user?._id,
             title: data?.title,
@@ -169,7 +169,7 @@ export default function ChangePasswordForm({ params }: { params: { id: string } 
                         >
                             {({ register, control, formState: { errors }, watch }) => (
                                
-                                console.log(errors,'errors'),
+                                // console.log(errors,'errors'),
 
                                 <div className="space-y-5">
 
@@ -193,7 +193,7 @@ export default function ChangePasswordForm({ params }: { params: { id: string } 
                                                 <Select
                                                     options={clientOptions}
                                                     onChange={(selectedOption: any) => {
-                                                        console.log(selectedOption, 'selectedOption', value)
+                                                        // console.log(selectedOption, 'selectedOption', value)
                                                         setselectedClient(selectedOption);
                                                         onChange(selectedOption?.name);
                                                     }}
@@ -265,10 +265,11 @@ export default function ChangePasswordForm({ params }: { params: { id: string } 
                                             <EyeIcon className="h-5 w-5 mr-2" />
                                             Preview
                                         </Button>
-                                        <Button type="submit" className="bg-none text-xs sm:text-sm">
+                                            <Button disabled={loading} type="submit" className="bg-none text-xs sm:text-sm">
                                             Save
+                                                {loading && <Spinner size="sm" tag='div' className='ms-3' color='white' />}
                                         </Button>
-                                        <Button type="submit" onClick={SendHandler} variant="outline" className="bg-none text-xs sm:text-sm">
+                                        <Button type="submit" disabled={loading} onClick={SendHandler} variant="outline" className="bg-none text-xs sm:text-sm">
                                             Send
                                         </Button>
                                     </div>

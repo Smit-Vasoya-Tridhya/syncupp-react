@@ -41,7 +41,7 @@ export default function AddTeamMemberForm(props: any) {
     email: '',
     name: '',
     contact_number: '',
-    role: ''
+    role: signIn?.role === 'client' ? 'Team member' : ''
   };
   // console.log("Row data....", row)
 
@@ -215,7 +215,7 @@ export default function AddTeamMemberForm(props: any) {
                   error={errors.email?.message as string}
                 />
                 <Input
-                  type="number"
+                  type="text"
                   onKeyDown={handleKeyContactDown}
                   label="Phone"
                   color="info"
@@ -232,7 +232,7 @@ export default function AddTeamMemberForm(props: any) {
                     options={typeOption}
                     value={signIn?.role === 'client' ? 'Team member' : value}
                     onChange={onChange}
-                    label="Permisson *"
+                    label="Role *"
                     placeholder='Select role'
                     color="info"
                     disabled={signIn?.role === 'client'}

@@ -106,7 +106,9 @@ export default function AddTeamMemberForm(props: any) {
     if (title === 'New Team member') {
       dispatch(addTeamMember(fullData)).then((result: any) => {
         if (addTeamMember.fulfilled.match(result)) {
-          setLoader(false);
+          console.log(result?.payload?.data?.referral_points,'result')
+          // result?.payload?.data?.referral_points         //NOTE : add for future
+          // setLoader(false);
           setSave(false);
           if (result && result.payload.success === true) {
             router.push(routes.agency_team_payment)
@@ -190,7 +192,7 @@ export default function AddTeamMemberForm(props: any) {
                   error={errors.email?.message as string}
                 />
                 <Input
-                  type="number"
+                  type="text"
                   onKeyDown={handleKeyContactDown}
                   label="Phone"
                   color="info"
@@ -207,10 +209,9 @@ export default function AddTeamMemberForm(props: any) {
                       options={typeOption}
                       value={value}
                       onChange={onChange}
-                      label="Permisson *"
+                      label="Role *"
                       placeholder='Select role'
                       color="info"
-                      disabled={signIn?.role === 'client'}
                       error={errors?.role?.message as string}
                       getOptionValue={(option) => option?.name}
                     />

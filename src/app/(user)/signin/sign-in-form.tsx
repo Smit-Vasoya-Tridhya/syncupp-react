@@ -33,11 +33,11 @@ export default function SignInForm() {
   const onSubmit: SubmitHandler<LoginSchema> = (data) => {
     dispatch(signInUser(data)).then((result: any) => {
       if (signInUser.fulfilled.match(result)) {
-        console.log(result, 'result', result?.payload?.data?.user?.status, result?.payload?.data?.user?.role?.name)
+        // console.log(result, 'result', result?.payload?.data?.user?.status, result?.payload?.data?.user?.role?.name)
         if (result && result.payload.success === true) {
           // router.replace(routes.dashboard);
           if (result?.payload?.data?.user?.status === "payment_pending" && result?.payload?.data?.user?.role?.name === "agency") {
-            initiateRazorpay(router, routes.dashboard, result?.payload?.data?.token)
+            initiateRazorpay(router, routes.dashboard, result?.payload?.data?.token, dispatch)
           } else {
             router.replace(routes.dashboard);
           }
@@ -54,7 +54,7 @@ export default function SignInForm() {
         onSubmit={onSubmit}
         // resetValues={reset}
         useFormProps={{
-          mode: 'onTouched',
+          mode: 'all',
           defaultValues: initialValues,
         }}
       >

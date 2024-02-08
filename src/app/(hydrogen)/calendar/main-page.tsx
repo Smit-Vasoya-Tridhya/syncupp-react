@@ -51,7 +51,7 @@ export default function CalenderTablePage() {
             <Title className='pb-2 mr-3'>Activity</Title>
             <span className='border-x-[1px]'></span>
           <div className='pb-2 ml-3'>
-              <Link href={routes.UserCalenderForm}>
+              <Link href={routes.userCalendarForm}>
                 <FaRegCalendarAlt className="h-[30px] w-[30px]" />
               </Link>
             </div>
@@ -100,7 +100,7 @@ export default function CalenderTablePage() {
             </Button>
           </div>
           <div className="mr-auto mt-4 flex items-center gap-3 @lg:mt-0">
-            {/* <Link href={routes.UserCalenderAddActivity} className="w-full">
+            {/* <Link href={routes.userCalendarAddActivity} className="w-full">
               <Button className="mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0">
                 Add Activity
               </Button>

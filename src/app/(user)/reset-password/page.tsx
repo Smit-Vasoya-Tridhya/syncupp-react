@@ -6,7 +6,7 @@ import ResetPasswordForm from './reset-password-form';
 import { metaObject } from '@/config/site.config';
 
 export const metadata = {
-  ...metaObject('ResetPassword'),
+  ...metaObject('Reset Password'),
 };
 
 export default function ResetPassword() {

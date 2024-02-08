@@ -2,6 +2,7 @@
 import axios from "axios";
 import { toast } from 'react-hot-toast';
 import { routes } from '@/config/routes';
+import { Paymentloader } from "@/redux/slices/payment/paymentSlice";
 
 
 interface RazorpayResponse {
@@ -19,44 +20,62 @@ interface CustomWindow extends Window {
 declare var window: CustomWindow;
 
 const clientpaymentService = {
-    loadRazorpayScript: async (src: string): Promise<boolean> => {
+    loadRazorpayScript: async (src: string, setloadingflag: any): Promise<boolean> => {
         return new Promise((resolve) => {
+            setloadingflag(true)
             const script = document.createElement("script");
             script.src = src;
             script.onload = () => {
                 resolve(true);
+                setloadingflag(false)
             };
             script.onerror = () => {
                 resolve(false);
+                setloadingflag(false)
             };
             document.body.appendChild(script);
         });
     },
 
-    ClientcreateSubscription: async (token: string, reference_id: string, router: any): Promise<Object> => {
+    ClientcreateSubscription: async (token: string, reference_id: string, router: any, setloadingflag: any): Promise<Object> => {
         console.log(token, 'token')
         try {
-            const result = await axios.post<{ data: { user_id: string } }>(`${process.env.NEXT_PUBLIC_API}/api/v1/payment/order`, { user_id: reference_id }, {
+            setloadingflag(true)
+            const result: any = await axios.post<{ data: { user_id: string } }>(`${process.env.NEXT_PUBLIC_API}/api/v1/payment/order`, { user_id: reference_id }, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     // Add any other headers if needed
                 },
             });
 
+            if (result?.data?.success) {
+                setloadingflag(false)
+            }
+
+            console.log(result?.data?.success, 'result')
+
             return result?.data?.data || {};
         } catch (error: any) {
+            setloadingflag(false)
             console.error('Error creating subscription:', error.message);
             // router.push(routes.signIn)
             throw new Error('Error creating subscription');
         }
     },
 
-    verifyPaymentSignature: async (data: RazorpayResponse): Promise<string> => {
+    verifyPaymentSignature: async (data: RazorpayResponse, setloadingflag: any): Promise<string> => {
         try {
-            const result = await axios.post<string>(`${process.env.NEXT_PUBLIC_API}/api/v1/payment/verify-signature`, data);
+            setloadingflag(true)
+            const result: any = await axios.post<string>(`${process.env.NEXT_PUBLIC_API}/api/v1/payment/verify-signature`, data);
             console.log(result, "82");
+
+            if (result?.data?.success) {
+                setloadingflag(false)
+            }
+
             return result.data;
         } catch (error: any) {
+            setloadingflag(false)
             console.error('Error verifying payment signature:', error.message);
             throw new Error('Error verifying payment signature');
         }
@@ -73,17 +92,20 @@ const clientpaymentService = {
     },
 
     // New function to initiate Razorpay
-    initiateRazorpay: async (router: any, route: any, signupdata: any, reference_id: any, ClintlistAPIcall: any): Promise<void> => {
+    initiateRazorpay: async (router: any, route: any, signupdata: any, reference_id: any, ClintlistAPIcall: any, setloadingflag: any): Promise<void> => {
 
         try {
-            const subscriptiondata: any = await clientpaymentService.ClientcreateSubscription(signupdata, reference_id, router);
+
+
+            const subscriptiondata: any = await clientpaymentService.ClientcreateSubscription(signupdata, reference_id, router, setloadingflag);
             console.log(subscriptiondata, 'subscriptiondata')
 
-            const res = await clientpaymentService.loadRazorpayScript("https://checkout.razorpay.com/v1/checkout.js");
+            const res = await clientpaymentService.loadRazorpayScript("https://checkout.razorpay.com/v1/checkout.js", setloadingflag);
             console.log(res, "24");
 
             if (!res) {
                 clientpaymentService.displayPaymentToast("Razorpay SDK failed to load. Are you online?", 'error');
+                setloadingflag(false)
                 return;
             }
 
@@ -108,7 +130,7 @@ const clientpaymentService = {
                         agency_id: subscriptiondata?.agency_id
                     };
 
-                    const verificationResult: any = await clientpaymentService.verifyPaymentSignature(data);
+                    const verificationResult: any = await clientpaymentService.verifyPaymentSignature(data, setloadingflag);
                     console.log(verificationResult, 'verificationResult')
 
 
@@ -127,6 +149,16 @@ const clientpaymentService = {
 
             const paymentObject = new window.Razorpay(options);
             paymentObject.open();
+
+            // paymentObject.on('payment.failed', function () {
+            //     clientpaymentService.displayPaymentToast("Payment failed. Please try again.", 'error');
+            //     setloadingflag(false); // Set payment processing state to false
+            // });
+
+            // paymentObject.on('payment.cancel', function () {
+            //     clientpaymentService.displayPaymentToast("Payment cancelled.", 'error');
+            //     setloadingflag(false); // Set payment processing state to false
+            // });
         } catch (error: any) {
             console.error('Error during payment:', error.message);
             clientpaymentService.displayPaymentToast('Error during payment. Please try again.', 'error');

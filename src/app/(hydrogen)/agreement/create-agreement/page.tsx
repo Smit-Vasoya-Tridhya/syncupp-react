@@ -48,7 +48,7 @@ export default function ChangePasswordForm() {
     const { user } = useSelector((state: any) => state?.root?.signIn?.user?.data);
     const { clientlistDetails, loading } = useSelector((state: any) => state?.root?.agreement);
 
-    console.log(clientlistDetails, 'clientlistDetails')
+    // console.log(clientlistDetails, 'clientlistDetails')
 
 
     const clientOptions =

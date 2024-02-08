@@ -16,9 +16,10 @@ import moment from 'moment'
 import { initiateRazorpay } from '@/services/clientpaymentService';
 import { useRouter } from 'next/navigation';
 import { routes } from '@/config/routes';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { getAllClient } from '@/redux/slices/user/client/clientSlice';
+import { useState } from 'react';
+import Spinner from '@/components/ui/spinner';
 
 type Columns = {
   data: any[];
@@ -81,10 +82,11 @@ export const GetColumns = ({
   const token = localStorage.getItem('token')
   const router = useRouter()
   const dispatch = useDispatch()
+  const [loadingflag, setloadingflag] = useState(false)
+  const [showloaderflag, setshowloaderflag] = useState(null)
 
   const paginationParams = useSelector((state: any) => state?.root?.client?.paginationParams);
 
-  console.log(paginationParams, 'paginationParams')
 
 
   const ClintlistAPIcall = async () => {
@@ -254,9 +256,14 @@ export const GetColumns = ({
       key: 'action',
       width: 120,
       render: (_: string, row: any) => (
-        console.log(row?.reference_id?._id, 'row'),
+        // console.log(row?.reference_id?._id, 'row'),
         <>
-          {row?.status === "payment_pending" ? <div> <Button className='w-full' onClick={() => { initiateRazorpay(router, routes.client, token, row?.reference_id?._id, ClintlistAPIcall) }}>Pay</Button></div> : <>
+          {row?.status === "payment_pending" ? <div> <Button disabled={loadingflag} className='w-full' onClick={() => {
+            initiateRazorpay(router, routes.client, token, row?.reference_id?._id, ClintlistAPIcall, setloadingflag)
+            setshowloaderflag(row?._id)
+          }}>Pay
+            {loadingflag && showloaderflag === row?._id && <Spinner size="sm" tag='div' className='ms-3' color='white' />}
+          </Button></div> : <>
             <div className="flex items-center justify-end gap-3 pe-4">
               <CustomModalButton
                 title="Edit Client"

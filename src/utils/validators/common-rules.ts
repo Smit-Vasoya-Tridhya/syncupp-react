@@ -64,6 +64,6 @@ export const validateConfirmPassword = z
   .min(1, { message: messages.contactRequired })
   .min(10, { message: messages.contactLengthMin })
   .max(13, { message: messages.contactLengthMin })
-  .regex( new RegExp(/^[0-9+]+$/),{
+  .regex( new RegExp(/^[0-9+-]+$/),{
     message : messages.contactLengthMin,
   })

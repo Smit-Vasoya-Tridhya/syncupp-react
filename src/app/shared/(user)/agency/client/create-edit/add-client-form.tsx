@@ -78,6 +78,7 @@ export default function AddClientForm(props: any) {
     state: data?.client?.state?.id,
     country: data?.client?.country?.id
   });  
+  
   let countryOptions: Record<string, string>[] = [];
   clientSliceData?.countries !== '' && clientSliceData?.countries?.map((country: Record<string, string>) => {
     countryOptions.push({ name: country?.name, value: country?.name }) 
@@ -132,11 +133,14 @@ export default function AddClientForm(props: any) {
     if(title === 'New Client') {
       dispatch(postAddClient(fullData)).then((result: any) => {
         if (postAddClient.fulfilled.match(result)) {
+          // result.payload?.data?.referral_points 
+
+          console.log(result.payload?.data?.referral_points,'result')
           setLoader(false);
           setSave(false);
           if (result && result.payload.success === true) {
             router.push(routes.clients.payment)
-            save && closeModal();
+            // save && closeModal();
             setReset({...initialValues})
             dispatch(getAllClient({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
             dispatch(RemoveRegionalData())
@@ -196,7 +200,7 @@ export default function AddClientForm(props: any) {
               </ActionIcon>
             </div>
                 <TitleSeparation
-                  className="pt-5 mb-8 dark:before:bg-gray-200 xl:mb-7 dark:[&>span]:bg-[#191919]"
+                  className="mb-10 dark:before:bg-gray-200 xl:mb-7 dark:[&>span]:bg-[#191919]"
                   title='Account Info'
                 />
             <div className={cn('grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-4')}>
@@ -243,7 +247,7 @@ export default function AddClientForm(props: any) {
                 />
             </div>
               <TitleSeparation
-                  className="pt-5 mb-8 dark:before:bg-gray-200 xl:mb-7 dark:[&>span]:bg-[#191919]"
+                  className="mb-10 dark:before:bg-gray-200 xl:mb-7 dark:[&>span]:bg-[#191919]"
                   title='Company Info'
                 />
             <div className={cn('grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-4')}>
@@ -269,7 +273,7 @@ export default function AddClientForm(props: any) {
                 />
             </div>
                 <TitleSeparation
-                  className="pt-5 mb-8 dark:before:bg-gray-200 xl:mb-7 dark:[&>span]:bg-[#191919]"
+                  className="mb-10 dark:before:bg-gray-200 xl:mb-7 dark:[&>span]:bg-[#191919]"
                   title='Address'
                 />
             <div className={cn('grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-4')}>

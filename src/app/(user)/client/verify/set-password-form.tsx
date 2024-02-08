@@ -27,8 +27,8 @@ export default function SetPasswordForm(props: any) {
   const agency = searchParams.get("agency");
   
   const initialValues = {
-    firstName: '',
-    lastName: '',
+    // firstName: '',
+    // lastName: '',
     email: email ?? '' ,
     password: '',
     confirmPassword: '',
@@ -39,8 +39,8 @@ export default function SetPasswordForm(props: any) {
       email: email,
       agency_id: agency,
       password: data?.password,
-      first_name: data?.firstName,
-      last_name: data?.lastName,
+      // first_name: data?.firstName,
+      // last_name: data?.lastName,
       redirect: redirect
     }
     dispatch(postVerifyClient(apiData)).then((result: any) => {
@@ -58,7 +58,7 @@ export default function SetPasswordForm(props: any) {
           validationSchema={setPasswordSchema}
           onSubmit={onSubmit}
           useFormProps={{
-            mode: 'onTouched',
+            mode: 'all',
             defaultValues: initialValues,
           }}
         >
@@ -70,7 +70,7 @@ export default function SetPasswordForm(props: any) {
             >
               {name} invited you to their Syncupp. Setup your password to join {name} on Syncupp.
             </Title> <br />
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:gap-5 xl:pb-2">
+              {/* <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:gap-5 xl:pb-2">
                 <Input
                   onKeyDown={handleKeyDown}
                   type="text"
@@ -95,7 +95,7 @@ export default function SetPasswordForm(props: any) {
                   {...register('lastName')}
                   error={errors?.lastName?.message}
                 />
-              </div>
+              </div> */}
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:gap-5 xl:pb-2">
                 <Input
                   onKeyDown={handleKeyDown}

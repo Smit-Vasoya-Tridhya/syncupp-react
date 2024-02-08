@@ -19,7 +19,7 @@ const pageHeader = {
 
 export default function AgreementPage() {
 
-    console.log(Jsondata.agency?.agreement?.table?.title)
+    // console.log(Jsondata.agency?.agreement?.table?.title)
 
     const dispatch = useDispatch();
     const router = useRouter();

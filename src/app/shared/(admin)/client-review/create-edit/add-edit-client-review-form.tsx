@@ -42,7 +42,6 @@ export default function AddClientReviewForm(props: any) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const [isImageDeleted, setIsImageDeleted] = useState(false);
-  console.log(selectedFile, 'selected.....');
   const handleFileChange = (e: any) => {
     const file = e.target.files?.[0];
     if (file && !['image/jpeg', 'image/png'].includes(file.type)) {
@@ -60,7 +59,6 @@ export default function AddClientReviewForm(props: any) {
       const reader = new FileReader();
       reader.onload = (event: any) => {
         const previewUrl = event.target.result;
-        console.log('Preview URL:', previewUrl);
       };
       reader.readAsDataURL(file);
     }
@@ -87,7 +85,6 @@ export default function AddClientReviewForm(props: any) {
     review: data?.review,
   };
 
-  console.log(defaultValuess, 'asasfasfasfa');
 
   const onSubmit: SubmitHandler<ClientReviewSchema> = (data) => {
     try {
@@ -126,7 +123,7 @@ export default function AddClientReviewForm(props: any) {
       });
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -143,7 +140,7 @@ export default function AddClientReviewForm(props: any) {
           validationSchema={clientReviewSchema}
           onSubmit={onSubmit}
           useFormProps={{
-            mode: 'onChange',
+            mode: 'all',
             defaultValues: defaultValuess,
           }}
           className=" p-10 [&_label]:font-medium"

@@ -35,8 +35,8 @@ type VerifyClientData = {
   email: string;
   agency_id: string;
   password?: string;
-  first_name?: string;
-  last_name?: string;
+  // first_name?: string;
+  // last_name?: string;
   redirect: boolean;
 }
 
@@ -316,7 +316,7 @@ export const clientSlice = createSlice({
         if (action.payload.status == false) {
           toast.error(action.payload.message)
         } else {
-          toast.success(action.payload.message)
+          // toast.success(action.payload.message)
         }
         return {
           ...state,
@@ -440,13 +440,13 @@ export const clientSlice = createSlice({
             getAllClientStatus: 'success'
           }
         } else {
-          const fullName = action?.payload?.response?.data[0]?.first_name + " " + action?.payload?.response?.data[0]?.last_name
+          // const fullName = action?.payload?.response?.data[0]?.first_name + " " + action?.payload?.response?.data[0]?.last_name
           return {
             ...state,
             loading: false,
             clientList: action?.payload?.response?.data,
             clientId: action?.payload?.response?.data[0]?.reference_id,
-            clientName: fullName,
+            clientName: action?.payload?.response?.data[0]?.name,
           }
         }
       })

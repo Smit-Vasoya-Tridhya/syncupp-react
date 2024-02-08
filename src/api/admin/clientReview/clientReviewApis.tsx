@@ -66,7 +66,7 @@ export const DeleteClientReviewData = async (data: AddClientReviewData): Promise
 };
 // Update Client Review Data By ID
 export const UpdateClientReviewDataByID = async (data: FormData, id: string): Promise<ApiResponse> => {
-  console.log(data,' slice data:..')
+  // console.log(data,' slice data:..')
   const response = await AxiosDefault({
     url: `/api/v1/admin/update-client-review/${id}`,
     method: "PUT",

@@ -14,6 +14,10 @@ import ViewTaskForm from "../create-edit/view-task-form";
 import { FaUserCircle } from "react-icons/fa";
 import { MdOutlineCalendarMonth } from "react-icons/md";
 import { formatDate } from '@/utils/format-date';
+import { useDispatch, useSelector } from "react-redux";
+import { getAllTask, putTaskStatusChange } from "@/redux/slices/user/task/taskSlice";
+import cn from "@/utils/class-names";
+import moment from "moment";
 // import { CSS } from "@dnd-kit/utilities";
 
 
@@ -24,6 +28,8 @@ interface Props {
 function TaskCard({ task }: Props) {
   // const [mouseIsOver, setMouseIsOver] = useState(false);
   // console.log("mouse is over....", mouseIsOver)
+  const signIn = useSelector((state: any) => state?.root?.signIn)
+  const dispatch = useDispatch();
 
   const {
     setNodeRef,
@@ -33,7 +39,7 @@ function TaskCard({ task }: Props) {
     transition,
     isDragging,
   } = useSortable({
-    id: task.id,
+    id: task._id,
     data: {
       type: "Task",
       task,
@@ -57,6 +63,21 @@ function TaskCard({ task }: Props) {
     );
   }
 
+
+const handleApiCall = (statusData: Record<string, string>) => {
+
+  dispatch(putTaskStatusChange({ _id: statusData?._id, status: statusData?.status })).then((result: any) => {
+    if (putTaskStatusChange.fulfilled.match(result)) {
+      if (result && result.payload.success === true) {
+        dispatch(getAllTask({ pagination: false }));
+      }
+    }
+  });
+
+}
+
+
+
   return (
     <div
       ref={setNodeRef}
@@ -77,89 +98,91 @@ function TaskCard({ task }: Props) {
         <div className="flex items-center gap-2 mt-4">
           <Tooltip
             size="sm"
-            content={() => task?.name}
+            content={() => task?.title}
             placement="top-start"
             color="invert"
           >
             <ActionIcon variant="text" className="w-[13rem] text-left">
-            <Title
-              as="h4"
-              className="ps-4 my-3 w-[13rem] text-[20px] lg:text-xl 4xl:text-[22px] truncate"
-            >
-              {task?.name}
-            </Title>
+              <Title
+                as="h4"
+                className="ps-4 my-3 w-[13rem] text-[20px] lg:text-xl 4xl:text-[22px] truncate"
+              >
+                {task?.title}
+              </Title>
             </ActionIcon>
           </Tooltip>
-          <div className="ms-auto">
+          <div className={cn(
+            'ms-auto',
+            signIn?.role === 'client' && 'me-4'
+          )}>
             <CustomModalButton
               icon={<EyeIcon className="h-4 w-4" />}
               view={<ViewTaskForm data={task} />}
               customSize="600px"
               title='View Task'
             />
-            <Popover
-              placement="left"
-              className="z-[99] min-w-[135px] px-0 dark:bg-gray-100 [&>svg]:dark:fill-gray-100"
-              content={({ setOpen }) => (
-                <div className="px-2 text-gray-900">
-                  <Button
-                    variant="text"
-                    onClick={() => setOpen(false)}
-                    className="flex w-full items-center justify-start px-2 py-2.5 hover:bg-gray-100 focus:outline-none dark:hover:bg-gray-50"
-                  >
-                    {/* <PiCopySimple className="mr-2 h-5 w-5 text-gray-500" /> */}
-                    Pending
-                  </Button>
-                  <Button
-                    variant="text"
-                    onClick={() => setOpen(false)}
-                    className="flex w-full items-center justify-start px-2 py-2.5 hover:bg-gray-100 focus:outline-none dark:hover:bg-gray-50"
-                  >
-                    {/* <PiShareFat className="mr-2 h-5 w-5 text-gray-500" /> */}
-                    Inprogress
-                  </Button>
-                  <Button
-                    variant="text"
-                    className="flex w-full items-center justify-start px-2 py-2.5 hover:bg-gray-100 focus:outline-none dark:hover:bg-gray-50"
-                    onClick={() => {
-                      // onDeleteItem(item.id);
-                      setOpen(false);
-                    }}
-                  >
-                    {/* <PiTrashSimple className="mr-2 h-5 w-5 text-gray-500" /> */}
-                    Completed
-                  </Button>
-                </div>
-              )}
-            >
-              <ActionIcon title={'More Options'} variant="text">
-                <PiDotsThreeOutlineVerticalFill className="h-5 w-5 text-gray-500" />
-              </ActionIcon>
-            </Popover>
+            {signIn?.role !== 'client' &&
+              <Popover
+                placement="left"
+                className="z-[99] min-w-[135px] px-0 dark:bg-gray-100 [&>svg]:dark:fill-gray-100"
+                content={({ setOpen }) => (
+                  <div className="px-2 text-gray-900">
+                    <Button
+                      variant="text"
+                      onClick={() => handleApiCall({ _id: task?._id, status: 'pending' })}
+                      className="flex w-full items-center justify-start px-2 py-2.5 hover:bg-gray-100 focus:outline-none dark:hover:bg-gray-50"
+                    >
+                      {/* <PiCopySimple className="mr-2 h-5 w-5 text-gray-500" /> */}
+                      Pending
+                    </Button>
+                    <Button
+                      variant="text"
+                      onClick={() => handleApiCall({ _id: task?._id, status: 'in_progress' })}
+                      className="flex w-full items-center justify-start px-2 py-2.5 hover:bg-gray-100 focus:outline-none dark:hover:bg-gray-50"
+                    >
+                      {/* <PiShareFat className="mr-2 h-5 w-5 text-gray-500" /> */}
+                      Inprogress
+                    </Button>
+                    <Button
+                      variant="text"
+                      className="flex w-full items-center justify-start px-2 py-2.5 hover:bg-gray-100 focus:outline-none dark:hover:bg-gray-50"
+                      onClick={() => handleApiCall({ _id: task?._id, status: 'completed' })}
+                    >
+                      {/* <PiTrashSimple className="mr-2 h-5 w-5 text-gray-500" /> */}
+                      Completed
+                    </Button>
+                  </div>
+                )}
+              >
+                <ActionIcon title={'More Options'} variant="text">
+                  <PiDotsThreeOutlineVerticalFill className="h-5 w-5 text-gray-500" />
+                </ActionIcon>
+              </Popover>
+            }
           </div>
         </div>
 
         <div className="flex items-center gap-2 ps-4 mt-6">
-            <MdOutlineCalendarMonth className="h-5 w-5" />
-            {/* <span>Deadline: </span> */}
-            <span className="font-medium text-gray-1000 mt-1">
-              {task?.date}
-            </span>
+          <MdOutlineCalendarMonth className="h-5 w-5" />
+          <span>Deadline: </span>
+          <span className="font-medium text-gray-1000 mt-1">
+            {moment(task?.due_date).format("DD MMM, YY - hh:mm A")}
+          </span>
         </div>
         <div className="ps-3 mt-6 flex items-center justify-start gap-3">
-        <Tooltip
+          <Tooltip
             size="sm"
-            content={() => task?.assigned_by}
+            content={() => task?.assigned_by_name}
             placement="top"
             color="invert"
           >
             <ActionIcon variant="text">
-              <FaUserCircle  size='25px' />
+              <FaUserCircle size='25px' />
             </ActionIcon>
           </Tooltip>
           <Tooltip
             size="sm"
-            content={() => task?.client}
+            content={() => task?.client_name}
             placement="top"
             color="invert"
           >
@@ -169,7 +192,7 @@ function TaskCard({ task }: Props) {
           </Tooltip>
           <Tooltip
             size="sm"
-            content={() => task?.assigned_to}
+            content={() => task?.assigned_to_name}
             placement="top"
             color="invert"
           >
