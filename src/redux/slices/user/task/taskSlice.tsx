@@ -13,7 +13,7 @@ type AddTaskData = {
 
 type EditTaskData = {
   _id: string;
-  title?: string;
+  title: string;
   description?: string;
   due_date?: string;
   client?: string;
@@ -95,7 +95,16 @@ export const patchEditTask: any = createAsyncThunk(
   "task/patchEditTask",
   async (data: EditTaskData) => {
     try {
-      const response: any = await PatchEditTaskApi(data);
+      const apiData = {
+        _id: data?._id,
+        title: data?.title,
+        internal_info: data?.description,
+        due_date: data?.due_date,
+        client_id: data?.client,
+        assign_to: data?.assigned,
+        mark_as_done: data?.done
+      }
+      const response: any = await PatchEditTaskApi(apiData);
       return response;
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as PostAPIResponse;
