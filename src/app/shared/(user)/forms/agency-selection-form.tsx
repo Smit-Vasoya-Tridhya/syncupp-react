@@ -39,7 +39,7 @@ export default function AgencySelectionForm() {
     const onSubmit = (data: any) => {
     };
 
-    if (clientSliceData?.agencies.length === 0) {
+    if (clientSliceData?.loading) {
         return <SelectLoader />
     } else {
         return (

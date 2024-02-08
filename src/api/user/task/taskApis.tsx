@@ -19,6 +19,10 @@ type PatchEditTaskApiData = {
   done?: boolean;
 }
 
+type putTaskStatusChangeApiData = {
+  status: string;
+}
+
 type DeleteTaskApiData = {
   taskIdsToDelete: string[];
 }
@@ -92,6 +96,17 @@ export const DeleteTaskApi = async (data: DeleteTaskApiData) => {
   const response = await AxiosDefault({
     url: `/api/v1/activity/delete-task`,
     method: "DELETE",
+    data: data,
+    contentType: "application/json", 
+  });
+  const responseData = response.data;
+  return responseData;
+};
+
+export const putTaskStatusChangeApi = async (data: putTaskStatusChangeApiData) => {
+  const response = await AxiosDefault({
+    url: `/api/v1/activity/update-status`,
+    method: "PUT",
     data: data,
     contentType: "application/json", 
   });

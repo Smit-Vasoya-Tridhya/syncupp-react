@@ -1,4 +1,4 @@
-import { DeleteTaskApi, GetAllTaskApi, GetTaskByIdApi, PatchEditTaskApi, PostAddTaskApi } from "@/api/user/task/taskApis";
+import { DeleteTaskApi, GetAllTaskApi, GetTaskByIdApi, PatchEditTaskApi, PostAddTaskApi, putTaskStatusChangeApi } from "@/api/user/task/taskApis";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { toast } from 'react-hot-toast';
 
@@ -37,6 +37,9 @@ type DeleteTaskData = {
   taskIdsToDelete: string[];
 }
 
+type putTaskStatusChangeData = {
+  status: string;
+}
 interface PostAPIResponse {
   status: boolean;
   message: string
@@ -51,6 +54,7 @@ interface TaskInitialState {
   getAllTaskStatus: string;
   getTaskStatus: string;
   editTaskStatus: string;
+  editTaskStatusChange: string;
   deleteTaskStatus: string;
 }
 
@@ -63,6 +67,7 @@ const initialState: TaskInitialState = {
   getAllTaskStatus: '',
   getTaskStatus: '',
   editTaskStatus: '',
+  editTaskStatusChange: '',
   deleteTaskStatus: '',
 };
 
@@ -136,6 +141,20 @@ export const deleteTask: any = createAsyncThunk(
     console.log("We are in task slice.........", data)
     try {
       const response: any = await DeleteTaskApi(data);
+      console.log("delete task response....", response);
+      return response;
+    } catch (error: any) {
+      return { status: false, message: error.response.data.message } as PostAPIResponse;
+    }
+  }
+);
+
+export const putTaskStatusChange: any = createAsyncThunk(
+  "task/putTaskStatusChange",
+  async (data: putTaskStatusChangeData) => {
+    console.log("We are in task slice.........", data)
+    try {
+      const response: any = await putTaskStatusChangeApi(data);
       console.log("delete task response....", response);
       return response;
     } catch (error: any) {
@@ -314,6 +333,42 @@ export const taskSlice: any = createSlice({
           ...state,
           loading: false,
           deleteTaskStatus: 'error'
+        }
+      });
+    // new cases for update task status
+    builder
+      .addCase(putTaskStatusChange.pending, (state) => {
+        return {
+          ...state,
+          loading: true,
+          editTaskStatusChange: 'pending'
+        }
+      })
+      .addCase(putTaskStatusChange.fulfilled, (state, action) => {
+        // console.log(action.payload);
+        if (action.payload.status == false) {
+          toast.error(action.payload.message)
+          return {
+            ...state,
+            //   data: action.payload,
+            loading: false,
+            editTaskStatusChange: 'error'
+          }
+        } else {
+          toast.success(action.payload.message)
+          return {
+            ...state,
+            //   data: action.payload,
+            loading: false,
+            editTaskStatusChange: 'success'
+          }
+        }
+      })
+      .addCase(putTaskStatusChange.rejected, (state) => {
+        return {
+          ...state,
+          loading: false,
+          editTaskStatusChange: 'error'
         }
       });
   },

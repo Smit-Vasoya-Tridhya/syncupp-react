@@ -1,14 +1,25 @@
 "use client";
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { handleKeyDown } from '@/utils/common-functions';
 import { PiMagnifyingGlassBold } from "react-icons/pi";
+import { useDispatch } from 'react-redux';
+import { getAllTask } from '@/redux/slices/user/task/taskSlice';
+import { useDebouncedValue } from '@/hooks/use-debounce';
 
 
 export default function KanbanSearch() {
     const [searchTerm, setSearchTerm] = useState('');
     // console.log("search term....", searchTerm)
+    const dispatch = useDispatch();
+
+    const debouncedValue = useDebouncedValue<string>(searchTerm, 1000);
+
+
+    useEffect(() => {
+        dispatch(getAllTask({ search: debouncedValue, pagination: false }))
+    }, [dispatch, debouncedValue]);
    
     const onSearchClear = () => {
         setSearchTerm('');
