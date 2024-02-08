@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import { clientteamStatuschange, getAllTeamMember } from '@/redux/slices/user/team-member/teamSlice';
 import { initiateRazorpay } from '@/services/clientpaymentService';
+import { useState } from 'react';
 
 type Columns = {
   data: any[];
@@ -100,6 +101,8 @@ export const GetclientteamColumns = ({
   const clientSliceData = useSelector((state: any) => state?.root?.client);
   const loading = useSelector((state: any) => state?.root?.client?.loading);
   console.log(loading, 'loading')
+
+  const [loadingflag, setloadingflag] = useState(false)
 
 
   const ClintteamlistAPIcall = async () => {
@@ -261,7 +264,7 @@ export const GetclientteamColumns = ({
               placement="top"
               color="invert"
             >
-              <Button disabled={loading} onClick={() => { initiateRazorpay(router, routes.client_team, token, row?.reference_id?._id, ClintteamlistAPIcall, dispatch) }} size="sm" variant="outline" className='bg-white text-black' aria-label={'Approve Team member'}>
+              <Button disabled={loadingflag} onClick={() => { initiateRazorpay(router, routes.client_team, token, row?.reference_id?._id, ClintteamlistAPIcall, setloadingflag) }} size="sm" variant="outline" className='bg-white text-black' aria-label={'Approve Team member'}>
                 <MdOutlineDone className="h-4 w-4" />
               </Button>
             </Tooltip>

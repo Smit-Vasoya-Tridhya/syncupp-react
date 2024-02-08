@@ -25,8 +25,8 @@ export default function ClientPaymentPage() {
     console.log(addClientteamdetails, 'addClientteamdetails')
     const { userProfile } = useSelector((state: any) => state?.root?.signIn);
     const { loading } = useSelector((state: any) => state?.root?.payment);
-    console.log(loading,'loading')
-    
+    console.log(loading, 'loading')
+
     const [loadingflag, setloadingflag] = useState(false)
     const [selectedValue, setSelectedValue] = useState('option2Value');
 
@@ -56,7 +56,8 @@ export default function ClientPaymentPage() {
                             <div className="rounded-lg border border-gray-200">
                                 <div className="px-3 py-2">
                                     <input
-                                        style={{cursor:"not-allowed"}}
+                                        disabled
+                                        style={{ cursor: "not-allowed" }}
                                         type="radio"
                                         id="option1"
                                         name="options"
