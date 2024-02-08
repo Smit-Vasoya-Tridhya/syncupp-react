@@ -137,7 +137,7 @@ export default function AddClientForm(props: any) {
           setSave(false);
           if (result && result.payload.success === true) {
             router.push(routes.clients.payment)
-            save && closeModal();
+            // save && closeModal();
             setReset({...initialValues})
             dispatch(getAllClient({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
             dispatch(RemoveRegionalData())
