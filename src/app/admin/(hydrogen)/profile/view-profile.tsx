@@ -74,7 +74,7 @@ export default function ViewProfileForm(props: any) {
           resetValues={reset}
           onSubmit={onSubmit}
           useFormProps={{
-            mode: 'onChange',
+            mode: 'all',
             defaultValues: initialValues,
           }}
           className=" p-10 [&_label]:font-medium"

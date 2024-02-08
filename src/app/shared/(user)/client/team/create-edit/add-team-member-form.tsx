@@ -41,7 +41,7 @@ export default function AddTeamMemberForm(props: any) {
     email: '',
     name: '',
     contact_number: '',
-    role: ''
+    role: signIn?.role === 'client' ? 'Team member' : ''
   };
   // console.log("Row data....", row)
 

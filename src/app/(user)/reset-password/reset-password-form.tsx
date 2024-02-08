@@ -45,7 +45,7 @@ export default function ResetPasswordForm() {
         onSubmit={onSubmit}
         // resetValues={reset}
         useFormProps={{
-          mode: 'onTouched',
+          mode: 'all',
           defaultValues: initialValues,
         }}
       >

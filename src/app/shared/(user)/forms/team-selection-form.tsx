@@ -50,7 +50,8 @@ export default function TeamSelectionForm() {
                 <Form
                     onSubmit={onSubmit}
                     useFormProps={{
-                        defaultValues: initialValue
+                        defaultValues: initialValue,
+                        mode: 'all'
                     }}
                 >
                     {({ control, formState: { errors } }) => (

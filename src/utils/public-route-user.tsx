@@ -31,6 +31,7 @@ const WithAuthPublic = (WrappedComponent: any) => {
           // window.location.href = subscriptionData.data?.payment_url;
           socialSignup?.user?.data?.user?.status != "payment_pending" && router.replace(routes.dashboard)
         } else {
+          setLoading(false);
           // console.log('else',33)
           // router.replace(routes.admin.dashboard)
         }

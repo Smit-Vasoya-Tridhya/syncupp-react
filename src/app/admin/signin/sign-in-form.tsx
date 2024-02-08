@@ -46,7 +46,7 @@ export default function SignInForm() {
         validationSchema={loginSchema}
         onSubmit={onSubmit}
         useFormProps={{
-          mode: 'onChange',
+          mode: 'all',
           defaultValues: initialValues,
         }}
       >

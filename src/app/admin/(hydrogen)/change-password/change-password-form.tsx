@@ -52,6 +52,7 @@ export default function ChangePasswordForm() {
         onSubmit={onSubmit}
         useFormProps={{
           defaultValues: initialValues,
+          mode: 'all'
         }}
         className=" [&_label]:font-medium p-10"
       >

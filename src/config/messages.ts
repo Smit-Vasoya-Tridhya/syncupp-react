@@ -90,7 +90,7 @@ export const messages = {
   startTimeIsRequired: 'Start Time is required',
   endDateIsRequired: 'End Date is required',
   endTimeIsRequired: 'End Time is required',
-  roleNameIsRequired: 'Role Name is required',
+  roleNameIsRequired: 'Role name is required',
   roleNameLengthMin: 'Role name must be at least 3 letters',
   errorSendingEmail: 'Error sending email',
   emailSentSuccessfully: 'Your email has been sent successfully.',

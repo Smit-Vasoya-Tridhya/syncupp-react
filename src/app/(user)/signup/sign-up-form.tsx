@@ -38,7 +38,7 @@ export default function SignUpForm(props: any) {
         validationSchema={signUpSchema}
         onSubmit={onSubmit}
         useFormProps={{
-          mode: 'onTouched',
+          mode: 'all',
           defaultValues: initialValues,
         }}
       >
