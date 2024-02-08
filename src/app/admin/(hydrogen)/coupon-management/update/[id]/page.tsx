@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { CouponManagementForm } from '@/utils/validators/coupon-management.schema';
 import PageHeader from '@/app/shared/page-header';
 import Uploadfile from '../../create/Uploadfile';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   GetCoupenListbyId,
@@ -24,7 +24,6 @@ export default function Updateform(props: any) {
   const dispatch = useDispatch();
   const { id } = useParams();
   const router = useRouter();
-
   const { loading } = useSelector((state: any) => state?.root?.adminCoupon);
 
   const onSubmit: SubmitHandler<CouponManagementForm> = async (data) => {
@@ -48,119 +47,123 @@ export default function Updateform(props: any) {
   const { CouponSingledata } = useSelector(
     (state: any) => state?.root?.adminCoupon
   );
+
   useEffect(() => {
-    dispatch(GetCoupenListbyId(id));
-  }, []);
-  const defaultValues = {
-    brand: CouponSingledata?.data?.brand,
-    couponCode: CouponSingledata?.data?.couponCode,
-    discountTitle: CouponSingledata?.data?.discountTitle,
-    siteURL: CouponSingledata?.data?.siteURL,
-    brandLogo: CouponSingledata?.data?.brandLogo,
+    dispatch(GetCoupenListbyId(id)).unwrap();
+  }, [dispatch]);
+
+  let intialValue = {
+    brand: CouponSingledata?.data?.brand ?? '',
+    couponCode: CouponSingledata?.data?.couponCode ?? '',
+    discountTitle: CouponSingledata?.data?.discountTitle ?? '',
+    siteURL: CouponSingledata?.data?.siteURL ?? '',
+    brandLogo: CouponSingledata?.data?.brandLogo ?? '',
   };
+
+  // console.log(intialValue, 'intial');
   return (
     <>
       <PageHeader title="Coupon Management/ Edit">
         <div className="mt-4 flex items-center gap-3 @lg:mt-0"></div>
       </PageHeader>
+
       <Form<CouponManagementForm>
         validationSchema={CouponManagementForm}
         onSubmit={onSubmit}
         useFormProps={{
           mode: 'onChange',
-          defaultValues: defaultValues,
+          defaultValues: intialValue,
         }}
         className=" p-10 [&_label]:font-medium"
+        resetValues={intialValue}
       >
         {({ register, control, formState: { errors }, setValue, setError }) => (
-          console.log('err', errors),
-          (
-            <div className="space-y-5">
-              <div className="mb-6 flex items-center justify-between">
-                <Title as="h3" className="text-xl xl:text-2xl">
-                  Edit Coupon
-                </Title>
-              </div>
-              <div
-                className={cn(
-                  'grid grid-cols-4 gap-4 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4'
-                )}
-              >
-                <Input
-                  label="Brand Name"
-                  placeholder="Enter here"
-                  color="info"
-                  className="[&>label>span]:font-medium"
-                  {...register('brand')}
-                  error={errors?.brand?.message}
-                />
-                <Input
-                  label="Coupon code"
-                  placeholder="Enter here."
-                  color="info"
-                  className="[&>label>span]:font-medium"
-                  {...register('couponCode')}
-                  error={errors?.couponCode?.message}
-                />
-                <Input
-                  label="Discount Title"
-                  placeholder="Enter here"
-                  color="info"
-                  className="[&>label>span]:font-medium"
-                  {...register('discountTitle')}
-                  error={errors?.discountTitle?.message}
-                />
-                <Input
-                  label="Website Url"
-                  placeholder="Enter here."
-                  color="info"
-                  className="[&>label>span]:font-medium"
-                  {...register('siteURL')}
-                  error={errors?.siteURL?.message}
-                />
-                <Uploadfile
-                  initialPath={CouponSingledata?.data?.brandLogo}
-                  name="brandLogo"
-                  readonly={false}
-                  user={true}
-                  setFieldValue={setValue}
-                  errors={setError}
-                />
-              </div>
-              <div>
-                {/* <div> */}
-                {/* </div> */}
-              </div>
-              <p style={{ color: 'red' }}>
-                {String(errors.brandLogo?.message || '')}
-              </p>
-              <div>
-                <div className={cn('grid grid-cols-2 gap-2 pt-5')}>
-                  <div>
-                    <Link href={routes.admin.couponManagement}>
-                      <Button
-                        variant="outline"
-                        className="@xl:w-auto dark:hover:border-gray-400"
-                      >
-                        Cancel
-                      </Button>
-                    </Link>
-
+          <div className="space-y-5">
+            <div className="mb-6 flex items-center justify-between">
+              <Title as="h3" className="text-xl xl:text-2xl">
+                Edit Coupon
+              </Title>
+            </div>
+            <div
+              className={cn(
+                'grid grid-cols-4 gap-4 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4'
+              )}
+            >
+              <Input
+                label="Brand Name"
+                placeholder="Enter here"
+                color="info"
+                className="[&>label>span]:font-medium"
+                {...register('brand')}
+                error={errors?.brand?.message}
+              />
+              <Input
+                label="Coupon code"
+                placeholder="Enter here."
+                color="info"
+                className="[&>label>span]:font-medium"
+                {...register('couponCode')}
+                error={errors?.couponCode?.message}
+              />
+              <Input
+                label="Discount Title"
+                placeholder="Enter here"
+                color="info"
+                className="[&>label>span]:font-medium"
+                {...register('discountTitle')}
+                error={errors?.discountTitle?.message}
+              />
+              <Input
+                label="Website Url"
+                placeholder="Enter here."
+                color="info"
+                className="[&>label>span]:font-medium"
+                {...register('siteURL')}
+                error={errors?.siteURL?.message}
+                // defaultValue={}
+              />
+              <Uploadfile
+                initialPath={CouponSingledata?.data?.brandLogo}
+                name="brandLogo"
+                readonly={false}
+                user={true}
+                setFieldValue={setValue}
+                errors={setError}
+              />
+            </div>
+            <div>
+              {/* <div> */}
+              {/* </div> */}
+            </div>
+            <p style={{ color: 'red' }}>
+              {String(errors.brandLogo?.message || '')}
+            </p>
+            <div>
+              <div className={cn('grid grid-cols-2 gap-2 pt-5')}>
+                <div>
+                  <Link href={routes.admin.couponManagement}>
                     <Button
-                      type="submit"
-                      className="hover:gray-700 ms-3 @xl:w-auto dark:bg-gray-200 dark:text-white"
-                      disabled={loading}
+                      variant="outline"
+                      className="@xl:w-auto dark:hover:border-gray-400"
                     >
-                      Save
-                      {loading && (
-                        <Spinner size="sm" tag="div" className="ms-3" />
-                      )}
+                      Cancel
                     </Button>
-                  </div>
+                  </Link>
+
+                  <Button
+                    type="submit"
+                    className="hover:gray-700 ms-3 @xl:w-auto dark:bg-gray-200 dark:text-white"
+                    disabled={loading}
+                  >
+                    Save
+                    {loading && (
+                      <Spinner size="sm" tag="div" className="ms-3" />
+                    )}
+                  </Button>
                 </div>
               </div>
             </div>
-          )
+          </div>
         )}
       </Form>
     </>

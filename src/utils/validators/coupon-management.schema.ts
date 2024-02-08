@@ -10,15 +10,15 @@ export const CouponManagementForm = z.object({
   brand: z
     .string()
     .min(1, { message: 'Brand Name is Required' })
-    .max(15, { message: 'Max 15 words are allowed' }), // string
+    .max(15, { message: 'Maximum Brand name length is 15!' }), // string
   couponCode: z
     .string()
     .min(1, { message: 'Coupon Code is Required' })
-    .max(20, { message: 'Max 20 words are allowed' }), // dropdown selection
+    .max(20, { message: 'Maximum Coupon Code length is 20!' }), // dropdown selection
   discountTitle: z
     .string()
     .min(1, { message: 'Discount Title is Required' })
-    .max(15, { message: 'Max 15 words are allowed' }), // date picker value
+    .max(15, { message: 'Maximum Discount Title length is 15!' }), // date picker value
   siteURL: z
     .string()
     .min(1, { message: 'Wesite url is Required' })
