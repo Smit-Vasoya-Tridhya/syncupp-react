@@ -1,11 +1,14 @@
 import cn from '@/utils/class-names';
 import { Button } from '@/components/ui/button';
+import { useSelector } from 'react-redux';
+import Spinner from './ui/spinner';
 
 interface FormFooterProps {
   className?: string;
   altBtnText?: string;
   submitBtnText?: string;
   isLoading?: boolean;
+  invoiceloader?: any;
   handleAltBtn?: () => void;
 }
 
@@ -17,7 +20,10 @@ export default function FormFooter({
   submitBtnText = 'Submit',
   className,
   handleAltBtn,
+  invoiceloader
 }: FormFooterProps) {
+  const invoiceSliceData = useSelector((state: any) => state?.root?.invoice);
+
   return (
     <div
       className={cn(
@@ -33,13 +39,29 @@ export default function FormFooter({
       >
         {altBtnText}
       </Button> */}
-      <Button
+
+      {invoiceloader?.loading ? (<Button
+        type="submit"
+        isLoading={isLoading}
+        className="w-full @xl:w-auto dark:bg-gray-100 dark:text-white dark:active:bg-gray-100"
+        disabled={invoiceSliceData?.loading}
+      >
+        {submitBtnText}
+        {invoiceSliceData?.loading && (
+          <Spinner
+            size="sm"
+            tag="div"
+            className="ms-3"
+            color="white"
+          />
+        )}
+      </Button>) : (<Button
         type="submit"
         isLoading={isLoading}
         className="w-full @xl:w-auto dark:bg-gray-100 dark:text-white dark:active:bg-gray-100"
       >
         {submitBtnText}
-      </Button>
+      </Button>)}
     </div>
   );
 }

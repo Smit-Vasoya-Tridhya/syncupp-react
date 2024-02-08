@@ -40,14 +40,14 @@ export const PaymentTransactionColumns = ({
 
     const StatusHandler = (status: string, id: string, setOpen: any) => {
         setOpen(false)
-        dispatch(updateagreementStatus({ data: { status: status }, id: id })).then((result: any) => {
-            if (updateagreementStatus.fulfilled.match(result)) {
-                // console.log('resultt', result)
-                if (result && result.payload.success === true) {
-                    dispatch(getAllAgencyagreement({ page: currentPage, items_per_page: pageSize, sort_field: sortConfig?.key, sort_order: sortConfig?.direction }));
-                }
-            }
-        })
+        // dispatch(updateagreementStatus({ data: { status: status }, id: id })).then((result: any) => {
+        //     if (updateagreementStatus.fulfilled.match(result)) {
+        //         // console.log('resultt', result)
+        //         if (result && result.payload.success === true) {
+        //             dispatch(getAllAgencyagreement({ page: currentPage, items_per_page: pageSize, sort_field: sortConfig?.key, sort_order: sortConfig?.direction }));
+        //         }
+        //     }
+        // })
     }
 
 

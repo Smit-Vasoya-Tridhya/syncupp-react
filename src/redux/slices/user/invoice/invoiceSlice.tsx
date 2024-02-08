@@ -8,7 +8,7 @@ type GetInvoiceApiData = {
   name: string;
 };
 type DeleteInvoice = {
-  invoiceIdsToDelete: [string]
+  invoiceIdsToDelete:  string | string[]
   }
 type UpdateInvoiceStatusByID = {
   _id:string,
@@ -16,6 +16,7 @@ type UpdateInvoiceStatusByID = {
   }
 type UpdateInvoiceDataByID = {
   _id:string,
+  invoice_id?: string,
   client_id: string,
   due_date: Date,
   invoice_date: Date,
@@ -59,6 +60,66 @@ type SendInvoice = {
       }
     ]
     }
+//  type GetInvoiceDataByID = 
+//   {
+//     _id: string,
+//     invoice_number: string,
+//     due_date: Date,
+//     invoice_date: Date,
+//     invoice_content: [
+//       {
+//         item: string,
+//         qty: Number,
+//         rate: Number,
+//         tax: string,
+//         amount: Number,
+//         description: string,
+//         _id: string
+//       },
+//     ],
+//     sub_total: Number,
+//     total: Number,
+//     createdAt: Date,
+//     updatedAt: Date,
+//     status: string,
+//     from: {
+//       _id: string,
+//       company_name: string,
+//       address: string,
+//       pincode: Number,
+//       state: {
+//         _id: string,
+//         name: string
+//       },
+//       city: {
+//         _id: string,
+//         name: string
+//       },
+//       country: {
+//         _id: string,
+//         name: string
+//       }
+//     },
+//     to: {
+//       _id: string,
+//       name: string,
+//       company_name: string,
+//       address: string,
+//       pincode: Number,
+//       state: {
+//         _id: string,
+//         name: string
+//       },
+//       city: {
+//         _id: string,
+//         name: string
+//       },
+//       country: {
+//         _id: string,
+//         name: string
+//       }
+//     }
+//   }
   type GetInvoiceDataByID = 
   {
     _id: string,
@@ -75,15 +136,6 @@ type SendInvoice = {
         description: string,
         _id: string
       },
-      {
-        item: string,
-        qty: Number,
-        rate: Number,
-        tax: string,
-        amount: Number,
-        description: string,
-        _id: string
-      }
     ],
     sub_total: Number,
     total: Number,
@@ -92,6 +144,7 @@ type SendInvoice = {
     status: string,
     from: {
       _id: string,
+      name:string,
       company_name: string,
       address: string,
       pincode: Number,
@@ -128,6 +181,9 @@ type SendInvoice = {
       }
     }
   }
+  type GetInvoiceDataClient ={
+    client_id:string
+  }
 type GetInvoiceData = {
     _id: string,
     company_name: string,
@@ -156,9 +212,6 @@ interface invoiceInitialState {
     loading: boolean;
     data: any;
     invoice: any;
-    countries: any;
-    states: any;
-    cities: any;
     getInvoiceStatus: string;
     getInvoiceApidata:any; 
     getInvoiceDataByIDdata:any; 
@@ -176,9 +229,6 @@ const initialState:invoiceInitialState = {
     loading: false,
     data: '',
     invoice: '',
-    countries: '',
-    states: '',
-    cities: '',
     getInvoiceStatus: '',
     getInvoiceApidata:'',
     getInvoiceDataByIDdata:'',
@@ -216,7 +266,7 @@ const initialState:invoiceInitialState = {
   );
   export const getInvoiceData: any = createAsyncThunk(
     "invoice/getInvoiceData",
-    async (data:GetInvoiceData) => {
+    async (data:GetInvoiceDataClient) => {
       try {
         const response: any = await GetInvoiceDataApi(data);
         return response;
@@ -271,9 +321,11 @@ const initialState:invoiceInitialState = {
   );
   export const updateInvoice: any = createAsyncThunk(
     "invoice/updateInvoice",
-    async (data:UpdateInvoiceDataByID) => {
+    async (data:UpdateInvoiceDataByID ) => {
+      const invoce_id = data?.invoice_id
+      delete data?.invoice_id;
       try {
-        const response: any = await UpdateInvoiceDataByIDApi(data);
+        const response: any = await UpdateInvoiceDataByIDApi(data , invoce_id );
         return response;
       } catch (error: any) {
         return { status: false, message: error.response.data.message } as PostAPIResponse;
@@ -328,11 +380,11 @@ const initialState:invoiceInitialState = {
           }
       })
       .addCase(getInvoiceApi.fulfilled, (state,action) => {
-        if(action.payload.status == false){
-            toast.error(action.payload.message)
-        } else {
-            toast.success(action.payload.message)
-        }
+        // if(action.payload.status == false){
+        //     toast.error(action.payload.message)
+        // } else {
+        //     toast.success(action.payload.message)
+        // }
         return{
           ...state,
           getInvoiceApidata: action.payload,
@@ -356,11 +408,11 @@ const initialState:invoiceInitialState = {
           }
       })
       .addCase(getInvoiceDataByID.fulfilled, (state,action) => {
-        if(action.payload.status == false){
-            toast.error(action.payload.message)
-        } else {
-            toast.success(action.payload.message)
-        }
+        // if(action.payload.status == false){
+        //     toast.error(action.payload.message)
+        // } else {
+        //     toast.success(action.payload.message)
+        // }
         return{
           ...state,
           getInvoiceDataByIDdata: action.payload,
@@ -384,14 +436,14 @@ const initialState:invoiceInitialState = {
           }
       })
       .addCase(getInvoiceData.fulfilled, (state,action) => {
-        if(action.payload.status == false){
-            toast.error(action.payload.message)
-        } else {
-            toast.success(action.payload.message)
-        }
+        // if(action.payload.status == false){
+        //     toast.error(action.payload.message)
+        // } else {
+        //     toast.success(action.payload.message)
+        // }
         return{
           ...state,
-          getInvoiceData: action.payload,
+          data: action.payload.data,
           loading: false,
           getInvoiceStatus: 'success'
         }
@@ -440,14 +492,14 @@ const initialState:invoiceInitialState = {
           }
       })
       .addCase(getAllInvoiceDataTable.fulfilled, (state,action) => {
-        if(action.payload.status == false){
-            toast.error(action.payload.message)
-        } else {
-            toast.success(action.payload.message)
-        }
+        // if(action.payload.status == false){
+        //     toast.error(action.payload.message)
+        // } else {
+        //     toast.success(action.payload.message)
+        // }
         return{
           ...state,
-          getAllInvoiceDataTableData: action.payload,
+          data: action.payload.data,
           loading: false,
           getInvoiceStatus: 'success'
         }
@@ -468,11 +520,11 @@ const initialState:invoiceInitialState = {
           }
       })
       .addCase(postSendInvoice.fulfilled, (state,action) => {
-        if(action.payload.status == false){
-            toast.error(action.payload.message)
-        } else {
-            toast.success(action.payload.message)
-        }
+        // if(action.payload.status == false){
+        //     toast.error(action.payload.message)
+        // } else {
+        //     toast.success(action.payload.message)
+        // }
         return{
           ...state,
           postSendInvoiceData: action.payload,
@@ -496,11 +548,11 @@ const initialState:invoiceInitialState = {
           }
       })
       .addCase(postDownloadInvoice.fulfilled, (state,action) => {
-        if(action.payload.status == false){
-            toast.error(action.payload.message)
-        } else {
-            toast.success(action.payload.message)
-        }
+        // if(action.payload.status == false){
+        //     toast.error(action.payload.message)
+        // } else {
+        //     toast.success(action.payload.message)
+        // }
         return{
           ...state,
           postDownloadInvoiceData: action.payload,
@@ -524,11 +576,11 @@ const initialState:invoiceInitialState = {
           }
       })
       .addCase(updateInvoice.fulfilled, (state,action) => {
-        if(action.payload.status == false){
-            toast.error(action.payload.message)
-        } else {
-            toast.success(action.payload.message)
-        }
+        // if(action.payload.status == false){
+        //     toast.error(action.payload.message)
+        // } else {
+        //     toast.success(action.payload.message)
+        // }
         return{
           ...state,
           updateInvoiceData: action.payload,
@@ -552,11 +604,11 @@ const initialState:invoiceInitialState = {
           }
       })
       .addCase(updateInvoiceStatus.fulfilled, (state,action) => {
-        if(action.payload.status == false){
-            toast.error(action.payload.message)
-        } else {
-            toast.success(action.payload.message)
-        }
+        // if(action.payload.status == false){
+        //     toast.error(action.payload.message)
+        // } else {
+        //     toast.success(action.payload.message)
+        // }
         return{
           ...state,
           updateInvoiceStatusData: action.payload,
@@ -580,11 +632,11 @@ const initialState:invoiceInitialState = {
           }
       })
       .addCase(DeleteInvoice.fulfilled, (state,action) => {
-        if(action.payload.status == false){
-            toast.error(action.payload.message)
-        } else {
-            toast.success(action.payload.message)
-        }
+        // if(action.payload.status == false){
+        //     toast.error(action.payload.message)
+        // } else {
+        //     toast.success(action.payload.message)
+        // }
         return{
           ...state,
           DeleteInvoiceData: action.payload,

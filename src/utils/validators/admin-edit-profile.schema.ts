@@ -9,8 +9,8 @@ import {
 
 // form zod validation schema
 export const adminEditProfileSchema = z.object({
-  first_name: z.string().min(1, { message: messages.firstNameRequired }),
-  last_name: z.string().min(1, { message: messages.lastNameRequired }),
+  first_name: z.string().min(1, { message: messages.firstNameRequired }).max(15, { message: messages.firstNameLength }),
+  last_name: z.string().min(1, { message: messages.lastNameRequired }).max(15, { message: messages.lastNameLength }),
   email: validateEmail,
   contact_number: validateContactNumber,
   // isAgreed: z.boolean(),
