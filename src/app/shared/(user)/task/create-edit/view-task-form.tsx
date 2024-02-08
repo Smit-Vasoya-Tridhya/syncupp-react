@@ -12,7 +12,7 @@ import { MdOutlineCalendarMonth } from 'react-icons/md';
 import { FaUserCircle } from 'react-icons/fa';
 import { Badge } from 'rizzui';
 import { useDispatch, useSelector } from 'react-redux';
-import { getTaskById, putTaskStatusChange } from '@/redux/slices/user/task/taskSlice';
+import { getAllTask, getTaskById, putTaskStatusChange } from '@/redux/slices/user/task/taskSlice';
 import moment from 'moment';
 import { useEffect } from 'react';
 import Spinner from '@/components/ui/spinner';
@@ -81,6 +81,19 @@ export default function ViewTaskForm(props: any) {
     }
   }
 
+  const handleApiCall = (statusData: Record<string, string>) => {
+
+    dispatch(putTaskStatusChange({ _id: statusData?._id, status: statusData?.status })).then((result: any) => {
+      if (putTaskStatusChange.fulfilled.match(result)) {
+        if (result && result.payload.success === true) {
+          closeModal()
+          dispatch(getAllTask({ pagination: false }));
+        }
+      }
+    });
+  
+  }
+
 
   if (!taskData?.task) {
     return (
@@ -108,7 +121,7 @@ export default function ViewTaskForm(props: any) {
                     <div className="px-2 text-gray-900">
                       <Button
                         variant="text"
-                        onClick={() => dispatch(putTaskStatusChange({ status: 'pending' }))}
+                        onClick={() => handleApiCall({ _id: dataa?._id, status: 'pending' })}
                         className="flex w-full items-center justify-start px-2 py-2.5 hover:bg-gray-100 focus:outline-none dark:hover:bg-gray-50"
                       >
                         {/* <PiCopySimple className="mr-2 h-5 w-5 text-gray-500" /> */}
@@ -116,7 +129,7 @@ export default function ViewTaskForm(props: any) {
                       </Button>
                       <Button
                         variant="text"
-                        onClick={() => dispatch(putTaskStatusChange({ status: 'in_progress' }))}
+                        onClick={() => handleApiCall({ _id: dataa?._id, status: 'in_progress' })}
                         className="flex w-full items-center justify-start px-2 py-2.5 hover:bg-gray-100 focus:outline-none dark:hover:bg-gray-50"
                       >
                         {/* <PiShareFat className="mr-2 h-5 w-5 text-gray-500" /> */}
@@ -125,7 +138,7 @@ export default function ViewTaskForm(props: any) {
                       <Button
                         variant="text"
                         className="flex w-full items-center justify-start px-2 py-2.5 hover:bg-gray-100 focus:outline-none dark:hover:bg-gray-50"
-                        onClick={() => dispatch(putTaskStatusChange({ status: 'completed' }))}
+                        onClick={() => handleApiCall({ _id: dataa?._id, status: 'completed' })}
                       >
                         {/* <PiTrashSimple className="mr-2 h-5 w-5 text-gray-500" /> */}
                         Completed
@@ -193,7 +206,12 @@ export default function ViewTaskForm(props: any) {
                   {moment(dataa?.due_date).format("DD MMM, YY - hh:mm A")}
                 </span>
               </li>
-
+              <li className="flex gap-2">
+                <span>Task Description: </span>
+                <span className="font-medium text-gray-1000">
+                  {dataa?.internal_info.slice(3, dataa?.internal_info?.length - 4)}
+                </span>
+              </li>
             </ul>
             {/* <div className={cn('grid grid-cols-2 gap-4 pt-5 ')}>
               <Button

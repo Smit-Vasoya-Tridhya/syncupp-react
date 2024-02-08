@@ -210,7 +210,6 @@ export default function AddTeamMemberForm(props: any) {
                       label="Role *"
                       placeholder='Select role'
                       color="info"
-                      disabled={signIn?.role === 'client'}
                       error={errors?.role?.message as string}
                       getOptionValue={(option) => option?.name}
                     />
