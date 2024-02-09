@@ -12,7 +12,7 @@ type GetAllAgreementlistApiData = {
 
 export const GetAllAgreementApi = async (data: GetAllAgreementlistApiData) => {
     const response = await AxiosDefault({
-        url: "/api/v1/agency/agreement/get-all-agreement",
+        url: "/api/v1/agreement/get-all-agreement",
         method: "POST",
         data: data,
         contentType: "application/json",
@@ -31,7 +31,7 @@ type DeleteAgencyAgreement = {
 
 export const DeleteAgencyAgreementsApi = async (data: DeleteAgencyAgreement) => {
     const response = await AxiosDefault({
-        url: `/api/v1/agency/agreement/delete-agreement`,
+        url: `/api/v1/agreement/delete-agreement`,
         method: "POST",
         data: data,
         contentType: "application/json",
@@ -48,7 +48,7 @@ type GetAgreementByIdApiData = {
 
 export const GetSingleAgreementByIdApi = async (data: GetAgreementByIdApiData) => {
     const response = await AxiosDefault({
-        url: `/api/v1/agency/agreement/get-agreement/${data}`,
+        url: `/api/v1/agreement/get-agreement/${data}`,
         method: "GET",
         // data: data,
         contentType: "application/json",
@@ -67,7 +67,7 @@ type SendAgreementApiData = {
 
 export const SendAgreement = async (data: SendAgreementApiData) => {
     const response = await AxiosDefault({
-        url: `/api/v1/agency/agreement/send-agreement`,
+        url: `/api/v1/agreement/send-agreement`,
         method: "POST",
         data: { agreementId: data },
         contentType: "application/json",
@@ -89,7 +89,7 @@ export const DownloadAgreement = async (data: DownloadAgreementApiData) => {
     };
 
     const response = await AxiosDefault({
-        url: `/api/v1/agency/agreement/download-pdf/${data}`,
+        url: `/api/v1/agreement/download-pdf/${data}`,
         method: "GET",
         // data: { agreementId: data },
         contentType: "application/pdf",
@@ -137,7 +137,7 @@ type CreateAgencyAgreement = {
 
 export const CreateAgencyAgreementsApi = async (data: CreateAgencyAgreement) => {
     const response = await AxiosDefault({
-        url: `/api/v1/agency/agreement/add-agreement`,
+        url: `/api/v1/agreement/add-agreement`,
         method: "POST",
         data: data,
         contentType: "application/json",
@@ -158,7 +158,7 @@ type EditAgencyAgreement = {
 
 export const EditAgencyAgreementsApi = async (data: EditAgencyAgreement, id: string) => {
     const response = await AxiosDefault({
-        url: `/api/v1/agency/agreement/update-agreement/${id}`,
+        url: `/api/v1/agreement/update-agreement/${id}`,
         method: "PUT",
         data: data,
         contentType: "application/json",
@@ -175,7 +175,7 @@ type EditStatusAgreement = {
 
 export const EditAgreementStatus = async (data: EditStatusAgreement, id: string) => {
     const response = await AxiosDefault({
-        url: `/api/v1/agency/agreement/update-agreement-status/${id}`,
+        url: `/api/v1/agreement/update-agreement-status/${id}`,
         method: "PUT",
         data: data,
         contentType: "application/json",

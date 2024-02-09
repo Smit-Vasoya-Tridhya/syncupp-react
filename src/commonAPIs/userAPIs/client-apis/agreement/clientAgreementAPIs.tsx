@@ -12,7 +12,7 @@ type GetAllclientAgreementlistApiData = {
 
 export const GetAllclientAgreementApi = async (data: GetAllclientAgreementlistApiData) => {
     const response = await AxiosDefault({
-        url: "/api/v1/client/agreement/get-all-agreement",
+        url: "/api/v1/agreement/get-all-agreement",
         method: "POST",
         data: data,
         contentType: "application/json",
@@ -30,7 +30,7 @@ type GetClientAgreementByIdApiData = {
 
 export const GetClientAgreementByIdApi = async (data: GetClientAgreementByIdApiData) => {
     const response = await AxiosDefault({
-        url: `/api/v1/client/agreement/get-agreement/${data}`,
+        url: `/api/v1/agreement/get-agreement/${data}`,
         method: "GET",
         contentType: "application/json",
     });

@@ -81,6 +81,7 @@ export const AgreementColumns = ({
             render: (_: any, row: any) => (
                 <div className="inline-flex ps-3.5">
                     <Checkbox
+                        // disabled={row?.status === "sent"}
                         className="cursor-pointer"
                         checked={checkedItems.includes(row._id)}
                         {...(onChecked && { onChange: () => onChecked(row._id) })}
@@ -263,6 +264,7 @@ export const AgreementColumns = ({
                         {/* </Link> */}
                     </Tooltip>
                     <DeletePopover
+
                         title={`Delete the Agreement`}
                         description={`Are you sure you want to delete?`}
                         onDelete={() => onDeleteItem([row._id], currentPage, pageSize, data?.length <= 1 ? true : false, sortConfig, searchTerm)}
