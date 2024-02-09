@@ -38,6 +38,7 @@ export const getAllAgencyagreement: any = createAsyncThunk(
 /* Agency Agreement Delete */
 type DeleteAgencyAgreement = {
     id: string[] | string;
+    agency_id?: string
 }
 
 export const deleteAgencyAgreement: any = createAsyncThunk(

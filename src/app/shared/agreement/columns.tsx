@@ -5,7 +5,7 @@ import { HeaderCell } from '@/components/ui/table';
 import { Text } from '@/components/ui/text';
 import { Checkbox } from '@/components/ui/checkbox';
 import DeletePopover from '@/app/shared/delete-popover';
-import { useDispatch , useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PencilIcon from '@/components/icons/pencil';
 import { ActionIcon, Button, Popover, Tooltip } from 'rizzui';
 import EyeIcon from '@/components/icons/eye';
@@ -215,11 +215,18 @@ export const AgreementColumns = ({
                         placement="top"
                         color="invert"
                     >
-                        <Link href={`/agreement/edit-agreement/${row?._id}`}>
+                        {row?.status === "sent" ? <Button disabled={true} type='button' size="sm" variant="outline" className='bg-white text-black' aria-label={'View Agreement'}>
+
+                            <PencilIcon className="h-4 w-4" />
+
+                        </Button> : <Link href={`/agreement/edit-agreement/${row?._id}`}>
                             <Button type='button' size="sm" variant="outline" className='bg-white text-black' aria-label={'View Agreement'}>
+
                                 <PencilIcon className="h-4 w-4" />
+
                             </Button>
-                        </Link>
+                        </Link>}
+
                     </Tooltip>
                     <Tooltip
                         size="sm"

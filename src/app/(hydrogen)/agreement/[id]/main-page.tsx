@@ -1,6 +1,6 @@
 'use client'
 import { routes } from '@/config/routes';
-import { getSingleClientAgreement } from '@/redux/slices/user/client/agreement/clientAgreementSlice';
+import { getSingleagreement } from '@/redux/slices/user/agreement/agreementSlice';
 import moment from 'moment';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -14,24 +14,19 @@ export default function AgreementDetailsPage({ params }: { params: { id: string 
     const router = useRouter()
     const dispatch = useDispatch()
 
-    const { singleAgreementdetails, loading } = useSelector((state: any) => state?.root?.clienAgreement);
+    const { singleAgreementdetails, loading } = useSelector((state: any) => state?.root?.agreement);
+    // console.log(singleAgreementdetails, 'singleAgreementdetails')
+
+
 
     useEffect(() => {
-        dispatch(getSingleClientAgreement(params?.id))
+        dispatch(getSingleagreement(params?.id))
     }, [params?.id, dispatch])
 
     return (
         <>
-            {/* <h3 className='flex justify-between items-center border-2 rounded border-solid border-gray-300 bg-gray-100 p-3'>
-                <span>Introduction</span>
-                <Button type="button" onClick={() => { router.push(`/client/agreement`) }} className="bg-none text-xs sm:text-sm">
-                    Back
-                </Button>
-            </h3>
-            <div className='mt-5' dangerouslySetInnerHTML={{ __html: singleAgreementdetails?.data?.agreement_content }} /> */}
-
             <div className="mt-90 flex justify-end space-x-4">
-                <Link href={routes.clients.agreement} >
+                <Link href={routes.agreement} >
                     <Button
                         type="button"
                         // onClick={() => { router.push(`/agreement`) }}

@@ -7,6 +7,7 @@ type GetAllclientAgreementlistApiData = {
     sort_order?: string;
     sort_field?: string;
     search?: string;
+    agency_id?: string
 }
 
 export const GetAllclientAgreementApi = async (data: GetAllclientAgreementlistApiData) => {

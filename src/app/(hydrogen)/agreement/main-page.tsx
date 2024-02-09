@@ -1,47 +1,43 @@
 "use client";
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'next/navigation';
 import CustomTable from '@/components/common-tables/table';
-import { deleteAgencyAgreement } from '@/redux/slices/user/agreement/agreementSlice';
+import { AgreementColumns } from '@/app/shared/agreement/columns';
+import { deleteAgencyAgreement, getAllAgencyagreement } from '@/redux/slices/user/agreement/agreementSlice';
 import PageHeader from '@/app/shared/page-header';
-import { AgreementColumns } from '@/app/shared/(user)/agreement/columns';
-import { getAllclientagreement } from '@/redux/slices/user/client/agreement/clientAgreementSlice';
+import { Button } from 'rizzui';
+import Jsondata from '@/locales/en/translation.json'
+import { PiPlusBold } from 'react-icons/pi';
+
 
 const pageHeader = {
-    title: 'Aggrement',
+    title: Jsondata.agency?.agreement?.table?.title,
 };
 
-const Dummy_Data = [{
-    "title": "test title",
-    "receiver": "receiver Data",
-    "due_date": "18th Dec. ‘23",
-    "status": "pending"
-
-}, {
-    "title": "test title",
-    "receiver": "receiver Data",
-    "due_date": "18th Dec. ‘23",
-    "status": "pending"
-
-}]
 
 export default function AgreementPage() {
+
+    // console.log(Jsondata.agency?.agreement?.table?.title)
+
     const dispatch = useDispatch();
-    const { agreementDetails, loading } = useSelector((state: any) => state?.root?.clienAgreement);
-    const clientSliceData = useSelector((state: any) => state?.root?.client);
+    const router = useRouter();
+
+    const { agreementDetails, loading } = useSelector((state: any) => state?.root?.agreement);
+
     const [pageSize, setPageSize] = useState(5)
 
     //Paggination Handler
     const handleChangePage = async (paginationParams: any) => {
         let { page, items_per_page, sort_field, sort_order, search } = paginationParams;
-        const response = await dispatch(getAllclientagreement({ page, items_per_page, sort_field, sort_order, search, agency_id: clientSliceData?.agencyId }));
+        const response = await dispatch(getAllAgencyagreement({ page, items_per_page, sort_field, sort_order, search }));
         const { data } = response?.payload;
         const maxPage: number = data?.page_count;
 
         if (page > maxPage) {
             page = maxPage > 0 ? maxPage : 1;
-            await dispatch(getAllclientagreement({ page, items_per_page, sort_field, sort_order, search, agency_id: clientSliceData?.agencyId }));
+            await dispatch(getAllAgencyagreement({ page, items_per_page, sort_field, sort_order, search }));
             return data?.client
         }
         return data?.client
@@ -50,9 +46,9 @@ export default function AgreementPage() {
     // Delete Handler
     const handleDeleteById = async (id: string | string[], currentPage?: any, countPerPage?: number) => {
         try {
-            const res = await dispatch(deleteAgencyAgreement({ agencies: id, is_deleted: true, agency_id: clientSliceData?.agencyId }));
+            const res = await dispatch(deleteAgencyAgreement({ agreementIdsToDelete: id }));
             if (res.payload.success === true) {
-                const reponse = await dispatch(getAllclientagreement({ page: currentPage, items_per_page: countPerPage, sort_field: 'createdAt', sort_order: 'desc', agency_id: clientSliceData?.agencyId }));
+                const reponse = await dispatch(getAllAgencyagreement({ page: currentPage, items_per_page: countPerPage, sort_field: 'createdAt', sort_order: 'desc' }));
             }
         } catch (error) {
             console.error(error);
@@ -62,8 +58,11 @@ export default function AgreementPage() {
     return (
         <>
             {/* <h1>Aggrement</h1> */}
-            <PageHeader title={pageHeader.title} />
-
+            <PageHeader title={pageHeader.title}>
+                <div className="mt-4 flex items-center gap-3 @lg:mt-0">
+                    <Button type='button' onClick={() => { router.push(`/agreement/create-agreement`) }} className='mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0'><PiPlusBold className="me-1.5 h-[17px] w-[17px]" />Add Agreement</Button>
+                </div>
+            </PageHeader>
             {/* <Button type='button' onClick={() => { router.push(`/agreement/create-agreement`)}}>Add</Button> */}
             <CustomTable
                 data={agreementDetails?.data || []}
