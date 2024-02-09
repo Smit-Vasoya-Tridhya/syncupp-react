@@ -38,7 +38,7 @@ const clientpaymentService = {
     },
 
     ClientcreateSubscription: async (token: string, reference_id: string, router: any, setloadingflag: any): Promise<Object> => {
-        console.log(token, 'token')
+        // console.log(token, 'token')
         try {
             setloadingflag(true)
             const result: any = await axios.post<{ data: { user_id: string } }>(`${process.env.NEXT_PUBLIC_API}/api/v1/payment/order`, { user_id: reference_id }, {
@@ -52,7 +52,7 @@ const clientpaymentService = {
                 setloadingflag(false)
             }
 
-            console.log(result?.data?.success, 'result')
+            // console.log(result?.data?.success, 'result')
 
             return result?.data?.data || {};
         } catch (error: any) {
@@ -67,7 +67,7 @@ const clientpaymentService = {
         try {
             setloadingflag(true)
             const result: any = await axios.post<string>(`${process.env.NEXT_PUBLIC_API}/api/v1/payment/verify-signature`, data);
-            console.log(result, "82");
+            // console.log(result, "82");
 
             if (result?.data?.success) {
                 setloadingflag(false)
@@ -98,10 +98,10 @@ const clientpaymentService = {
 
 
             const subscriptiondata: any = await clientpaymentService.ClientcreateSubscription(signupdata, reference_id, router, setloadingflag);
-            console.log(subscriptiondata, 'subscriptiondata')
+            // console.log(subscriptiondata, 'subscriptiondata')
 
             const res = await clientpaymentService.loadRazorpayScript("https://checkout.razorpay.com/v1/checkout.js", setloadingflag);
-            console.log(res, "24");
+            // console.log(res, "24");
 
             if (!res) {
                 clientpaymentService.displayPaymentToast("Razorpay SDK failed to load. Are you online?", 'error');
@@ -118,7 +118,7 @@ const clientpaymentService = {
                 description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,",
                 order_id: subscriptiondata?.payment_id,
                 handler: async (response: RazorpayResponse) => {
-                    console.log(response, 'response');
+                    // console.log(response, 'response');
                     const data = {
                         razorpay_payment_id: response.razorpay_payment_id,
                         razorpay_order_id: response.razorpay_order_id,
@@ -131,7 +131,7 @@ const clientpaymentService = {
                     };
 
                     const verificationResult: any = await clientpaymentService.verifyPaymentSignature(data, setloadingflag);
-                    console.log(verificationResult, 'verificationResult')
+                    // console.log(verificationResult, 'verificationResult')
 
 
                     if (verificationResult?.data?.success) {

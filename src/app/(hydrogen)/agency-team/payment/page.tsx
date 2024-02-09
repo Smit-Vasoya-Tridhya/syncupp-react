@@ -22,10 +22,10 @@ export default function ClientPaymentPage() {
 
     const { addClientteamdetails } = useSelector((state: any) => state?.root?.teamMember);
     const paginationParams = useSelector((state: any) => state?.root?.teamMember?.paginationParams);
-    console.log(addClientteamdetails, 'addClientteamdetails')
+    // console.log(addClientteamdetails, 'addClientteamdetails')
     const { userProfile } = useSelector((state: any) => state?.root?.signIn);
     const { loading } = useSelector((state: any) => state?.root?.payment);
-    console.log(loading, 'loading')
+    // console.log(loading, 'loading')
 
     const [loadingflag, setloadingflag] = useState(false)
     const [selectedValue, setSelectedValue] = useState('option2Value');

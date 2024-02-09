@@ -122,7 +122,7 @@ export const GetColumns = ({
       key: 'title',
       width: 200,
       render: (value: string) => (
-        <Text className="font-medium text-gray-700 truncate">{value}</Text>
+        <Text className="font-medium w-28 text-gray-700 truncate normal-case">{value}</Text>
       ),
     },
     {
@@ -173,7 +173,7 @@ export const GetColumns = ({
       key: 'client_name',
       width: 200,
       render: (value: any) => (
-        <Text className="font-medium text-gray-700">{value}</Text>
+        <Text className="font-medium text-gray-700 capitalize">{value}</Text>
       ),
     },
     {
@@ -192,7 +192,7 @@ export const GetColumns = ({
       width: 200,
       render: (value: string) => {
         // const date = moment(value).fromNow();
-        return <Text className="font-medium text-gray-700">{value}</Text>
+        return <Text className="font-medium text-gray-700 capitalize">{value}</Text>
       },
     },
     {
@@ -211,7 +211,7 @@ export const GetColumns = ({
       width: 200,
       render: (value: string) => {
         // const date = moment(value).fromNow();
-        return <Text className="font-medium text-gray-700">{value}</Text>
+        return <Text className="font-medium text-gray-700 capitalize">{value}</Text>
       },
     },
     {

@@ -155,7 +155,7 @@ export default function ChangePasswordForm() {
                 watch,
                 handleSubmit,
               }) => (
-                console.log(errors, 'errors'),
+                // console.log(errors, 'errors'),
                 (
                   <>
                     <div className="space-y-5">

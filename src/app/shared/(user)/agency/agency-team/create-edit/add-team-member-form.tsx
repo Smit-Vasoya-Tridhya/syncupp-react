@@ -106,7 +106,7 @@ export default function AddTeamMemberForm(props: any) {
     if (title === 'New Team member') {
       dispatch(addTeamMember(fullData)).then((result: any) => {
         if (addTeamMember.fulfilled.match(result)) {
-          console.log(result?.payload?.data?.referral_points,'result')
+          // console.log(result?.payload?.data?.referral_points,'result')
           // result?.payload?.data?.referral_points         //NOTE : add for future
           // setLoader(false);
           setSave(false);

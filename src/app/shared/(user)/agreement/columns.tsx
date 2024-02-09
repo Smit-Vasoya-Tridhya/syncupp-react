@@ -4,15 +4,9 @@ import Link from 'next/link';
 import { HeaderCell } from '@/components/ui/table';
 import { Text } from '@/components/ui/text';
 import { Checkbox } from '@/components/ui/checkbox';
-import DeletePopover from '@/app/shared/delete-popover';
 import { useDispatch } from 'react-redux';
 import { ActionIcon, Button, Popover, Tooltip } from 'rizzui';
 import EyeIcon from '@/components/icons/eye';
-import { AiOutlineFilePdf } from "react-icons/ai";
-import { HiOutlineMail } from "react-icons/hi";
-import { RiDraftLine } from "react-icons/ri";
-import { FiSend } from "react-icons/fi";
-import { FaRegCheckCircle } from "react-icons/fa";
 import moment from 'moment';
 
 
@@ -85,7 +79,7 @@ export const AgreementColumns = ({
             key: 'title',
             width: 100,
             render: (value: string) => (
-                <Text className="font-medium text-gray-700">{value && value != "" ? value : "-"}</Text>
+                <Text className="font-medium text-gray-700 capitalize">{value && value != "" ? value : "-"}</Text>
             ),
         },
         {

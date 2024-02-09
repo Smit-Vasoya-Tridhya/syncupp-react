@@ -38,7 +38,7 @@ const paymentService = {
     },
 
     createSubscription: async (token: string, router: any, dispatch: any): Promise<Object> => {
-        console.log(token, 'token')
+        // console.log(token, 'token')
         try {
             const result: any = await axios.post<{ data: { payment_id: string } }>(`${process.env.NEXT_PUBLIC_API}/api/v1/payment/create-subscription`, {}, {
                 headers: {
@@ -49,7 +49,7 @@ const paymentService = {
             if (result?.data?.success) {
                 dispatch(Paymentloader(true))
             }
-            console.log(result?.data?.data?.payment_id, "result");
+            // console.log(result?.data?.data?.payment_id, "result");
 
             return result?.data?.data || {};
         } catch (error: any) {
@@ -63,7 +63,7 @@ const paymentService = {
     verifyPaymentSignature: async (data: RazorpayResponse): Promise<string> => {
         try {
             const result = await axios.post<string>(`${process.env.NEXT_PUBLIC_API}/api/v1/payment/verify-signature`, data);
-            console.log(result, "82");
+            // console.log(result, "82");
             return result.data;
         } catch (error: any) {
             console.error('Error verifying payment signature:', error.message);
@@ -86,10 +86,10 @@ const paymentService = {
 
         try {
             const subscriptiondata: any = await paymentService.createSubscription(signupdata, router, dispatch);
-            console.log(subscriptiondata, 'subscriptiondata')
+            // console.log(subscriptiondata, 'subscriptiondata')
 
             const res = await paymentService.loadRazorpayScript("https://checkout.razorpay.com/v1/checkout.js", dispatch);
-            console.log(res, "24");
+            // console.log(res, "24");
 
             if (!res) {
                 paymentService.displayPaymentToast("Razorpay SDK failed to load. Are you online?", 'error');
@@ -105,7 +105,7 @@ const paymentService = {
                 description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,",
                 subscription_id: subscriptiondata?.payment_id,
                 handler: async (response: RazorpayResponse) => {
-                    console.log(response, 'response');
+                    // console.log(response, 'response');
                     const data = {
                         razorpay_payment_id: response.razorpay_payment_id,
                         razorpay_order_id: response.razorpay_subscription_id,
@@ -118,7 +118,7 @@ const paymentService = {
                     };
 
                     const verificationResult: any = await paymentService.verifyPaymentSignature(data);
-                    console.log(verificationResult, 'verificationResult')
+                    // console.log(verificationResult, 'verificationResult')
 
 
                     if (verificationResult?.data?.success) {
@@ -136,7 +136,7 @@ const paymentService = {
             const paymentObject = new window.Razorpay(options);
             paymentObject.open();
         } catch (error: any) {
-            console.error('Error during payment:', error.message);
+            // console.error('Error during payment:', error.message);
             paymentService.displayPaymentToast('Error during payment. Please try again.', 'error');
         }
     },

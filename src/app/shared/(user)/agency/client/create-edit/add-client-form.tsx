@@ -135,7 +135,7 @@ export default function AddClientForm(props: any) {
         if (postAddClient.fulfilled.match(result)) {
           // result.payload?.data?.referral_points 
 
-          console.log(result.payload?.data?.referral_points,'result')
+          // console.log(result.payload?.data?.referral_points,'result')
           setLoader(false);
           setSave(false);
           if (result && result.payload.success === true) {

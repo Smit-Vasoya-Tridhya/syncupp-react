@@ -43,7 +43,7 @@ export default function EditInvoice(){
   const [isLoading, setLoading] = useState(false);
   const [client, setClient] = useState('');
   const params = useParams();
-  console.log(params,'params.....')
+  // console.log(params,'params.....')
 
   const dispatch = useDispatch();
   const router = useRouter();

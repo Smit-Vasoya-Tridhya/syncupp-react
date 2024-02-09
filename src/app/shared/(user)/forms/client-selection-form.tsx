@@ -71,7 +71,7 @@ export default function ClientSelectionForm() {
                                         placeholder='Select Client'
                                         // getOptionValue={(option) => option.value}
                                         className="font-medium"
-                                        dropdownClassName="p-1 border w-auto border-gray-100 shadow-lg"
+                                        dropdownClassName="p-1 border w-auto border-gray-100 shadow-lg abosolute z-[20]"
                                     />
                                 )}
                             />

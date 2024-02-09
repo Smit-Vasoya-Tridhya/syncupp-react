@@ -211,7 +211,7 @@ export default function AddTaskForm(props: any) {
                   <Input
                     type="text"
                     onKeyDown={handleKeyDown}
-                    label="Title"
+                    label="Title *"
                     placeholder="Enter title"
                     color="info"
                     className="[&>label>span]:font-medium"
@@ -225,6 +225,7 @@ export default function AddTaskForm(props: any) {
                       <QuillEditor
                         value={value}
                         onChange={onChange}
+                        onKeyDown={handleKeyDown}
                         placeholder='Enter description'
                         label="Description"
                         className="col-span-full [&_.ql-editor]:min-h-[100px]"
@@ -266,7 +267,7 @@ export default function AddTaskForm(props: any) {
                           }}
                           value={value}
                           placeholder='Select Client'
-                          label='Client'
+                          label='Client *'
                           error={errors?.client?.message as string}
                           color='info'
                           // getOptionValue={(option) => option.value}
@@ -290,7 +291,7 @@ export default function AddTaskForm(props: any) {
                           }}
                           value={value}
                           placeholder='Select Team member'
-                          label='Assigned'
+                          label='Assigned *'
                           disabled={signIn?.teamMemberRole === 'team_member'}
                           error={errors?.assigned?.message as string}
                           color='info'

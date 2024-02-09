@@ -106,7 +106,7 @@ export default function ViewTaskForm(props: any) {
       <>
         <div className=" h-full w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap">
           <div className="flex items-center pt-6 px-6">
-            <Title as="h3" className="text-xl xl:text-2xl">
+            <Title as="h3" className="text-xl xl:text-2xl w-[18rem] truncate">
               {dataa?.title}
             </Title>
             <div className='ms-auto flex items-center gap-3'>
@@ -174,21 +174,21 @@ export default function ViewTaskForm(props: any) {
               <li className="flex gap-2">
                 <FaUserCircle className="h-5 w-5" />
                 <span>Client: </span>
-                <span className="font-medium text-gray-1000">
+                <span className="font-medium text-gray-1000 capitalize">
                   {dataa?.client_name}
                 </span>
               </li>
               <li className="flex gap-2">
                 <BsPersonFill className="h-5 w-5" />
                 <span>Assigned by: </span>
-                <span className="font-medium text-gray-1000">
+                <span className="font-medium text-gray-1000 capitalize">
                   {dataa?.assigned_by_name}
                 </span>
               </li>
               <li className="flex gap-2">
                 <FaPeopleGroup className="h-5 w-5" />
                 <span>Assigned to: </span>
-                <span className="font-medium text-gray-1000">
+                <span className="font-medium text-gray-1000 capitalize">
                   {dataa?.assigned_to_name}
                 </span>
               </li>
@@ -208,8 +208,8 @@ export default function ViewTaskForm(props: any) {
               </li>
               <li className="flex gap-2">
                 <span>Task Description: </span>
-                <span className="font-medium text-gray-1000">
-                  {dataa?.internal_info.slice(3, dataa?.internal_info?.length - 4)}
+                <span className="font-medium text-gray-1000 capitalize">
+                  {dataa?.internal_info && dataa?.internal_info?.slice(3, dataa?.internal_info?.length - 4)}
                 </span>
               </li>
             </ul>

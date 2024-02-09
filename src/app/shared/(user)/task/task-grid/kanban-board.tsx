@@ -45,9 +45,9 @@ function KanbanBoard() {
       setTasks(taskData?.data?.activity)
     }, [taskData]);
 
-    useEffect(() => {
-      activeTask && dispatch(putTaskStatusChange({ _id: activeTask._id, status: activeTask?.status }))
-    }, [dispatch, activeTask]);
+    // useEffect(() => {
+    //   activeTask && dispatch(putTaskStatusChange({ _id: activeTask._id, status: activeTask?.status }))
+    // }, [dispatch, activeTask]);
 
   // console.log("Active columns....", activeColumn);
   // console.log("Active task...", activeTask);
@@ -92,8 +92,8 @@ function KanbanBoard() {
 
 
     if (!over) return;
-    console.log("on drag end task is.....", activeTask)
-    console.log("on drag end active status is.....", active)
+    // console.log("on drag end task is.....", activeTask)
+    // console.log("on drag end active status is.....", active)
 
     
     const activeId = active.id;
@@ -104,7 +104,7 @@ function KanbanBoard() {
     const isActiveAColumn = active.data.current?.type === "Column";
     if (!isActiveAColumn) return;
     
-    console.log("DRAG END");
+    // console.log("DRAG END");
 
     setColumns((prevColumns) => {
       const activeColumnIndex = prevColumns.findIndex((col) => col._id === activeId);
@@ -193,7 +193,7 @@ function KanbanBoard() {
           return task;
         });
 
-        console.log("DROPPING TASK OVER COLUMN", { activeIndex });
+        // console.log("DROPPING TASK OVER COLUMN", { activeIndex });
 
         // No need to move the task within the array since it's dropped over a column
         return updatedTasks;

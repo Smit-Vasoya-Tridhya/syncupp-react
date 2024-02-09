@@ -100,7 +100,6 @@ export const GetclientteamColumns = ({
   const dispatch = useDispatch()
   const clientSliceData = useSelector((state: any) => state?.root?.client);
   const loading = useSelector((state: any) => state?.root?.client?.loading);
-  console.log(loading, 'loading')
 
   const [loadingflag, setloadingflag] = useState(false)
 
@@ -111,7 +110,7 @@ export const GetclientteamColumns = ({
   }
 
   const StatusHandler = (row: any) => {
-    console.log(row, 'row')
+    // console.log(row, 'row')
     dispatch(clientteamStatuschange({ id: row?.reference_id?._id })).then((result: any) => {
       if (clientteamStatuschange.fulfilled.match(result) && result.payload.success === true) {
         dispatch(getAllTeamMember({ page: currentPage, items_per_page: pageSize, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm, client_id: clientSliceData?.clientId, pagination: true }));
@@ -160,7 +159,7 @@ export const GetclientteamColumns = ({
       key: 'name',
       width: 200,
       render: (value: string) => (
-        <Text className="font-medium text-gray-700">{value}</Text>
+        <Text className="font-medium text-gray-700 capitalize">{value}</Text>
       ),
     },
     {

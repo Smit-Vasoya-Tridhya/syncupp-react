@@ -106,4 +106,6 @@ export const messages = {
   dueDateTimeIsRequired: 'Due date & time is required',
   firstNameMaxLength: 'Maximum first name length is 15!',
   nameLength: 'Maximum name length is 20!',
+  taskTitleLength: 'Maximum title length is 50!',
+
 };
