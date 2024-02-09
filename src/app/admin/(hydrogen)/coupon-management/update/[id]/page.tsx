@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { SubmitHandler } from 'react-hook-form';
 import { Form } from '@/components/ui/form';
 import cn from '@/utils/class-names';
+import { handleKeyDown } from '@/utils/common-functions';
 import { Input } from '@/components/ui/input';
 import { CouponManagementForm } from '@/utils/validators/coupon-management.schema';
 import PageHeader from '@/app/shared/page-header';
@@ -92,6 +93,7 @@ export default function Updateform(props: any) {
               )}
             >
               <Input
+                onKeyDown={handleKeyDown}
                 label="Brand Name"
                 placeholder="Enter Brand Name"
                 color="info"
@@ -100,6 +102,7 @@ export default function Updateform(props: any) {
                 error={errors?.brand?.message}
               />
               <Input
+                onKeyDown={handleKeyDown}
                 label="Coupon code"
                 placeholder="Enter Coupon Code"
                 color="info"
@@ -108,6 +111,7 @@ export default function Updateform(props: any) {
                 error={errors?.couponCode?.message}
               />
               <Input
+                onKeyDown={handleKeyDown}
                 label="Discount Title"
                 placeholder="Enter Discount Title"
                 color="info"
@@ -116,6 +120,7 @@ export default function Updateform(props: any) {
                 error={errors?.discountTitle?.message}
               />
               <Input
+                onKeyDown={handleKeyDown}
                 label="Website Url"
                 placeholder="Enter Website Url"
                 color="info"
