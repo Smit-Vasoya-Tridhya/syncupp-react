@@ -35,7 +35,6 @@ const FileUploader: React.FC<FileUploaderProps> = (props) => {
     multiple: false,
     accept: { 'image/*': [] },
     onDrop: (acceptedFiles) => {
-      console.log('acceptfile', acceptedFiles);
       setFiles(
         acceptedFiles.map((file) => {
           setFieldValue(name, file);

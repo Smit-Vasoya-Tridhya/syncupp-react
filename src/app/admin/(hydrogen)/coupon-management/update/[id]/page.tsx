@@ -63,8 +63,6 @@ export default function Updateform(props: any) {
     siteURL: CouponSingledata?.data?.siteURL ?? '',
     brandLogo: CouponSingledata?.data?.brandLogo ?? '',
   };
-
-  // console.log(intialValue, 'intial');
   return (
     <>
       <PageHeader title="Coupon Management/Edit">
