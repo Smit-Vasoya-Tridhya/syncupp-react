@@ -81,6 +81,26 @@ export const MenuItems = () => {
       ];
       break;
 
+      case "team_client":
+      menuItems = [
+        {
+          name: 'Dashboard',
+          href: routes.dashboard,
+          icon: <PiFolderNotchDuotone />,
+        },
+        {
+          name: 'Team',
+          href: routes.team,
+          icon: <PiUsersThree />,
+        },
+        {
+          name: 'Task',
+          href: routes.task,
+          icon: <FaTasks />,
+        },
+      ];
+      break;
+
     case "team_agency":
       menuItems = [
         {
