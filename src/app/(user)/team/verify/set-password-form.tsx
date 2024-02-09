@@ -28,6 +28,7 @@ export default function SetPasswordForm(props: any) {
   const email = searchParams.get("email");
   const agencyId = searchParams.get("agencyId");
   const agency = searchParams.get("agency");
+  const clientId = searchParams.get("clientId");
   const token = searchParams.get("token");
 
   const initialValues = {
@@ -44,6 +45,7 @@ export default function SetPasswordForm(props: any) {
       agency_id: agencyId,
       token: token,
       password: data?.password,
+      client_id: clientId,
       // first_name: data?.firstName,
       // last_name: data?.lastName,
       redirect: redirect
