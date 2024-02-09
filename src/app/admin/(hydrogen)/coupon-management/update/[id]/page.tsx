@@ -82,11 +82,6 @@ export default function Updateform(props: any) {
       >
         {({ register, control, formState: { errors }, setValue, setError }) => (
           <div className="space-y-5">
-            <div className="mb-6 flex items-center justify-between">
-              <Title as="h3" className="text-xl xl:text-2xl">
-                Edit Coupon
-              </Title>
-            </div>
             <div
               className={cn(
                 'grid grid-cols-4 gap-4 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4'

@@ -142,6 +142,10 @@ const clientpaymentService = {
                         clientpaymentService.displayPaymentToast(verificationResult?.message, 'error');
                     }
                 },
+                prefill: {
+                    email: subscriptiondata?.email, // Pre-filled email
+                    contact: subscriptiondata?.contact_number // Pre-filled phone number
+                },
                 theme: {
                     color: "#111111",
                 },
