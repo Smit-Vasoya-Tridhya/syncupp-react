@@ -112,7 +112,7 @@ const handleApiCall = (statusData: Record<string, string>) => {
           </Tooltip>
           <div className={cn(
             'ms-auto',
-            signIn?.role === 'client' || signIn?.role === 'team_client' && 'me-4'
+            (signIn?.role === 'client' || signIn?.role === 'team_client') && 'me-4'
           )}>
             <CustomModalButton
               icon={<EyeIcon className="h-4 w-4" />}
@@ -120,7 +120,7 @@ const handleApiCall = (statusData: Record<string, string>) => {
               customSize="600px"
               title='View Task'
             />
-            {signIn?.role !== 'client' || signIn?.role !== 'team_client' &&
+            {(signIn?.role !== 'client' && signIn?.role !== 'team_client') &&
               <Popover
                 placement="left"
                 className="z-[99] min-w-[135px] px-0 dark:bg-gray-100 [&>svg]:dark:fill-gray-100"

@@ -113,7 +113,7 @@ export default function ViewTaskForm(props: any) {
               <div>
                 { getStatusBadge(dataa?.status) }
               </div>
-              {signIn?.role !== 'client' || signIn?.role !== 'team_client' &&
+              {(signIn?.role !== 'client' && signIn?.role !== 'team_client') &&
                 <Popover
                   placement="bottom"
                   className=" min-w-[135px] px-0 dark:bg-gray-100 [&>svg]:dark:fill-gray-100 demo_test"

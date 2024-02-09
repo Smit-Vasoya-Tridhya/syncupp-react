@@ -165,7 +165,7 @@ const socialLinks = [
 function SocialLinks() {
   return (
     <div className="-mx-2 flex items-center pt-24 text-white xl:-mx-2.5 2xl:pb-5 2xl:pt-40 [&>a>svg]:w-5 xl:[&>a>svg]:w-6">
-      {socialLinks.map((item) => (
+      {socialLinks?.map((item) => (
         <a
           key={item.title}
           href={item.link}

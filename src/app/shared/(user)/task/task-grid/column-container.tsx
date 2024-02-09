@@ -22,7 +22,7 @@ function ColumnContainer({
   const taskData = useSelector((state: any) => state?.root?.task);
 
   const tasksIds = useMemo(() => {
-    return tasks.map((task) => task._id);
+    return tasks?.map((task) => task?._id);
   }, [tasks]);
 
   const {
@@ -65,7 +65,7 @@ function ColumnContainer({
         {...listeners}
         className="bg-gray-100 text-md text-black h-[48px] cursor-grab border rounded-md rounded-b-none p-3 font-bold flex justify-center items-center">
         <div className="flex justify-center items-center">
-          {column.title}
+          {column?.title}
         </div>
       </div>
 
@@ -77,11 +77,11 @@ function ColumnContainer({
           </div>
         ) : (
           <SortableContext items={tasksIds}>
-            {tasks && tasks.length > 0 ?
-              (tasks.map((task) => (
-                <div key={task._id} className="px-2 pt-2">
+            {tasks && tasks?.length > 0 ?
+              (tasks?.map((task) => (
+                <div key={task?._id} className="px-2 pt-2">
                   <TaskCard
-                    key={task._id}
+                    key={task?._id}
                     task={task}
                   />
                 </div>
