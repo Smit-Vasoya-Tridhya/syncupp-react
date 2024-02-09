@@ -63,7 +63,7 @@ export default function AddTeamMemberForm(props: any) {
       contact_number: data?.contact_number,
       role: data?.member_role?.name === 'team_member' ? 'Team member' : 'Admin'
     };
-  } else if (signIn?.role === 'client') {
+  } else if (signIn?.role === 'client' || signIn?.role === 'team_client') {
     defaultValuess = {
       name: '',
       email: '',

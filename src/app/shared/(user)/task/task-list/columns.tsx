@@ -241,7 +241,7 @@ export const GetColumns = ({
       render: (_: string, row: TeamMemberType) => {
         return (
           <div>
-            {signIn?.role !== 'client' &&
+            {(signIn?.role !== 'client' && signIn?.role !== 'team_client') &&
               <div className="flex items-center justify-end gap-3 pe-4">
                 <CustomModalButton
                   icon={<PencilIcon className="h-4 w-4" />}

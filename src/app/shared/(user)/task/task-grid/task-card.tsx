@@ -13,7 +13,6 @@ import CustomModalButton from "@/app/shared/custom-modal-button";
 import ViewTaskForm from "../create-edit/view-task-form";
 import { FaUserCircle } from "react-icons/fa";
 import { MdOutlineCalendarMonth } from "react-icons/md";
-import { formatDate } from '@/utils/format-date';
 import { useDispatch, useSelector } from "react-redux";
 import { getAllTask, putTaskStatusChange } from "@/redux/slices/user/task/taskSlice";
 import cn from "@/utils/class-names";
@@ -113,7 +112,7 @@ const handleApiCall = (statusData: Record<string, string>) => {
           </Tooltip>
           <div className={cn(
             'ms-auto',
-            signIn?.role === 'client' && 'me-4'
+            (signIn?.role === 'client' || signIn?.role === 'team_client') && 'me-4'
           )}>
             <CustomModalButton
               icon={<EyeIcon className="h-4 w-4" />}
@@ -121,7 +120,7 @@ const handleApiCall = (statusData: Record<string, string>) => {
               customSize="600px"
               title='View Task'
             />
-            {signIn?.role !== 'client' &&
+            {(signIn?.role !== 'client' && signIn?.role !== 'team_client') &&
               <Popover
                 placement="left"
                 className="z-[99] min-w-[135px] px-0 dark:bg-gray-100 [&>svg]:dark:fill-gray-100"

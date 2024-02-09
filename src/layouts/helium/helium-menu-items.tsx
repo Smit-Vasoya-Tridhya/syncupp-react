@@ -14,7 +14,7 @@ export const MenuItems = () => {
   const socialSignup = useSelector((state: any) => state?.root?.socialSignup);
 
   const pathname = usePathname();
-  let menuItems: Record<string, any>[];
+  let menuItems: Record<string, any>[] = [];
   switch (signIn?.user?.data?.user?.role?.name || socialSignup?.user?.data?.user?.role?.name || signIn?.role) {
     case "agency":
       menuItems = [
@@ -86,7 +86,7 @@ export const MenuItems = () => {
       ];
       break;
 
-    case "team_agency":
+    case "team_client":
       menuItems = [
         {
           name: 'Dashboard',
@@ -94,11 +94,77 @@ export const MenuItems = () => {
           icon: <PiFolderNotchDuotone />,
         },
         {
+          name: 'Team',
+          href: routes.team,
+          icon: <PiUsersThree />,
+        },
+        {
           name: 'Task',
           href: routes.task,
           icon: <FaTasks />,
         },
       ];
+      break;
+
+    case "team_agency":
+
+      if (signIn?.teamMemberRole === 'team_member') {
+        menuItems = [
+          {
+            name: 'Dashboard',
+            href: routes.dashboard,
+            icon: <PiFolderNotchDuotone />,
+          },
+          {
+            name: 'Task',
+            href: routes.task,
+            icon: <FaTasks />,
+          },
+        ];
+      } else if (signIn?.teamMemberRole === 'admin') {
+        menuItems = [
+          {
+            name: 'Dashboard',
+            href: routes.dashboard,
+            icon: <PiFolderNotchDuotone />,
+          },
+          {
+            name: 'Client',
+            href: routes.client,
+            icon: <PiUser />,
+          },
+          {
+            name: 'Agency Team',
+            href: routes.agency_team,
+            icon: <PiUsersThree />,
+          },
+          {
+            name: 'Client Team',
+            href: routes.client_team,
+            icon: <PiUsersThree />,
+          },
+          {
+            name: 'Task',
+            href: routes.task,
+            icon: <FaTasks />,
+          },
+          {
+            name: 'Calendar',
+            href: routes.userCalendar,
+            icon: <FaRegCalendarAlt />,
+          },
+          {
+            name: 'Invoice',
+            href: routes.invoice,
+            icon: <FaFileInvoiceDollar />,
+          },
+          {
+            name: 'Agreement',
+            href: routes.agreement,
+            icon: <FaFilePen />,
+          },
+        ];
+      }
       break;
 
     default:

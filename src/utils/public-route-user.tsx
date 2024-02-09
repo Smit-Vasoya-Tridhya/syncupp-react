@@ -22,7 +22,7 @@ const WithAuthPublic = (WrappedComponent: any) => {
 
       // console.log("####" ,token)
       if (token) {
-        if (signIn?.user?.data?.user?.role?.name === "client" || signIn?.user?.data?.user?.role?.name === "team_agency") {
+        if (signIn?.user?.data?.user?.role?.name === "client" || signIn?.user?.data?.user?.role?.name === "team_client" || signIn?.user?.data?.user?.role?.name === "team_agency") {
           router.replace(routes.dashboard)
         } else if (signIn?.user?.data?.user?.role?.name === "agency" && signIn?.user?.data?.user?.status != "payment_pending") {
            router.replace(routes.dashboard)
