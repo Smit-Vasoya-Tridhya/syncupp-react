@@ -35,7 +35,6 @@ const FileUploader: React.FC<FileUploaderProps> = (props) => {
     multiple: false,
     accept: { 'image/*': [] },
     onDrop: (acceptedFiles) => {
-      // console.log('acceptfile', acceptedFiles);
       setFiles(
         acceptedFiles.map((file) => {
           setFieldValue(name, file);
@@ -52,16 +51,21 @@ const FileUploader: React.FC<FileUploaderProps> = (props) => {
   });
 
   return (
-    <div
-      {...getRootProps({
-        className:
-          'dropzone w-full gap-10 rounded-md border border-solid border-gray-300',
-      })}
-      style={{ height: '12rem' }}
-    >
-      <input {...getInputProps({ ...inputProps })} />
+    <div className="ddd col-span-2 flex h-full w-full items-center gap-5">
+      <div
+        {...getRootProps({
+          className:
+            'relative  h-20 w-20 rounded-full border-[1.8px] cursor-pointer',
+        })}
+      >
+        <input {...getInputProps({ ...inputProps })} />
+        <div className="flex h-full flex-col items-center justify-center gap-2">
+          <UploadIcon className="size-6"></UploadIcon>
+          <p className="pt-1 text-center text-xs ">Select or drag file </p>
+        </div>
+      </div>
       {files && files.length > 0 ? (
-        <div className="h-full w-full">
+        <div className="flex h-[150px] w-[150px] items-center justify-center">
           {files.map((file, index) => {
             return (
               <Fragment key={index}>
@@ -69,9 +73,10 @@ const FileUploader: React.FC<FileUploaderProps> = (props) => {
                   src={
                     file?.preview
                       ? file.preview
-                      : `${process.env.NEXT_PUBLIC_API}${initialPath}`
+                      : `${process.env.NEXT_PUBLIC_API}/${initialPath}`
                   }
                   alt={`Preview ${index + 1}`}
+                  // style={{ height: '250px', width: '250px' }}
                   className="h-full w-full"
                 />
               </Fragment>
@@ -79,23 +84,15 @@ const FileUploader: React.FC<FileUploaderProps> = (props) => {
           })}
         </div>
       ) : initialPath ? (
-        <img
-          src={`${process.env.NEXT_PUBLIC_API}${initialPath}`}
-          className="h-full w-full"
-          alt="Initial Path"
-        />
-      ) : (
-        <div className="flex h-full flex-col items-center justify-center gap-2">
-          <UploadIcon className="size-7"></UploadIcon>
-          <h5 className="pt-1 text-center">Select or drag file </h5>
-          <h5 className="pt-1 text-center">or</h5>
-          <Button
-            type="submit"
-            className="hover:gray-700 ms-3 @xl:w-auto dark:bg-gray-200 dark:text-white"
-          >
-            Browes
-          </Button>
+        <div className="flex h-[150px] w-[150px] items-center justify-center">
+          <img
+            src={`${process.env.NEXT_PUBLIC_API}/${initialPath}`}
+            className="h-full w-full"
+            alt="Initial Path"
+          />
         </div>
+      ) : (
+        ''
       )}
     </div>
   );

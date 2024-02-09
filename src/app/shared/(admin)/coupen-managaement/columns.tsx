@@ -4,16 +4,11 @@ import Link from 'next/link';
 import { HeaderCell } from '@/components/ui/table';
 import { Text } from '@/components/ui/text';
 import { Tooltip } from '@/components/ui/tooltip';
-import EyeIcon from '@/components/icons/eye';
 import PencilIcon from '@/components/icons/pencil';
 import DeletePopover from '@/app/shared/delete-popover';
-import CustomModalButton from '@/app/shared/custom-modal-button';
 //import AddClientForm from '../create-edit/add-client-form';
 import { Badge, Button } from 'rizzui';
-import { LuExternalLink } from 'react-icons/lu';
-import moment from 'moment';
 import { routes } from '@/config/routes';
-import AddClientForm from '../../(user)/agency/client/create-edit/add-client-form';
 
 type Columns = {
   data: any[];
@@ -95,20 +90,14 @@ export const getColumns = ({
     key: 'brand',
     width: 200,
     render: (value: string, row: any) => {
-      return <Text className="font-medium text-gray-700">{value}</Text>;
+      // const capitalizedValue = value.charAt(0).toUpperCase() + value.slice(1);
+      return (
+        <Text className="font-medium capitalize text-gray-700">{value}</Text>
+      );
     },
   },
   {
-    title: (
-      <HeaderCell
-        title="Brand Logo"
-        sortable
-        ascending={
-          sortConfig?.direction === 'asc' && sortConfig?.key === 'brandLogo'
-        }
-      />
-    ),
-    onHeaderCell: () => onHeaderCellClick('brandLogo'),
+    title: <HeaderCell title="Brand Logo" />,
     dataIndex: 'brandLogo',
     key: 'brandLogo',
     width: 200,
@@ -116,7 +105,7 @@ export const getColumns = ({
       <>
         {value && value != '' ? (
           <img
-            src={`${process.env.NEXT_PUBLIC_API}${value}`}
+            src={`${process.env.NEXT_PUBLIC_API}/${value}`}
             style={{ width: '53.33px', height: '30px' }}
           ></img>
         ) : (
@@ -158,7 +147,9 @@ export const getColumns = ({
     key: 'discountTitle',
     width: 200,
     render: (value: string) => {
-      return <Text className="font-medium text-gray-700">{value}</Text>;
+      return (
+        <Text className="font-medium  capitalize text-gray-700">{value}</Text>
+      );
     },
   },
   {
