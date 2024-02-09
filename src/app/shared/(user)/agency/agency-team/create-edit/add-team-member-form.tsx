@@ -108,11 +108,11 @@ export default function AddTeamMemberForm(props: any) {
         if (addTeamMember.fulfilled.match(result)) {
           // console.log(result?.payload?.data?.referral_points,'result')
           // result?.payload?.data?.referral_points         //NOTE : add for future
-          // setLoader(false);
+          setLoader(false);
           setSave(false);
           if (result && result.payload.success === true) {
             router.push(routes.agency_team_payment)
-            save && closeModal();
+            // save && closeModal();
             setReset({ ...initialValues })
             dispatch(getAllTeamMember({ sort_field: 'createdAt', sort_order: 'desc', agency_id: clientSliceData?.agencyId, pagination: true }));
             setSave(false);
