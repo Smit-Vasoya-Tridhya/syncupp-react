@@ -1,14 +1,8 @@
 'use client';
 // import Link from 'next/link';
 import PageHeader from '@/app/shared/page-header';
-import ModalButton from '@/app/shared/modal-button';
-import AddClientForm from '@/app/shared/(user)/agency/client/create-edit/add-client-form';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  deleteClient,
-  getAllClient,
-} from '@/redux/slices/user/client/clientSlice';
 import { useRouter } from 'next/navigation';
 // import toast from 'react-hot-toast';
 import { useModal } from '@/app/shared/modal-views/use-modal';
@@ -18,14 +12,14 @@ import { PiPlusBold } from 'react-icons/pi';
 import Link from 'next/link';
 import { routes } from '@/config/routes';
 import { Button } from 'rizzui';
+import jsonData from '../../../../locales/en/translation.json';
 import {
   DeleteCoupon,
   getAllCoupone,
 } from '@/redux/slices/admin/coupon-managemnt/couponManagementSlice';
-import { BsPlus } from 'react-icons/bs';
 
 const pageHeader = {
-  title: 'Coupon Management',
+  title: jsonData?.admin?.coupon_management?.table.title,
 };
 
 export default function CouponManagementPage() {
@@ -114,7 +108,7 @@ export default function CouponManagementPage() {
           <Link href={routes.admin.createCouponManagement}>
             <Button className="hover:gray-700 ms-3 @xl:w-auto dark:bg-gray-200 dark:text-white">
               <PiPlusBold className="me-1.5 h-[17px] w-[17px]" />
-              Add Coupon
+              {jsonData?.admin?.coupon_management?.table.add_button}
             </Button>
           </Link>
         </div>

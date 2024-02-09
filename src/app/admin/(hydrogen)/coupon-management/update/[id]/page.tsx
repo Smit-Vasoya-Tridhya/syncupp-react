@@ -19,6 +19,7 @@ import {
 } from '@/redux/slices/admin/coupon-managemnt/couponManagementSlice';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
+import jsonData from '../../../../../../locales/en/translation.json';
 import { routes } from '@/config/routes';
 import Spinner from '@/components/ui/spinner';
 
@@ -103,8 +104,13 @@ export default function Updateform(props: any) {
               >
                 <Input
                   onKeyDown={handleKeyDown}
-                  label="Brand Name"
-                  placeholder="Enter Brand Name"
+                  label={
+                    jsonData?.admin?.coupon_management?.form?.brandNameLabel
+                  }
+                  placeholder={
+                    jsonData?.admin?.coupon_management?.form?.placeholder
+                      ?.brand_name
+                  }
                   color="info"
                   className="[&>label>span]:font-medium"
                   {...register('brand')}
@@ -112,8 +118,13 @@ export default function Updateform(props: any) {
                 />
                 <Input
                   onKeyDown={handleKeyDown}
-                  label="Coupon code"
-                  placeholder="Enter Coupon Code"
+                  label={
+                    jsonData?.admin?.coupon_management?.form?.couponCodeLabel
+                  }
+                  placeholder={
+                    jsonData?.admin?.coupon_management?.form?.placeholder
+                      ?.coupon_code
+                  }
                   color="info"
                   className="[&>label>span]:font-medium"
                   {...register('couponCode')}
@@ -121,8 +132,13 @@ export default function Updateform(props: any) {
                 />
                 <Input
                   onKeyDown={handleKeyDown}
-                  label="Discount Title"
-                  placeholder="Enter Discount Title"
+                  label={
+                    jsonData?.admin?.coupon_management?.form?.discountTitleLabel
+                  }
+                  placeholder={
+                    jsonData?.admin?.coupon_management?.form?.placeholder
+                      ?.discount_title
+                  }
                   color="info"
                   className="[&>label>span]:font-medium"
                   {...register('discountTitle')}
@@ -130,8 +146,13 @@ export default function Updateform(props: any) {
                 />
                 <Input
                   onKeyDown={handleKeyDown}
-                  label="Website Url"
-                  placeholder="Enter Website Url"
+                  label={
+                    jsonData?.admin?.coupon_management?.form?.websiteUrlLabel
+                  }
+                  placeholder={
+                    jsonData?.admin?.coupon_management?.form?.placeholder
+                      ?.website_url
+                  }
                   color="info"
                   className="[&>label>span]:font-medium"
                   {...register('siteURL')}
@@ -143,7 +164,7 @@ export default function Updateform(props: any) {
                     className="rizzui-input-label mb-1.5 block text-sm"
                     style={{ margin: '0px' }}
                   >
-                    Brand Logo
+                    {jsonData?.admin?.coupon_management?.form?.brandLogoLabel}
                   </p>
                   <Uploadfile
                     initialPath={CouponSingledata?.data?.brandLogo}
@@ -170,7 +191,7 @@ export default function Updateform(props: any) {
                         variant="outline"
                         className="@xl:w-auto dark:hover:border-gray-400"
                       >
-                        Cancel
+                        {jsonData?.admin?.coupon_management?.form?.cancelButton}
                       </Button>
                     </Link>
 
@@ -179,7 +200,7 @@ export default function Updateform(props: any) {
                       className="hover:gray-700 ms-3 @xl:w-auto dark:bg-gray-200 dark:text-white"
                       disabled={loading}
                     >
-                      Save
+                      {jsonData?.admin?.coupon_management?.form?.saveButton}
                       {loading && (
                         <Spinner size="sm" tag="div" className="ms-3" />
                       )}
