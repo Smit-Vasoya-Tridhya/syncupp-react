@@ -16,6 +16,7 @@ import { useEffect } from 'react';
 import { FaqSchema, faqSchema } from '@/utils/validators/faq.schema';
 import { Textarea } from 'rizzui';
 import { getAllFaq, getFaqDataByID, postAddFaq, updateFaqDataByID } from '@/redux/slices/admin/faq/faqSlice';
+import { handleKeyDown } from '@/utils/common-functions';
 
 const Select = dynamic(() => import('@/components/ui/select'), {
   ssr: false,
@@ -113,6 +114,7 @@ export default function AddFaqForm(props: any) {
               )}
             >
               <Input
+                onKeyDown={handleKeyDown}
                 type="text"
                 label="Title"
                 placeholder="Enter your Title here....."
