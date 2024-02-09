@@ -186,7 +186,7 @@ export default function AddTaskForm(props: any) {
           validationSchema={addTaskSchema}
           onSubmit={onSubmit}
           useFormProps={{
-            mode: 'onTouched',
+            mode: 'all',
             defaultValues: defaultValuess,
           }}
           className=" p-10 [&_label]:font-medium"

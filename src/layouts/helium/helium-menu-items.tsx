@@ -44,8 +44,8 @@ export const MenuItems = () => {
           icon: <FaTasks />,
         },
         {
-          name: 'Calender',
-          href: routes.UserCalender,
+          name: 'Calendar',
+          href: routes.userCalendar,
           icon: <FaRegCalendarAlt />,
         },
         {

@@ -51,7 +51,8 @@ export default function ClientSelectionForm() {
                 <Form
                     onSubmit={onSubmit}
                     useFormProps={{
-                        defaultValues: initialValue
+                        defaultValues: initialValue,
+                        mode: 'all'
                     }}
                 >
                     {({ control, formState: { errors } }) => (

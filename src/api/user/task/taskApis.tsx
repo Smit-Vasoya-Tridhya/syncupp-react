@@ -20,6 +20,7 @@ type PatchEditTaskApiData = {
 }
 
 type putTaskStatusChangeApiData = {
+  _id: string;
   status: string;
 }
 
@@ -105,7 +106,7 @@ export const DeleteTaskApi = async (data: DeleteTaskApiData) => {
 
 export const putTaskStatusChangeApi = async (data: putTaskStatusChangeApiData) => {
   const response = await AxiosDefault({
-    url: `/api/v1/activity/update-status`,
+    url: `/api/v1/activity/update-status/${data._id}`,
     method: "PUT",
     data: data,
     contentType: "application/json", 

@@ -83,6 +83,7 @@ export default function EventForm({
             startDate: startDate ?? event?.start,
             endDate: endDate ?? event?.end,
           },
+          mode: 'all'
         }}
         className="grid grid-cols-1 gap-5 @container md:grid-cols-2 [&_label]:font-medium"
       >

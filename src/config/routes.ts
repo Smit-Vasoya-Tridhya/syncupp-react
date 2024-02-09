@@ -14,13 +14,14 @@ export const routes = {
   agency_team_payment: '/agency-team/payment',
   client_team: '/client-team',
   invoice: '/invoice',
-  invoiceForm: '/invoice/create-edit',
+  invoiceForm: '/invoice/create',
+  invoiceEdit: '/invoice/edit',
   invoiceView: '/invoice/view-invoice',
   viewTeam: '/team/view-team',
   task: '/task',
-  UserCalender: '/calender',
-  UserCalenderForm: '/calender/calender-form',
-  UserCalenderAddActivity: '/calender/create-edit',
+  userCalendar: '/calendar',
+  userCalendarForm: '/calendar/calendar-form',
+  userCalendarAddActivity: '/calendar/create-edit',
 
   teams: {
     verify: '/team/verify',

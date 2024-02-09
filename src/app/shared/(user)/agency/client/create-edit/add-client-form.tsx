@@ -133,11 +133,14 @@ export default function AddClientForm(props: any) {
     if(title === 'New Client') {
       dispatch(postAddClient(fullData)).then((result: any) => {
         if (postAddClient.fulfilled.match(result)) {
+          // result.payload?.data?.referral_points 
+
+          console.log(result.payload?.data?.referral_points,'result')
           setLoader(false);
           setSave(false);
           if (result && result.payload.success === true) {
             router.push(routes.clients.payment)
-            save && closeModal();
+            // save && closeModal();
             setReset({...initialValues})
             dispatch(getAllClient({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
             dispatch(RemoveRegionalData())

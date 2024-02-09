@@ -36,6 +36,7 @@ export default function ForgetPasswordForm() {
         onSubmit={onSubmit}
         useFormProps={{
           defaultValues: initialValues,
+          mode: 'all'
         }}
       >
         {({ register, formState: { errors } }) => (

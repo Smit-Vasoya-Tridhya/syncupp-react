@@ -75,7 +75,7 @@ export default function Updateform(props: any) {
         validationSchema={CouponManagementForm}
         onSubmit={onSubmit}
         useFormProps={{
-          mode: 'onChange',
+          mode: 'all',
           defaultValues: intialValue,
         }}
         className=" p-10 [&_label]:font-medium"

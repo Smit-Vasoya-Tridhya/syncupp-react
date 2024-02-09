@@ -140,7 +140,7 @@ export default function AddClientReviewForm(props: any) {
           validationSchema={clientReviewSchema}
           onSubmit={onSubmit}
           useFormProps={{
-            mode: 'onChange',
+            mode: 'all',
             defaultValues: defaultValuess,
           }}
           className=" p-10 [&_label]:font-medium"

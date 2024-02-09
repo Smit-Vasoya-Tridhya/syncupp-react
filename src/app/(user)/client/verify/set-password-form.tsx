@@ -58,7 +58,7 @@ export default function SetPasswordForm(props: any) {
           validationSchema={setPasswordSchema}
           onSubmit={onSubmit}
           useFormProps={{
-            mode: 'onTouched',
+            mode: 'all',
             defaultValues: initialValues,
           }}
         >

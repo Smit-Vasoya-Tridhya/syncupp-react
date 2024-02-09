@@ -199,7 +199,7 @@ export const signinSlice: any = createSlice({
         }
       })
       .addCase(getUserProfile.rejected, (state, action) => {
-        if (action.payload.success == true) {
+        if (action?.payload?.success == true) {
           toast.success(action.payload.message)
         } else {
           toast.error(action.payload.message)
