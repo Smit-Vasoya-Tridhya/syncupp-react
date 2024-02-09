@@ -10,13 +10,11 @@ export const CouponManagementForm = z.object({
   brand: z
     .string()
     .min(1, { message: 'Brand Name is Required' })
-    .max(15, { message: 'Maximum Brand name length is 15!' })
-    .trim(), // string
+    .max(15, { message: 'Maximum Brand name length is 15!' }), // string
   couponCode: z
     .string()
     .min(1, { message: 'Coupon Code is Required' })
-    .max(20, { message: 'Maximum Coupon Code length is 20!' })
-    .trim(), // dropdown selection
+    .max(20, { message: 'Maximum Coupon Code length is 20!' }), // dropdown selection
   discountTitle: z
     .string()
     .min(1, { message: 'Discount Title is Required' })
@@ -42,7 +40,6 @@ export const CouponManagementForm = z.object({
   brandLogo: z
     .any()
     .refine((files) => {
-      console.log('Files:', files); // Add this line
       return !!files;
     }, 'Brand Image is required.')
     .refine((files) => {

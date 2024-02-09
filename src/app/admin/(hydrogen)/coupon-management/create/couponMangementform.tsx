@@ -44,7 +44,7 @@ export default function CouponMangementform(props: any) {
   };
   return (
     <>
-      <PageHeader title="Coupon Management/Add Coupon">
+      <PageHeader title="Add Coupon">
         <div className="mt-4 flex items-center gap-3 @lg:mt-0"></div>
       </PageHeader>
       <Form<CouponManagementForm>

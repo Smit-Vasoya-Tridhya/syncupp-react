@@ -4,16 +4,11 @@ import Link from 'next/link';
 import { HeaderCell } from '@/components/ui/table';
 import { Text } from '@/components/ui/text';
 import { Tooltip } from '@/components/ui/tooltip';
-import EyeIcon from '@/components/icons/eye';
 import PencilIcon from '@/components/icons/pencil';
 import DeletePopover from '@/app/shared/delete-popover';
-import CustomModalButton from '@/app/shared/custom-modal-button';
 //import AddClientForm from '../create-edit/add-client-form';
 import { Badge, Button } from 'rizzui';
-import { LuExternalLink } from 'react-icons/lu';
-import moment from 'moment';
 import { routes } from '@/config/routes';
-import AddClientForm from '../../(user)/agency/client/create-edit/add-client-form';
 
 type Columns = {
   data: any[];

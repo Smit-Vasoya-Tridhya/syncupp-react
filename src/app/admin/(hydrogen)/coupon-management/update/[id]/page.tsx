@@ -66,7 +66,7 @@ export default function Updateform(props: any) {
   };
   return (
     <>
-      <PageHeader title="Coupon Management/Edit">
+      <PageHeader title="Edit Coupon">
         <div className="mt-4 flex items-center gap-3 @lg:mt-0"></div>
       </PageHeader>
 
