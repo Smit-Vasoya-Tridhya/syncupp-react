@@ -16,9 +16,8 @@ import { useSelector } from 'react-redux';
 import Spinner from '@/components/ui/spinner';
 import { useRouter } from 'next/navigation';
 import { routes } from '@/config/routes';
+import jsonData from '../../../../../locales/en/translation.json';
 import Link from 'next/link';
-import { FormBlockWrapper } from '@/app/shared/(user)/invoice/invoice-list/form-utils';
-import { Label } from 'recharts';
 
 export default function CouponMangementform(props: any) {
   const dispatch = useDispatch();
@@ -44,8 +43,8 @@ export default function CouponMangementform(props: any) {
   };
   return (
     <>
-      <PageHeader title="Add Coupon">
-        <div className="mt-4 flex items-center gap-3 @lg:mt-0"></div>
+      <PageHeader title={jsonData?.admin?.coupon_management?.form?.title}>
+        <div className="ml-36 mt-4 flex items-center gap-3 @lg:mt-0"></div>
       </PageHeader>
       <Form<CouponManagementForm>
         validationSchema={CouponManagementForm}
@@ -58,11 +57,6 @@ export default function CouponMangementform(props: any) {
       >
         {({ register, control, formState: { errors }, setValue, setError }) => (
           <div className="space-y-5">
-            <div className="mb-6 flex items-center justify-between">
-              <Title as="h3" className="text-xl xl:text-2xl">
-                Add Coupon
-              </Title>
-            </div>
             <div
               className={cn(
                 'grid grid-cols-4 gap-4 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4'
@@ -70,8 +64,11 @@ export default function CouponMangementform(props: any) {
             >
               <Input
                 onKeyDown={handleKeyDown}
-                label="Brand Name"
-                placeholder="Enter Brand Name"
+                label={jsonData?.admin?.coupon_management?.form?.brandNameLabel}
+                placeholder={
+                  jsonData?.admin?.coupon_management?.form?.placeholder
+                    ?.brand_name
+                }
                 color="info"
                 className="[&>label>span]:font-medium"
                 {...register('brand')}
@@ -79,8 +76,13 @@ export default function CouponMangementform(props: any) {
               />
               <Input
                 onKeyDown={handleKeyDown}
-                label="Coupon code"
-                placeholder="Enter Coupon code"
+                label={
+                  jsonData?.admin?.coupon_management?.form?.couponCodeLabel
+                }
+                placeholder={
+                  jsonData?.admin?.coupon_management?.form?.placeholder
+                    ?.coupon_code
+                }
                 color="info"
                 className="[&>label>span]:font-medium"
                 {...register('couponCode')}
@@ -88,8 +90,13 @@ export default function CouponMangementform(props: any) {
               />
               <Input
                 onKeyDown={handleKeyDown}
-                label="Discount Title"
-                placeholder="Enter Discount Title"
+                label={
+                  jsonData?.admin?.coupon_management?.form?.discountTitleLabel
+                }
+                placeholder={
+                  jsonData?.admin?.coupon_management?.form?.placeholder
+                    ?.discount_title
+                }
                 color="info"
                 className="[&>label>span]:font-medium"
                 {...register('discountTitle')}
@@ -97,8 +104,13 @@ export default function CouponMangementform(props: any) {
               />
               <Input
                 onKeyDown={handleKeyDown}
-                label="Website Url"
-                placeholder="Enter Website Url"
+                label={
+                  jsonData?.admin?.coupon_management?.form?.websiteUrlLabel
+                }
+                placeholder={
+                  jsonData?.admin?.coupon_management?.form?.placeholder
+                    ?.website_url
+                }
                 color="info"
                 className="[&>label>span]:font-medium"
                 {...register('siteURL')}
@@ -109,7 +121,7 @@ export default function CouponMangementform(props: any) {
                   className="rizzui-input-label mb-1.5 block text-sm"
                   style={{ margin: '0px' }}
                 >
-                  Brand Logo
+                  {jsonData?.admin?.coupon_management?.form?.brandLogoLabel}
                 </p>
                 <Uploadfile
                   initialPath={false}
@@ -132,7 +144,7 @@ export default function CouponMangementform(props: any) {
                       variant="outline"
                       className="@xl:w-auto dark:hover:border-gray-400"
                     >
-                      Cancel
+                      {jsonData?.admin?.coupon_management?.form?.cancelButton}
                     </Button>
                   </Link>
                   <Button
@@ -140,7 +152,7 @@ export default function CouponMangementform(props: any) {
                     className="hover:gray-700 ms-3 @xl:w-auto dark:bg-gray-200 dark:text-white"
                     disabled={loading}
                   >
-                    Save
+                    {jsonData?.admin?.coupon_management?.form?.saveButton}
                     {loading && (
                       <Spinner size="sm" tag="div" className="ms-3" />
                     )}
@@ -151,7 +163,6 @@ export default function CouponMangementform(props: any) {
           </div>
         )}
       </Form>
-      {/* </FormBlockWrapper> */}
     </>
   );
 }

@@ -9,6 +9,7 @@ import DeletePopover from '@/app/shared/delete-popover';
 //import AddClientForm from '../create-edit/add-client-form';
 import { Badge, Button } from 'rizzui';
 import { routes } from '@/config/routes';
+import jsonData from '../../../../locales/en/translation.json';
 
 type Columns = {
   data: any[];
@@ -78,7 +79,7 @@ export const getColumns = ({
   {
     title: (
       <HeaderCell
-        title="Brand Name"
+        title={jsonData?.admin?.coupon_management?.form?.brandNameLabel}
         sortable
         ascending={
           sortConfig?.direction === 'asc' && sortConfig?.key === 'brand'
@@ -97,7 +98,11 @@ export const getColumns = ({
     },
   },
   {
-    title: <HeaderCell title="Brand Logo" />,
+    title: (
+      <HeaderCell
+        title={jsonData?.admin?.coupon_management?.form?.brandLogoLabel}
+      />
+    ),
     dataIndex: 'brandLogo',
     key: 'brandLogo',
     width: 200,
@@ -117,7 +122,7 @@ export const getColumns = ({
   {
     title: (
       <HeaderCell
-        title="Coupon Code"
+        title={jsonData?.admin?.coupon_management?.form?.couponCodeLabel}
         sortable
         ascending={
           sortConfig?.direction === 'asc' && sortConfig?.key === 'couponCode'
@@ -135,7 +140,7 @@ export const getColumns = ({
   {
     title: (
       <HeaderCell
-        title="Discount Title"
+        title={jsonData?.admin?.coupon_management?.form?.discountTitleLabel}
         sortable
         ascending={
           sortConfig?.direction === 'asc' && sortConfig?.key === 'discountTitle'
@@ -155,7 +160,7 @@ export const getColumns = ({
   {
     title: (
       <HeaderCell
-        title="Website Url"
+        title={jsonData?.admin?.coupon_management?.form?.websiteUrlLabel}
         sortable
         ascending={
           sortConfig?.direction === 'asc' && sortConfig?.key === 'siteURL'
@@ -196,8 +201,10 @@ export const getColumns = ({
           </Link>
         </Tooltip>
         <DeletePopover
-          title={`Delete the Coupon`}
-          description={`Are you sure you want to delete?`}
+          title={jsonData?.admin?.coupon_management?.table?.del_popup?.title}
+          description={
+            jsonData?.admin?.coupon_management?.table?.del_popup?.des
+          }
           onDelete={() =>
             onDeleteItem(
               row._id,
