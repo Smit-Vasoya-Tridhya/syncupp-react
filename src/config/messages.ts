@@ -25,7 +25,7 @@ export const messages = {
   InvoiceNumberMaxLength: 'Make sure invoice number maximum length is 10!',
   firstNameRequired: 'First name is required',
   firstNameLength: 'Maximum First name length is 15',
-  companyNameRequired: 'Company name is required',
+  companyNameRequired: 'Company name is required with minimum length is 5!',
   companyNameLength: 'Maximum Company name length is 30',
   companyWebsiteRequired: 'Company website is required',
   companyUrlInvalid: 'Company website url invalid',

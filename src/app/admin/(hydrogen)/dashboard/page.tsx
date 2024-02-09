@@ -1,12 +1,17 @@
+"use client"
+
 import FileDashboard from '@/app/shared/file/dashboard';
-import { metaObject } from '@/config/site.config';
-
-
-export const metadata = {
-  ...metaObject('Dashboard - Admin'),
-};
+import { getViewProfiles } from '@/redux/slices/admin/auth/viewprofile/viewProfileSlice';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
 export default function FileDashboardPage() {
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getViewProfiles())
+
+  }, [])
   return (
     <>
       <FileDashboard />
