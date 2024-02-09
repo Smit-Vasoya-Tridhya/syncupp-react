@@ -21,7 +21,7 @@ export const CouponManagementForm = z.object({
     .max(15, { message: 'Maximum Discount Title length is 15!' }), // date picker value
   siteURL: z
     .string()
-    .min(1, { message: 'Wesite url is Required' })
+    .min(1, { message: 'Wesite Url is Required' })
     .trim()
     .nullable()
     .refine(
@@ -34,7 +34,7 @@ export const CouponManagementForm = z.object({
         );
       },
       {
-        message: 'Inavalid url',
+        message: 'Inavalid Url',
       }
     ),
   brandLogo: z
@@ -42,7 +42,7 @@ export const CouponManagementForm = z.object({
     .refine((files) => {
       console.log('Files:', files); // Add this line
       return !!files;
-    }, 'Image is required.')
+    }, 'Brand Image is required.')
     .refine((files) => {
       if (typeof files === 'string') {
         return true;

@@ -17,6 +17,7 @@ import { useRouter } from 'next/navigation';
 import { routes } from '@/config/routes';
 import Link from 'next/link';
 import { FormBlockWrapper } from '@/app/shared/(user)/invoice/invoice-list/form-utils';
+import { Label } from 'recharts';
 
 export default function CouponMangementform(props: any) {
   const dispatch = useDispatch();
@@ -42,7 +43,7 @@ export default function CouponMangementform(props: any) {
   };
   return (
     <>
-      <PageHeader title="Coupon Management/ Add Coupon">
+      <PageHeader title="Coupon Management/Add Coupon">
         <div className="mt-4 flex items-center gap-3 @lg:mt-0"></div>
       </PageHeader>
       <Form<CouponManagementForm>
@@ -68,7 +69,7 @@ export default function CouponMangementform(props: any) {
             >
               <Input
                 label="Brand Name"
-                placeholder="Enter here"
+                placeholder="Enter Brand Name"
                 color="info"
                 className="[&>label>span]:font-medium"
                 {...register('brand')}
@@ -76,7 +77,7 @@ export default function CouponMangementform(props: any) {
               />
               <Input
                 label="Coupon code"
-                placeholder="Enter here."
+                placeholder="Enter Coupon code"
                 color="info"
                 className="[&>label>span]:font-medium"
                 {...register('couponCode')}
@@ -84,7 +85,7 @@ export default function CouponMangementform(props: any) {
               />
               <Input
                 label="Discount Title"
-                placeholder="Enter here"
+                placeholder="Enter Discount Title"
                 color="info"
                 className="[&>label>span]:font-medium"
                 {...register('discountTitle')}
@@ -92,20 +93,28 @@ export default function CouponMangementform(props: any) {
               />
               <Input
                 label="Website Url"
-                placeholder="Enter here."
+                placeholder="Enter Website Url"
                 color="info"
                 className="[&>label>span]:font-medium"
                 {...register('siteURL')}
                 error={errors?.siteURL?.message}
               />
-              <Uploadfile
-                initialPath={false}
-                name="brandLogo"
-                readonly={false}
-                user={true}
-                setFieldValue={setValue}
-                errors={setError}
-              />
+              <div>
+                <p
+                  className="rizzui-input-label mb-1.5 block text-sm"
+                  style={{ margin: '0px' }}
+                >
+                  Brand Logo
+                </p>
+                <Uploadfile
+                  initialPath={false}
+                  name="brandLogo"
+                  readonly={false}
+                  user={true}
+                  setFieldValue={setValue}
+                  errors={setError}
+                />
+              </div>
             </div>
             <p style={{ color: 'red' }}>
               {String(errors.brandLogo?.message || '')}

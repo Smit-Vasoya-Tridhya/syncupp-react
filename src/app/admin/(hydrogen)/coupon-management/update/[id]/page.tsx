@@ -67,7 +67,7 @@ export default function Updateform(props: any) {
   // console.log(intialValue, 'intial');
   return (
     <>
-      <PageHeader title="Coupon Management/ Edit">
+      <PageHeader title="Coupon Management/Edit">
         <div className="mt-4 flex items-center gap-3 @lg:mt-0"></div>
       </PageHeader>
 
@@ -95,7 +95,7 @@ export default function Updateform(props: any) {
             >
               <Input
                 label="Brand Name"
-                placeholder="Enter here"
+                placeholder="Enter Brand Name"
                 color="info"
                 className="[&>label>span]:font-medium"
                 {...register('brand')}
@@ -103,7 +103,7 @@ export default function Updateform(props: any) {
               />
               <Input
                 label="Coupon code"
-                placeholder="Enter here."
+                placeholder="Enter Coupon Code"
                 color="info"
                 className="[&>label>span]:font-medium"
                 {...register('couponCode')}
@@ -111,7 +111,7 @@ export default function Updateform(props: any) {
               />
               <Input
                 label="Discount Title"
-                placeholder="Enter here"
+                placeholder="Enter Discount Title"
                 color="info"
                 className="[&>label>span]:font-medium"
                 {...register('discountTitle')}
@@ -119,21 +119,29 @@ export default function Updateform(props: any) {
               />
               <Input
                 label="Website Url"
-                placeholder="Enter here."
+                placeholder="Enter Website Url"
                 color="info"
                 className="[&>label>span]:font-medium"
                 {...register('siteURL')}
                 error={errors?.siteURL?.message}
                 // defaultValue={}
               />
-              <Uploadfile
-                initialPath={CouponSingledata?.data?.brandLogo}
-                name="brandLogo"
-                readonly={false}
-                user={true}
-                setFieldValue={setValue}
-                errors={setError}
-              />
+              <div>
+                <p
+                  className="rizzui-input-label mb-1.5 block text-sm"
+                  style={{ margin: '0px' }}
+                >
+                  Brand Logo
+                </p>
+                <Uploadfile
+                  initialPath={CouponSingledata?.data?.brandLogo}
+                  name="brandLogo"
+                  readonly={false}
+                  user={true}
+                  setFieldValue={setValue}
+                  errors={setError}
+                />
+              </div>
             </div>
             <div>
               {/* <div> */}

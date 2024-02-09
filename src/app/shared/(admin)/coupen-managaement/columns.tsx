@@ -95,20 +95,14 @@ export const getColumns = ({
     key: 'brand',
     width: 200,
     render: (value: string, row: any) => {
-      return <Text className="font-medium text-gray-700">{value}</Text>;
+      // const capitalizedValue = value.charAt(0).toUpperCase() + value.slice(1);
+      return (
+        <Text className="font-medium capitalize text-gray-700">{value}</Text>
+      );
     },
   },
   {
-    title: (
-      <HeaderCell
-        title="Brand Logo"
-        sortable
-        ascending={
-          sortConfig?.direction === 'asc' && sortConfig?.key === 'brandLogo'
-        }
-      />
-    ),
-    onHeaderCell: () => onHeaderCellClick('brandLogo'),
+    title: <HeaderCell title="Brand Logo" />,
     dataIndex: 'brandLogo',
     key: 'brandLogo',
     width: 200,
@@ -116,7 +110,7 @@ export const getColumns = ({
       <>
         {value && value != '' ? (
           <img
-            src={`${process.env.NEXT_PUBLIC_API}${value}`}
+            src={`${process.env.NEXT_PUBLIC_API}/${value}`}
             style={{ width: '53.33px', height: '30px' }}
           ></img>
         ) : (
@@ -158,7 +152,9 @@ export const getColumns = ({
     key: 'discountTitle',
     width: 200,
     render: (value: string) => {
-      return <Text className="font-medium text-gray-700">{value}</Text>;
+      return (
+        <Text className="font-medium  capitalize text-gray-700">{value}</Text>
+      );
     },
   },
   {
