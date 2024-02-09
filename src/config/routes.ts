@@ -29,6 +29,7 @@ export const routes = {
   clients: {
     verify: '/client/verify',
     payment: '/client/payment',
+    agreement: '/client/agreement'
   },
   agreement: '/agreement',
 

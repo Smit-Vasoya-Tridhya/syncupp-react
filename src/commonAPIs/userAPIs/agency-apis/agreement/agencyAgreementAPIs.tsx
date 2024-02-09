@@ -26,6 +26,7 @@ export const GetAllAgreementApi = async (data: GetAllAgreementlistApiData) => {
 
 type DeleteAgencyAgreement = {
     id: string[] | string
+    agency_id?: string
 }
 
 export const DeleteAgencyAgreementsApi = async (data: DeleteAgencyAgreement) => {

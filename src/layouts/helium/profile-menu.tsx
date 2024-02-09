@@ -20,9 +20,6 @@ function DropdownMenu() {
 
   const dispatch = useDispatch();
   const router = useRouter();
-  useEffect(()=>{
-    dispatch(getUserProfile())
-  },[dispatch])
   const { userProfile , loading} = useSelector((state: any) => state?.root?.signIn);
 
   const handleClick = () => {
