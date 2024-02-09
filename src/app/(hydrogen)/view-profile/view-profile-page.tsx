@@ -50,7 +50,13 @@ export default function UserViewProfileForm(props:any) {
     dispatch(getCountry());
   }, [dispatch, isOpenEditMode]);
 
-const data = signIn?.userProfile
+const data = signIn?.userProfile;
+const userRole = signIn?.role;
+
+const isAgency = userRole === 'agency';
+const isClient = userRole === 'client';
+const isTeamAgency = userRole === 'team_agency';
+const isTeamClient = userRole === 'team_client';
 
 const initialValues = {
   email:data?.email ??'',
@@ -179,7 +185,7 @@ const cityHandleChange = (selectedOption: string) => {
                         setIsOpenEditMode(false);
                       }}
                     >
-                      <PiNotePencilDuotone className="h-[20px] w-[20px] mr-1" />
+                      <PiNotePencilDuotone className="mr-1 h-[20px] w-[20px]" />
                       Edit
                     </Button>
                   </ActionIcon>
@@ -232,156 +238,170 @@ const cityHandleChange = (selectedOption: string) => {
                 disabled={!isOpenEditMode}
               />
             </div>
-            <h4>Comapny Information</h4>
-            <div className="grid grid-cols-2 gap-4 pt-5">
-              <Input
-                onKeyDown={handleKeyDown}
-                type="text"
-                label="Company name"
-                placeholder="Enter Comapny Name Here..."
-                color="info"
-                className="[&>label>span]:font-medium"
-                {...register('company_name')}
-                error={errors.company_name?.message}
-                disabled={!isOpenEditMode}
-              />
-              <Input
-                onKeyDown={handleKeyDown}
-                type="text"
-                label="Company website"
-                placeholder="Enter Comapny website Here..."
-                color="info"
-                className="[&>label>span]:font-medium"
-                {...register('company_website')}
-                error={errors.company_website?.message}
-                disabled={!isOpenEditMode}
-              />
-              <Controller
-                control={control}
-                name="no_of_people"
-                render={({ field: { onChange, value } }) => (
-                  <Select
-                    options={peopleCountOptions}
-                    onChange={(selectedOption: string) => {
-                      onChange(selectedOption);
-                    }}
-                    value={value}
-                    label="How many people"
+            {isAgency && (
+              <div>
+                <div>
+                  <h4>Comapny Information</h4>
+                </div>
+                <div className="grid grid-cols-2 gap-4 pt-5">
+                  <Input
+                    onKeyDown={handleKeyDown}
+                    type="text"
+                    label="Company name"
+                    placeholder="Enter Comapny Name Here..."
                     color="info"
-                    getOptionValue={(option) => option.value}
-                    dropdownClassName="p-1 border w-12 border-gray-100 shadow-lg"
-                    className="font-medium"
-                    error={errors?.no_of_people?.message as string}
+                    className="[&>label>span]:font-medium"
+                    {...register('company_name')}
+                    error={errors.company_name?.message}
                     disabled={!isOpenEditMode}
                   />
-                )}
-              />
-              <Controller
-                control={control}
-                name="industry"
-                render={({ field: { onChange, value } }) => (
-                  <Select
-                    options={industryOptions}
-                    onChange={(selectedOption: string) => {
-                      onChange(selectedOption);
-                    }}
-                    value={value}
-                    label="Industry"
+                  <Input
+                    onKeyDown={handleKeyDown}
+                    type="text"
+                    label="Company website"
+                    placeholder="Enter Comapny website Here..."
                     color="info"
-                    getOptionValue={(option) => option.value}
-                    dropdownClassName="p-1 border w-12 border-gray-100 shadow-lg"
-                    className="font-medium"
-                    error={errors?.industry?.message as string}
+                    className="[&>label>span]:font-medium"
+                    {...register('company_website')}
+                    error={errors.company_website?.message}
                     disabled={!isOpenEditMode}
                   />
-                )}
-              />
-            </div>
-            <h4>General Information</h4>
-            <Input
-              onKeyDown={handleKeyDown}
-              type="text"
-              label="Address"
-              placeholder="Enter address Here..."
-              color="info"
-              className="[&>label>span]:font-medium"
-              {...register('address')}
-              error={errors.address?.message}
-              disabled={!isOpenEditMode}
-            />
-            <div className="grid grid-cols-2 gap-4 pt-5">
-              <Controller
-                name="country"
-                control={control}
-                render={({ field: { onChange, value } }) => (
-                  <Select
-                    options={countryOptions}
-                    value={value}
-                    onChange={(selectedOption: string) => {
-                      onChange(selectedOption);
-                      countryHandleChange(selectedOption);
-                    }}
-                    label="Country"
-                    error={errors?.country?.message as string}
-                    getOptionValue={(option) => option.name}
-                    dropdownClassName="p-1 border w-12 border-gray-100 shadow-lg"
-                    className="font-medium"
+                  <Controller
+                    control={control}
+                    name="no_of_people"
+                    render={({ field: { onChange, value } }) => (
+                      <Select
+                        options={peopleCountOptions}
+                        onChange={(selectedOption: string) => {
+                          onChange(selectedOption);
+                        }}
+                        value={value}
+                        label="How many people"
+                        color="info"
+                        getOptionValue={(option) => option.value}
+                        dropdownClassName="p-1 border w-12 border-gray-100 shadow-lg"
+                        className="font-medium"
+                        error={errors?.no_of_people?.message as string}
+                        disabled={!isOpenEditMode}
+                      />
+                    )}
+                  />
+                  <Controller
+                    control={control}
+                    name="industry"
+                    render={({ field: { onChange, value } }) => (
+                      <Select
+                        options={industryOptions}
+                        onChange={(selectedOption: string) => {
+                          onChange(selectedOption);
+                        }}
+                        value={value}
+                        label="Industry"
+                        color="info"
+                        getOptionValue={(option) => option.value}
+                        dropdownClassName="p-1 border w-12 border-gray-100 shadow-lg"
+                        className="font-medium"
+                        error={errors?.industry?.message as string}
+                        disabled={!isOpenEditMode}
+                      />
+                    )}
+                  />
+                </div>
+              </div>
+            )}
+            {isAgency && (
+              <div>
+                <div>
+                  <h4>General Information</h4>{' '}
+                </div>
+                <div className='pt-5'>
+                  <Input
+                    onKeyDown={handleKeyDown}
+                    type="text"
+                    label="Address"
+                    placeholder="Enter address Here..."
+                    color="info"
+                    className="[&>label>span]:font-medium"
+                    {...register('address')}
+                    error={errors.address?.message}
                     disabled={!isOpenEditMode}
                   />
-                )}
-              />
-              <Controller
-                name="state"
-                control={control}
-                render={({ field: { onChange, value } }) => (
-                  <Select
-                    options={stateOptions}
-                    value={value}
-                    onChange={(selectedOption: string) => {
-                      onChange(selectedOption);
-                      stateHandleChange(selectedOption);
-                    }}
-                    label="State"
-                    disabled={stateOptions.length === 0}
-                    error={errors?.state?.message as string}
-                    getOptionValue={(option) => option.name}
-                    dropdownClassName="p-1 border w-12 border-gray-100 shadow-lg"
-                    className="font-medium"
+                </div>
+                <div className="grid grid-cols-2 gap-4 pt-5">
+                  <Controller
+                    name="country"
+                    control={control}
+                    render={({ field: { onChange, value } }) => (
+                      <Select
+                        options={countryOptions}
+                        value={value}
+                        onChange={(selectedOption: string) => {
+                          onChange(selectedOption);
+                          countryHandleChange(selectedOption);
+                        }}
+                        label="Country"
+                        error={errors?.country?.message as string}
+                        getOptionValue={(option) => option.name}
+                        dropdownClassName="p-1 border w-12 border-gray-100 shadow-lg"
+                        className="font-medium"
+                        disabled={!isOpenEditMode}
+                      />
+                    )}
                   />
-                )}
-              />
-              <Controller
-                name="city"
-                control={control}
-                render={({ field: { onChange, value } }) => (
-                  <Select
-                    options={cityOptions}
-                    value={value}
-                    onChange={(selectedOption: string) => {
-                      onChange(selectedOption);
-                      cityHandleChange(selectedOption);
-                    }}
-                    disabled={cityOptions.length === 0}
-                    label="City"
-                    error={errors?.city?.message as string}
-                    getOptionValue={(option) => option.name}
-                    dropdownClassName="p-1 border w-12 border-gray-100 shadow-lg"
-                    className="font-medium"
+                  <Controller
+                    name="state"
+                    control={control}
+                    render={({ field: { onChange, value } }) => (
+                      <Select
+                        options={stateOptions}
+                        value={value}
+                        onChange={(selectedOption: string) => {
+                          onChange(selectedOption);
+                          stateHandleChange(selectedOption);
+                        }}
+                        label="State"
+                        disabled={stateOptions.length === 0}
+                        error={errors?.state?.message as string}
+                        getOptionValue={(option) => option.name}
+                        dropdownClassName="p-1 border w-12 border-gray-100 shadow-lg"
+                        className="font-medium"
+                      />
+                    )}
                   />
-                )}
-              />
-              <Input
-                onKeyDown={handleKeyDown}
-                type="text"
-                label="Pin code"
-                placeholder="Enter pincode Here..."
-                color="info"
-                className="[&>label>span]:font-medium"
-                {...register('pincode')}
-                error={errors.pincode?.message}
-                disabled={!isOpenEditMode}
-              />
-            </div>
+                  <Controller
+                    name="city"
+                    control={control}
+                    render={({ field: { onChange, value } }) => (
+                      <Select
+                        options={cityOptions}
+                        value={value}
+                        onChange={(selectedOption: string) => {
+                          onChange(selectedOption);
+                          cityHandleChange(selectedOption);
+                        }}
+                        disabled={cityOptions.length === 0}
+                        label="City"
+                        error={errors?.city?.message as string}
+                        getOptionValue={(option) => option.name}
+                        dropdownClassName="p-1 border w-12 border-gray-100 shadow-lg"
+                        className="font-medium"
+                      />
+                    )}
+                  />
+                  <Input
+                    onKeyDown={handleKeyDown}
+                    type="text"
+                    label="Pin code"
+                    placeholder="Enter pincode Here..."
+                    color="info"
+                    className="[&>label>span]:font-medium"
+                    {...register('pincode')}
+                    error={errors.pincode?.message}
+                    disabled={!isOpenEditMode}
+                  />
+                </div>
+              </div>
+            )}
             {isOpenEditMode && (
               <div className={cn('flex space-x-4 ')}>
                 <Button
