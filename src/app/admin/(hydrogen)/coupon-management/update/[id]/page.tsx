@@ -64,118 +64,133 @@ export default function Updateform(props: any) {
     siteURL: CouponSingledata?.data?.siteURL ?? '',
     brandLogo: CouponSingledata?.data?.brandLogo ?? '',
   };
-  return (
-    <>
-      <PageHeader title="Edit Coupon">
-        <div className="mt-4 flex items-center gap-3 @lg:mt-0"></div>
-      </PageHeader>
 
-      <Form<CouponManagementForm>
-        validationSchema={CouponManagementForm}
-        onSubmit={onSubmit}
-        useFormProps={{
-          mode: 'all',
-          defaultValues: intialValue,
-        }}
-        className=" p-10 [&_label]:font-medium"
-        resetValues={intialValue}
-      >
-        {({ register, control, formState: { errors }, setValue, setError }) => (
-          <div className="space-y-5">
-            <div
-              className={cn(
-                'grid grid-cols-4 gap-4 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4'
-              )}
-            >
-              <Input
-                onKeyDown={handleKeyDown}
-                label="Brand Name"
-                placeholder="Enter Brand Name"
-                color="info"
-                className="[&>label>span]:font-medium"
-                {...register('brand')}
-                error={errors?.brand?.message}
-              />
-              <Input
-                onKeyDown={handleKeyDown}
-                label="Coupon code"
-                placeholder="Enter Coupon Code"
-                color="info"
-                className="[&>label>span]:font-medium"
-                {...register('couponCode')}
-                error={errors?.couponCode?.message}
-              />
-              <Input
-                onKeyDown={handleKeyDown}
-                label="Discount Title"
-                placeholder="Enter Discount Title"
-                color="info"
-                className="[&>label>span]:font-medium"
-                {...register('discountTitle')}
-                error={errors?.discountTitle?.message}
-              />
-              <Input
-                onKeyDown={handleKeyDown}
-                label="Website Url"
-                placeholder="Enter Website Url"
-                color="info"
-                className="[&>label>span]:font-medium"
-                {...register('siteURL')}
-                error={errors?.siteURL?.message}
-                // defaultValue={}
-              />
-              <div>
-                <p
-                  className="rizzui-input-label mb-1.5 block text-sm"
-                  style={{ margin: '0px' }}
-                >
-                  Brand Logo
-                </p>
-                <Uploadfile
-                  initialPath={CouponSingledata?.data?.brandLogo}
-                  name="brandLogo"
-                  readonly={false}
-                  user={true}
-                  setFieldValue={setValue}
-                  errors={setError}
+  if (Object.entries(CouponSingledata).length === 0) {
+    return (
+      <div className="flex items-center justify-center p-10">
+        <Spinner size="xl" tag="div" className="ms-3" />
+      </div>
+    );
+  } else {
+    return (
+      <>
+        <PageHeader title="Edit Coupon">
+          <div className="mt-4 flex items-center gap-3 @lg:mt-0"></div>
+        </PageHeader>
+
+        <Form<CouponManagementForm>
+          validationSchema={CouponManagementForm}
+          onSubmit={onSubmit}
+          useFormProps={{
+            mode: 'all',
+            defaultValues: intialValue,
+          }}
+          className=" p-10 [&_label]:font-medium"
+          resetValues={intialValue}
+        >
+          {({
+            register,
+            control,
+            formState: { errors },
+            setValue,
+            setError,
+          }) => (
+            <div className="space-y-5">
+              <div
+                className={cn(
+                  'grid grid-cols-4 gap-4 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4'
+                )}
+              >
+                <Input
+                  onKeyDown={handleKeyDown}
+                  label="Brand Name"
+                  placeholder="Enter Brand Name"
+                  color="info"
+                  className="[&>label>span]:font-medium"
+                  {...register('brand')}
+                  error={errors?.brand?.message}
                 />
-              </div>
-            </div>
-            <div>
-              {/* <div> */}
-              {/* </div> */}
-            </div>
-            <p style={{ color: 'red' }}>
-              {String(errors.brandLogo?.message || '')}
-            </p>
-            <div>
-              <div className={cn('grid grid-cols-2 gap-2 pt-5')}>
+                <Input
+                  onKeyDown={handleKeyDown}
+                  label="Coupon code"
+                  placeholder="Enter Coupon Code"
+                  color="info"
+                  className="[&>label>span]:font-medium"
+                  {...register('couponCode')}
+                  error={errors?.couponCode?.message}
+                />
+                <Input
+                  onKeyDown={handleKeyDown}
+                  label="Discount Title"
+                  placeholder="Enter Discount Title"
+                  color="info"
+                  className="[&>label>span]:font-medium"
+                  {...register('discountTitle')}
+                  error={errors?.discountTitle?.message}
+                />
+                <Input
+                  onKeyDown={handleKeyDown}
+                  label="Website Url"
+                  placeholder="Enter Website Url"
+                  color="info"
+                  className="[&>label>span]:font-medium"
+                  {...register('siteURL')}
+                  error={errors?.siteURL?.message}
+                  // defaultValue={}
+                />
                 <div>
-                  <Link href={routes.admin.couponManagement}>
-                    <Button
-                      variant="outline"
-                      className="@xl:w-auto dark:hover:border-gray-400"
-                    >
-                      Cancel
-                    </Button>
-                  </Link>
-
-                  <Button
-                    type="submit"
-                    className="hover:gray-700 ms-3 @xl:w-auto dark:bg-gray-200 dark:text-white"
-                    disabled={loading}
+                  <p
+                    className="rizzui-input-label mb-1.5 block text-sm"
+                    style={{ margin: '0px' }}
                   >
-                    Save
-                    {loading && (
-                      <Spinner size="sm" tag="div" className="ms-3" />
-                    )}
-                  </Button>
+                    Brand Logo
+                  </p>
+                  <Uploadfile
+                    initialPath={CouponSingledata?.data?.brandLogo}
+                    name="brandLogo"
+                    readonly={false}
+                    user={true}
+                    setFieldValue={setValue}
+                    errors={setError}
+                  />
+                </div>
+              </div>
+              <div>
+                {/* <div> */}
+                {/* </div> */}
+              </div>
+              <p style={{ color: 'red' }}>
+                {String(errors.brandLogo?.message || '')}
+              </p>
+              <div>
+                <div className={cn('grid grid-cols-2 gap-2 pt-5')}>
+                  <div>
+                    <Link href={routes.admin.couponManagement}>
+                      <Button
+                        variant="outline"
+                        className="@xl:w-auto dark:hover:border-gray-400"
+                      >
+                        Cancel
+                      </Button>
+                    </Link>
+
+                    <Button
+                      type="submit"
+                      className="hover:gray-700 ms-3 @xl:w-auto dark:bg-gray-200 dark:text-white"
+                      disabled={loading}
+                    >
+                      Save
+                      {loading && (
+                        <Spinner size="sm" tag="div" className="ms-3" />
+                      )}
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        )}
-      </Form>
-    </>
-  );
+          )}
+        </Form>
+      </>
+    );
+  }
 }
