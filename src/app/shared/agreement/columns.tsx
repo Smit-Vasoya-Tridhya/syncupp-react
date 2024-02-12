@@ -64,6 +64,17 @@ export const AgreementColumns = ({
         })
     }
 
+    const SentmailHandler = (id: string) => {
+        dispatch(sendAgreement(id)).then((result: any) => {
+            if (sendAgreement.fulfilled.match(result)) {
+                // console.log('resultt', result)
+                if (result && result.payload.success === true) {
+                    dispatch(getAllAgencyagreement({ page: currentPage, items_per_page: pageSize, sort_field: sortConfig?.key, sort_order: sortConfig?.direction }));
+                }
+            }
+        })
+    }
+
 
     return [
         {
@@ -185,7 +196,7 @@ export const AgreementColumns = ({
                                     <FiSend className="me-2 h-[18px] w-[18px] text-gray-500" />
                                     Sent
                                 </Button>
-                                <Button
+                                {/* <Button
                                     variant="text"
                                     className="flex w-full items-center justify-start px-4 py-2.5 focus:outline-none"
                                     // onClick={() => { StatusHandler("agreed", row?._id,setOpen) }}
@@ -194,7 +205,7 @@ export const AgreementColumns = ({
                                 >
                                     <FaRegCheckCircle className="me-2 h-[18px] w-[18px] text-gray-500" />
                                     Agreed
-                                </Button>
+                                </Button> */}
                             </div>
                         )}
                     >
@@ -262,7 +273,7 @@ export const AgreementColumns = ({
                         color="invert"
                     >
                         {/* <Link href={routes.editTeam}> */}
-                        <Button disabled={loading || row?.status === "draft"} type='button' onClick={() => { dispatch(sendAgreement(row?._id)) }} size="sm" variant="outline" className='bg-white text-black' aria-label={'Send Email'}>
+                        <Button disabled={loading} type='button' onClick={() => { SentmailHandler(row?._id) }} size="sm" variant="outline" className='bg-white text-black' aria-label={'Send Email'}>
                             <HiOutlineMail className="h-4 w-4" />
                         </Button>
                         {/* </Link> */}

@@ -44,6 +44,21 @@ function getStatusBadge(status: string) {
           <Text className="ms-2 font-medium text-green-dark">Active</Text>
         </div>
       );
+    case 'requested':
+      return (
+        <div className="flex items-center">
+          <Badge color="warning" renderAsDot />
+          <Text className="ms-2 font-medium text-orange-dark">Requested</Text>
+        </div>
+      );
+
+    case 'rejected':
+      return (
+        <div className="flex items-center">
+          <Badge color="danger" renderAsDot />
+          <Text className="ms-2 font-medium text-red">Rejected</Text>
+        </div>
+      );
     default:
       return (
         <div className="flex items-center">

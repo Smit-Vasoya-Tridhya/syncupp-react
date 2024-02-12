@@ -39,3 +39,20 @@ export const GetClientAgreementByIdApi = async (data: GetClientAgreementByIdApiD
 };
 
 
+//  Agreement status change
+type clientAgreementstatusChange = {
+    id: string;
+}
+
+export const ClientAgreementstatusChange = async (data: clientAgreementstatusChange) => {
+    const response = await AxiosDefault({
+        url: `/api/v1/agreement/update-agreement-status/${data?.id}`,
+        method: "PUT",
+        data: data,
+        contentType: "application/json",
+    });
+    const responseData = response.data;
+    return responseData;
+};
+
+

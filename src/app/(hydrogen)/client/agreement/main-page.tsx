@@ -6,7 +6,7 @@ import CustomTable from '@/components/common-tables/table';
 import { deleteAgencyAgreement } from '@/redux/slices/user/agreement/agreementSlice';
 import PageHeader from '@/app/shared/page-header';
 import { AgreementColumns } from '@/app/shared/(user)/agreement/columns';
-import { getAllclientagreement } from '@/redux/slices/user/client/agreement/clientAgreementSlice';
+import { getAllclientagreement, setPagginationParams } from '@/redux/slices/user/client/agreement/clientAgreementSlice';
 
 const pageHeader = {
     title: 'Aggrement',
@@ -35,6 +35,7 @@ export default function AgreementPage() {
     //Paggination Handler
     const handleChangePage = async (paginationParams: any) => {
         let { page, items_per_page, sort_field, sort_order, search } = paginationParams;
+        await dispatch(setPagginationParams(paginationParams))
         const response = await dispatch(getAllclientagreement({ page, items_per_page, sort_field, sort_order, search, agency_id: clientSliceData?.agencyId }));
         const { data } = response?.payload;
         const maxPage: number = data?.page_count;

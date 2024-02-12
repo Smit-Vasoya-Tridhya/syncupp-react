@@ -1,4 +1,4 @@
-import { GetAllclientAgreementApi, GetClientAgreementByIdApi } from "@/commonAPIs/userAPIs/client-apis/agreement/clientAgreementAPIs";
+import { ClientAgreementstatusChange, GetAllclientAgreementApi, GetClientAgreementByIdApi } from "@/commonAPIs/userAPIs/client-apis/agreement/clientAgreementAPIs";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { toast } from 'react-hot-toast';
 
@@ -54,27 +54,54 @@ export const getSingleClientAgreement: any = createAsyncThunk(
 );
 
 
+//  Agreement status change
+type clientAgreementstatusChange = {
+    id: string;
+}
+
+export const clientAgreementchangeStatus: any = createAsyncThunk(
+    "clienAgreement/clientAgreementchangeStatus",
+    async (data: clientAgreementstatusChange) => {
+        try {
+            const response: any = await ClientAgreementstatusChange(data);
+            return response;
+        } catch (error: any) {
+            return { status: false, message: error.response.data.message } as APIErrorResponse;
+        }
+    }
+);
+
+
 
 
 // Slice initial States types
 interface AgencyAgreementInitialState {
     loading: boolean;
     agreementDetails: any;
-    singleAgreementdetails: any
+    singleAgreementdetails: any;
+    paginationParams?: any
 }
 
 // Slice initial States
 const initialState: AgencyAgreementInitialState = {
     loading: false,
     agreementDetails: {},
-    singleAgreementdetails: {}
+    singleAgreementdetails: {},
+    paginationParams: {}
 };
 
 
 export const clientAgreementSlice = createSlice({
     name: "clienAgreement",
     initialState,
-    reducers: {},
+    reducers: {
+        setPagginationParams(state, action) {
+            return {
+                ...state,
+                paginationParams: action.payload
+            }
+        },
+    },
 
     extraReducers: (builder) => {
         // client Agreement list cases
@@ -127,7 +154,33 @@ export const clientAgreementSlice = createSlice({
                     loading: false,
                 }
             });
+
+
+        // Agreement status Change
+        builder
+            .addCase(clientAgreementchangeStatus.pending, (state) => {
+                return {
+                    ...state,
+                    loading: true,
+                }
+            })
+            .addCase(clientAgreementchangeStatus.fulfilled, (state, action) => {
+                if (action.payload.status == false) {
+                    toast.error(action.payload.message)
+                }
+                return {
+                    ...state,
+                    loading: false,
+                }
+            })
+            .addCase(clientAgreementchangeStatus.rejected, (state) => {
+                return {
+                    ...state,
+                    loading: false,
+                }
+            });
     }
 });
 
+export const { setPagginationParams } = clientAgreementSlice.actions;
 export default clientAgreementSlice.reducer;
