@@ -260,7 +260,10 @@ export const agreementSlice = createSlice({
                 }
             })
             .addCase(deleteAgencyAgreement.fulfilled, (state, action) => {
-                if (action.payload.status == false) {
+                // console.log(action.payload,'action.payload')
+                if (action.payload.success === true) {
+                    toast.success(action.payload.message)
+                } else {
                     toast.error(action.payload.message)
                 }
                 return {
