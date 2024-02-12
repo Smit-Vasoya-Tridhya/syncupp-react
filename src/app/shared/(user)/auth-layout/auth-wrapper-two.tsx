@@ -102,12 +102,12 @@ function AuthNavBar(props: any) {
         {props.title !== 'Set your password' &&
           <AuthNavLink href={routes.signUp}>
             <PiUserCirclePlus className="h-6 w-6" />
-            Sign up
+            Sign Up
           </AuthNavLink>
         }
         <AuthNavLink href={routes.signIn}>
           <PiArrowLineRight className="h-[22px] w-[22px]" />
-          Login
+          Sign In
         </AuthNavLink>
       </div>
     </div>
@@ -294,7 +294,7 @@ function IntroBannerBlock() {
 const socialLinks = [
   {
     title: 'Facebook',
-    link: 'https://www.facebook.com/redqinc',
+    link: 'https://www.facebook.com/',
     icon: <PiFacebookLogo className="h-auto w-4" />,
   },
   {
