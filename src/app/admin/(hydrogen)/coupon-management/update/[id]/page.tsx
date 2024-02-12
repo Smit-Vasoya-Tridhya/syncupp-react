@@ -162,7 +162,7 @@ export default function Updateform(props: any) {
                 <div>
                   <p
                     className="rizzui-input-label mb-1.5 block text-sm"
-                    style={{ margin: '0px' }}
+                    style={{ margin: '0px', fontWeight: '600' }}
                   >
                     {jsonData?.admin?.coupon_management?.form?.brandLogoLabel}
                   </p>

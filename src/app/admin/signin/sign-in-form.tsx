@@ -97,7 +97,7 @@ export default function SignInForm() {
               disabled={adminSignIn.loading}
 
             >
-              Sign in
+              Sign In
               {adminSignIn.loading && <Spinner size="sm" tag='div' className='ms-3' />}
             </Button>
           </div>

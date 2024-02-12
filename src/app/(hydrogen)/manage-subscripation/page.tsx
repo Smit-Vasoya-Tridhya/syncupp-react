@@ -1,15 +1,14 @@
 import { metaObject } from '@/config/site.config';
-import SignIn from './main-page'
+import SubcripationPage from './main-page';
 
 export const metadata = {
-  ...metaObject('SignIn - Admin'),
+  ...metaObject('Manage Subscription'),
 };
 
 export default function Page() {
   return (
-    <SignIn />
+    <>
+      <SubcripationPage />
+    </>
   );
 }
-
-
-

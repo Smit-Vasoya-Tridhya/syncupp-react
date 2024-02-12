@@ -22,8 +22,9 @@ import taskSlice from './slices/user/task/taskSlice';
 import clientReviewSlice from './slices/admin/clientReview/clientReviewSlice';
 import cmsSlice from './slices/admin/cms/cmsSlice';
 import couponManagementSlice from './slices/admin/coupon-managemnt/couponManagementSlice';
-import paymentSlice from "./slices/payment/paymentSlice";
-import inquirySlice from "./slices/admin/inquiry/inquirySlice";
+import paymentSlice from './slices/payment/paymentSlice';
+import inquirySlice from './slices/admin/inquiry/inquirySlice';
+import SubscriptionSlice from './slices/user/manage-subscription.tsx/SubscriptionSlice';
 
 const combinedReducer = combineReducers({
   signIn: signinSlice,
@@ -44,19 +45,20 @@ const combinedReducer = combineReducers({
   teamMember: teamSlice,
   adminAgency: agencySlice,
   adminCoupon: couponManagementSlice,
+  managesubcription: SubscriptionSlice,
   userAgency: userAgencySlice,
   invoice: invoiceSlice,
   agreement: agreementSlice,
   clienAgreement: clientAgreementSlice,
   task: taskSlice,
   payment: paymentSlice,
-  inquiry: inquirySlice
+  inquiry: inquirySlice,
 });
 
 const rootReducer = (state: any, action: any) => {
-  if (action.type === "signin/logoutUser") {
+  if (action.type === 'signin/logoutUser') {
     state = undefined;
-  } else if (action.type === "signup/lologoutUserSignUp") {
+  } else if (action.type === 'signup/lologoutUserSignUp') {
     state = undefined;
   }
   return combinedReducer(state, action);

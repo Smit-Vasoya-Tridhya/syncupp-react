@@ -1,15 +1,14 @@
 import { metaObject } from '@/config/site.config';
-import SignIn from './main-page'
+import CmsContactus from './ConatctUsform';
 
 export const metadata = {
-  ...metaObject('SignIn - Admin'),
+  ...metaObject('ContactUS'),
 };
 
 export default function Page() {
   return (
-    <SignIn />
+    <>
+      <CmsContactus />
+    </>
   );
 }
-
-
-

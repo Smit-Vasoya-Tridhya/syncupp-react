@@ -1,15 +1,14 @@
 import { metaObject } from '@/config/site.config';
-import SignIn from './main-page'
+import CmsPricing from './pricing';
 
 export const metadata = {
-  ...metaObject('SignIn - Admin'),
+  ...metaObject('Pricing'),
 };
 
 export default function Page() {
   return (
-    <SignIn />
+    <>
+      <CmsPricing />
+    </>
   );
 }
-
-
-

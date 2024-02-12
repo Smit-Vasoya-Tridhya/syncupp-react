@@ -27,12 +27,12 @@ export default function TermsAndCondition() {
             <tbody>
               <tr className="border-b odd:bg-white even:bg-gray-50 dark:border-gray-700 odd:dark:bg-gray-900 even:dark:bg-gray-800">
                 <div>
-                <div className="border-b-2 py-2 w-full">
-                    <td className="px-6 py-4 w-full flex justify-between">
-                      <div className='flex'>
+                  <div className="w-full border-b-2 py-2">
+                    <td className="flex w-full justify-between px-6 py-4">
+                      <div className="flex">
                         <Text> Home </Text>{' '}
                       </div>
-                      <div className='flex'>
+                      <div className="flex">
                         <PiEyeFill className="mr-3 h-[30px] w-[30px] cursor-pointer" />
                         {/* <Link href={routes.admin.cmsTC}> */}
                         <PiNotePencilDuotone className="h-[30px] w-[30px] cursor-pointer" />{' '}
@@ -40,12 +40,12 @@ export default function TermsAndCondition() {
                       </div>
                     </td>
                   </div>
-                  <div className="border-b-2 py-2 w-full">
-                    <td className="px-6 py-4 w-full flex justify-between">
-                      <div className='flex'>
+                  <div className="w-full border-b-2 py-2">
+                    <td className="flex w-full justify-between px-6 py-4">
+                      <div className="flex">
                         <Text> Features </Text>{' '}
                       </div>
-                      <div className='flex'>
+                      <div className="flex">
                         <PiEyeFill className="mr-3 h-[30px] w-[30px] cursor-pointer" />
                         {/* <Link href={routes.admin.cmsTC}> */}
                         <PiNotePencilDuotone className="h-[30px] w-[30px] cursor-pointer" />{' '}
@@ -53,55 +53,68 @@ export default function TermsAndCondition() {
                       </div>
                     </td>
                   </div>
-                  <div className="border-b-2 py-2 w-full">
-                    <td className="px-6 py-4 w-full flex justify-between">
-                      <div className='flex'>
+                  <div className="w-full border-b-2 py-2">
+                    <td className="flex w-full justify-between px-6 py-4">
+                      <div className="flex">
                         <Text> Price </Text>{' '}
                       </div>
-                      <div className='flex'>
+                      <div className="flex">
                         <PiEyeFill className="mr-3 h-[30px] w-[30px] cursor-pointer" />
-                        {/* <Link href={routes.admin.cmsTC}> */}
-                        <PiNotePencilDuotone className="h-[30px] w-[30px] cursor-pointer" />{' '}
-                        {/* </Link> */}
-                      </div>
-                    </td>
-                  </div>
-                  <div className="border-b-2 py-2 w-full">
-                    <td className="px-6 py-4 w-full flex justify-between">
-                      <div className='flex'>
-                        <Text> Contact us </Text>{' '}
-                      </div>
-                      <div className='flex'>
-                        <PiEyeFill className="mr-3 h-[30px] w-[30px] cursor-pointer" />
-                        {/* <Link href={routes.admin.cmsTC}> */}
-                        <PiNotePencilDuotone className="h-[30px] w-[30px] cursor-pointer" />{' '}
-                        {/* </Link> */}
-                      </div>
-                    </td>
-                  </div>
-                  <div className="border-b-2 py-2 w-full">
-                    <td className="px-6 py-4 w-full flex justify-between">
-                      <div className='flex'>
-                        <Text> Terms & Conditions </Text>{' '}
-                      </div>
-                      <div className='flex'>
-                        <PiEyeFill className="mr-3 h-[30px] w-[30px] cursor-pointer" />
-                        <Link href={routes.admin.cmsTC}>
-                        <PiNotePencilDuotone className="h-[30px] w-[30px] cursor-pointer" />{' '}
+                        <Link href={routes.admin.cmsPricing}>
+                          <PiNotePencilDuotone className="h-[30px] w-[30px] cursor-pointer" />{' '}
                         </Link>
                       </div>
                     </td>
                   </div>
-                  <div className="border-b-2 py-2 w-full">
-                    <td className="px-6 py-4 w-full flex justify-between">
-                      <div className='flex'>
+                  <div className="w-full border-b-2 py-2">
+                    <td className="flex w-full justify-between px-6 py-4">
+                      <div className="flex">
+                        <Text> Contact us </Text>{' '}
+                      </div>
+                      <div className="flex">
+                        <PiEyeFill className="mr-3 h-[30px] w-[30px] cursor-pointer" />
+                        <Link href={routes.admin.cmsContact}>
+                          <PiNotePencilDuotone className="h-[30px] w-[30px] cursor-pointer" />{' '}
+                        </Link>
+                      </div>
+                    </td>
+                  </div>
+                  <div className="w-full border-b-2 py-2">
+                    <td className="flex w-full justify-between px-6 py-4">
+                      <div className="flex">
+                        <Text> Terms & Conditions </Text>{' '}
+                      </div>
+                      <div className="flex">
+                        <PiEyeFill className="mr-3 h-[30px] w-[30px] cursor-pointer" />
+                        <Link href={routes.admin.cmsTC}>
+                          <PiNotePencilDuotone className="h-[30px] w-[30px] cursor-pointer" />{' '}
+                        </Link>
+                      </div>
+                    </td>
+                  </div>
+                  <div className="w-full border-b-2 py-2">
+                    <td className="flex w-full justify-between px-6 py-4">
+                      <div className="flex">
                         <Text> Privacy policy </Text>{' '}
                       </div>
-                      <div className='flex'>
+                      <div className="flex">
                         <PiEyeFill className="mr-3 h-[30px] w-[30px] cursor-pointer" />
-                        {/* <Link href={routes.admin.cmsTC}> */}
-                        <PiNotePencilDuotone className="h-[30px] w-[30px] cursor-pointer" />{' '}
-                        {/* </Link> */}
+                        <Link href={routes.admin.cmsPrivacy}>
+                          <PiNotePencilDuotone className="h-[30px] w-[30px] cursor-pointer" />{' '}
+                        </Link>
+                      </div>
+                    </td>
+                  </div>
+                  <div className="w-full border-b-2 py-2">
+                    <td className="flex w-full justify-between px-6 py-4">
+                      <div className="flex">
+                        <Text>About US</Text>{' '}
+                      </div>
+                      <div className="flex">
+                        <PiEyeFill className="mr-3 h-[30px] w-[30px] cursor-pointer" />
+                        <Link href={routes.admin.cmsAbout}>
+                          <PiNotePencilDuotone className="h-[30px] w-[30px] cursor-pointer" />{' '}
+                        </Link>
                       </div>
                     </td>
                   </div>
