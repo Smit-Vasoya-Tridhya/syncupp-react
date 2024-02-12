@@ -13,7 +13,6 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useDispatch , useSelector } from 'react-redux';
 import "../helium/style.css"
-import { getViewProfiles } from '@/redux/slices/admin/auth/viewprofile/viewProfileSlice';
 import Link from 'next/link';
 import Spinner from '@/components/ui/spinner';
 
@@ -43,9 +42,6 @@ function DropdownMenu() {
     dispatch(logoutUserAdmin(''));
     router.replace('/admin/signin');
   }
-  useEffect(()=>{
-    dispatch(getViewProfiles())
-  }, [dispatch])
   const { data: userData , loading } = useSelector((state: any) => state?.root?.viewProfile);
 
   function capitalizeFirstLetter(str:any) {

@@ -38,6 +38,7 @@ export const getAllAgencyagreement: any = createAsyncThunk(
 /* Agency Agreement Delete */
 type DeleteAgencyAgreement = {
     id: string[] | string;
+    agency_id?: string
 }
 
 export const deleteAgencyAgreement: any = createAsyncThunk(
@@ -211,7 +212,7 @@ const initialState: AgencyAgreementInitialState = {
 };
 
 
-export const agencyAgreementSlice = createSlice({
+export const agreementSlice = createSlice({
     name: "agreement",
     initialState,
     reducers: {
@@ -464,5 +465,5 @@ export const agencyAgreementSlice = createSlice({
 });
 
 
-export const { removeAgreementdetails } = agencyAgreementSlice.actions;
-export default agencyAgreementSlice.reducer;
+export const { removeAgreementdetails } = agreementSlice.actions;
+export default agreementSlice.reducer;

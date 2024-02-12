@@ -100,6 +100,27 @@ export default function CreateInvoice({
         }
       }
     });
+
+    const SaveAndDrafButton = ()=>{
+      dispatch(postCreateInvoice(formData)).then((result: any) => {
+        if (postCreateInvoice.fulfilled.match(result)) {
+          if (result && result.payload.success === true) {
+            router.replace(routes.invoice);
+            dispatch(getAllInvoiceDataTable({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
+          }
+        }
+      });
+    }
+    const PreviewButton = ()=>{
+      dispatch(postCreateInvoice(formData)).then((result: any) => {
+        if (postCreateInvoice.fulfilled.match(result)) {
+          if (result && result.payload.success === true) {
+            router.replace(routes.invoice);
+            dispatch(getAllInvoiceDataTable({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
+          }
+        }
+      });
+    }
   };
 
   const newItems = record?.invoice_content
@@ -112,7 +133,7 @@ export default function CreateInvoice({
     ...record,
     fromName: data?.first_name ?? '',
     invoice_number: '',
-    fromAddress: data?.reference_id?.address ?? '',
+    fromAddress: `${data?.reference_id?.address}, ${data?.reference_id?.city?.name}, ${data?.reference_id?.country?.name}, ${data?.reference_id?.state?.name}, ${data?.reference_id?.pincode}` ?? '',
     fromPhone: data?.contact_number ?? '',
     client_id: '',
     toAddress: '',
@@ -172,24 +193,16 @@ export default function CreateInvoice({
                     error={errors.fromName?.message}
                     disabled={true}
                   />
-                  <Controller
-                    name="fromPhone"
-                    control={control}
-                    render={({ field: { value, onChange } }) => (
-                      <PhoneNumber
-                        label="Phone Number"
-                        country="us"
-                        value={value}
-                        onChange={onChange}
-                        disabled={true}
-                      />
-                    )}
+                  <Input
+                    label="Phone Number"
+                    placeholder=""
+                    {...register('fromPhone')}
+                    disabled={true}
                   />
                   <Textarea
                     label="Address"
                     placeholder="Enter your address"
                     {...register('fromAddress')}
-                    error={errors.fromAddress?.message}
                     textareaClassName="h-20"
                     className="col-span-2"
                     disabled={true}
@@ -218,11 +231,11 @@ export default function CreateInvoice({
                               if (result && result.payload.success === true) {
                                 setValue(
                                   'toPhone',
-                                  result.payload.data.contact_number
+                                  result?.payload?.data?.contact_number
                                 );
                                 setValue(
                                   'toAddress',
-                                  `${result.payload.data.address}, ${result.payload.data.city.name}, ${result.payload.data.state.name}, ${result.payload.data.country.name}, ${result.payload.data.pincode}`
+                                  `${result?.payload?.data?.address}, ${result?.payload?.data?.city?.name}, ${result?.payload?.data?.state?.name}, ${result?.payload?.data?.country?.name}, ${result?.payload?.data?.pincode}`
                                 );
                               }
                             }
@@ -235,24 +248,16 @@ export default function CreateInvoice({
                       />
                     )}
                   />
-                  <Controller
-                    name="toPhone"
-                    control={control}
-                    render={({ field: { value, onChange } }) => (
-                      <PhoneNumber
-                        label="Phone Number"
-                        country="us"
-                        value={value}
-                        onChange={onChange}
+                  <Input
+                    label="Phone Number"
+                    placeholder=""
+                    {...register('toPhone')}
                     disabled={true}
-                      />
-                    )}
                   />
                   <Textarea
                     label="Address"
                     placeholder="Enter your address"
                     {...register('toAddress')}
-                    error={errors.toAddress?.message}
                     textareaClassName="h-20"
                     className="col-span-2"
                     disabled={true}
@@ -313,26 +318,13 @@ export default function CreateInvoice({
                   errors={errors}
                 />
               </div>
-              {/* <Button
-                    type="submit"
-                    className="hover:gray-700 ms-3 @xl:w-auto dark:bg-gray-200 dark:text-white"
-                    disabled={adminFaq?.loading}
-                  >
-                    Save
-                    {adminFaq?.loading && (
-                        <Spinner
-                          size="sm"
-                          tag="div"
-                          className="ms-3"
-                          color="white"
-                        />
-                      )}
-                  </Button> */}
             </div>
 
             <FormFooter
               isLoading={isLoading}
               submitBtnText={id ? 'Update Invoice' : 'Create Invoice'}
+              // previewButton={PreviewButton}
+              // saveAsDraft={SaveAndDrafButton}
             />
           </>
         )}

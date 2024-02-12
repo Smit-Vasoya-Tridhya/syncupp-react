@@ -5,7 +5,7 @@ import { filterData } from '@/utils/filter-data';
 
 export function useColumn<T extends Record<string, any>>(columnsData: T[]) {
   const [checkedColumns, setCheckedColumns] = useState(
-    columnsData.map((column) => column.dataIndex)
+    columnsData?.map((column) => column.dataIndex)
   );
 
   const visibleColumns = useMemo(

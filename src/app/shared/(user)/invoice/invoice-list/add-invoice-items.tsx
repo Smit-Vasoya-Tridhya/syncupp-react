@@ -127,15 +127,18 @@ export function AddInvoiceItems({ watch, register, control, errors }: any) {
               key={field.id}
               className="mb-8 grid grid-cols-1 items-start rounded-lg border border-gray-200 p-4 shadow @md:p-5 @xl:p-6"
             >
-              <div className="grid w-full items-start gap-3 @md:grid-cols-2 @lg:gap-4 @xl:grid-cols-3 @2xl:gap-5 @4xl:grid-cols-4">
+                <div  className='w-full mb-2'>
                 <Input
                   label="Item"
                   placeholder="Enter item name"
                   {...register(`invoice_content.${index}.item`)}
                   defaultValue={field.item}
                   error={errors?.invoice_content?.[index]?.item?.message}
-                  className="@md:col-span-2 @xl:col-span-3 @2xl:col-span-1 @4xl:col-span-2"
+                  className='w-full'
+                  // className="@md:col-span-2 @xl:col-span-3 @2xl:col-span-1 @4xl:col-span-2"
                 />
+                </div>
+              <div className="grid w-full items-start gap-3 @md:grid-cols-2 @lg:gap-4 @xl:grid-cols-3 @2xl:gap-5 @4xl:grid-cols-4">
                 <Controller
                   name={`invoice_content.${index}.qty`}
                   control={control}
@@ -148,7 +151,6 @@ export function AddInvoiceItems({ watch, register, control, errors }: any) {
                     />
                   )}
                 />
-                <div className="flex items-start @xl:col-span-2 @2xl:col-span-1 space-x-4 w-[100px]">
                   <Input
                     label="Rate"
                     type="number"
@@ -167,14 +169,12 @@ export function AddInvoiceItems({ watch, register, control, errors }: any) {
                     {...register(`invoice_content.${index}.tax`)}
                   error={errors?.invoice_content?.[index]?.tax?.message}
                   />
-
                   <div className="ms-3 mt-9 flex items-start text-sm">
-                    <Text className="me-1 text-gray-500">Total:</Text>
-                    <Text as="b" className="font-medium">
+                    <Text className="me-1 text-gray-500 text-lg">Total:</Text>
+                    <Text as="b" className="font-medium text-lg">
                     ${(( priceValue * quantityValue+ (priceValue * quantityValue) / 100 * taxes).toFixed(2)) }
                     </Text>
                   </div>
-                </div>
                 <Textarea
                   label="Description"
                   placeholder="Enter item description"
@@ -214,7 +214,6 @@ export function AddInvoiceItems({ watch, register, control, errors }: any) {
             </div>
 
             <div className="ms-auto mt-6 grid w-full gap-3.5 text-sm text-gray-600 @xl:max-w-xs">
-              
               <Text className="flex items-center justify-between text-base font-semibold text-gray-900">
                 Total:{' '}
                 <Text as="span">

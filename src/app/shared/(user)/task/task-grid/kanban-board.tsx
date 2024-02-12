@@ -18,7 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { defaultCols, } from "./data";
 import SimpleBar from '@/components/ui/simplebar';
 import KanbanSearch from "./kanban-search";
-import { getAllTask, putTaskStatusChange } from "@/redux/slices/user/task/taskSlice";
+import { getAllTask, putTaskStatusChange, setStatusUpdatedData } from "@/redux/slices/user/task/taskSlice";
 
 
 
@@ -33,7 +33,7 @@ function KanbanBoard() {
   // console.log("Tasks.....", taskData?.data?.activity)
 
   const [columns, setColumns] = useState<Column[]>(defaultCols);
-  const columnsId = useMemo(() => columns.map((col) => col._id), [columns]);
+  const columnsId = useMemo(() => columns?.map((col) => col?._id), [columns]);
 
   const [tasks, setTasks] = useState<Task[]>(taskData && taskData?.data?.activity);
 
@@ -85,8 +85,13 @@ function KanbanBoard() {
     const { active, over } = event;
 
     if(activeTask?._id === active?.id) {
+      
+      // const xyz = tasks?.map((i: any )=>i?._id === active?.data?.current?.task?._id ? {...i, status: active?.data?.current?.task?.status} : i)
+      // setActiveTask(active?.data?.current?.task)
+      // setTasks(xyz)
+
+      // dispatch(setStatusUpdatedData({ _id: active?.data?.current?.task?._id, status: active?.data?.current?.task?.status }))
       // dispatch(putTaskStatusChange({ _id: active?.data?.current?.task?._id, status: active?.data?.current?.task?.status }))
-      setActiveTask(active?.data?.current?.task)
     }
 
 
@@ -153,7 +158,7 @@ function KanbanBoard() {
 
         if (tasks[activeIndex].status !== tasks[overIndex].status) {
           // Create a new array with the updated task
-          const updatedTasks = tasks.map((task, index) => {
+          const updatedTasks = tasks?.map((task, index) => {
             if (index === activeIndex) {
               return { ...task, status: tasks[overIndex].status };
             }
@@ -186,7 +191,7 @@ function KanbanBoard() {
         const activeIndex = tasks.findIndex((t) => t._id === activeId);
 
         // Create a new array with the updated task
-        const updatedTasks = tasks.map((task, index) => {
+        const updatedTasks = tasks?.map((task, index) => {
           if (index === activeIndex) {
             return { ...task, status: overId };
           }
@@ -218,11 +223,11 @@ function KanbanBoard() {
             <div className="m-auto flex gap-4">
               <div className="flex gap-4 min-h-[600px]">
                 <SortableContext items={columnsId}>
-                  {columns.map((col) => (
+                  {columns?.map((col) => (
                     <ColumnContainer
                       key={col._id}
                       column={col}
-                      tasks={tasks.filter((task) => task.status === col._id)}
+                      tasks={tasks?.filter((task) => task?.status === col?._id)}
                     />
                   ))}
                 </SortableContext>
@@ -234,8 +239,8 @@ function KanbanBoard() {
                 {activeColumn && (
                   <ColumnContainer
                     column={activeColumn}
-                    tasks={tasks.filter(
-                      (task) => task.status === activeColumn._id
+                    tasks={tasks?.filter(
+                      (task) => task?.status === activeColumn?._id
                     )}
                   />
                 )}

@@ -4,10 +4,11 @@ import Link from 'next/link';
 import { HeaderCell } from '@/components/ui/table';
 import { Text } from '@/components/ui/text';
 import { Checkbox } from '@/components/ui/checkbox';
-import { useDispatch } from 'react-redux';
-import { ActionIcon, Button, Popover, Tooltip } from 'rizzui';
+import { useDispatch, useSelector } from 'react-redux';
+import { ActionIcon, Button, Popover, Switch, Tooltip } from 'rizzui';
 import EyeIcon from '@/components/icons/eye';
 import moment from 'moment';
+import { clientAgreementchangeStatus, getAllclientagreement } from '@/redux/slices/user/client/agreement/clientAgreementSlice';
 
 
 type Columns = {
@@ -38,6 +39,24 @@ export const AgreementColumns = ({
 }: Columns) => {
 
     const dispatch = useDispatch();
+    const paginationParams = useSelector((state: any) => state?.root?.clienAgreement?.paginationParams);
+    const clientSliceData = useSelector((state: any) => state?.root?.client);
+
+
+    const handleSwitchChange = (id: any, event: any) => {
+        let { page, items_per_page, sort_field, sort_order, search } = paginationParams;
+
+        dispatch(clientAgreementchangeStatus({ id: id, status: "agreed" })).then((result: any) => {
+            if (clientAgreementchangeStatus.fulfilled.match(result)) {
+                // console.log('resultt', result)
+                if (result && result.payload.success === true) {
+                    dispatch(getAllclientagreement({ page, items_per_page, sort_field, sort_order, search, agency_id: clientSliceData?.agencyId }));
+                }
+            }
+        })
+    }
+
+
 
     return [
         {
@@ -133,7 +152,27 @@ export const AgreementColumns = ({
             key: 'status',
             width: 100,
             render: (value: string) => (
-                <Text className="font-medium text-gray-700">{value && value != "" ? value : "-"}</Text>
+                <Text className="font-medium text-gray-700">{value && value != "" ? value === "sent" ? "Pending" : "Agreed" : "-"}</Text>
+            ),
+        },
+
+        {
+            title: (
+                <HeaderCell
+                    title="ACTION"
+                    sortable
+                    ascending={
+                        sortConfig?.direction === 'asc' && sortConfig?.key === 'status'
+                    }
+                />
+            ),
+            onHeaderCell: () => onHeaderCellClick('status'),
+            dataIndex: 'status',
+            key: 'status',
+            width: 100,
+            render: (value: string, row: Record<string, string>) => (
+                // <Text className="font-medium text-gray-700">{value}</Text>
+                <Switch className="[&>label>span.transition]:shrink-0 [&>label>span]:font-medium" variant='active' onChange={(event) => handleSwitchChange(row._id, event)} disabled={value == "agreed"} defaultChecked={value == "sent" ? false : true} />
             ),
         },
 

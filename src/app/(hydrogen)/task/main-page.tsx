@@ -38,14 +38,14 @@ export default function TaskPage() {
   const handleChangePage = async (paginationParams: any) => {
     let { page, items_per_page, sort_field, sort_order, search } = paginationParams;
 
-    const response = signIn?.role !== 'client' ? await dispatch(getAllTask({ page, items_per_page, sort_field, sort_order, search, pagination: true })) : await dispatch(getAllTask({ page, items_per_page, sort_field, sort_order, search, agency_id: clientSliceData?.agencyId, pagination: true }));
+    const response = signIn?.role !== 'client' && signIn?.role !== 'team_client' ? await dispatch(getAllTask({ page, items_per_page, sort_field, sort_order, search, pagination: true })) : await dispatch(getAllTask({ page, items_per_page, sort_field, sort_order, search, agency_id: clientSliceData?.agencyId, pagination: true }));
     const { data } = response?.payload;
     const maxPage: number = data?.page_count;
 
     if (page > maxPage) {
       page = maxPage > 0 ? maxPage : 1;
       // await dispatch(getAllTask({ page, items_per_page, sort_field, sort_order, search, pagination: true }));
-      signIn?.role !== 'client' ? await dispatch(getAllTask({ page, items_per_page, sort_field, sort_order, search, pagination: true })) : await dispatch(getAllTask({ page, items_per_page, sort_field, sort_order, search, agency_id: clientSliceData?.agencyId, pagination: true }));
+      signIn?.role !== 'client' && signIn?.role !== 'team_client' ? await dispatch(getAllTask({ page, items_per_page, sort_field, sort_order, search, pagination: true })) : await dispatch(getAllTask({ page, items_per_page, sort_field, sort_order, search, agency_id: clientSliceData?.agencyId, pagination: true }));
       return data?.client
     }
     if (data && data?.client && data?.client?.length !== 0) {
@@ -61,7 +61,7 @@ export default function TaskPage() {
       const res = await dispatch(deleteTask({ taskIdsToDelete: id }));
       if (res.payload.success === true) {
         closeModal();
-        const reponse = signIn?.role !== 'client' ? await dispatch(getAllTask({ page: currentPage, items_per_page: countPerPage, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm, pagination: true })) : await dispatch(getAllTask({ page: currentPage, items_per_page: countPerPage, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm, agency_id: clientSliceData?.agencyId, pagination: true }));
+        const reponse = signIn?.role !== 'client' && signIn?.role !== 'team_client' ? await dispatch(getAllTask({ page: currentPage, items_per_page: countPerPage, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm, pagination: true })) : await dispatch(getAllTask({ page: currentPage, items_per_page: countPerPage, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm, agency_id: clientSliceData?.agencyId, pagination: true }));
       }
     } catch (error) {
       console.error(error);
@@ -82,7 +82,7 @@ export default function TaskPage() {
     <>
       <PageHeader title={pageHeader.title}>
         <div className="mt-4 flex items-center gap-3 @lg:mt-0">
-          {signIn?.role !== 'client' &&
+          {(signIn?.role !== 'client' && signIn?.role !== 'team_client') &&
             <ModalButton
             label="Add Task"
             view={<AddTaskForm title="New Task" />}

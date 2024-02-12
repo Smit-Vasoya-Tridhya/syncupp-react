@@ -54,7 +54,7 @@ export default function SignInForm() {
         onSubmit={onSubmit}
         // resetValues={reset}
         useFormProps={{
-          mode: 'all',
+          mode: 'onTouched',
           defaultValues: initialValues,
         }}
       >
@@ -106,7 +106,7 @@ export default function SignInForm() {
               rounded="pill"
               disabled={signIn?.loading}
             >
-              Sign in
+              Sign In
               {signIn && signIn?.loading && <Spinner size="sm" tag='div' className='ms-3' color='white' />}
             </Button>
           </div>

@@ -41,7 +41,7 @@ export default function AddTeamMemberForm(props: any) {
     email: '',
     name: '',
     contact_number: '',
-    role: signIn?.role === 'client' ? 'Team member' : ''
+    role: signIn?.role === 'client' || signIn?.role === 'team_client' ? 'Team member' : ''
   };
   // console.log("Row data....", row)
 
@@ -57,7 +57,7 @@ export default function AddTeamMemberForm(props: any) {
       contact_number: data?.contact_number,
       role: data?.member_role?.name === 'team_member' ? 'Team member' : 'Admin'
     };
-  } else if (signIn?.role === 'client') {
+  } else if (signIn?.role === 'client' || signIn?.role === 'team_client') {
     defaultValuess = {
       name: '',
       email: '',
@@ -104,7 +104,7 @@ export default function AddTeamMemberForm(props: any) {
           if (result && result.payload.success === true) {
             save && closeModal();
             setReset({ ...initialValues });
-            if (signIn?.role === 'client') {
+            if (signIn?.role === 'client' || signIn?.role === 'team_client') {
               dispatch(
                 getAllTeamMember({
                   sort_field: 'createdAt',
@@ -132,7 +132,7 @@ export default function AddTeamMemberForm(props: any) {
           if (result && result.payload.success === true) {
             save && closeModal();
             setSave(false);
-            if (signIn?.role === 'client') {
+            if (signIn?.role === 'client' || signIn?.role === 'team_client') {
               dispatch(
                 getAllTeamMember({
                   sort_field: 'createdAt',
@@ -230,12 +230,12 @@ export default function AddTeamMemberForm(props: any) {
                 render={({ field: { onChange, value } }) => (
                   <SelectBox
                     options={typeOption}
-                    value={signIn?.role === 'client' ? 'Team member' : value}
+                    value={signIn?.role === 'client' || signIn?.role === 'team_client' ? 'Team member' : value}
                     onChange={onChange}
                     label="Role *"
                     placeholder='Select role'
                     color="info"
-                    disabled={signIn?.role === 'client'}
+                    disabled={signIn?.role === 'client' || signIn?.role === 'team_client'}
                     error={errors?.role?.message as string}
                     getOptionValue={(option) => option?.name}
                   />
