@@ -95,7 +95,7 @@ export const AgreementColumns = ({
                 console.log(row, 'row'),
                 < div className="inline-flex ps-3.5" >
                     {<Checkbox
-                        disabled={row?.status === "sent"}
+                        disabled={row?.status != "draft"}
                         className="cursor-pointer"
                         checked={checkedItems.includes(row._id)}
                         {...(onChecked && { onChange: () => onChecked(row._id) })}
@@ -181,7 +181,7 @@ export const AgreementColumns = ({
                                     variant="text"
                                     className="flex w-full items-center justify-start px-4 py-2.5 focus:outline-none"
                                     onClick={() => { StatusHandler("draft", row?._id, setOpen) }}
-                                    disabled={row?.status === "draft" || row?.status === "sent"}
+                                    disabled={true}
 
                                 >
                                     <RiDraftLine className="me-2 h-[18px] w-[18px] text-gray-500" />
@@ -191,7 +191,7 @@ export const AgreementColumns = ({
                                     variant="text"
                                     className="flex w-full items-center justify-start px-4 py-2.5 focus:outline-none"
                                     onClick={() => { StatusHandler("sent", row?._id, setOpen) }}
-                                    disabled={row?.status === "sent"}
+                                    disabled={row?.status != "draft"}
                                 >
                                     <FiSend className="me-2 h-[18px] w-[18px] text-gray-500" />
                                     Sent
@@ -231,7 +231,7 @@ export const AgreementColumns = ({
                         placement="top"
                         color="invert"
                     >
-                        {row?.status === "sent" ? <Button disabled={true} type='button' size="sm" variant="outline" className='bg-white text-black' aria-label={'View Agreement'}>
+                        {row?.status != "draft" ? <Button disabled={true} type='button' size="sm" variant="outline" className='bg-white text-black' aria-label={'View Agreement'}>
 
                             <PencilIcon className="h-4 w-4" />
 
@@ -278,7 +278,7 @@ export const AgreementColumns = ({
                         </Button>
                         {/* </Link> */}
                     </Tooltip>
-                    {row?.status === "sent" ? <Button size="sm" variant="outline" className='bg-white text-black' disabled={true}>
+                    {row?.status != "draft" ? <Button size="sm" variant="outline" className='bg-white text-black' disabled={true}>
                         <TrashIcon className="h-4 w-4" />
                     </Button> : <DeletePopover
                         // disabled={row?.status === "sent"}
