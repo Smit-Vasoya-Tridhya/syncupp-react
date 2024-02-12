@@ -18,7 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { defaultCols, } from "./data";
 import SimpleBar from '@/components/ui/simplebar';
 import KanbanSearch from "./kanban-search";
-import { getAllTask, putTaskStatusChange } from "@/redux/slices/user/task/taskSlice";
+import { getAllTask, putTaskStatusChange, setStatusUpdatedData } from "@/redux/slices/user/task/taskSlice";
 
 
 
@@ -85,8 +85,13 @@ function KanbanBoard() {
     const { active, over } = event;
 
     if(activeTask?._id === active?.id) {
+      
+      // const xyz = tasks?.map((i: any )=>i?._id === active?.data?.current?.task?._id ? {...i, status: active?.data?.current?.task?.status} : i)
+      // setActiveTask(active?.data?.current?.task)
+      // setTasks(xyz)
+
+      // dispatch(setStatusUpdatedData({ _id: active?.data?.current?.task?._id, status: active?.data?.current?.task?.status }))
       // dispatch(putTaskStatusChange({ _id: active?.data?.current?.task?._id, status: active?.data?.current?.task?.status }))
-      setActiveTask(active?.data?.current?.task)
     }
 
 

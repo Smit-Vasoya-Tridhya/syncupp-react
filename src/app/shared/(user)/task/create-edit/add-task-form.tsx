@@ -67,6 +67,13 @@ export default function AddTaskForm(props: any) {
 
 
 
+  useEffect(() => {
+    if(signIn && signIn?.teamMemberRole === 'team_member') {
+      setTeamId(signIn?.user?.data?.user?.reference_id);
+    }
+  }, [signIn]);
+
+
   // let data = row;
 
   const initialValues: AddTaskSchema = {
@@ -74,7 +81,7 @@ export default function AddTaskForm(props: any) {
     description: '',
     due_date: new Date(),
     client: '',
-    assigned: '',
+    assigned: signIn?.teamMemberRole === 'team_member' ? signIn?.user?.data?.user?.name : '',
     done: false
   };
 
@@ -102,7 +109,7 @@ export default function AddTaskForm(props: any) {
     // due_date: new Date(data?.due_date),
     due_date: moment(data?.due_date).toDate(),
     client: data?.client_fullName,
-    assigned: data?.assign_to_name,
+    assigned: signIn?.teamMemberRole === 'team_member' ? signIn?.user?.data?.user?.name : data?.assigned_to_name,
     done: data?.status === 'completed' ? true : false
   };
 
@@ -289,7 +296,7 @@ export default function AddTaskForm(props: any) {
                             setTeamId(selectedOption?.value);
                             // handleTeamChange(selectedOption);
                           }}
-                          value={value}
+                          value={signIn?.teamMemberRole === 'team_member' ? signIn?.user?.data?.user?.name : value}
                           placeholder='Select Team member'
                           label='Assigned *'
                           disabled={signIn?.teamMemberRole === 'team_member'}
