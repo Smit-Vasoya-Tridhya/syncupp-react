@@ -12,6 +12,7 @@ type DeleteInvoice = {
   }
 type UpdateInvoiceStatusByID = {
   _id:string,
+  invoice_id?: string,
   status: string
   }
 type UpdateInvoiceDataByID = {
@@ -335,8 +336,11 @@ const initialState:invoiceInitialState = {
   export const updateInvoiceStatus: any = createAsyncThunk(
     "invoice/updateInvoiceStatus",
     async (data:UpdateInvoiceStatusByID) => {
+      const invoice_id = data?.invoice_id
+      delete data?.invoice_id;
       try {
-        const response: any = await UpdateInvoiceStatusByIDApi(data);
+      // const invoce_id = data?.invoice_id
+      const response: any = await UpdateInvoiceStatusByIDApi(data , invoice_id);
         return response;
       } catch (error: any) {
         return { status: false, message: error.response.data.message } as PostAPIResponse;
