@@ -8,6 +8,7 @@ import DeletePopover from '@/app/shared/delete-popover';
 import CustomModalButton from '@/app/shared/custom-modal-button';
 import AddClientReviewForm from '../create-edit/add-edit-client-review-form';
 import Image from 'next/image';
+import Profile from '@public/dummyprofile.jpg';
 
 type Columns = {
   data: any[];
@@ -86,7 +87,8 @@ export const ClientReviewColumns = ({
             <figure className="relative aspect-square w-12 overflow-hidden rounded-lg bg-gray-100">
               <Image
                 alt=""
-                src="https://isomorphic-furyroad.s3.amazonaws.com/public/avatars-blur/avatar-11.webp"
+                // src="https://isomorphic-furyroad.s3.amazonaws.com/public/avatars-blur/avatar-11.webp"
+                  src={Profile?.src}
                 fill
                 sizes="(max-width: 768px) 100vw"
                 className="object-cover"
