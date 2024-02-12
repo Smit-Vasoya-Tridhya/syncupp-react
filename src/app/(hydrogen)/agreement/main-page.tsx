@@ -34,6 +34,7 @@ export default function AgreementPage() {
         const response = await dispatch(getAllAgencyagreement({ page, items_per_page, sort_field, sort_order, search }));
         const { data } = response?.payload;
         const maxPage: number = data?.page_count;
+        console.log(maxPage,'maxPage')
 
         if (page > maxPage) {
             page = maxPage > 0 ? maxPage : 1;
@@ -55,6 +56,8 @@ export default function AgreementPage() {
         }
     };
 
+    console.log(agreementDetails,'agreementDetails')
+
     return (
         <>
             {/* <h1>Aggrement</h1> */}
@@ -65,8 +68,8 @@ export default function AgreementPage() {
             </PageHeader>
             {/* <Button type='button' onClick={() => { router.push(`/agreement/create-agreement`)}}>Add</Button> */}
             <CustomTable
-                data={agreementDetails?.data || []}
-                total={agreementDetails?.page_count || 1}
+                data={agreementDetails?.data?.agreements || []}
+                total={agreementDetails?.data?.page_count || 1}
                 loading={loading}
                 pageSize={pageSize}
                 setPageSize={setPageSize}

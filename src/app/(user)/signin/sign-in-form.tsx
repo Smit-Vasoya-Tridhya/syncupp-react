@@ -54,7 +54,7 @@ export default function SignInForm() {
         onSubmit={onSubmit}
         // resetValues={reset}
         useFormProps={{
-          mode: 'all',
+          mode: 'onTouched',
           defaultValues: initialValues,
         }}
       >

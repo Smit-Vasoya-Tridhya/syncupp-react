@@ -15,7 +15,7 @@ export const menuItems = [
     icon: <PiFolderNotchDuotone />,
   },
   {
-    name: 'Customer',
+    name: 'Agency',
     href: routes.admin.agencylist,
     icon: <PiUserPlusDuotone />,
   },
