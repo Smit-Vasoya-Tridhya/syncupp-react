@@ -13,7 +13,7 @@ export const messages = {
   newPasswordLength: 'New Password must be at least 8 characters',
   confirmPasswordRequired: 'Confirm Password is required',
   passwordsDidNotMatch: "Password & Confirm password didn't match",
-  reviewIsRequired: 'Review must be require',
+  reviewIsRequired: 'Review is required',
   nameIsRequired: 'Name is required',
   titleIsRequired: 'Title is required',
   customerNameRequired: 'customer name is required',
