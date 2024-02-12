@@ -386,7 +386,7 @@ console.log(data, row, "finding")
           </Tooltip>
           <Tooltip
             size="sm"
-            content={() => 'Downloan Invoice'}
+            content={() => 'Download Invoice'}
             placement="top"
             color="invert"
           >

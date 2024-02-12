@@ -133,7 +133,7 @@ export default function CreateInvoice({
     ...record,
     fromName: data?.first_name ?? '',
     invoice_number: '',
-    fromAddress: `${data?.reference_id?.address}, ${data?.reference_id?.city?.name}, ${data?.reference_id?.country?.name}, ${data?.reference_id?.state?.name}, ${data?.reference_id?.pincode}` ?? '',
+    fromAddress: `${data?.reference_id?.address ?? ''}, ${data?.reference_id?.city?.name ?? ''}, ${data?.reference_id?.country?.name ?? ''}, ${data?.reference_id?.state?.name ?? ''}, ${data?.reference_id?.pincode ?? ''}` ?? '',
     fromPhone: data?.contact_number ?? '',
     client_id: '',
     toAddress: '',
@@ -168,7 +168,7 @@ export default function CreateInvoice({
                 <div className="flex w-full">
                   <div>
                     <FormBlockWrapper
-                      title={'Create Invoice'}
+                      title={'Add Invoice'}
                       className="text-2xl"
                     ></FormBlockWrapper>
                   </div>
@@ -231,11 +231,11 @@ export default function CreateInvoice({
                               if (result && result.payload.success === true) {
                                 setValue(
                                   'toPhone',
-                                  result?.payload?.data?.contact_number
+                                  result?.payload?.data?.contact_number ?? ''
                                 );
                                 setValue(
                                   'toAddress',
-                                  `${result?.payload?.data?.address}, ${result?.payload?.data?.city?.name}, ${result?.payload?.data?.state?.name}, ${result?.payload?.data?.country?.name}, ${result?.payload?.data?.pincode}`
+                                  `${result?.payload?.data?.address ?? ''}, ${result?.payload?.data?.city?.name ?? ''}, ${result?.payload?.data?.state?.name ?? ''}, ${result?.payload?.data?.country?.name ?? ''}, ${result?.payload?.data?.pincode ?? ''}`
                                 );
                               }
                             }
@@ -322,7 +322,7 @@ export default function CreateInvoice({
 
             <FormFooter
               isLoading={isLoading}
-              submitBtnText={id ? 'Update Invoice' : 'Create Invoice'}
+              submitBtnText={id ? 'Update Invoice' : 'Save & Send'}
               // previewButton={PreviewButton}
               // saveAsDraft={SaveAndDrafButton}
             />
