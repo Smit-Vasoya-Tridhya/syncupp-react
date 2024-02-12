@@ -238,9 +238,9 @@ type GetInvoiceDataClient ={
     return responseData;
   };
   // UPDATE INVOICE STATUS UPDATE BY ID
-  export const UpdateInvoiceStatusByIDApi = async (data: UpdateInvoiceStatusByID) => {
+  export const UpdateInvoiceStatusByIDApi = async (data: UpdateInvoiceStatusByID , invoice_id : any) => {
     const response = await AxiosDefault({
-      url: `/api/v1/invoice/status-update/${data._id}`,
+      url: `/api/v1/invoice/status-update/${invoice_id}`,
       method: "PUT",
       data: data,
       contentType: "application/json", 

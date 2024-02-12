@@ -13,6 +13,9 @@ import dynamic from 'next/dynamic';
 import SelectLoader from '@/components/loader/select-loader';
 import { useDispatch , useSelector} from 'react-redux';
 import { useState } from 'react';
+import { AiOutlineMail } from "react-icons/ai";
+import { FaRegFilePdf } from "react-icons/fa";
+import { postDownloadInvoice, postSendInvoice, updateInvoiceStatus } from '@/redux/slices/user/invoice/invoiceSlice';
 const Select = dynamic(() => import('@/components/ui/select'), {
   ssr: false,
   loading: () => <SelectLoader />,
@@ -97,22 +100,43 @@ export const InvoiceColumns = ({
   const invoiceSliceData = useSelector((state: any) => state?.root?.invoice);
   const [selectedStatus, setSelectedStatus] = useState<string>('draft');
 
+  const EmailSend = (id: string) => {
+    dispatch(postSendInvoice({ invoice_id: id })).then(
+      (result: any) => {
+        if (postSendInvoice.fulfilled.match(result)) {
+          // console.log('resultt', result)
+          if (result && result.payload.success === true) {}
+        }
+      }
+    );
+  };
+  const DownloadInvoice = (id: string) => {
+    // dispatch(postDownloadInvoice({ invoice_id:id })).then(
+    //   (result: any) => {
+    //     if (postDownloadInvoice.fulfilled.match(result)) {
+    //       // console.log('resultt', result)
+    //       if (result && result.payload.success === true) {}
+    //     }
+    //   }
+    // );
+  };
+
+  const StatusHandler = (status: string, id: string, setOpen: any) => {
+      // setOpen(false)
+      dispatch(updateInvoiceStatus({ data: { status: status }, id: row?._id })).then((result: any) => {
+          if (updateInvoiceStatus.fulfilled.match(result)) {
+              // console.log('resultt', result)
+              if (result && result.payload.success === true) {
+                  // dispatch(getAllAgencyagreement({ page: currentPage, items_per_page: pageSize, sort_field: sortConfig?.key, sort_order: sortConfig?.direction }));
+              }
+          }
+      })
+  }
   const handleStatusChange = (status: string) => {
     setSelectedStatus(status);
     StatusHandler(status, row?._id, setOpen);
   };
-
-  const StatusHandler = (status: string, id: string, setOpen: any) => {
-      setOpen(false)
-      // dispatch(updateagreementStatus({ data: { status: status }, id: id })).then((result: any) => {
-      //     if (updateagreementStatus.fulfilled.match(result)) {
-      //         // console.log('resultt', result)
-      //         if (result && result.payload.success === true) {
-      //             dispatch(getAllAgencyagreement({ page: currentPage, items_per_page: pageSize, sort_field: sortConfig?.key, sort_order: sortConfig?.direction }));
-      //         }
-      //     }
-      // })
-  }
+console.log(data, row, "finding")
 
   return [
     {
@@ -272,11 +296,11 @@ export const InvoiceColumns = ({
                 <Button
                   variant="text"
                   className={`flex w-full items-center justify-start px-4 py-2.5 focus:outline-none ${
-                    selectedStatus === 'draft' ? 'font-semibold' : ''
+                    selectedStatus === row?.status ? 'font-semibold' : ''
                   }`}
-                  onClick={() => handleStatusChange('draft')}
+                  onClick={() => handleStatusChange(row?.status)}
                 >
-                  Draft
+                  {row?.status}
                 </Button>
                 <Button
                   variant="text"
@@ -310,7 +334,7 @@ export const InvoiceColumns = ({
           >
             <ActionIcon variant="text" className="">
               <Button type="button" className="capitalize">
-                {selectedStatus}
+                {row?.status}
               </Button>
             </ActionIcon>
           </Popover>
@@ -359,6 +383,39 @@ export const InvoiceColumns = ({
                 <EyeIcon className="h-4 w-4" />
               </Button>
             </Link>
+          </Tooltip>
+          <Tooltip
+            size="sm"
+            content={() => 'Downloan Invoice'}
+            placement="top"
+            color="invert"
+          >
+              <Button
+                size="sm"
+                variant="outline"
+                className="bg-white text-black"
+                aria-label={'View Member'}
+                onClick={() => DownloadInvoice(row._id)}
+                >
+                <FaRegFilePdf className="h-4 w-4" />
+              </Button>
+          </Tooltip>
+          <Tooltip
+            size="sm"
+            content={() => 'Send Invoice'}
+            placement="top"
+            color="invert"
+          >
+              <Button
+                size="sm"
+                variant="outline"
+                className="bg-white text-black"
+                aria-label={'View Member'}
+                onClick={() => EmailSend(row._id)}
+
+              >
+                <AiOutlineMail className="h-4 w-4" />
+              </Button>
           </Tooltip>
           <DeletePopover
             title={`Delete the FAQ`}

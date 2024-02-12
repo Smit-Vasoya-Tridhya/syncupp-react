@@ -47,8 +47,8 @@ export const invoiceFormSchema = z.object({
       //   .min(1, { message: messages.itemPriceIsRequired })
       //   .max(7, { message: messages.itemPriceMaximumLength })
         // ,
-      tax: z.coerce.number().min(1, { message: messages.taxIsRequired }).optional(),
-      rate: z.coerce.number().min(1, { message: messages.taxIsRequired }).optional(),
+      tax: z.coerce.number().min(1, { message: messages.taxIsRequired }).max(100, { message: messages.maxTaxIsRequired }).optional(),
+      rate: z.coerce.number().min(1, { message: messages.rateIsRequired }).optional(),
     })
   ),
 });

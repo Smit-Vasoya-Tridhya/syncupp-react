@@ -238,7 +238,7 @@ const cityHandleChange = (selectedOption: string) => {
                 disabled={!isOpenEditMode}
               />
             </div>
-            {isAgency && (
+            {isAgency || isClient &&  (
               <div>
                 <div>
                   <h4>Comapny Information</h4>
@@ -309,7 +309,7 @@ const cityHandleChange = (selectedOption: string) => {
                 </div>
               </div>
             )}
-            {isAgency && (
+            {isAgency || isClient && (
               <div>
                 <div>
                   <h4>General Information</h4>{' '}
