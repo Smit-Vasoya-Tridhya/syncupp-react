@@ -16,6 +16,8 @@ import { FiSend } from "react-icons/fi";
 import { FaRegCheckCircle } from "react-icons/fa";
 import moment from 'moment';
 import { downloadAgreement, getAllAgencyagreement, sendAgreement, updateagreementStatus } from '@/redux/slices/user/agreement/agreementSlice';
+import { PiTrashFill } from 'react-icons/pi';
+import TrashIcon from '@/components/icons/trash';
 
 
 
@@ -79,14 +81,15 @@ export const AgreementColumns = ({
             key: 'checked',
             width: 50,
             render: (_: any, row: any) => (
-                <div className="inline-flex ps-3.5">
-                    <Checkbox
-                        // disabled={row?.status === "sent"}
+                console.log(row, 'row'),
+                < div className="inline-flex ps-3.5" >
+                    {<Checkbox
+                        disabled={row?.status === "sent"}
                         className="cursor-pointer"
                         checked={checkedItems.includes(row._id)}
                         {...(onChecked && { onChange: () => onChecked(row._id) })}
-                    />
-                </div>
+                    />}
+                </div >
             ),
         },
         {
@@ -167,7 +170,8 @@ export const AgreementColumns = ({
                                     variant="text"
                                     className="flex w-full items-center justify-start px-4 py-2.5 focus:outline-none"
                                     onClick={() => { StatusHandler("draft", row?._id, setOpen) }}
-                                    disabled={row?.status === "draft"}
+                                    disabled={row?.status === "draft" || row?.status === "sent"}
+
                                 >
                                     <RiDraftLine className="me-2 h-[18px] w-[18px] text-gray-500" />
                                     Draft
@@ -258,17 +262,19 @@ export const AgreementColumns = ({
                         color="invert"
                     >
                         {/* <Link href={routes.editTeam}> */}
-                        <Button disabled={loading} type='button' onClick={() => { dispatch(sendAgreement(row?._id)) }} size="sm" variant="outline" className='bg-white text-black' aria-label={'Send Email'}>
+                        <Button disabled={loading || row?.status === "draft"} type='button' onClick={() => { dispatch(sendAgreement(row?._id)) }} size="sm" variant="outline" className='bg-white text-black' aria-label={'Send Email'}>
                             <HiOutlineMail className="h-4 w-4" />
                         </Button>
                         {/* </Link> */}
                     </Tooltip>
-                    <DeletePopover
-
+                    {row?.status === "sent" ? <Button size="sm" variant="outline" className='bg-white text-black' disabled={true}>
+                        <TrashIcon className="h-4 w-4" />
+                    </Button> : <DeletePopover
+                        // disabled={row?.status === "sent"}
                         title={`Delete the Agreement`}
                         description={`Are you sure you want to delete?`}
                         onDelete={() => onDeleteItem([row._id], currentPage, pageSize, data?.length <= 1 ? true : false, sortConfig, searchTerm)}
-                    />
+                    />}
                 </div>
             ),
         },

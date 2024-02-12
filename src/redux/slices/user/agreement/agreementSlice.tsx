@@ -212,7 +212,7 @@ const initialState: AgencyAgreementInitialState = {
 };
 
 
-export const agencyAgreementSlice = createSlice({
+export const agreementSlice = createSlice({
     name: "agreement",
     initialState,
     reducers: {
@@ -465,5 +465,5 @@ export const agencyAgreementSlice = createSlice({
 });
 
 
-export const { removeAgreementdetails } = agencyAgreementSlice.actions;
-export default agencyAgreementSlice.reducer;
+export const { removeAgreementdetails } = agreementSlice.actions;
+export default agreementSlice.reducer;

@@ -14,7 +14,7 @@ import teamSlice from './slices/user/team-member/teamSlice';
 import adminChangePasswordSlice from './slices/admin/auth/updatePassword/changePasswordSlice';
 import adminfaqSlice from './slices/admin/faq/faqSlice';
 import agencySlice from './slices/admin/agency/agencySlice';
-import agencyAgreementSlice from './slices/user/agreement/agreementSlice';
+import agreementSlice from './slices/user/agreement/agreementSlice';
 import clientAgreementSlice from './slices/user/client/agreement/clientAgreementSlice';
 import userAgencySlice from './slices/user/agency/agencySlice';
 import invoiceSlice from './slices/user/invoice/invoiceSlice';
@@ -46,7 +46,7 @@ const combinedReducer = combineReducers({
   adminCoupon: couponManagementSlice,
   userAgency: userAgencySlice,
   invoice: invoiceSlice,
-  agreement: agencyAgreementSlice,
+  agreement: agreementSlice,
   clienAgreement: clientAgreementSlice,
   task: taskSlice,
   payment: paymentSlice,
