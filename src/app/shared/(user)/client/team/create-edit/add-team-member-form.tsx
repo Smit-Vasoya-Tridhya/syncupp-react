@@ -30,7 +30,7 @@ export default function AddTeamMemberForm(props: any) {
   const dispatch = useDispatch();
   const { closeModal } = useModal();
   const [save, setSave] = useState(false)
-  const [loader, setLoader] = useState(true);
+  const [loader, setLoader] = useState(false);
   const [reset, setReset] = useState({})
   const teamMemberData = useSelector(
     (state: any) => state?.root?.teamMember
@@ -270,7 +270,7 @@ export default function AddTeamMemberForm(props: any) {
                     </Button>
                   </div>
                   <div className='float-right text-right'>
-                    {title === 'New Team member' &&
+                    {/* {title === 'New Team member' &&
                       <Button
                         //  type='submit'
                         className="hover:gray-700 @xl:w-auto dark:bg-gray-200 dark:text-white"
@@ -283,7 +283,7 @@ export default function AddTeamMemberForm(props: any) {
                         Save & New
                         {Object.keys(errors).length === 0 && loader && isSubmitSuccessful && !save && <Spinner size="sm" tag='div' className='ms-3' color='white' />}
                       </Button>
-                    }
+                    } */}
                     <Button
                       type="submit"
                       className="hover:gray-700 ms-3 @xl:w-auto dark:bg-gray-200 dark:text-white"
