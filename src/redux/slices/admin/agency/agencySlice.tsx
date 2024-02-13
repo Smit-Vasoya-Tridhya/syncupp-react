@@ -91,7 +91,7 @@ export const agencySlice = createSlice({
                         loading: false,
                     }
                 } else {
-                    // toast.success(action.payload.message)
+                    toast.success(action.payload.message)
                     return {
                         ...state,
                         loading: false
