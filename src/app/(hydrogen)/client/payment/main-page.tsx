@@ -1,6 +1,7 @@
 "use client";
 
 import cn from "@/utils/class-names";
+import { Button } from '@/components/ui/button';
 import { Title, Text } from '@/components/ui/text';
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,34 +9,32 @@ import { getAllClient } from "@/redux/slices/user/client/clientSlice";
 import { initiateRazorpay } from "@/services/clientpaymentService";
 import { routes } from "@/config/routes";
 import { useState } from "react";
-import { getAllTeamMember } from "@/redux/slices/user/team-member/teamSlice";
 import Spinner from "@/components/ui/spinner";
-import { Button } from "rizzui";
 import PageHeader from "@/app/shared/page-header";
-import { FaArrowLeft } from "react-icons/fa";
 import Link from "next/link";
+import { FaArrowLeft } from "react-icons/fa";
 
 
-export default function AgreementTeamPaymentPage() {
+export default function ClientPaymentPage() {
 
     const token = localStorage.getItem('token')
 
     const router = useRouter()
     const dispatch = useDispatch()
 
-    const { addClientteamdetails } = useSelector((state: any) => state?.root?.teamMember);
-    const paginationParams = useSelector((state: any) => state?.root?.teamMember?.paginationParams);
-    // console.log(addClientteamdetails, 'addClientteamdetails')
+    const { addClientdetails } = useSelector((state: any) => state?.root?.client);
     const { userProfile } = useSelector((state: any) => state?.root?.signIn);
+    const paginationParams = useSelector((state: any) => state?.root?.client?.paginationParams);
     const { loading } = useSelector((state: any) => state?.root?.payment);
-    // console.log(loading, 'loading')
 
     const [loadingflag, setloadingflag] = useState(false)
+
+
     const [selectedValue, setSelectedValue] = useState('option2Value');
 
-    const ClintteamlistAPIcall = async () => {
+    const ClintlistAPIcall = async () => {
         let { page, items_per_page, sort_field, sort_order, search } = paginationParams;
-        await dispatch(getAllTeamMember({ page, items_per_page, sort_field, sort_order, search, pagination: true }));
+        await dispatch(getAllClient({ page, items_per_page, sort_field, sort_order, search, pagination: true }));
 
     }
 
@@ -47,7 +46,7 @@ export default function AgreementTeamPaymentPage() {
         <>
             <PageHeader title="Payment">
 
-                <Link href={routes.agency_team} className="w-full">
+                <Link href={routes.client} className="w-full">
                     <Button className="float-end mt-5 bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0">
                         <FaArrowLeft className="me-1.5 h-[17px] w-[17px]" />
                         Back
@@ -60,14 +59,12 @@ export default function AgreementTeamPaymentPage() {
                     'isomorphic-form isomorphic-form mx-auto flex w-full max-w-[1536px] flex-grow flex-col @container [&_label.block>span]:font-medium'
                 )}
             >
-
                 <div className="items-start @5xl:grid @5xl:grid-cols-12 @5xl:gap-7 @6xl:grid-cols-10 @7xl:gap-10">
                     <div className="gap-4 border-gray-200 @container @5xl:col-span-8 @5xl:border-e @5xl:pb-12 @5xl:pe-7 @6xl:col-span-7 @7xl:pe-12">
                         <div className="flex flex-col gap-4 @xs:gap-7 @5xl:gap-9">
-                            {/* <Title as="h4" className="mb-3.5 font-semibold @2xl:mb-5">
+                            <Title as="h4" className="mb-3.5 font-semibold @2xl:mb-5">
                                 Payment
-                            </Title> */}
-
+                            </Title>
                             <div className="rounded-lg border border-gray-200">
                                 <div className="px-3 py-2">
                                     <input
@@ -140,7 +137,7 @@ export default function AgreementTeamPaymentPage() {
                                 </div>
                                 <Button
                                     disabled={loadingflag}
-                                    onClick={() => { initiateRazorpay(router, routes.agency_team, token, addClientteamdetails?.data?.reference_id, ClintteamlistAPIcall, setloadingflag) }}
+                                    onClick={() => { initiateRazorpay(router, routes.client, token, addClientdetails?.data?.reference_id, ClintlistAPIcall, setloadingflag) }}
                                     type="button"
                                     className="mt-3 w-full text-base @md:h-12 dark:bg-gray-100 dark:text-white dark:active:bg-gray-100"
                                 >
