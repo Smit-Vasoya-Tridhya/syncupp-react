@@ -55,7 +55,7 @@ function getStatusBadge(status: string) {
       return (
         <div className="flex items-center">
           <Badge className="bg-gray-400" renderAsDot />
-          <Text className="ms-2 font-medium text-gray-600">Inprogress</Text>
+          <Text className="ms-2 font-medium text-gray-600">In Progress</Text>
         </div>
       );
     default:

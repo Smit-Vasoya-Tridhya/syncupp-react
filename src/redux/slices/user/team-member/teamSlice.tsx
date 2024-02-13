@@ -220,7 +220,7 @@ export const teamSlice = createSlice({
         }
       })
       .addCase(addTeamMember.fulfilled, (state, action) => {
-        if (action.payload.success === false) {
+        if (action?.payload?.status === false) {
           toast.error(action.payload.message)
         } 
         return {
@@ -346,7 +346,7 @@ export const teamSlice = createSlice({
         }
       })
       .addCase(clientteamStatuschange.fulfilled, (state, action) => {
-        if (action?.payload?.status == true) {
+        if (action?.payload?.status === false) {
           toast.error(action.payload.message)
         } else {
           toast.success(action.payload.message)
