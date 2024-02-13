@@ -285,7 +285,7 @@ export const GetColumns = ({
             render: (_: string, row: Record<string, string>) => (
                 <div className="flex items-center justify-end gap-3 pe-4">
                     <DeletePopover
-                        title={`Delete the client`}
+                        title={`Delete the agency`}
                         description={`Are you sure you want to delete?`}
                         onDelete={() => onDeleteItem(row._id, currentPage, pageSize, data?.length <= 1 ? true : false, sortConfig, searchTerm)}
                     />
