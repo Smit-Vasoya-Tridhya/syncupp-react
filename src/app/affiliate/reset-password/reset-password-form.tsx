@@ -27,12 +27,12 @@ export default function ResetPasswordForm({ params }: { params: { token: string,
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
   const email = searchParams.get("email");
-  console.log(email, token, searchParams)
+  // console.log(email, token, searchParams)
 
   const { loading } = useSelector((state: any) => state?.root?.auth)
 
   const onSubmit: SubmitHandler<ResetPasswordSchema> = (data: any) => {
-    console.log(data, 'data')
+    // console.log(data, 'data')
     const resetData = {
       new_password: data?.password,
       email: email,

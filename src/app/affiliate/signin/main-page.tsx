@@ -33,7 +33,7 @@ export default function SignInForm() {
 
 
     const onSubmit: SubmitHandler<LoginSchema> = (data) => {
-        console.log(data, 'data')
+        // console.log(data, 'data')
         dispatch(login(data)).then((result: any) => {
             if (login.fulfilled.match(result)) {
                 // console.log(result, 'result', result?.payload?.data?.user?.status, result?.payload?.data?.user?.role?.name)

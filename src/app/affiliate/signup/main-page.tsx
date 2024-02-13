@@ -61,7 +61,7 @@ export default function RegisterPage() {
             >
                 {({ register, formState: { errors } }) => (
 
-                    console.log(errors, 'errors'),
+                    // console.log(errors, 'errors'),
 
                     <div className="space-y-5">
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:gap-5 xl:pb-2">
