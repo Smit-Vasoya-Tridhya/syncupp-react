@@ -15,6 +15,7 @@ export const messages = {
   confirmPasswordRequired: 'Confirm Password is required',
   confirmNewPasswordRequired: 'Confirm New Password is required',
   passwordsDidNotMatch: "Password & Confirm password didn't match",
+  newPasswordsDidNotMatch: "New Password & Confirm New Password didn't match",
   reviewIsRequired: 'Review is required',
   nameIsRequired: 'Name is required',
   titleIsRequired: 'Title is required',

@@ -53,7 +53,7 @@ export const changePasswordSchema = z
     }),
   })
   .refine((data) => data.newPassword === data.confirmedPassword, {
-    message: messages.passwordsDidNotMatch,
+    message: messages.newPasswordsDidNotMatch,
     path: ['confirmedPassword'], // Correct path for the confirmedPassword field
   });
 
