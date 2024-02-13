@@ -200,9 +200,9 @@ export const signinSlice: any = createSlice({
       })
       .addCase(getUserProfile.rejected, (state, action) => {
         if (action?.payload?.success == true) {
-          toast.success(action.payload.message)
+          toast.success(action?.payload?.message)
         } else {
-          toast.error(action.payload.message)
+          toast.error(action?.payload?.message)
         }
         return {
           ...state,
@@ -220,9 +220,9 @@ export const signinSlice: any = createSlice({
       })
       .addCase(updateUserProfile.fulfilled, (state, action) => {
         if (action.payload.success == true) {
-          toast.success(action.payload.message)
+          toast.success(action?.payload?.message)
         } else {
-          toast.error(action.payload.message)
+          toast.error(action?.payload?.message)
         }
         return {
           ...state,
@@ -233,9 +233,9 @@ export const signinSlice: any = createSlice({
       })
       .addCase(updateUserProfile.rejected, (state, action) => {
         if (action.payload.success == true) {
-          toast.success(action.payload.message)
+          toast.success(action?.payload?.message)
         } else {
-          toast.error(action.payload.message)
+          toast.error(action?.payload?.message)
         }
         return {
           ...state,
