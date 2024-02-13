@@ -54,7 +54,7 @@ function DropdownMenu() {
         />
         <div className="ms-3">
           <Title as="h6" className="break-all text-sm font-semibold">
-            {`${capitalizeFirstLetter(userProfile?.first_name)} ${capitalizeFirstLetter(userProfile?.last_name)}`}
+            {`${capitalizeFirstLetter(userProfile?.first_name ?? '')} ${capitalizeFirstLetter(userProfile?.last_name ?? '')}`}
           </Title>
           <Text className="break-all text-sm text-gray-600">
             {`${userProfile?.email}`}
