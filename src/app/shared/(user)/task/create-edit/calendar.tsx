@@ -62,7 +62,7 @@ export default function EventCalendarView() {
     <div className="@container">
       <Calendar
         localizer={localizer}
-        events={events}
+        // events={events}
         views={views}
         formats={formats}
         defaultView={Views.DAY}

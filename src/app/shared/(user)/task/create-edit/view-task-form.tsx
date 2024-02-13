@@ -68,7 +68,7 @@ export default function ViewTaskForm(props: any) {
         return (
           <div className="flex items-center">
             <Badge className="bg-gray-400" renderAsDot />
-            <Text className="ms-2 font-medium text-gray-600">Inprogress</Text>
+            <Text className="ms-2 font-medium text-gray-600">In Progress</Text>
           </div>
         );
       default:
@@ -170,50 +170,50 @@ export default function ViewTaskForm(props: any) {
               <Text className="mt-3 xl:leading-6">{event.description}</Text>
             )} */}
 
-            <ul className="mt-7 px-6 flex flex-col gap-[18px] text-gray-600">
-              <li className="flex gap-2">
+            <div className="mt-7 px-6 flex flex-col gap-[18px] text-gray-600">
+              <div className="flex gap-2">
                 <FaUserCircle className="h-5 w-5" />
                 <span>Client: </span>
                 <span className="font-medium text-gray-1000 capitalize">
                   {dataa?.client_name}
                 </span>
-              </li>
-              <li className="flex gap-2">
+              </div>
+              <div className="flex gap-2">
                 <BsPersonFill className="h-5 w-5" />
                 <span>Assigned by: </span>
                 <span className="font-medium text-gray-1000 capitalize">
                   {dataa?.assigned_by_name}
                 </span>
-              </li>
-              <li className="flex gap-2">
+              </div>
+              <div className="flex gap-2">
                 <FaPeopleGroup className="h-5 w-5" />
                 <span>Assigned to: </span>
                 <span className="font-medium text-gray-1000 capitalize">
                   {dataa?.assigned_to_name}
                 </span>
-              </li>
-              <li className="flex gap-2">
+              </div>
+              <div className="flex gap-2">
                 <MdOutlineCalendarMonth className="h-5 w-5" />
                 <span>Created: </span>
                 <span className="font-medium text-gray-1000">
                   {moment(dataa?.createdAt).format("DD MMM, YY - hh:mm A")}
                 </span>
-              </li>
-              <li className="flex gap-2">
+              </div>
+              <div className="flex gap-2">
                 <MdOutlineCalendarMonth className="h-5 w-5" />
                 <span>Deadline: </span>
                 <span className="font-medium text-gray-1000">
                   {moment(dataa?.due_date).format("DD MMM, YY - hh:mm A")}
                 </span>
-              </li>
-              <li className="flex gap-2">
+              </div>
+              <div className="flex gap-2">
                 <span>Task Description: </span>
                 <span className="font-medium text-gray-1000 capitalize">
                   {/* {dataa?.internal_info && dataa?.internal_info?.slice(3, dataa?.internal_info?.length - 4)} */}
                   <p dangerouslySetInnerHTML={{ __html: dataa?.internal_info }}></p>
                 </span>
-              </li>
-            </ul>
+              </div>
+            </div>
             {/* <div className={cn('grid grid-cols-2 gap-4 pt-5 ')}>
               <Button
                 variant="outline"

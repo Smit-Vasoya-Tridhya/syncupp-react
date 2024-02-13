@@ -44,7 +44,7 @@ export const MenuItems = () => {
           icon: <PiUsersThree />,
         },
         {
-          name: 'Task',
+          name: 'Tasks',
           href: routes.task,
           icon: <FaTasks />,
         },
@@ -84,7 +84,7 @@ export const MenuItems = () => {
           icon: <PiUsersThree />,
         },
         {
-          name: 'Task',
+          name: 'Tasks',
           href: routes.task,
           icon: <FaTasks />,
         },
@@ -92,26 +92,6 @@ export const MenuItems = () => {
           name: 'Agreement',
           href: routes.clients.agreement,
           icon: <FaFilePen />,
-        },
-      ];
-      break;
-
-    case 'team_agency':
-      menuItems = [
-        {
-          name: 'Dashboard',
-          href: routes.dashboard,
-          icon: <PiFolderNotchDuotone />,
-        },
-        {
-          name: 'Team',
-          href: routes.team,
-          icon: <PiUsersThree />,
-        },
-        {
-          name: 'Task',
-          href: routes.task,
-          icon: <FaTasks />,
         },
       ];
       break;
@@ -125,7 +105,7 @@ export const MenuItems = () => {
             icon: <PiFolderNotchDuotone />,
           },
           {
-            name: 'Task',
+            name: 'Tasks',
             href: routes.task,
             icon: <FaTasks />,
           },
@@ -153,7 +133,7 @@ export const MenuItems = () => {
             icon: <PiUsersThree />,
           },
           {
-            name: 'Task',
+            name: 'Tasks',
             href: routes.task,
             icon: <FaTasks />,
           },

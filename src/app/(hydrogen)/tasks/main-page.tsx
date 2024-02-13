@@ -17,7 +17,7 @@ import { deleteTask, getAllTask, setGridView } from '@/redux/slices/user/task/ta
 import KanbanBoard from '@/app/shared/(user)/task/task-grid/kanban-board';
 
 const pageHeader = {
-  title: 'Task',
+  title: 'Tasks',
 };
 
 export default function TaskPage() {
