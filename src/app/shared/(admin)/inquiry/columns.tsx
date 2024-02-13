@@ -179,7 +179,7 @@ export const InquiryColumns = ({
             render: (_: string, row: Record<string, string>) => (
                 <div className="flex items-center justify-start gap-3 pe-4">
                     <DeletePopover
-                        title={`Delete the Agreement`}
+                        title={`Delete the Inquiry`}
                         description={`Are you sure you want to delete?`}
                         onDelete={() => onDeleteItem([row._id], currentPage, pageSize, data?.length <= 1 ? true : false, sortConfig, searchTerm)}
                     />

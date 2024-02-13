@@ -17,6 +17,7 @@ export const messages = {
   nameIsRequired: 'Name is required',
   titleIsRequired: 'Title is required',
   customerNameRequired: 'customer name is required',
+  companynameRequired: 'Company name is required',
   customerNameMaxLength: 'Maximum customer name length is 15',
   companyNameMaxLength: 'Maximum company name length is 30',
   titleLength: 'Maximum title length is 30!',

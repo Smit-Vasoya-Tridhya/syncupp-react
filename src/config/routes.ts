@@ -58,4 +58,14 @@ export const routes = {
     createCouponManagement: `/admin/coupon-management/create`,
     UpdateCouponManagement: `/admin/coupon-management/update`,
   },
+
+
+  // Affiliate routes
+
+  affiliate:{
+    signup:`/affiliate/signup`,
+    signin: `/affiliate/signin`,
+    forgotPassword:`/affiliate/forgot-password`,
+    resetPassword:`/affiliate/reset-password`
+  }
 };
