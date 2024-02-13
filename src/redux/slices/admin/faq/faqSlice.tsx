@@ -1,4 +1,4 @@
-import {DeleteFaqData, GetAllFaq,GetFaqDataByID,PostFaqEnroll, UpdateFaqDataByID} from '@/api/auth/faq/faqApis';
+import {DeleteFaqData, GetAllFaq,GetFaqDataByID,PostFaqEnroll, UpdateFaqDataByID} from '@/api/admin/faq/faqApis';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { toast } from 'react-hot-toast';
 

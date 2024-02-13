@@ -25,7 +25,7 @@ function HeaderMenuRight() {
   return (
     <div className="ms-auto grid shrink-0 grid-cols-2 items-center gap-2 text-gray-700 xs:gap-3 xl:gap-4">
       <div>
-      { signIn?.role === 'client' && <AgencySelectionForm /> }
+      { (signIn?.role === 'client' || signIn?.role === 'team_client') && <AgencySelectionForm /> }
       </div>
       <div className="ms-auto grid shrink-0 grid-cols-3 items-center gap-2 text-gray-700 xs:gap-3 xl:gap-4">
       <MessagesDropdown>

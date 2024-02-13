@@ -5,7 +5,7 @@ import { HeaderCell } from '@/components/ui/table';
 import { Text } from '@/components/ui/text';
 import { Checkbox } from '@/components/ui/checkbox';
 import DeletePopover from '@/app/shared/delete-popover';
-import { useDispatch , useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PencilIcon from '@/components/icons/pencil';
 import { ActionIcon, Button, Popover, Tooltip } from 'rizzui';
 import EyeIcon from '@/components/icons/eye';
@@ -16,6 +16,8 @@ import { FiSend } from "react-icons/fi";
 import { FaRegCheckCircle } from "react-icons/fa";
 import moment from 'moment';
 import { downloadAgreement, getAllAgencyagreement, sendAgreement, updateagreementStatus } from '@/redux/slices/user/agreement/agreementSlice';
+import { PiTrashFill } from 'react-icons/pi';
+import TrashIcon from '@/components/icons/trash';
 
 
 
@@ -62,6 +64,17 @@ export const AgreementColumns = ({
         })
     }
 
+    const SentmailHandler = (id: string) => {
+        dispatch(sendAgreement(id)).then((result: any) => {
+            if (sendAgreement.fulfilled.match(result)) {
+                // console.log('resultt', result)
+                if (result && result.payload.success === true) {
+                    dispatch(getAllAgencyagreement({ page: currentPage, items_per_page: pageSize, sort_field: sortConfig?.key, sort_order: sortConfig?.direction }));
+                }
+            }
+        })
+    }
+
 
     return [
         {
@@ -79,13 +92,15 @@ export const AgreementColumns = ({
             key: 'checked',
             width: 50,
             render: (_: any, row: any) => (
-                <div className="inline-flex ps-3.5">
-                    <Checkbox
+                console.log(row, 'row'),
+                < div className="inline-flex ps-3.5" >
+                    {<Checkbox
+                        disabled={row?.status != "draft"}
                         className="cursor-pointer"
                         checked={checkedItems.includes(row._id)}
                         {...(onChecked && { onChange: () => onChecked(row._id) })}
-                    />
-                </div>
+                    />}
+                </div >
             ),
         },
         {
@@ -103,7 +118,7 @@ export const AgreementColumns = ({
             key: 'title',
             width: 200,
             render: (value: string) => (
-                <Text className="font-medium text-gray-700">{value && value != "" ? value : "-"}</Text>
+                <Text className="font-medium text-gray-700 capitalize">{value && value != "" ? value : "-"}</Text>
             ),
         },
         {
@@ -166,7 +181,8 @@ export const AgreementColumns = ({
                                     variant="text"
                                     className="flex w-full items-center justify-start px-4 py-2.5 focus:outline-none"
                                     onClick={() => { StatusHandler("draft", row?._id, setOpen) }}
-                                    disabled={row?.status === "draft"}
+                                    disabled={true}
+
                                 >
                                     <RiDraftLine className="me-2 h-[18px] w-[18px] text-gray-500" />
                                     Draft
@@ -175,12 +191,12 @@ export const AgreementColumns = ({
                                     variant="text"
                                     className="flex w-full items-center justify-start px-4 py-2.5 focus:outline-none"
                                     onClick={() => { StatusHandler("sent", row?._id, setOpen) }}
-                                    disabled={row?.status === "sent"}
+                                    disabled={row?.status != "draft"}
                                 >
                                     <FiSend className="me-2 h-[18px] w-[18px] text-gray-500" />
                                     Sent
                                 </Button>
-                                <Button
+                                {/* <Button
                                     variant="text"
                                     className="flex w-full items-center justify-start px-4 py-2.5 focus:outline-none"
                                     // onClick={() => { StatusHandler("agreed", row?._id,setOpen) }}
@@ -189,7 +205,7 @@ export const AgreementColumns = ({
                                 >
                                     <FaRegCheckCircle className="me-2 h-[18px] w-[18px] text-gray-500" />
                                     Agreed
-                                </Button>
+                                </Button> */}
                             </div>
                         )}
                     >
@@ -215,11 +231,18 @@ export const AgreementColumns = ({
                         placement="top"
                         color="invert"
                     >
-                        <Link href={`/agreement/edit-agreement/${row?._id}`}>
+                        {row?.status != "draft" ? <Button disabled={true} type='button' size="sm" variant="outline" className='bg-white text-black' aria-label={'View Agreement'}>
+
+                            <PencilIcon className="h-4 w-4" />
+
+                        </Button> : <Link href={`/agreement/edit-agreement/${row?._id}`}>
                             <Button type='button' size="sm" variant="outline" className='bg-white text-black' aria-label={'View Agreement'}>
+
                                 <PencilIcon className="h-4 w-4" />
+
                             </Button>
-                        </Link>
+                        </Link>}
+
                     </Tooltip>
                     <Tooltip
                         size="sm"
@@ -250,16 +273,19 @@ export const AgreementColumns = ({
                         color="invert"
                     >
                         {/* <Link href={routes.editTeam}> */}
-                        <Button disabled={loading} type='button' onClick={() => { dispatch(sendAgreement(row?._id)) }} size="sm" variant="outline" className='bg-white text-black' aria-label={'Send Email'}>
+                        <Button disabled={loading} type='button' onClick={() => { SentmailHandler(row?._id) }} size="sm" variant="outline" className='bg-white text-black' aria-label={'Send Email'}>
                             <HiOutlineMail className="h-4 w-4" />
                         </Button>
                         {/* </Link> */}
                     </Tooltip>
-                    <DeletePopover
+                    {row?.status != "draft" ? <Button size="sm" variant="outline" className='bg-white text-black' disabled={true}>
+                        <TrashIcon className="h-4 w-4" />
+                    </Button> : <DeletePopover
+                        // disabled={row?.status === "sent"}
                         title={`Delete the Agreement`}
                         description={`Are you sure you want to delete?`}
                         onDelete={() => onDeleteItem([row._id], currentPage, pageSize, data?.length <= 1 ? true : false, sortConfig, searchTerm)}
-                    />
+                    />}
                 </div>
             ),
         },

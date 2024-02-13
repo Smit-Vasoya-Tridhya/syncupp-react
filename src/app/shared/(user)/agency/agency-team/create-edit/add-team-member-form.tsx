@@ -17,6 +17,8 @@ import { addTeamMember, editTeamMember, getAllTeamMember, getTeamMemberProfile }
 import { useEffect, useState } from 'react';
 import { handleKeyContactDown, handleKeyDown } from '@/utils/common-functions';
 import SelectBox from '@/components/ui/select';
+import { useRouter } from 'next/navigation';
+import { routes } from '@/config/routes';
 // const Select = dynamic(() => import('@/components/ui/select'), {
 //   ssr: false,
 //   loading: () => <SelectLoader />,
@@ -30,6 +32,7 @@ const typeOption = [
 export default function AddTeamMemberForm(props: any) {
   const { title, row } = props;
   const dispatch = useDispatch();
+  const router = useRouter()
   const { closeModal } = useModal();
   const [save, setSave] = useState(false)
   const [loader, setLoader] = useState(true);
@@ -42,7 +45,8 @@ export default function AddTeamMemberForm(props: any) {
 
   const initialValues: TeamMemberSchema = {
     email: '',
-    name: '',
+    first_name: '',
+    last_name: '',
     contact_number: '',
     role: ''
   };
@@ -55,21 +59,24 @@ export default function AddTeamMemberForm(props: any) {
   let defaultValuess = {};
   if (data) {
     defaultValuess = {
-      name: data?.name,
+      first_name: data?.first_name,
+      last_name: data?.last_name,
       email: data?.email,
       contact_number: data?.contact_number,
       role: data?.member_role?.name === 'team_member' ? 'Team member' : 'Admin'
     };
-  } else if(signIn?.role === 'client') {
+  } else if (signIn?.role === 'client' || signIn?.role === 'team_client') {
     defaultValuess = {
-      name: '',
+      last_name: '',
+      first_name: '',
       email: '',
       contact_number: '',
       role: 'Team member'
     };
-  }else {
+  } else {
     defaultValuess = {
-      name: '',
+      last_name: '',
+      first_name: '',
       email: '',
       contact_number: '',
       role: ''
@@ -80,19 +87,21 @@ export default function AddTeamMemberForm(props: any) {
     let formData = {};
     if (title === 'New Team member') {
       formData = {
-        name: dataa?.name ?? '',
+        first_name: dataa?.first_name ?? '',
+        last_name: dataa?.last_name ?? '',
         email: dataa?.email ?? '',
         contact_number: dataa?.contact_number ?? '',
         role: dataa?.role === 'Team member' ? 'team_member' : 'admin',
-        agencyId: clientSliceData?.agencyId
+        agency_id: clientSliceData?.agencyId
       }
     } else {
       formData = {
-        name: dataa?.name ?? '',
+        first_name: dataa?.first_name ?? '',
+        last_name: dataa?.last_name ?? '',
         email: dataa?.email ?? '',
         contact_number: dataa?.contact_number ?? '',
         role: dataa?.role === 'Team member' || dataa?.role === 'team_member' ? 'team_member' : 'admin',
-        agencyId: clientSliceData?.agencyId
+        agency_id: clientSliceData?.agencyId
       }
     }
 
@@ -103,12 +112,15 @@ export default function AddTeamMemberForm(props: any) {
     if (title === 'New Team member') {
       dispatch(addTeamMember(fullData)).then((result: any) => {
         if (addTeamMember.fulfilled.match(result)) {
+          // console.log(result?.payload?.data?.referral_points,'result')
+          // result?.payload?.data?.referral_points         //NOTE : add for future
           setLoader(false);
           setSave(false);
           if (result && result.payload.success === true) {
-            save && closeModal();
+            router.push(routes.agency_team_payment)
+            // save && closeModal();
             setReset({ ...initialValues })
-            dispatch(getAllTeamMember({ sort_field: 'createdAt', sort_order: 'desc', agencyId: clientSliceData?.agencyId }));
+            dispatch(getAllTeamMember({ sort_field: 'createdAt', sort_order: 'desc', agency_id: clientSliceData?.agencyId, pagination: true }));
             setSave(false);
           }
         }
@@ -119,7 +131,7 @@ export default function AddTeamMemberForm(props: any) {
           if (result && result.payload.success === true) {
             save && closeModal();
             setSave(false);
-            dispatch(getAllTeamMember({ sort_field: 'createdAt', sort_order: 'desc', agencyId: clientSliceData?.agencyId }));
+            dispatch(getAllTeamMember({ sort_field: 'createdAt', sort_order: 'desc', agency_id: clientSliceData?.agencyId, pagination: true }));
           }
         }
       });
@@ -164,15 +176,25 @@ export default function AddTeamMemberForm(props: any) {
                 </ActionIcon>
               </div>
               <div className={cn('grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-4')}>
-                <Input
+              <Input
                   type="text"
                   onKeyDown={handleKeyDown}
-                  label="Name *"
+                  label="First name"
                   color="info"
                   placeholder="Enter your name"
                   className="[&>label>span]:font-medium"
-                  {...register('name')}
-                  error={errors.name?.message as string}
+                  {...register('first_name')}
+                  error={errors.first_name?.message as string}
+                />
+                <Input
+                  type="text"
+                  onKeyDown={handleKeyDown}
+                  label="Last name"
+                  color="info"
+                  placeholder="Enter your name"
+                  className="[&>label>span]:font-medium"
+                  {...register('last_name')}
+                  error={errors.last_name?.message as string}
                 />
                 <Input
                   type="email"
@@ -186,7 +208,7 @@ export default function AddTeamMemberForm(props: any) {
                   error={errors.email?.message as string}
                 />
                 <Input
-                  type="number"
+                  type="text"
                   onKeyDown={handleKeyContactDown}
                   label="Phone"
                   color="info"
@@ -203,10 +225,9 @@ export default function AddTeamMemberForm(props: any) {
                       options={typeOption}
                       value={value}
                       onChange={onChange}
-                      label="Permisson *"
+                      label="Role *"
                       placeholder='Select role'
                       color="info"
-                      disabled={signIn?.role === 'client'}
                       error={errors?.role?.message as string}
                       getOptionValue={(option) => option?.name}
                     />

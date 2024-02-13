@@ -11,6 +11,13 @@ import { TeamMemberType } from '@/data/products-data';
 import DeletePopover from '@/app/shared/delete-popover';
 import { Badge, Button } from 'rizzui';
 import moment from 'moment';
+import { MdOutlineDone } from 'react-icons/md';
+import { PiXBold } from 'react-icons/pi';
+import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'next/navigation';
+import { clientteamStatuschange, getAllTeamMember } from '@/redux/slices/user/team-member/teamSlice';
+import { initiateRazorpay } from '@/services/clientpaymentService';
+import { useState } from 'react';
 
 type Columns = {
   data: any[];
@@ -27,11 +34,11 @@ type Columns = {
 
 function getStatusBadge(status: string) {
   switch (status?.toLowerCase()) {
-    case 'confirm_pending':
+    case 'requested':
       return (
         <div className="flex items-center">
           <Badge color="warning" renderAsDot />
-          <Text className="ms-2 font-medium text-orange-dark">Pending</Text>
+          <Text className="ms-2 font-medium text-orange-dark">Requested</Text>
         </div>
       );
     case 'confirmed':
@@ -39,6 +46,13 @@ function getStatusBadge(status: string) {
         <div className="flex items-center">
           <Badge color="success" renderAsDot />
           <Text className="ms-2 font-medium text-green-dark">Active</Text>
+        </div>
+      );
+    case 'rejected':
+      return (
+        <div className="flex items-center">
+          <Badge color="danger" renderAsDot />
+          <Text className="ms-2 font-medium text-red">Rejected</Text>
         </div>
       );
     default:
@@ -68,7 +82,7 @@ function getRoleName(role: string) {
   }
 }
 
-export const getColumns = ({
+export const GetclientteamColumns = ({
   data,
   sortConfig,
   checkedItems,
@@ -79,7 +93,34 @@ export const getColumns = ({
   currentPage,
   pageSize,
   searchTerm
-}: Columns) => [
+}: Columns) => {
+
+  const token = localStorage.getItem('token')
+  const router = useRouter()
+  const dispatch = useDispatch()
+  const clientSliceData = useSelector((state: any) => state?.root?.client);
+  const loading = useSelector((state: any) => state?.root?.client?.loading);
+
+  const [loadingflag, setloadingflag] = useState(false)
+
+
+  const ClintteamlistAPIcall = async () => {
+    dispatch(getAllTeamMember({ page: currentPage, items_per_page: pageSize, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm, client_id: clientSliceData?.clientId, pagination: true }));
+
+  }
+
+  const StatusHandler = (row: any) => {
+    // console.log(row, 'row')
+    dispatch(clientteamStatuschange({ id: row?.reference_id?._id })).then((result: any) => {
+      if (clientteamStatuschange.fulfilled.match(result) && result.payload.success === true) {
+        dispatch(getAllTeamMember({ page: currentPage, items_per_page: pageSize, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm, client_id: clientSliceData?.clientId, pagination: true }));
+      }
+    });
+  }
+
+
+
+  return [
     {
       title: (
         <div className="ps-3.5">
@@ -118,7 +159,7 @@ export const getColumns = ({
       key: 'name',
       width: 200,
       render: (value: string) => (
-        <Text className="font-medium text-gray-700">{value}</Text>
+        <Text className="font-medium text-gray-700 capitalize">{value}</Text>
       ),
     },
     {
@@ -212,26 +253,40 @@ export const getColumns = ({
       dataIndex: 'action',
       key: 'action',
       width: 80,
-      render: (_: string, row: TeamMemberType) => (
-        <div className="flex items-center justify-end gap-3 pe-4">
-          <Tooltip
-            size="sm"
-            content={() => 'View Team member'}
-            placement="top"
-            color="invert"
-          >
-            <Link href={routes.viewTeam}>
-              <Button size="sm" variant="outline" className='bg-white text-black' aria-label={'View Member'}>
-                <EyeIcon className="h-4 w-4" />
+      render: (_: string, row: any) => (
+        <>
+
+          {row?.status === "requested" && <div className="flex items-center justify-end gap-3 pe-4">
+            <Tooltip
+              size="sm"
+              content={() => 'Approve'}
+              placement="top"
+              color="invert"
+            >
+              <Button disabled={loadingflag} onClick={() => { initiateRazorpay(router, routes.client_team, token, row?.reference_id?._id, ClintteamlistAPIcall, setloadingflag) }} size="sm" variant="outline" className='bg-white text-black' aria-label={'Approve Team member'}>
+                <MdOutlineDone className="h-4 w-4" />
               </Button>
-            </Link>
-          </Tooltip>
-          {/* <DeletePopover
+            </Tooltip>
+            <Tooltip
+              size="sm"
+              content={() => 'Reject'}
+              placement="top"
+              color="invert"
+            >
+              <Button disabled={loading} onClick={() => { StatusHandler(row) }} size="sm" variant="outline" className='bg-white text-black' aria-label={'Reject Team member'}>
+                <PiXBold className="h-4 w-4" />
+              </Button>
+            </Tooltip>
+            {/* <DeletePopover
             title={`Delete the Team member`}
             description={`Are you sure you want to delete?`}
             onDelete={() => onDeleteItem(row._id, currentPage, pageSize, data?.length <= 1 ? true : false, sortConfig, searchTerm)}
           /> */}
-        </div>
+          </div>}
+
+        </>
+
       ),
     },
   ];
+}

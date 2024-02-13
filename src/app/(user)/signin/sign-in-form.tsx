@@ -16,6 +16,7 @@ import { handleKeyDown } from '@/utils/common-functions';
 import { useRouter } from 'next/navigation';
 import Spinner from '@/components/ui/spinner';
 import useMedia from 'react-use/lib/useMedia';
+import { initiateRazorpay } from '@/services/paymentService';
 
 const initialValues: LoginSchema = {
   email: '',
@@ -32,9 +33,15 @@ export default function SignInForm() {
   const onSubmit: SubmitHandler<LoginSchema> = (data) => {
     dispatch(signInUser(data)).then((result: any) => {
       if (signInUser.fulfilled.match(result)) {
-        if (result && result.payload.success === true ) {
-          router.replace(routes.dashboard);
-        } 
+        // console.log(result, 'result', result?.payload?.data?.user?.status, result?.payload?.data?.user?.role?.name)
+        if (result && result.payload.success === true) {
+          // router.replace(routes.dashboard);
+          if (result?.payload?.data?.user?.status === "payment_pending" && result?.payload?.data?.user?.role?.name === "agency") {
+            initiateRazorpay(router, routes.dashboard, result?.payload?.data?.token, dispatch)
+          } else {
+            router.replace(routes.dashboard);
+          }
+        }
       }
     })
     // setReset({ ...initialValues, rememberMe: false });
@@ -99,8 +106,8 @@ export default function SignInForm() {
               rounded="pill"
               disabled={signIn?.loading}
             >
-              Sign in
-              { signIn && signIn?.loading && <Spinner size="sm" tag='div' className='ms-3' color='white' /> }
+              Sign In
+              {signIn && signIn?.loading && <Spinner size="sm" tag='div' className='ms-3' color='white' />}
             </Button>
           </div>
         )}

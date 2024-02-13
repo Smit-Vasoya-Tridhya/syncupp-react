@@ -1,5 +1,4 @@
 export const routes = {
-
   // User panel
 
   home: '/home',
@@ -12,22 +11,26 @@ export const routes = {
   client: '/client',
   team: '/team',
   agency_team: '/agency-team',
+  agency_team_payment: '/agency-team/payment',
   client_team: '/client-team',
   invoice: '/invoice',
-  invoiceForm: '/invoice/create-edit',
+  invoiceForm: '/invoice/create',
+  invoiceEdit: '/invoice/edit',
   invoiceView: '/invoice/view-invoice',
   viewTeam: '/team/view-team',
-  task: '/task',
-  UserCalender: '/calender',
-  UserCalenderForm: '/calender/calender-form',
-  UserCalenderAddActivity: '/calender/create-edit',
-  referal: '/referal',
+  task: '/tasks',
+  manageSubcription: '/manage-subscripation',
+  userCalendar: '/calendar',
+  userCalendarForm: '/calendar/calendar-form',
+  userCalendarAddActivity: '/calendar/create-edit',
 
   teams: {
-    verify: '/team/verify'
+    verify: '/team/verify',
   },
   clients: {
-    verify: '/client/verify'
+    verify: '/client/verify',
+    payment: '/client/payment',
+    agreement: '/client/agreement'
   },
   agreement: '/agreement',
 
@@ -40,11 +43,29 @@ export const routes = {
     dashboard: '/admin/dashboard',
     viewProfile: '/admin/profile',
     faq: '/admin/faq',
-    agencylist: "/admin/agencylist",
-    inquiry: "/admin/inquiry",
-    payment: "/admin/payment-transaction",
+    agencylist: '/admin/agencylist',
+    clientReview: '/admin/client-review',
+    inquiry: '/admin/inquiry',
+    payment: '/admin/payment-transaction',
     cms: '/admin/cms',
     cmsTC: '/admin/cms/team-and-condition',
+    cmsContact: '/admin/cms/contact-us/edit',
+    cmsAbout: '/admin/cms/about-us/edit',
+    cmsPricing: '/admin/cms/pricing/edit',
+    cmsPrivacy: '/admin/cms/privacy/edit',
+
+    couponManagement: '/admin/coupon-management',
+    createCouponManagement: `/admin/coupon-management/create`,
+    UpdateCouponManagement: `/admin/coupon-management/update`,
   },
 
+
+  // Affiliate routes
+
+  affiliate:{
+    signup:`/affiliate/signup`,
+    signin: `/affiliate/signin`,
+    forgotPassword:`/affiliate/forgot-password`,
+    resetPassword:`/affiliate/reset-password`
+  }
 };

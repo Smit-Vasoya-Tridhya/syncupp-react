@@ -7,11 +7,12 @@ type GetAllclientAgreementlistApiData = {
     sort_order?: string;
     sort_field?: string;
     search?: string;
+    agency_id?: string
 }
 
 export const GetAllclientAgreementApi = async (data: GetAllclientAgreementlistApiData) => {
     const response = await AxiosDefault({
-        url: "/api/v1/client/agreement/get-all-agreement",
+        url: "/api/v1/agreement/get-all-agreement",
         method: "POST",
         data: data,
         contentType: "application/json",
@@ -29,8 +30,25 @@ type GetClientAgreementByIdApiData = {
 
 export const GetClientAgreementByIdApi = async (data: GetClientAgreementByIdApiData) => {
     const response = await AxiosDefault({
-        url: `/api/v1/client/agreement/get-agreement/${data}`,
+        url: `/api/v1/agreement/get-agreement/${data}`,
         method: "GET",
+        contentType: "application/json",
+    });
+    const responseData = response.data;
+    return responseData;
+};
+
+
+//  Agreement status change
+type clientAgreementstatusChange = {
+    id: string;
+}
+
+export const ClientAgreementstatusChange = async (data: clientAgreementstatusChange) => {
+    const response = await AxiosDefault({
+        url: `/api/v1/agreement/update-agreement-status/${data?.id}`,
+        method: "PUT",
+        data: data,
         contentType: "application/json",
     });
     const responseData = response.data;

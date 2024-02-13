@@ -1,21 +1,11 @@
 'use client';
 
-import Link from 'next/link';
 import { HeaderCell } from '@/components/ui/table';
 import { Text } from '@/components/ui/text';
 import { Checkbox } from '@/components/ui/checkbox';
-import DeletePopover from '@/app/shared/delete-popover';
-import { useDispatch } from 'react-redux';
-import PencilIcon from '@/components/icons/pencil';
-import { ActionIcon, Button, Popover, Tooltip } from 'rizzui';
-import EyeIcon from '@/components/icons/eye';
-import { AiOutlineFilePdf } from "react-icons/ai";
-import { HiOutlineMail } from "react-icons/hi";
+import { useDispatch , useSelector } from 'react-redux';
 import moment from 'moment';
-import { downloadAgreement, getAllAgencyagreement, sendAgreement, updateagreementStatus } from '@/redux/slices/user/agreement/agreementSlice';
-import { useSelector } from 'react-redux';
-
-
+import { getAllAgencyagreement, updateagreementStatus } from '@/redux/slices/user/agreement/agreementSlice';
 
 type Columns = {
     data: any[];
@@ -50,14 +40,14 @@ export const PaymentTransactionColumns = ({
 
     const StatusHandler = (status: string, id: string, setOpen: any) => {
         setOpen(false)
-        dispatch(updateagreementStatus({ data: { status: status }, id: id })).then((result: any) => {
-            if (updateagreementStatus.fulfilled.match(result)) {
-                // console.log('resultt', result)
-                if (result && result.payload.success === true) {
-                    dispatch(getAllAgencyagreement({ page: currentPage, items_per_page: pageSize, sort_field: sortConfig?.key, sort_order: sortConfig?.direction }));
-                }
-            }
-        })
+        // dispatch(updateagreementStatus({ data: { status: status }, id: id })).then((result: any) => {
+        //     if (updateagreementStatus.fulfilled.match(result)) {
+        //         // console.log('resultt', result)
+        //         if (result && result.payload.success === true) {
+        //             dispatch(getAllAgencyagreement({ page: currentPage, items_per_page: pageSize, sort_field: sortConfig?.key, sort_order: sortConfig?.direction }));
+        //         }
+        //     }
+        // })
     }
 
 
@@ -101,7 +91,7 @@ export const PaymentTransactionColumns = ({
             key: 'name',
             width: 200,
             render: (value: string) => (
-                <Text className="font-medium text-gray-700">{value && value != "" ? value : "-"}</Text>
+                <Text className="font-medium text-gray-700 capitalize">{value && value != "" ? value : "-"}</Text>
             ),
         },
         {

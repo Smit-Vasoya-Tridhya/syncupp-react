@@ -44,6 +44,21 @@ function getStatusBadge(status: string) {
           <Text className="ms-2 font-medium text-green-dark">Active</Text>
         </div>
       );
+    case 'requested':
+      return (
+        <div className="flex items-center">
+          <Badge color="warning" renderAsDot />
+          <Text className="ms-2 font-medium text-orange-dark">Requested</Text>
+        </div>
+      );
+
+    case 'rejected':
+      return (
+        <div className="flex items-center">
+          <Badge color="danger" renderAsDot />
+          <Text className="ms-2 font-medium text-red">Rejected</Text>
+        </div>
+      );
     default:
       return (
         <div className="flex items-center">
@@ -104,7 +119,7 @@ export const getColumns = ({
     key: 'name',
     width: 200,
     render: (value: string) => (
-      <Text className="font-medium text-gray-700">{value}</Text>
+      <Text className="font-medium text-gray-700 capitalize">{value}</Text>
     ),
   },
   {
@@ -201,11 +216,11 @@ export const getColumns = ({
           placement="top"
           color="invert"
         >
-          <Link href={routes.viewTeam}>
+          {/* <Link href={routes.viewTeam}> */}
             <Button size="sm" variant="outline" className='bg-white text-black' aria-label={'View Member'}>
               <EyeIcon className="h-4 w-4" />
             </Button>
-          </Link>
+          {/* </Link> */}
         </Tooltip>
         <DeletePopover
           title={`Delete the Team member`}

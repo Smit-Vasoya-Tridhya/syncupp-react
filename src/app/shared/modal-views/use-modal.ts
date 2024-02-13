@@ -1,7 +1,9 @@
 'use client';
 
+import { RemoveclientReviewData } from '@/redux/slices/admin/clientReview/clientReviewSlice';
 import { RemoveFaqData } from '@/redux/slices/admin/faq/faqSlice';
 import { RemoveClientData, RemoveRegionalData } from '@/redux/slices/user/client/clientSlice';
+import { RemoveTaskData } from '@/redux/slices/user/task/taskSlice';
 import { RemoveTeamMemberData } from '@/redux/slices/user/team-member/teamSlice';
 import { atom, useAtomValue, useSetAtom } from 'jotai';
 import { useDispatch } from 'react-redux';
@@ -43,6 +45,8 @@ export function useModal() {
     dispatch(RemoveClientData())
     dispatch(RemoveFaqData())
     dispatch(RemoveTeamMemberData())
+    dispatch(RemoveTaskData())
+    dispatch(RemoveclientReviewData())
     setState({
       ...state,
       isOpen: false,

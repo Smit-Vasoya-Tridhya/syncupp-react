@@ -5,7 +5,7 @@ import { HeaderCell } from '@/components/ui/table';
 import { Text } from '@/components/ui/text';
 import { Checkbox } from '@/components/ui/checkbox';
 import DeletePopover from '@/app/shared/delete-popover';
-import { Switch } from 'rizzui';
+import { Badge, Switch } from 'rizzui';
 import { useDispatch } from 'react-redux';
 import { deleteAgency, getAllAgency } from '@/redux/slices/admin/agency/agencySlice';
 import { LuExternalLink } from "react-icons/lu";
@@ -47,6 +47,40 @@ export const GetColumns = ({
         }
     };
 
+
+    function getStatusBadge(status: string) {
+        switch (status?.toLowerCase()) {
+            case 'payment_pending':
+                return (
+                    <div className="flex items-center px-5">
+                        <Badge color="warning" renderAsDot />
+                        <Text className="ms-2 font-medium text-orange-dark">Payment Pending</Text>
+                    </div>
+                );
+            case 'confirmed':
+                return (
+                    <div className="flex items-center px-5">
+                        <Badge color="success" renderAsDot />
+                        <Text className="ms-2 font-medium text-green-dark">Active</Text>
+                    </div>
+                );
+            case 'agency_inactive':
+                return (
+                    <div className="flex items-center px-5">
+                        <Badge color="danger" renderAsDot />
+                        <Text className="ms-2 font-medium text-red">Inactive</Text>
+                    </div>
+                );
+            default:
+                return (
+                    <div className="flex items-center px-5">
+                        <Badge renderAsDot className="bg-gray-400" />
+                        <Text className="ms-2 font-medium text-gray-600">{status}</Text>
+                    </div>
+                );
+        }
+    }
+
     return [
         {
             title: (
@@ -87,7 +121,7 @@ export const GetColumns = ({
             key: 'first_name',
             width: 200,
             render: (value: string) => (
-                <Text className="font-medium text-gray-700">{value && value != "" ? value : "-"}</Text>
+                <Text className="font-medium text-gray-700 capitalize">{value && value != "" ? value : "-"}</Text>
             ),
         },
         {
@@ -105,7 +139,7 @@ export const GetColumns = ({
             key: 'last_name',
             width: 200,
             render: (value: string) => (
-                <Text className="font-medium text-gray-700">{value && value != "" ? value : "-"}</Text>
+                <Text className="font-medium text-gray-700 capitalize">{value && value != "" ? value : "-"}</Text>
             ),
         },
         {
@@ -215,8 +249,13 @@ export const GetColumns = ({
             key: 'status',
             width: 200,
             render: (value: string, row: Record<string, string>) => (
-                // <Text className="font-medium text-gray-700">{value}</Text>
-                <Switch className="[&>label>span.transition]:shrink-0 [&>label>span]:font-medium" variant='active' onChange={(event) => handleSwitchChange(row._id, event)} disabled={value == "payment_pending"} defaultChecked={value == "payment_pending" ? false : true} />
+                <>
+                    <div className='flex '>
+                        {/* <Text className="font-medium text-gray-700">{value}</Text> */}
+                        <Switch className="[&>label>span.transition]:shrink-0 [&>label>span]:font-medium" variant='active' onChange={(event) => handleSwitchChange(row._id, event)} disabled={value == "payment_pending"} defaultChecked={value == "payment_pending" ? false : true} />
+                        {getStatusBadge(value)}
+                    </div>
+                </>
             ),
         },
         {

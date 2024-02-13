@@ -1,11 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { toast } from 'react-hot-toast';
-import { DeleteTeamMemberApi, GetAllTeamMemberApi, GetTeamMemberProfileApi, PostAddTeamMemberApi, PostTeamMemberVerifyApi, PutEditTeamMemberApi } from "@/api/user/team-member/teamApis";
+import { DeleteTeamMemberApi, GetAllTeamMemberApi, GetTeamMemberProfileApi, MemberStatusChangeApi, PostAddTeamMemberApi, PostTeamMemberVerifyApi, PutEditTeamMemberApi } from "@/api/user/team-member/teamApis";
 
 type TeamData = {
-  _id:string;
+  _id: string;
   email: string;
-  name: string;
+  first_name: string;
+  last_name: string;
   contact_number?: string;
   role?: string;
   sort_field?: string;
@@ -15,6 +16,7 @@ type TeamData = {
   search?: string;
   agency_id?: string;
   client_id?: string;
+  pagination?: boolean;
 }
 
 type DeleteTeamMemberData = {
@@ -42,37 +44,45 @@ type PostTeamMemberVerifyData = {
   token?: string;
   client_id?: string;
   password?: string;
-  first_name?: string;
-  last_name?: string;
+  // first_name?: string;
+  // last_name?: string;
 }
 
+type StatusChange = {
+  id: string;
+};
+
 interface TeamMemberDataResponse {
-  status : boolean;
-  message : string
+  status: boolean;
+  message: string
 }
 
 const initialState = {
   loading: false,
   user: {},
-  data:[],
+  data: [],
   teamMember: '',
   clientId: '',
   clientName: '',
+  teamList: '',
   getAllTeamMemberStatus: '',
   addTeamMemberStatus: '',
   editTeamMemberStatus: '',
   deleteTeamMemberStatus: '',
   getTeamMemberProfileStatus: '',
-  verifyTeamMemberStatus: ''
+  verifyTeamMemberStatus: '',
+  paginationParams: "",
+  addClientteamdetails: ""
 };
 
 export const addTeamMember: any = createAsyncThunk(
   "team/addTeamMember",
   async (data: TeamData) => {
-    const apiData={
+    const apiData = {
       id: data._id,
       email: data.email,
-      name: data.name,
+      first_name: data.first_name,
+      last_name: data.last_name,
       contact_number: data.contact_number,
       role: data.role,
       agency_id: data?.agency_id
@@ -82,6 +92,18 @@ export const addTeamMember: any = createAsyncThunk(
       return response;
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as TeamMemberDataResponse;
+    }
+  }
+);
+
+export const clientteamStatuschange: any = createAsyncThunk(
+  "team/clientteamStatuschange",
+  async (data: StatusChange) => {
+    try {
+      const response: any = await MemberStatusChangeApi(data);
+      return response;
+    } catch (error: any) {
+      return { status: false, message: error.response.data.message, code: error.response.data.status } as any;
     }
   }
 );
@@ -101,10 +123,11 @@ export const verifyTeamMember: any = createAsyncThunk(
 export const editTeamMember: any = createAsyncThunk(
   "team/editTeamMember",
   async (data: TeamData) => {
-    const apiData={
+    const apiData = {
       id: data._id,
       email: data.email,
-      name: data.name,
+      first_name: data.first_name,
+      last_name: data.last_name,
       contact_number: data.contact_number,
       role: data.role,
       agency_id: data?.agency_id
@@ -122,7 +145,7 @@ export const getAllTeamMember: any = createAsyncThunk(
   async (data: TeamData) => {
     try {
       const response: any = await GetAllTeamMemberApi(data);
-      return response;
+      return { response: response, pagination: data?.pagination };
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as TeamMemberDataResponse;
     }
@@ -180,54 +203,58 @@ export const teamSlice = createSlice({
         teamMember: ''
       };
     },
+    setPagginationParams(state, action) {
+      return {
+        ...state,
+        paginationParams: action.payload
+      }
+    },
   },
   extraReducers: (builder) => {
-      builder
-      .addCase(addTeamMember.pending, (state) => {
-          return{
-            ...state,
-            loading: true,
-            addTeamMemberStatus: 'pending'
-          }
-      })
-      .addCase(addTeamMember.fulfilled, (state,action) => {
-        if(action.payload.success === true){
-          toast.success(action.payload.message)
-        } else {
-          toast.error(action.payload.message)
-        }
-        return{
+    builder
+      .addCase(addTeamMember.pending, (state, action) => {
+        return {
           ...state,
-          // user: action.payload,
+          loading: true,
+          addTeamMemberStatus: 'pending'
+        }
+      })
+      .addCase(addTeamMember.fulfilled, (state, action) => {
+        if (action?.payload?.status === false) {
+          toast.error(action.payload.message)
+        } 
+        return {
+          ...state,
+          addClientteamdetails: action.payload,
           loading: false,
           addTeamMemberStatus: 'success'
         }
       })
       .addCase(addTeamMember.rejected, (state) => {
-        return{
+        return {
           ...state,
           loading: false,
           addTeamMemberStatus: 'error'
         }
       });
 
-      // new cases for verify team member
-      builder
+    // new cases for verify team member
+    builder
       .addCase(verifyTeamMember.pending, (state) => {
-          return{
-            ...state,
-            loading: true,
-            verifyTeamMemberStatus: 'pending'
-          }
+        return {
+          ...state,
+          loading: true,
+          verifyTeamMemberStatus: 'pending'
+        }
       })
-      .addCase(verifyTeamMember.fulfilled, (state,action) => {
-        if(action.payload.success == true){
+      .addCase(verifyTeamMember.fulfilled, (state, action) => {
+        if (action.payload.success == true) {
           toast.success(action.payload.message)
           localStorage.clear();
         } else {
           toast.error(action.payload.message)
         }
-        return{
+        return {
           ...state,
           // user: action.payload,
           loading: false,
@@ -235,28 +262,28 @@ export const teamSlice = createSlice({
         }
       })
       .addCase(verifyTeamMember.rejected, (state) => {
-        return{
+        return {
           ...state,
           loading: false,
           verifyTeamMemberStatus: 'error'
         }
       });
-      // new cases for edit team member
-      builder
+    // new cases for edit team member
+    builder
       .addCase(editTeamMember.pending, (state) => {
-          return{
-            ...state,
-            loading: true,
-            editTeamMemberStatus: 'pending'
-          }
+        return {
+          ...state,
+          loading: true,
+          editTeamMemberStatus: 'pending'
+        }
       })
-      .addCase(editTeamMember.fulfilled, (state,action) => {
-        if(action.payload.success == true){
+      .addCase(editTeamMember.fulfilled, (state, action) => {
+        if (action.payload.success == true) {
           toast.success(action.payload.message)
         } else {
           toast.error(action.payload.message)
         }
-        return{
+        return {
           ...state,
           // user: action.payload,
           loading: false,
@@ -264,50 +291,89 @@ export const teamSlice = createSlice({
         }
       })
       .addCase(editTeamMember.rejected, (state) => {
-        return{
+        return {
           ...state,
           loading: false,
           editTeamMemberStatus: 'error'
         }
       });
-      // new cases for get all team member
-      builder
+    // new cases for get all team member
+    builder
       .addCase(getAllTeamMember.pending, (state) => {
-          return{
-            ...state,
-            loading: true,
-            getAllTeamMemberStatus: 'pending'
-          }
-      })
-      .addCase(getAllTeamMember.fulfilled, (state,action) => {
-        if(action.payload.status == false){
-          toast.error(action.payload.message)
-        } 
-        return{
+        return {
           ...state,
-          data: action.payload.data,
-          loading: false,
-          getAllTeamMemberStatus: 'success'
+          loading: true,
+          getAllTeamMemberStatus: 'pending'
+        }
+      })
+      .addCase(getAllTeamMember.fulfilled, (state, action) => {
+        if (action?.payload?.status == false) {
+          toast.error(action.payload.message)
+          return {
+            ...state,
+            loading: false
+          }
+        } else if (action?.payload?.pagination) {
+          return {
+            ...state,
+            data: action?.payload?.response?.data,
+            loading: false,
+            getAllTeamMemberStatus: 'success'
+          }
+        } else {
+          return {
+            ...state,
+            loading: false,
+            teamList: action?.payload?.response?.data,
+          }
         }
       })
       .addCase(getAllTeamMember.rejected, (state) => {
-        return{
+        return {
           ...state,
           loading: false,
           getAllTeamMemberStatus: 'error'
         }
       });
-      // new cases for get team member profile
-      builder
-      .addCase(getTeamMemberProfile.pending, (state) => {
-          return{
-            ...state,
-            loading: true,
-            getTeamMemberProfileStatus: 'pending'
-          }
+
+    //clientteamMembers Status change 
+
+    builder
+      .addCase(clientteamStatuschange.pending, (state) => {
+        return {
+          ...state,
+          loading: true,
+        }
       })
-      .addCase(getTeamMemberProfile.fulfilled, (state,action) => {
-        return{
+      .addCase(clientteamStatuschange.fulfilled, (state, action) => {
+        if (action?.payload?.status === false) {
+          toast.error(action.payload.message)
+        } else {
+          toast.success(action.payload.message)
+        }
+        return {
+          ...state,
+          loading: false,
+        }
+      })
+      .addCase(clientteamStatuschange.rejected, (state) => {
+        return {
+          ...state,
+          loading: false,
+        }
+      });
+
+    // new cases for get team member profile
+    builder
+      .addCase(getTeamMemberProfile.pending, (state) => {
+        return {
+          ...state,
+          loading: true,
+          getTeamMemberProfileStatus: 'pending'
+        }
+      })
+      .addCase(getTeamMemberProfile.fulfilled, (state, action) => {
+        return {
           ...state,
           teamMember: action.payload.data,
           loading: false,
@@ -315,42 +381,43 @@ export const teamSlice = createSlice({
         }
       })
       .addCase(getTeamMemberProfile.rejected, (state) => {
-        return{
+        return {
           ...state,
           loading: false,
           getTeamMemberProfileStatus: 'error'
         }
       });
-      // new cases for delete team member profile
-      builder
+
+    // new cases for delete team member profile
+    builder
       .addCase(deleteTeamMember.pending, (state) => {
-          return{
-            ...state,
-            loading: true,
-            deleteTeamMemberStatus: 'pending'
-          }
+        return {
+          ...state,
+          loading: true,
+          deleteTeamMemberStatus: 'pending'
+        }
       })
-      .addCase(deleteTeamMember.fulfilled, (state,action) => {
-        if(action.payload.status == false){
+      .addCase(deleteTeamMember.fulfilled, (state, action) => {
+        if (action.payload.status == false) {
           toast.error(action.payload.message)
-          return{
+          return {
             ...state,
-          //   data: action.payload,
+            //   data: action.payload,
             loading: false,
             deleteTeamMemberStatus: 'error'
           }
-      } else {
+        } else {
           toast.success(action.payload.message)
-          return{
+          return {
             ...state,
-          //   data: action.payload,
+            //   data: action.payload,
             loading: false,
             deleteTeamMemberStatus: 'success'
           }
-      }
+        }
       })
       .addCase(deleteTeamMember.rejected, (state) => {
-        return{
+        return {
           ...state,
           loading: false,
           deleteTeamMemberStatus: 'error'
@@ -359,5 +426,5 @@ export const teamSlice = createSlice({
   },
 });
 
-export const { RemoveTeamMemberData } = teamSlice.actions;
+export const { RemoveTeamMemberData, setPagginationParams } = teamSlice.actions;
 export default teamSlice.reducer;

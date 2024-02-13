@@ -15,14 +15,12 @@ import ChangePasswordForm from '@/app/shared/(user)/forms/change-password-form';
 import { routes } from '@/config/routes';
 import Link from 'next/link';
 import Spinner from '@/components/ui/spinner';
+import Profile from '@public/dummyprofile.jpg';
 
 function DropdownMenu() {
 
   const dispatch = useDispatch();
   const router = useRouter();
-  useEffect(()=>{
-    dispatch(getUserProfile())
-  },[dispatch])
   const { userProfile , loading} = useSelector((state: any) => state?.root?.signIn);
 
   const handleClick = () => {
@@ -33,6 +31,10 @@ function DropdownMenu() {
         dispatch(logoutUser());
       }
     })
+  }
+  function capitalizeFirstLetter(str:any) {
+    if (!str) return '';
+    return  str.charAt(0).toUpperCase() + str.slice(1);
   }
   if (loading) {
     return (
@@ -45,13 +47,14 @@ function DropdownMenu() {
     <div className="w-64 text-left rtl:text-right">
       <div className="flex items-center border-b border-gray-300 px-6 pb-5 pt-6">
         <Avatar
-          src="https://isomorphic-furyroad.s3.amazonaws.com/public/avatars-blur/avatar-11.webp"
+          // src="https://isomorphic-furyroad.s3.amazonaws.com/public/avatars-blur/avatar-11.webp"
+          src={Profile?.src}
           name="Albert Flores"
           color="invert"
         />
         <div className="ms-3">
           <Title as="h6" className="break-all text-sm font-semibold">
-            {`${userProfile?.first_name} ${userProfile?.last_name}`}
+            {`${capitalizeFirstLetter(userProfile?.first_name ?? '')} ${capitalizeFirstLetter(userProfile?.last_name ?? '')}`}
           </Title>
           <Text className="break-all text-sm text-gray-600">
             {`${userProfile?.email}`}
@@ -116,7 +119,7 @@ export default function ProfileMenu({
         )}
       >
         <Avatar
-          src="https://isomorphic-furyroad.s3.amazonaws.com/public/avatars-blur/avatar-11.webp"
+          src={Profile?.src}
           name=""
           color="invert"
           className={cn('!h-9 w-9 sm:!h-10 sm:w-10', avatarClassName)}

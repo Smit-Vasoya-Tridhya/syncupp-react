@@ -3,12 +3,20 @@ import { messages } from '@/config/messages';
 
 // form zod validation schema
 export const addTaskSchema = z.object({
-  title: z.string().optional(),
+  title: z.string().min(1, { message: messages.titleIsRequired }).max(50, { message: messages.taskTitleLength }),
   description: z.string().optional(),
-  due_date: z.date().optional(), 
-  due_time: z.date().optional(), 
-  client: z.string().optional(),
-  assigned: z.string().optional(),
+  due_date: z.date({
+    required_error: messages.dueDateTimeIsRequired,
+  }), 
+  due_time: z.date({
+    required_error: messages.dueDateTimeIsRequired,
+  }).optional(), 
+  client: z
+  .string({ required_error: messages.clientRequired })
+  .min(1, { message: messages.clientRequired }),
+  assigned: z
+  .string({ required_error: messages.teamMemberRequired })
+  .min(1, { message: messages.teamMemberRequired }),
   done: z.boolean().optional(),
 });
 

@@ -62,7 +62,7 @@ export default function AddTaskFormPage(props: any) {
   const initialValues: AddTaskSchema = {
     title: '',
     description: '',
-    due_date: undefined,
+    due_date: new Date(),
     client: '',
     assigned: '',
     done: false
@@ -101,7 +101,7 @@ export default function AddTaskFormPage(props: any) {
         if(postAddTask.fulfilled.match(result)) {
           if (result && result.payload.success === true) {
             closeModal();
-            // dispatch(getAllTeamMember({ sort_field: 'createdAt', sort_order: 'desc' }));
+            // dispatch(getAllTeamMember({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
           }
         }
       });
@@ -110,7 +110,7 @@ export default function AddTaskFormPage(props: any) {
       //   if(editTeamMember.fulfilled.match(result)) {
       //     if (result && result.payload.success === true) {
       //       closeModal();
-      //       dispatch(getAllTeamMember({ sort_field: 'createdAt', sort_order: 'desc' }));
+      //       dispatch(getAllTeamMember({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
       //     }
       //   }
       // });

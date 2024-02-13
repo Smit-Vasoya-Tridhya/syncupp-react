@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { PostSignin } from "../../../../../api/auth/signin/signin";
+import { PostSignin } from "../../../../../api/admin/signin/signin";
 import { toast } from 'react-hot-toast';
 
 type UserData = {

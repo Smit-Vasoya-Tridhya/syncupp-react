@@ -45,6 +45,21 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'isomorphic-furyroad.s3.amazonaws.com',
       },
+      {
+        protocol: 'http',
+        hostname: '172.16.1.237',
+        port: '3001',
+      },
+      {
+        protocol: 'http',
+        hostname: '104.248.10.11',
+        port: '5011',
+      },
+      // {
+      //   protocol: 'http',
+      //   hostname: '172.16.1.237',
+      //   port: '3001'
+      // },
     ],
   },
   // env: {
@@ -59,11 +74,6 @@ const nextConfig = {
         permanent: false,
       },
       {
-        source: '/home',
-        destination: '/signin',
-        permanent: false,
-      },
-      {
         source: '/admin',
         destination: '/admin/signin',
         permanent: false,
@@ -73,5 +83,3 @@ const nextConfig = {
 };
 
 export default nextConfig;
-
-

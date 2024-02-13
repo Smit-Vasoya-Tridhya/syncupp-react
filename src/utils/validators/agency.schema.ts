@@ -7,7 +7,7 @@ import {
 // form zod validation schema
 export const agencyFormSchema = z.object({
   email: validateEmail,
-  first_name: z.string().min(1, { message: messages.firstNameRequired }),
+  first_name: z.string().min(1, { message: messages.firstNameRequired }).max(15, { message: messages.firstNameLength }),
   last_name: z.string().min(1, { message: messages.lastNameRequired }),
   role: z
   .string({ required_error: messages.roleNameIsRequired })
@@ -17,7 +17,7 @@ export const agencyFormSchema = z.object({
 }, {
     message: messages.contactLengthMin,
 }),
-company_name: z.string().min(1, { message: messages.companyNameRequired }),
+company_name: z.string().min(1, { message: messages.companyNameRequired }).max(30, { message: messages.companyNameLength }),
 company_website: z.string().trim().nullable().refine(value => {
     return !value || /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d{1,5})?(\/[^\s]*)?$/.test(value);
 }, {
@@ -35,9 +35,7 @@ pincode: z.string().trim().nullable().refine(value => {
 industry: z
     .string({ required_error: messages.industryRequired })
     .min(1, { message: messages.industryRequired }),
-    no_of_people: z
-    .string({ required_error: messages.peopleCountRequired })
-    .min(1, { message: messages.peopleCountRequired }),
+no_of_people: z.string().min(1, { message: messages.peopleCountRequired }).max(15, { message: messages.peopleCountMaximumLengthRequired }),
 })
 // generate form types from zod validation schema
 export type AgencyFormSchema = z.infer<typeof agencyFormSchema>;

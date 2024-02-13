@@ -12,6 +12,9 @@ import cn from '@/utils/class-names';
 import { Input } from '@/components/ui/input';
 import { TermsAndConditionSchema, termsAndConditionSchema } from '@/utils/validators/terms-condition.schema';
 import QuillEditor from '@/components/ui/quill-editor';
+import { postAddTermAndCondition } from '@/redux/slices/admin/cms/cmsSlice';
+import { routes } from '@/config/routes';
+import { useRouter } from 'next/navigation';
 
 
 const initialValues: TermsAndConditionSchema = {
@@ -21,13 +24,14 @@ const initialValues: TermsAndConditionSchema = {
 
 export default function TermsAndConditionFormPage() {
   const dispatch = useDispatch();
+  const router = useRouter();
   const { closeModal } = useModal();
   const [formdata, setformData] = useState({
     title: '',
     description: '',
 })
 
-  const termAndCondition = useSelector((state: any) => state?.root?.changePassword)
+  const termAndCondition = useSelector((state: any) => state?.root?.adminCms)
 
   const initialValues: TermsAndConditionSchema = {
     title: formdata?.title,
@@ -37,16 +41,16 @@ export default function TermsAndConditionFormPage() {
 
     const formData = {
       title: data?.title,
-      Description: data?.description,
+      description: data?.description,
     }
-    // dispatch(changePasswordUser(formData)).then((result: any) => {
-    //   if (changePasswordUser.fulfilled.match(result)) {
-    //     if (result && result.payload.success === true ) {
-    //       // router.replace(routes.dashboard);
-    //       closeModal();
-    //     } 
-    //   }
-    // })
+    dispatch(postAddTermAndCondition(formData)).then((result: any) => {
+      if (postAddTermAndCondition.fulfilled.match(result)) {
+        if (result && result.payload.success === true ) {
+          router.replace(routes.admin.cms);
+          closeModal();
+        } 
+      }
+    })
   };
 
   return (
@@ -56,6 +60,7 @@ export default function TermsAndConditionFormPage() {
         onSubmit={onSubmit}
         useFormProps={{
           defaultValues: initialValues,
+          mode: 'all'
         }}
         className=" [&_label]:font-medium p-10"
       >
@@ -76,35 +81,37 @@ export default function TermsAndConditionFormPage() {
               error={errors.title?.message}
             />
             <Controller
-                                control={control}
-                                name="description"
-                                render={({ field: { onChange, value } }) => (
-                                    <QuillEditor
-                                        value={value}
-                                        onChange={onChange}
-                                        label="Description"
-                                        className="col-span-full [&_.ql-editor]:min-h-[100px]"
-                                        labelClassName="font-medium text-gray-700 dark:text-gray-600 mb-1.5"
-                                    />
-                                )}
-                            />
-            <div className={cn('grid grid-cols-2 gap-4 pt-5 float-end')}>
-                <Button
-                  variant="outline"
-                  className="@xl:w-auto dark:hover:border-gray-400"
-                  onClick={() => closeModal()}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  type="submit"
-                  className="hover:gray-700 @xl:w-auto dark:bg-gray-200 dark:text-white"
-                  disabled={termAndCondition.loading}
-                >
-                  Save
-                  {termAndCondition.loading && <Spinner size="sm" tag='div' className='ms-3' />}
-                </Button>
-              </div>
+              control={control}
+              name="description"
+              render={({ field: { onChange, value } }) => (
+                <QuillEditor
+                  value={value}
+                  onChange={onChange}
+                  label="Description"
+                  className="col-span-full [&_.ql-editor]:min-h-[100px]"
+                  labelClassName="font-medium text-gray-700 dark:text-gray-600 mb-1.5"
+                />
+              )}
+            />
+            <div className={cn('float-end grid grid-cols-2 gap-4 pt-5')}>
+              <Button
+                variant="outline"
+                className="@xl:w-auto dark:hover:border-gray-400"
+                onClick={() => closeModal()}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                className="hover:gray-700 @xl:w-auto dark:bg-gray-200 dark:text-white"
+                disabled={termAndCondition.loading}
+              >
+                Save
+                {termAndCondition.loading && (
+                  <Spinner size="sm" tag="div" className="ms-3" />
+                )}
+              </Button>
+            </div>
           </div>
         )}
       </Form>

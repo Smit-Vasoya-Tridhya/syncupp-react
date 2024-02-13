@@ -1,6 +1,6 @@
 'use client';
 
-import { GetViewProfiles, PostEditProfile } from "@/api/auth/signin/signin";
+import { GetViewProfiles, PostEditProfile } from "@/api/admin/signin/signin";
 import { createAsyncThunk, createSlice, isRejectedWithValue } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
 

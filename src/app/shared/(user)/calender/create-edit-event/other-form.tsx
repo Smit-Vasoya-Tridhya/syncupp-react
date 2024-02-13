@@ -55,8 +55,8 @@ export default function CalenderOtherFrom(props: any) {
   const initialValues: AddCalenderSchema = {
     title: '',
     description: '',
-    start_date:undefined,
-    due_date: undefined,
+    start_date:new Date(),
+    due_date: new Date(),
     client: '',
     assigned: '',
     done: false
@@ -77,7 +77,6 @@ export default function CalenderOtherFrom(props: any) {
   // };
 
   const onSubmit: SubmitHandler<AddCalenderSchema> = (dataa) => {
-    console.log('Add task dataa---->', dataa);
 
     const formData = {
       ...dataa,
@@ -94,7 +93,7 @@ export default function CalenderOtherFrom(props: any) {
         if(postAddTask.fulfilled.match(result)) {
           if (result && result.payload.success === true) {
             closeModal();
-            // dispatch(getAllTeamMember({ sort_field: 'createdAt', sort_order: 'desc' }));
+            // dispatch(getAllTeamMember({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
           }
         }
       });
@@ -103,7 +102,7 @@ export default function CalenderOtherFrom(props: any) {
       //   if(editTeamMember.fulfilled.match(result)) {
       //     if (result && result.payload.success === true) {
       //       closeModal();
-      //       dispatch(getAllTeamMember({ sort_field: 'createdAt', sort_order: 'desc' }));
+      //       dispatch(getAllTeamMember({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
       //     }
       //   }
       // });
