@@ -38,7 +38,7 @@ export const GetColumns = ({
     const dispatch = useDispatch();
     const handleSwitchChange = async (id: string, event: React.ChangeEvent<HTMLInputElement>) => {
         try {
-            const res = await dispatch(deleteAgency({ agencies: id, status: event?.target?.checked }));
+            const res = await dispatch(deleteAgency({ agencies: id, status: event?.target?.checked ? "active" : "inactive" }));
             if (res.payload.success === true) {
                 const reponse = await dispatch(getAllAgency({ page: currentPage, items_per_page: pageSize, sort_field: sortConfig?.key, sort_order: sortConfig?.direction }));
             }
