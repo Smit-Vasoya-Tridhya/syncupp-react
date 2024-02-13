@@ -252,7 +252,7 @@ export const GetColumns = ({
                 <>
                     <div className='flex '>
                         {/* <Text className="font-medium text-gray-700">{value}</Text> */}
-                        <Switch className="[&>label>span.transition]:shrink-0 [&>label>span]:font-medium" variant='active' onChange={(event) => handleSwitchChange(row._id, event)} disabled={value == "payment_pending"} defaultChecked={value == "payment_pending" ? false : true} />
+                        <Switch className="[&>label>span.transition]:shrink-0 [&>label>span]:font-medium" variant='active' onChange={(event) => handleSwitchChange(row._id, event)} disabled={value == "payment_pending"} defaultChecked={value == "confirmed" ? true : false} />
                         {getStatusBadge(value)}
                     </div>
                 </>
