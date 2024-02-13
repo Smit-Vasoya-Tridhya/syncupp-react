@@ -82,7 +82,20 @@ export function useTable<T extends AnyObject>(
     } else {
       setSelectedRowKeys([...selectedKeys, recordKey]);
     }
+
   };
+
+  // const handleSelectAll = (filterflag: any) => {
+
+  //   const selectedKeys = [...selectedRowKeys];
+  //   const filteredData = data.filter(row => row.status === "draft"); // Filter out disabled rows
+  //   if (selectedKeys.length === filteredData.length) {
+  //     setSelectedRowKeys([]);
+  //   } else {
+  //     setSelectedRowKeys(filteredData.map(record => record._id));
+  //   }
+  // };
+
   const handleSelectAll = () => {
     if (selectedRowKeys?.length === data?.length) {
       setSelectedRowKeys([]);
@@ -90,6 +103,18 @@ export function useTable<T extends AnyObject>(
       setSelectedRowKeys(data?.map((record) => record?._id));
     }
   };
+
+  const handlecustomeSelectAll = () => {
+      const selectedKeys = [...selectedRowKeys];
+      const filteredData = data.filter(row => row.status === "draft"); // Filter out disabled rows
+      if (selectedKeys.length === filteredData.length) {
+        setSelectedRowKeys([]);
+      } else {
+        setSelectedRowKeys(filteredData.map(record => record._id));
+      }
+  };
+
+
   /*
    * Handle sorting
    */
@@ -298,6 +323,7 @@ export function useTable<T extends AnyObject>(
     setSelectedRowKeys,
     handleRowSelect,
     handleSelectAll,
+    handlecustomeSelectAll,
     // searching
     searchTerm,
     handleSearch,
@@ -305,5 +331,6 @@ export function useTable<T extends AnyObject>(
     applyFilters,
     handleDelete,
     handleReset,
+
   };
 }

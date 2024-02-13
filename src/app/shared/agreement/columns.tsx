@@ -25,6 +25,7 @@ type Columns = {
     data: any[];
     sortConfig?: any;
     handleSelectAll: any;
+    handlecustomeSelectAll:any;
     checkedItems: string[];
     onDeleteItem: (id: string | string[], currentPage?: any, countPerPage?: number, Islastitem?: boolean, sortConfig?: Record<string, string>, searchTerm?: string) => void;
     onHeaderCellClick: (value: string) => void;
@@ -42,6 +43,7 @@ export const AgreementColumns = ({
     onDeleteItem,
     onHeaderCellClick,
     handleSelectAll,
+    handlecustomeSelectAll,
     onChecked,
     currentPage,
     pageSize,
@@ -82,9 +84,10 @@ export const AgreementColumns = ({
                 <div className="ps-3.5">
                     <Checkbox
                         title={'Select All'}
-                        onChange={handleSelectAll}
+                        onChange={handlecustomeSelectAll}
                         checked={checkedItems.length === data.length}
                         className="cursor-pointer"
+                        
                     />
                 </div>
             ),
