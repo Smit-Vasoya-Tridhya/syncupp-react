@@ -117,7 +117,7 @@ export default function CreateAgreementForm() {
     //Preview mode Handler
     const handlePreview = (watch: any, trigger: any, isDirty: any, isValid: any) => {
 
-        console.log(isDirty, isValid,'120')
+     
 
         if (isValid) {
             // Toggle to preview mode
