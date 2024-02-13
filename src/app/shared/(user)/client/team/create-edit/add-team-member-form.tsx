@@ -39,7 +39,8 @@ export default function AddTeamMemberForm(props: any) {
   const signIn = useSelector((state: any) => state?.root?.signIn)
   const initialValues: TeamMemberSchema = {
     email: '',
-    name: '',
+    first_name: '',
+    last_name: '',
     contact_number: '',
     role: signIn?.role === 'client' || signIn?.role === 'team_client' ? 'Team member' : ''
   };
@@ -52,21 +53,24 @@ export default function AddTeamMemberForm(props: any) {
   let defaultValuess = {};
   if (data) {
     defaultValuess = {
-      name: data?.name,
+      first_name: data?.first_name,
+      last_name: data?.last_name,
       email: data?.email,
       contact_number: data?.contact_number,
       role: data?.member_role?.name === 'team_member' ? 'Team member' : 'Admin'
     };
   } else if (signIn?.role === 'client' || signIn?.role === 'team_client') {
     defaultValuess = {
-      name: '',
+      first_name: '',
+      last_name: '',
       email: '',
       contact_number: '',
       role: 'Team member'
     };
   } else {
     defaultValuess = {
-      name: '',
+      first_name: '',
+      last_name: '',
       email: '',
       contact_number: '',
       role: ''
@@ -77,7 +81,8 @@ export default function AddTeamMemberForm(props: any) {
     let formData = {};
     if (title === 'New Team member') {
       formData = {
-        name: dataa?.name ?? '',
+        first_name: dataa?.first_name ?? '',
+        last_name: dataa?.last_name ?? '',
         email: dataa?.email ?? '',
         contact_number: dataa?.contact_number ?? '',
         role: dataa?.role === 'Team member' ? 'team_member' : 'admin',
@@ -85,7 +90,8 @@ export default function AddTeamMemberForm(props: any) {
       }
     } else {
       formData = {
-        name: dataa?.name ?? '',
+        first_name: dataa?.first_name ?? '',
+        last_name: dataa?.last_name ?? '',
         email: dataa?.email ?? '',
         contact_number: dataa?.contact_number ?? '',
         role: dataa?.role === 'Team member' || dataa?.role === 'team_member' ? 'team_member' : 'admin',
@@ -196,12 +202,22 @@ export default function AddTeamMemberForm(props: any) {
                 <Input
                   type="text"
                   onKeyDown={handleKeyDown}
-                  label="Name *"
+                  label="First name"
                   color="info"
                   placeholder="Enter your name"
                   className="[&>label>span]:font-medium"
-                  {...register('name')}
-                  error={errors.name?.message as string}
+                  {...register('first_name')}
+                  error={errors.first_name?.message as string}
+                />
+                <Input
+                  type="text"
+                  onKeyDown={handleKeyDown}
+                  label="Last name"
+                  color="info"
+                  placeholder="Enter your name"
+                  className="[&>label>span]:font-medium"
+                  {...register('last_name')}
+                  error={errors.last_name?.message as string}
                 />
                 <Input
                   type="email"

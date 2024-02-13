@@ -1,7 +1,8 @@
 import AxiosDefault from "@/services/AxiosDefault";
 
 type PostAddClientApiData = {
-    name: string;
+  first_name: string;
+  last_name: string;
     email: string;
     company_name: string;
     company_website?: string;
@@ -29,7 +30,8 @@ type PostAddClientApiData = {
   
 type PatchEditClientApiData = {
     clientId: string,
-    name: string;
+    first_name: string;
+  last_name: string;
     email: string;
     company_name: string;
     company_website?: string;

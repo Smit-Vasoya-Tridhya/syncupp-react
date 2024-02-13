@@ -144,6 +144,7 @@ export default function UserViewProfileForm(props: any) {
       if (updateUserProfile.fulfilled.match(result)) {
         if (result && result.payload.success === true) {
           setIsOpenEditMode(false)
+          dispatch(getUserProfile())
         }
       }
     })

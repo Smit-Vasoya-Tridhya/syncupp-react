@@ -5,7 +5,8 @@ import { DeleteTeamMemberApi, GetAllTeamMemberApi, GetTeamMemberProfileApi, Memb
 type TeamData = {
   _id: string;
   email: string;
-  name: string;
+  first_name: string;
+  last_name: string;
   contact_number?: string;
   role?: string;
   sort_field?: string;
@@ -80,7 +81,8 @@ export const addTeamMember: any = createAsyncThunk(
     const apiData = {
       id: data._id,
       email: data.email,
-      name: data.name,
+      first_name: data.first_name,
+      last_name: data.last_name,
       contact_number: data.contact_number,
       role: data.role,
       agency_id: data?.agency_id
@@ -124,7 +126,8 @@ export const editTeamMember: any = createAsyncThunk(
     const apiData = {
       id: data._id,
       email: data.email,
-      name: data.name,
+      first_name: data.first_name,
+      last_name: data.last_name,
       contact_number: data.contact_number,
       role: data.role,
       agency_id: data?.agency_id

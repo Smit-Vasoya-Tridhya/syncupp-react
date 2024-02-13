@@ -25,8 +25,14 @@ const Select = dynamic(() => import('@/components/ui/select'), {
   loading: () => <SelectLoader />,
 });
 
+// const titleOption = [
+//   { name: 'Mr.', value: 'Mr.' },
+//   { name: 'Mrs.', value: 'Mrs.' },
+//   { name: 'Miss.', value: 'Miss.' },
+// ]
+
 export default function AddClientForm(props: any) {
-  const { title, row } = props;
+  const { title, row ,fdata, setFdata} = props;
   const clientSliceData = useSelector((state: any) => state?.root?.client);
   const dispatch = useDispatch();
   const { closeModal } = useModal();
@@ -34,9 +40,15 @@ export default function AddClientForm(props: any) {
   const [save, setSave] = useState(false)
   const [loader, setLoader] = useState(false);
   const [reset, setReset] = useState({})
+  // const {  } = props;
 
+  // const peopleCountChange = (titleOption: string) => {
+  //     peopleCount: titleOption
+  // };
   let initialValues: ClientSchema = {
-    name: "",
+    // name: "",
+    first_name: "",
+    last_name: "",
     email: "",
     company_name: "",
     company_website: "",
@@ -46,7 +58,8 @@ export default function AddClientForm(props: any) {
     country: undefined,
     pincode: "",
     title: "",
-    contact_number: ""
+    contact_number: "",
+    // titleOption: ""
   };  
 
   useEffect(() => {
@@ -83,8 +96,8 @@ export default function AddClientForm(props: any) {
   clientSliceData?.countries !== '' && clientSliceData?.countries?.map((country: Record<string, string>) => {
     countryOptions.push({ name: country?.name, value: country?.name }) 
   })
-  const countryHandleChange = (selectedOption: string) => {
-    const [ countryObj ] = clientSliceData?.countries?.filter((country: Record<string, string>) => country?.name === selectedOption )
+  const countryHandleChange = (titleOption: string) => {
+    const [ countryObj ] = clientSliceData?.countries?.filter((country: Record<string, string>) => country?.name === titleOption )
     dispatch(getState({ countryId: countryObj._id }))
     setRegionalData({...regionalData, country: countryObj._id})
   };
@@ -94,8 +107,8 @@ export default function AddClientForm(props: any) {
     stateOptions.push({ name: state?.name, value: state?.name }) 
   })
 
-  const stateHandleChange = (selectedOption: string) => {
-    const [ stateObj ] = clientSliceData?.states?.filter((state: Record<string, string>) => state?.name === selectedOption )
+  const stateHandleChange = (titleOption: string) => {
+    const [ stateObj ] = clientSliceData?.states?.filter((state: Record<string, string>) => state?.name === titleOption )
     dispatch(getCities({ stateId: stateObj._id }))
     setRegionalData({...regionalData, state: stateObj._id})
   };
@@ -106,14 +119,15 @@ export default function AddClientForm(props: any) {
     cityOptions.push({ name: city?.name, value: city?.name }) 
   })
 
-  const cityHandleChange = (selectedOption: string) => {
-    const [ cityObj ] = clientSliceData?.cities?.filter((city: Record<string, string>) => city?.name === selectedOption )
+  const cityHandleChange = (titleOption: string) => {
+    const [ cityObj ] = clientSliceData?.cities?.filter((city: Record<string, string>) => city?.name === titleOption )
     setRegionalData({...regionalData, city: cityObj._id})
   };
   
   const onSubmit: SubmitHandler<ClientSchema> = (dataa) => {
     const formData = {
-      name: dataa?.name ?? '',
+      first_name: dataa?.first_name ?? '',
+      last_name: dataa?.last_name ?? '',
       email: dataa?.email ?? '',
       company_name: dataa?.company_name ?? '',
       company_website: dataa?.company_website ?? '',
@@ -184,7 +198,12 @@ export default function AddClientForm(props: any) {
         }}
         className=" p-10 [&_label]:font-medium"
       >
-        {({ register, control, formState: { errors , isSubmitSuccessful }, handleSubmit }) => (
+        {({
+          register,
+          control,
+          formState: { errors, isSubmitSuccessful },
+          handleSubmit,
+        }) => (
           <div className="space-y-5">
             <div className="mb-6 flex items-center justify-between">
               <Title as="h3" className="text-xl xl:text-2xl">
@@ -199,208 +218,273 @@ export default function AddClientForm(props: any) {
                 <PiXBold className="h-[18px] w-[18px]" />
               </ActionIcon>
             </div>
-                <TitleSeparation
-                  className="mb-10 dark:before:bg-gray-200 xl:mb-7 dark:[&>span]:bg-[#191919]"
-                  title='Account Info'
-                />
-            <div className={cn('grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-4')}>
-              <Input
-                  onKeyDown={handleKeyDown}
-                  type="text"
-                  label="Name *"
-                  placeholder="Enter your name"
-                  color="info"
-                  className="[&>label>span]:font-medium"
-                  {...register('name')}
-                  error={errors?.name?.message}
-                />
-                <Input
-                  onKeyDown={handleKeyDown}
-                  type="text"
+            <TitleSeparation
+              className="mb-10 dark:before:bg-gray-200 xl:mb-7 dark:[&>span]:bg-[#191919]"
+              title="Account Info"
+            />
+            {/* <Controller
+              control={control}
+              name="titleOption"
+              render={({ field: { onChange, value } }) => (
+                <Select
+                  options={titleOption}
+                  onChange={(titleOption: string) => {
+                    onChange(titleOption);
+                    peopleCountChange(titleOption);
+                  }}
+                  value={value}
                   label="Title"
-                  placeholder="Enter title"
+                  // rounded="pill"
                   color="info"
-                  className="[&>label>span]:font-medium"
-                  {...register('title')}
-                  error={errors?.title?.message}
+                  // size={isMedium ? 'lg' : 'xl'}
+                  getOptionValue={(option) => option.value}
+                  dropdownClassName="p-1 border w-12 border-gray-100 shadow-lg"
+                  className="w-24"
+                  error={errors?.titleOption?.message as string}
                 />
-                <Input
-                  onKeyDown={handleKeyDown}
-                  type="email"
-                  label="Email ID *"
-                  placeholder="Enter your email"
-                  disabled={title === 'Edit Client'}
-                  color="info"
-                  className="[&>label>span]:font-medium"
-                  {...register('email')}
-                  error={errors?.email?.message}
-                />
-                <Input
-                  onKeyDown={handleKeyContactDown}
-                  type="text"
-                  label="Phone"
-                  placeholder="Enter phone number"
-                  color="info"
-                  className="[&>label>span]:font-medium"
-                  {...register('contact_number')}
-                  error={errors?.contact_number?.message}
-                />
+              )}
+            /> */}
+            <div
+              className={cn(
+                'grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2'
+              )}
+            >
+              <Input
+                onKeyDown={handleKeyDown}
+                type="text"
+                label="First name"
+                placeholder="Enter First name"
+                color="info"
+                className="[&>label>span]:font-medium"
+                {...register('first_name')}
+                error={errors?.first_name?.message}
+              />
+              <Input
+                onKeyDown={handleKeyDown}
+                type="text"
+                label="Last name"
+                placeholder="Enter Last name"
+                color="info"
+                className="[&>label>span]:font-medium"
+                {...register('last_name')}
+                error={errors?.last_name?.message}
+              />
+              <Input
+                onKeyDown={handleKeyDown}
+                type="email"
+                label="Email ID *"
+                placeholder="Enter your email"
+                disabled={title === 'Edit Client'}
+                color="info"
+                className="[&>label>span]:font-medium"
+                {...register('email')}
+                error={errors?.email?.message}
+              />
+              <Input
+                onKeyDown={handleKeyContactDown}
+                type="text"
+                label="Phone"
+                placeholder="Enter phone number"
+                color="info"
+                className="[&>label>span]:font-medium"
+                {...register('contact_number')}
+                error={errors?.contact_number?.message}
+              />
             </div>
-              <TitleSeparation
-                  className="mb-10 dark:before:bg-gray-200 xl:mb-7 dark:[&>span]:bg-[#191919]"
-                  title='Company Info'
-                />
-            <div className={cn('grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-4')}>
-                <Input
-                  onKeyDown={handleKeyDown}
-                  type="text"
-                  label="Company Name *"
-                  placeholder="Enter company name"
-                  color="info"
-                  className="[&>label>span]:font-medium"
-                  {...register('company_name')}
-                  error={errors?.company_name?.message as string}
-                />
-                <Input
-                  onKeyDown={handleKeyDown}
-                  type="text"
-                  label="Company Website"
-                  placeholder="Enter website url"
-                  color="info"
-                  className="[&>label>span]:font-medium"
-                  {...register('company_website')}
-                  error={errors?.company_website?.message as string}
-                />
+            <TitleSeparation
+              className="mb-10 dark:before:bg-gray-200 xl:mb-7 dark:[&>span]:bg-[#191919]"
+              title="Company Info"
+            />
+            <div
+              className={cn(
+                'grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2'
+              )}
+            >
+              <Input
+                onKeyDown={handleKeyDown}
+                type="text"
+                label="Company Name *"
+                placeholder="Enter company name"
+                color="info"
+                className="[&>label>span]:font-medium"
+                {...register('company_name')}
+                error={errors?.company_name?.message as string}
+              />
+              <Input
+                onKeyDown={handleKeyDown}
+                type="text"
+                label="Company Website"
+                placeholder="Enter website url"
+                color="info"
+                className="[&>label>span]:font-medium"
+                {...register('company_website')}
+                error={errors?.company_website?.message as string}
+              />
             </div>
-                <TitleSeparation
-                  className="mb-10 dark:before:bg-gray-200 xl:mb-7 dark:[&>span]:bg-[#191919]"
-                  title='Address'
-                />
-            <div className={cn('grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-4')}>
-                <Input
-                  onKeyDown={handleKeyDown}
-                  type="text"
-                  label="Address"
-                  placeholder="Enter your address"
-                  color="info"
-                  className="[&>label>span]:font-medium"
-                  {...register('address')}
-                  error={errors?.address?.message as string}
-                />
-                <Controller
-                  name="country"
-                  control={control}
-                  render={({ field: { onChange, value } }) => (
-                    <Select
-                      options={countryOptions}
-                      value={value}
-                      onChange={(selectedOption: string) => {
-                        onChange(selectedOption);
-                        countryHandleChange(selectedOption);
-                      }}
-                      label="Country"
-                      color="info"
-                      error={errors?.country?.message as string}
-                      getOptionValue={(option) => option.name}
-                      dropdownClassName="p-1 border w-12 border-gray-100 shadow-lg"
-                      className="font-medium"
-                    />
-                  )}
-                />
+            <TitleSeparation
+              className="mb-10 dark:before:bg-gray-200 xl:mb-7 dark:[&>span]:bg-[#191919]"
+              title="Address"
+            />
+            <div
+              className={cn(
+                'grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2'
+              )}
+            >
+              <Input
+                onKeyDown={handleKeyDown}
+                type="text"
+                label="Address"
+                placeholder="Enter your address"
+                color="info"
+                className="[&>label>span]:font-medium"
+                {...register('address')}
+                error={errors?.address?.message as string}
+              />
+              <Controller
+                name="country"
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <Select
+                    options={countryOptions}
+                    value={value}
+                    onChange={(titleOption: string) => {
+                      onChange(titleOption);
+                      countryHandleChange(titleOption);
+                    }}
+                    label="Country"
+                    color="info"
+                    error={errors?.country?.message as string}
+                    getOptionValue={(option) => option.name}
+                    dropdownClassName="p-1 border w-12 border-gray-100 shadow-lg"
+                    className="font-medium"
+                  />
+                )}
+              />
             </div>
-            <div className={cn('grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 pb-5')}>
-                <Controller
-                  name="state"
-                  control={control}
-                  render={({ field: { onChange, value } }) => (
-                    <Select
-                      options={stateOptions}
-                      value={value}
-                      onChange={(selectedOption: string) => {
-                        onChange(selectedOption);
-                        stateHandleChange(selectedOption);
-                      }}
-                      label="State"
-                      color="info"
-                      disabled={stateOptions.length === 0}
-                      error={errors?.state?.message as string}
-                      getOptionValue={(option) => option.name}
-                      dropdownClassName="p-1 border w-12 border-gray-100 shadow-lg"
-                      className="font-medium"
-                    />
-                  )}
-                />
-                <Controller
-                  name="city"
-                  control={control}
-                  render={({ field: { onChange, value } }) => (
-                    <Select
-                      options={cityOptions}
-                      value={value}
-                      onChange={(selectedOption: string) => {
-                        onChange(selectedOption);
-                        cityHandleChange(selectedOption);
-                      }}
-                      disabled={cityOptions.length === 0}
-                      label="City"
-                      color="info"
-                      error={errors?.city?.message as string}
-                      getOptionValue={(option) => option.name}
-                      dropdownClassName="p-1 border w-12 border-gray-100 shadow-lg"
-                      className="font-medium"
-                    />
-                  )}
-                />
-                <Input
-                  onKeyDown={handleKeyContactDown}
-                  type="text"
-                  label="Pin code"
-                  placeholder="Enter pincode number"
-                  color="info"
-                  className="[&>label>span]:font-medium"
-                  {...register('pincode')}
-                  error={errors.pincode?.message}
-                />
+            <div
+              className={cn(
+                'grid grid-cols-1 gap-4 pb-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3'
+              )}
+            >
+              <Controller
+                name="state"
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <Select
+                    options={stateOptions}
+                    value={value}
+                    onChange={(titleOption: string) => {
+                      onChange(titleOption);
+                      stateHandleChange(titleOption);
+                    }}
+                    label="State"
+                    color="info"
+                    disabled={stateOptions.length === 0}
+                    error={errors?.state?.message as string}
+                    getOptionValue={(option) => option.name}
+                    dropdownClassName="p-1 border w-12 border-gray-100 shadow-lg"
+                    className="font-medium"
+                  />
+                )}
+              />
+              <Controller
+                name="city"
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <Select
+                    options={cityOptions}
+                    value={value}
+                    onChange={(titleOption: string) => {
+                      onChange(titleOption);
+                      cityHandleChange(titleOption);
+                    }}
+                    disabled={cityOptions.length === 0}
+                    label="City"
+                    color="info"
+                    error={errors?.city?.message as string}
+                    getOptionValue={(option) => option.name}
+                    dropdownClassName="p-1 border w-12 border-gray-100 shadow-lg"
+                    className="font-medium"
+                  />
+                )}
+              />
+              <Input
+                onKeyDown={handleKeyContactDown}
+                type="text"
+                label="Pin code"
+                placeholder="Enter pincode number"
+                color="info"
+                className="[&>label>span]:font-medium"
+                {...register('pincode')}
+                error={errors.pincode?.message}
+              />
             </div>
             <div>
-            <div className={cn('grid grid-cols-2 gap-5 pt-5')}>
-              <div>
-                <Button
-                  variant="outline"
-                  className="@xl:w-auto dark:hover:border-gray-400"
-                  onClick={() => closeModal()}
-                >
-                  Cancel
-                </Button>
-              </div>
-              <div className='float-right text-right'>
-                { title === 'New Client' &&
+              <div className={cn('grid grid-cols-2 gap-5 pt-5')}>
+                <div>
                   <Button
-                    // type='submit'
-                    className="hover:gray-700 @xl:w-auto dark:bg-gray-200 dark:text-white"
-                    disabled={Object.keys(errors).length === 0 && loader && isSubmitSuccessful && !save}
-                    onClick={() => {
-                      handleSubmit(onSubmit)();
-                      setLoader(true)
-                    }}
+                    variant="outline"
+                    className="@xl:w-auto dark:hover:border-gray-400"
+                    onClick={() => closeModal()}
                   >
-                    Save & New
-                    {Object.keys(errors).length === 0 && loader && isSubmitSuccessful && !save && <Spinner size="sm" tag='div' className='ms-3' color='white' />}
+                    Cancel
                   </Button>
-                }
-                <Button
-                  type="submit"
-                  className="hover:gray-700 ms-3 @xl:w-auto dark:bg-gray-200 dark:text-white"
-                  disabled={(clientSliceData?.addClientStatus === 'pending' || clientSliceData?.editClientStatus === 'pending') && save}
-                  onClick={handleSaveClick}
-
-                >
-                  Save
-                  { (clientSliceData?.addClientStatus === 'pending' || clientSliceData?.editClientStatus === 'pending') && save && (<Spinner size="sm" tag='div' className='ms-3' color='white' />)  }
-                </Button>
+                </div>
+                <div className="float-right text-right">
+                  {title === 'New Client' && (
+                    <Button
+                      // type='submit'
+                      className="hover:gray-700 @xl:w-auto dark:bg-gray-200 dark:text-white"
+                      disabled={
+                        Object.keys(errors).length === 0 &&
+                        loader &&
+                        isSubmitSuccessful &&
+                        !save
+                      }
+                      onClick={() => {
+                        handleSubmit(onSubmit)();
+                        setLoader(true);
+                      }}
+                    >
+                      Save & New
+                      {Object.keys(errors).length === 0 &&
+                        loader &&
+                        isSubmitSuccessful &&
+                        !save && (
+                          <Spinner
+                            size="sm"
+                            tag="div"
+                            className="ms-3"
+                            color="white"
+                          />
+                        )}
+                    </Button>
+                  )}
+                  <Button
+                    type="submit"
+                    className="hover:gray-700 ms-3 @xl:w-auto dark:bg-gray-200 dark:text-white"
+                    disabled={
+                      (clientSliceData?.addClientStatus === 'pending' ||
+                        clientSliceData?.editClientStatus === 'pending') &&
+                      save
+                    }
+                    onClick={handleSaveClick}
+                  >
+                    Save
+                    {(clientSliceData?.addClientStatus === 'pending' ||
+                      clientSliceData?.editClientStatus === 'pending') &&
+                      save && (
+                        <Spinner
+                          size="sm"
+                          tag="div"
+                          className="ms-3"
+                          color="white"
+                        />
+                      )}
+                  </Button>
+                </div>
               </div>
             </div>
-          </div>
           </div>
         )}
       </Form>
