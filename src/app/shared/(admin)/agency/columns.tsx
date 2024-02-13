@@ -252,7 +252,7 @@ export const GetColumns = ({
                 <>
                     <div className='flex '>
                         {/* <Text className="font-medium text-gray-700">{value}</Text> */}
-                        <Switch className="[&>label>span.transition]:shrink-0 [&>label>span]:font-medium" variant='active' onChange={(event) => handleSwitchChange(row._id, event)} disabled={value == "payment_pending"} defaultChecked={value == "payment_pending" ? false : true} />
+                        <Switch className="[&>label>span.transition]:shrink-0 [&>label>span]:font-medium" variant='active' onChange={(event) => handleSwitchChange(row._id, event)} disabled={value == "payment_pending"} defaultChecked={value == "confirmed" ? true : false} />
                         {getStatusBadge(value)}
                     </div>
                 </>
@@ -285,7 +285,7 @@ export const GetColumns = ({
             render: (_: string, row: Record<string, string>) => (
                 <div className="flex items-center justify-end gap-3 pe-4">
                     <DeletePopover
-                        title={`Delete the client`}
+                        title={`Delete the agency`}
                         description={`Are you sure you want to delete?`}
                         onDelete={() => onDeleteItem(row._id, currentPage, pageSize, data?.length <= 1 ? true : false, sortConfig, searchTerm)}
                     />
