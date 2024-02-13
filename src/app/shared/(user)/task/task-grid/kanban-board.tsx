@@ -94,7 +94,7 @@ function KanbanBoard() {
       // setTasks(xyz)
 
       // dispatch(setStatusUpdatedData({ _id: active?.data?.current?.task?._id, status: active?.data?.current?.task?.status }))
-      dispatch(putTaskStatusChange({ _id: active?.data?.current?.task?._id, status: active?.data?.current?.task?.status }))
+      // dispatch(putTaskStatusChange({ _id: active?.data?.current?.task?._id, status: active?.data?.current?.task?.status }))
     }
 
 

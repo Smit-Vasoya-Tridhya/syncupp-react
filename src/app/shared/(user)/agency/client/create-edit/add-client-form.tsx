@@ -431,7 +431,7 @@ export default function AddClientForm(props: any) {
                   </Button>
                 </div>
                 <div className="float-right text-right">
-                  {title === 'New Client' && (
+                  {/* {title === 'New Client' && (
                     <Button
                       // type='submit'
                       className="hover:gray-700 @xl:w-auto dark:bg-gray-200 dark:text-white"
@@ -459,7 +459,7 @@ export default function AddClientForm(props: any) {
                           />
                         )}
                     </Button>
-                  )}
+                  )} */}
                   <Button
                     type="submit"
                     className="hover:gray-700 ms-3 @xl:w-auto dark:bg-gray-200 dark:text-white"

@@ -6,7 +6,7 @@ import AddTeamMemberForm from '@/app/shared/(user)/client/team/create-edit/add-t
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import CustomTable from '@/components/common-tables/table';
-import { getColumns } from '@/app/shared/(user)/client/team/team-list/columns';
+import { GetColumns } from '@/app/shared/(user)/client/team/team-list/columns';
 import { deleteTeamMember, getAllTeamMember } from '@/redux/slices/user/team-member/teamSlice';
 import { PiPlusBold } from 'react-icons/pi';
 
@@ -68,7 +68,7 @@ export default function TeamDataTablePage() {
         setPageSize={setPageSize}
         handleDeleteById={handleDeleteById}
         handleChangePage={handleChangePage}
-        getColumns={getColumns}
+        getColumns={GetColumns}
       />
     </>
   );
