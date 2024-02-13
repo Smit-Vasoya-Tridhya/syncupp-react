@@ -141,7 +141,7 @@ export default function CalenderOtherFrom(props: any) {
                 <Input
                   type="text"
                   onKeyDown={handleKeyDown}
-                  label="Title"
+                  label="Title *"
                   placeholder="Enter title"
                   color="info"
                   className="[&>label>span]:font-medium"
