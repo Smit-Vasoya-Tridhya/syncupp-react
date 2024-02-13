@@ -110,82 +110,119 @@ export const authSlice = createSlice({
         // login
         builder
             .addCase(login.pending, (state) => {
-                state.loading = true;
+                return {
+                    ...state,
+                    loading: true,
+                }
             })
             .addCase(login.fulfilled, (state, action) => {
-
-                if (action.payload.status == true) {
+                console.log(action,'action')
+                if (action.payload.success == true) {
                     toast.success(action.payload.message);
                     localStorage.setItem('token', action.payload.data.token);
                 } else {
                     toast.error(action.payload.message);
                 }
-
-                state.loading = false;
-                state.userData = action.payload;
+                return {
+                    ...state,
+                    loading: false,
+                }
             })
             .addCase(login.rejected, (state) => {
-                state.loading = false;
+                return {
+                    ...state,
+                    loading: false,
+                }
             });
 
+       
         // signup
+
         builder
             .addCase(signup.pending, (state) => {
-                state.loading = true;
+                return {
+                    ...state,
+                    loading: true,
+                }
             })
             .addCase(signup.fulfilled, (state, action) => {
-
-                if (action.payload.status == true) {
+                console.log(action, 'action')
+                if (action.payload.success == true) {
                     toast.success(action.payload.message);
                     // localStorage.setItem('token', action.payload.data.token);
                 } else {
                     toast.error(action.payload.message);
                 }
-
-                state.loading = false;
+                return {
+                    ...state,
+                    loading: false,
+                }
             })
             .addCase(signup.rejected, (state) => {
-                state.loading = false;
+                return {
+                    ...state,
+                    loading: false,
+                }
             });
+
+    
 
         // forgotPassword
         builder
             .addCase(forgotPassword.pending, (state) => {
-                state.loading = true;
+                return {
+                    ...state,
+                    loading: true,
+                }
             })
             .addCase(forgotPassword.fulfilled, (state, action) => {
 
-                if (action.payload.status == true) {
+                console.log(action, 'action')
+                if (action.payload.success == true) {
                     toast.success(action.payload.message);
                     // localStorage.setItem('token', action.payload.data.token);
                 } else {
                     toast.error(action.payload.message);
                 }
-
-                state.loading = false;
+                return {
+                    ...state,
+                    loading: false,
+                }
             })
             .addCase(forgotPassword.rejected, (state) => {
-                state.loading = false;
+                return {
+                    ...state,
+                    loading: false,
+                }
             });
 
         // resetPassword
         builder
             .addCase(resetPassword.pending, (state) => {
-                state.loading = true;
+                return {
+                    ...state,
+                    loading: true,
+                }
             })
             .addCase(resetPassword.fulfilled, (state, action) => {
 
-                if (action.payload.status == true) {
+                console.log(action, 'action')
+                if (action.payload.success == true) {
                     toast.success(action.payload.message);
                     // localStorage.setItem('token', action.payload.data.token);
                 } else {
                     toast.error(action.payload.message);
                 }
-
-                state.loading = false;
+                return {
+                    ...state,
+                    loading: false,
+                }
             })
             .addCase(resetPassword.rejected, (state) => {
-                state.loading = false;
+                return {
+                    ...state,
+                    loading: false,
+                }
             });
     },
 });

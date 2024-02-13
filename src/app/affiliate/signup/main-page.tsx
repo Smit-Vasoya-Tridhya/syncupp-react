@@ -17,6 +17,7 @@ import { useRouter } from 'next/navigation';
 import Spinner from '@/components/ui/spinner';
 import useMedia from 'react-use/lib/useMedia';
 import { SignUpSchema, signUpSchema } from '@/utils/validators/affiliate/signup.schema';
+import { signup } from '@/redux/slices/affiliate/authSlice';
 
 const initialValues: SignUpSchema = {
     name: "",
@@ -32,23 +33,18 @@ export default function RegisterPage() {
     const isMedium = useMedia('(max-width: 1200px)', false);
     const dispatch = useDispatch();
     const router = useRouter();
-    const signIn = useSelector((state: any) => state?.root?.signIn)
+    const { loading } = useSelector((state: any) => state?.root?.auth)
 
     const onSubmit: SubmitHandler<SignUpSchema> = (data) => {
         console.log(data, 'data')
-        // dispatch(signInUser(data)).then((result: any) => {
-        //     if (signInUser.fulfilled.match(result)) {
-        //         // console.log(result, 'result', result?.payload?.data?.user?.status, result?.payload?.data?.user?.role?.name)
-        //         if (result && result.payload.success === true) {
-        //             // router.replace(routes.dashboard);
-        //             if (result?.payload?.data?.user?.status === "payment_pending" && result?.payload?.data?.user?.role?.name === "agency") {
-        //                 initiateRazorpay(router, routes.dashboard, result?.payload?.data?.token, dispatch)
-        //             } else {
-        //                 router.replace(routes.dashboard);
-        //             }
-        //         }
-        //     }
-        // })
+        dispatch(signup(data)).then((result: any) => {
+            if (signup.fulfilled.match(result)) {
+                // console.log(result, 'result', result?.payload?.data?.user?.status, result?.payload?.data?.user?.role?.name)
+                if (result && result.payload.success === true) {
+                    router.replace(routes.affiliate.signin);
+                }
+            }
+        })
         // setReset({ ...initialValues, rememberMe: false });
     };
 
@@ -65,7 +61,7 @@ export default function RegisterPage() {
             >
                 {({ register, formState: { errors } }) => (
 
-                    console.log(errors, 'errors'),
+                    // console.log(errors, 'errors'),
 
                     <div className="space-y-5">
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:gap-5 xl:pb-2">
@@ -162,14 +158,14 @@ export default function RegisterPage() {
                             color="info"
                             size={isMedium ? 'lg' : 'xl'}
                             rounded="pill"
-                            disabled={signIn?.loading}
+                            disabled={loading}
                         >
                             Sign up
-                            {signIn && signIn?.loading && <Spinner size="sm" tag='div' className='ms-3' color='white' />}
+                            {loading && <Spinner size="sm" tag='div' className='ms-3' color='white' />}
                         </Button>
 
                         <div>
-                                Already a member ? <Link className="font-semibold text-gray-700 transition-colors hover:text-blue" href={routes.affiliate.signin}>Sign in</Link> 
+                            Already a member ? <Link className="font-semibold text-gray-700 transition-colors hover:text-blue" href={routes.affiliate.signin}>Sign in</Link>
                         </div>
                     </div>
 

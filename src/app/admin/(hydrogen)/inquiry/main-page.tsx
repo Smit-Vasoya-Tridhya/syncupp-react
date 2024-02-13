@@ -30,7 +30,7 @@ export default function AdmininquirylistPage() {
     const router = useRouter();
 
     const { inquirylistDetails, loading } = useSelector((state: any) => state?.root?.inquiry);
-    console.log(inquirylistDetails, 'inquirylistDetails')
+    // console.log(inquirylistDetails, 'inquirylistDetails')
 
 
     const [pageSize, setPageSize] = useState(5)

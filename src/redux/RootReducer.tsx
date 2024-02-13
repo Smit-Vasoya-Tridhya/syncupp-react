@@ -25,6 +25,7 @@ import couponManagementSlice from './slices/admin/coupon-managemnt/couponManagem
 import paymentSlice from './slices/payment/paymentSlice';
 import inquirySlice from './slices/admin/inquiry/inquirySlice';
 import SubscriptionSlice from './slices/user/manage-subscription.tsx/SubscriptionSlice';
+import authSlice from './slices/affiliate/authSlice';
 
 const combinedReducer = combineReducers({
   signIn: signinSlice,
@@ -53,6 +54,7 @@ const combinedReducer = combineReducers({
   task: taskSlice,
   payment: paymentSlice,
   inquiry: inquirySlice,
+  auth: authSlice
 });
 
 const rootReducer = (state: any, action: any) => {
