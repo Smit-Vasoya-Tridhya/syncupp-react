@@ -175,7 +175,7 @@ export default function CreateAgreementForm() {
                                                 onKeyDown={handleKeyDown}
                                                 type="text"
                                                 // size={isMedium ? 'lg' : 'xl'}
-                                                label="Enter Title"
+                                                label="Title *"
                                                 placeholder="Website Agreement"
                                                 // rounded="pill"
                                                 color="info"
@@ -231,7 +231,7 @@ export default function CreateAgreementForm() {
                                                     htmlFor="due_date"
                                                     className="mb-1.5 font-medium text-gray-700 dark:text-gray-600"
                                                 >
-                                                    Due Date
+                                                    Due Date *
                                                 </label>
                                                 <Controller
                                                     name="due_date"
@@ -263,7 +263,7 @@ export default function CreateAgreementForm() {
                                                     <QuillEditor
                                                         value={value}
                                                         onChange={onChange}
-                                                        label="Description"
+                                                        label="Description *"
                                                         className="col-span-full [&_.ql-editor]:min-h-[100px]"
                                                         labelClassName="font-medium text-gray-700 dark:text-gray-600 mb-1.5"
                                                     />

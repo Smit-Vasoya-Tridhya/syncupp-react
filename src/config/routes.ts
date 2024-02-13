@@ -18,7 +18,7 @@ export const routes = {
   invoiceEdit: '/invoice/edit',
   invoiceView: '/invoice/view-invoice',
   viewTeam: '/team/view-team',
-  task: '/task',
+  task: '/tasks',
   manageSubcription: '/manage-subscripation',
   userCalendar: '/calendar',
   userCalendarForm: '/calendar/calendar-form',

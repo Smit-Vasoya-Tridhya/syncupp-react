@@ -187,8 +187,8 @@ export default function CreateInvoice({
                   className="pt-7 @2xl:pt-9 @3xl:pt-11"
                 >
                   <Input
-                    label="Name"
-                    placeholder="Enter your name"
+                    label="Name *"
+                    placeholder="Enter Your Name"
                     {...register('fromName')}
                     error={errors.fromName?.message}
                     disabled={true}
@@ -272,7 +272,7 @@ export default function CreateInvoice({
                   <div className="col-span-2 grid grid-cols-1 items-baseline gap-5 @lg:grid-cols-2 @5xl:grid-cols-3">
                     <Input
                       type="text"
-                      label="Invoice Number"
+                      label="Invoice Number *"
                       placeholder="Enter invoice number"
                       {...register('invoice_number')}
                       error={errors.invoice_number?.message}

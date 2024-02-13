@@ -12,20 +12,23 @@ import {
 
 // form zod validation schema
 export const clientSchema = z.object({
-    name: z.string().min(1, { message: messages.nameRequired }).max(20, { message: messages.nameLength }),
+    first_name: z.string().min(1, { message: messages.firstNameRequired }).max(15, { message: messages.firstNameLength }),
+    last_name: z.string().min(1, { message: messages.lastNameRequired }).max(15, { message: messages.lastNameLength }),
+    // name: z.string().min(1, { message: messages.nameRequired }).max(20, { message: messages.nameLength }),
     email: validateEmail,
     contact_number: z.string().trim().nullable().refine(value => {
         return !value || /^[0-9+-]{10,13}$/.test(value);
     }, {
         message: messages.contactLengthMin,
     }),
+    // titleOption: z.string().min(1, { message: messages.companyNameRequired }),
     company_name: z.string().min(1, { message: messages.companyNameRequired }).max(30, { message: messages.companyNameMaxLength }),
     company_website: z.string().trim().nullable().refine(value => {
         return !value || /^(https?:\/\/)([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d{1,5})?(\/[^\s]*)?$/.test(value);
     }, {
         message: messages.companyUrlInvalid,
     }),
-    address: z.string().optional(),
+    address: z.string().min(5, { message: messages.AddressRequired }),
     city: z.string().optional(),
     state: z.string().optional(),
     country: z.string().optional(),

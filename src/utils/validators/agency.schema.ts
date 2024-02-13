@@ -23,7 +23,7 @@ company_website: z.string().trim().nullable().refine(value => {
 }, {
     message: messages.companyUrlInvalid,
 }),
-address: z.string().optional(),
+address: z.string().min(5, { message: messages.AddressRequired }),
 city: z.string().optional(),
 country: z.string().optional(),
 state: z.string().optional(),

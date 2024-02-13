@@ -3,7 +3,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { toast } from 'react-hot-toast';
 
 type AddClientData = {
-  name: string;
+  first_name: string;
+  last_name: string;
   email: string;
   company_name: string;
   company_website?: string;
@@ -18,7 +19,8 @@ type AddClientData = {
 
 type EditClientData = {
   clientId: string,
-  name: string;
+  first_name: string;
+  last_name: string;
   email: string;
   company_name: string;
   company_website?: string;
