@@ -252,8 +252,8 @@ export default function AddClientForm(props: any) {
               <Input
                 onKeyDown={handleKeyDown}
                 type="text"
-                label="First name"
-                placeholder="Enter First name"
+                label="First Name *"
+                placeholder="Enter First Name"
                 color="info"
                 className="[&>label>span]:font-medium"
                 {...register('first_name')}
@@ -262,8 +262,8 @@ export default function AddClientForm(props: any) {
               <Input
                 onKeyDown={handleKeyDown}
                 type="text"
-                label="Last name"
-                placeholder="Enter Last name"
+                label="Last Name *"
+                placeholder="Enter Last Name"
                 color="info"
                 className="[&>label>span]:font-medium"
                 {...register('last_name')}
@@ -284,7 +284,7 @@ export default function AddClientForm(props: any) {
                 onKeyDown={handleKeyContactDown}
                 type="text"
                 label="Phone"
-                placeholder="Enter phone number"
+                placeholder="Enter Phone Number"
                 color="info"
                 className="[&>label>span]:font-medium"
                 {...register('contact_number')}
@@ -304,7 +304,7 @@ export default function AddClientForm(props: any) {
                 onKeyDown={handleKeyDown}
                 type="text"
                 label="Company Name *"
-                placeholder="Enter company name"
+                placeholder="Enter Company Name"
                 color="info"
                 className="[&>label>span]:font-medium"
                 {...register('company_name')}
@@ -314,7 +314,7 @@ export default function AddClientForm(props: any) {
                 onKeyDown={handleKeyDown}
                 type="text"
                 label="Company Website"
-                placeholder="Enter website url"
+                placeholder="Enter website URL"
                 color="info"
                 className="[&>label>span]:font-medium"
                 {...register('company_website')}
@@ -333,8 +333,8 @@ export default function AddClientForm(props: any) {
               <Input
                 onKeyDown={handleKeyDown}
                 type="text"
-                label="Address"
-                placeholder="Enter your address"
+                label="Address *"
+                placeholder="Enter Your Address"
                 color="info"
                 className="[&>label>span]:font-medium"
                 {...register('address')}
@@ -411,8 +411,8 @@ export default function AddClientForm(props: any) {
               <Input
                 onKeyDown={handleKeyContactDown}
                 type="text"
-                label="Pin code"
-                placeholder="Enter pincode number"
+                label="Pin Code"
+                placeholder="Enter Pincode Number"
                 color="info"
                 className="[&>label>span]:font-medium"
                 {...register('pincode')}

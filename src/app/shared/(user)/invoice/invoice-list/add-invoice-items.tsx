@@ -129,8 +129,8 @@ export function AddInvoiceItems({ watch, register, control, errors }: any) {
             >
                 <div  className='w-full mb-2'>
                 <Input
-                  label="Item"
-                  placeholder="Enter item name"
+                  label="Item *"
+                  placeholder="Enter Item Name"
                   {...register(`invoice_content.${index}.item`)}
                   defaultValue={field.item}
                   error={errors?.invoice_content?.[index]?.item?.message}
@@ -152,7 +152,7 @@ export function AddInvoiceItems({ watch, register, control, errors }: any) {
                   )}
                 />
                   <Input
-                    label="Rate"
+                    label="Rate *"
                     type="number"
                     prefix={'$'}
                     placeholder="100"
@@ -163,7 +163,7 @@ export function AddInvoiceItems({ watch, register, control, errors }: any) {
                   />
                   <Input
                     type="number"
-                    label="Taxes"
+                    label="Taxes *"
                     suffix={'%'}
                     placeholder="15"
                     {...register(`invoice_content.${index}.tax`)}
@@ -176,8 +176,8 @@ export function AddInvoiceItems({ watch, register, control, errors }: any) {
                     </Text>
                   </div>
                 <Textarea
-                  label="Description"
-                  placeholder="Enter item description"
+                  label="Description *"
+                  placeholder="Enter Item Description"
                   {...register(`invoice_content.${index}.description`)}
                   defaultValue={field.description}
                   error={errors?.invoice_content?.[index]?.description?.message}
