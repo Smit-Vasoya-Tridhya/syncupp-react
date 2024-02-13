@@ -60,28 +60,29 @@ export default function UserViewProfileForm(props: any) {
   const isTeamAgency = userRole === 'team_agency';
   const isTeamClient = userRole === 'team_client';
 
-
+console.log(data?.client?.company_name,'init')
   const initialValues = {
     email: data?.email ?? '',
     first_name: data?.first_name ?? '',
     last_name: data?.last_name ?? '',
     contact_number: data?.contact_number ?? '',
-    address: data?.reference_id?.address ?? '',
-    city: data?.reference_id?.city?.name ?? '',
-    company_name: data?.reference_id?.company_name ?? '',
-    company_website: data?.reference_id?.company_website ?? '',
-    country: data?.reference_id?.country?.name ?? '',
-    industry: data?.reference_id?.industry ?? '',
-    no_of_people: data?.reference_id?.no_of_people ?? '',
-    pincode: data?.reference_id?.pincode ?? '',
-    state: data?.reference_id?.state?.name ?? '',
+    address: isAgency?data?.reference_id?.address :data?.client?.address  ??  '',
+    city: isAgency?data?.reference_id?.city?.name :data?.client?.city?.name ?? '',
+    company_name: isAgency? data?.reference_id?.company_name : data?.client?.company_name ?? '',
+    company_website: isAgency? data?.reference_id?.company_website :  data?.client?.company_website ?? '' ,
+    country: isAgency? data?.reference_id?.country?.name: data?.client?.country?.name ?? '',
+    industry: isAgency? data?.reference_id?.industry : data?.client?.industry ?? '',
+    no_of_people: isAgency? data?.reference_id?.no_of_people: data?.client?.no_of_people ?? '',
+    pincode:isAgency? data?.reference_id?.pincode : data?.client?.pincode ?? '',
+    state: isAgency? data?.reference_id?.state?.name : data?.client?.state?.name ?? '',
     role: data?.role ?? ''
   };
+  // console.log(initialValues,'values')
 
   const [regionalData, setRegionalData] = useState({
-    city: data?.client?.city?.id,
-    state: data?.client?.state?.id,
-    country: data?.client?.country?.id
+    city: data?.client?.city?.id ?? '',
+    state: data?.client?.state?.id ?? '',
+    country: data?.client?.country?.id ?? ''
   });
 
   let countryOptions: Record<string, string>[] = [];
@@ -132,8 +133,9 @@ export default function UserViewProfileForm(props: any) {
       no_of_people: data?.no_of_people ?? '',
       pincode: data?.pincode ?? '',
     };
+    // console.log(formData,'formdata');
     const filteredFormData = Object.fromEntries(
-      Object.entries(formData).filter(([_, value]) => value !== undefined && value !== '')
+      Object.entries(formData).filter(([_, value]) => value !== undefined)
     );
     const filteredRegionalData = Object.fromEntries(
       Object.entries(regionalData).filter(([_, value]) => value !== undefined && value !== '')
@@ -173,7 +175,7 @@ export default function UserViewProfileForm(props: any) {
               <Title>{isOpenEditMode ? 'Edit Profile' : 'View Profile'}</Title>
               <div className="flex items-center justify-between">
                 <div>
-                  <h4>Personal information</h4>
+                  <h4>Personal Information</h4>
                 </div>
                 <div className="mr-8">
                   {!isOpenEditMode && (
@@ -200,7 +202,7 @@ export default function UserViewProfileForm(props: any) {
                 <Input
                   onKeyDown={handleKeyDown}
                   type="text"
-                  label="Email"
+                  label="Email *"
                   placeholder="Enter Email address Here..."
                   color="info"
                   className="[&>label>span]:font-medium"
@@ -211,8 +213,8 @@ export default function UserViewProfileForm(props: any) {
                 <Input
                   onKeyDown={handleKeyDown}
                   type="number"
-                  label="Contact number"
-                  placeholder="Enter Contact number Here..."
+                  label="Contact Number"
+                  placeholder="Enter Contact Number Here..."
                   color="info"
                   className="[&>label>span]:font-medium"
                   {...register('contact_number')}
@@ -222,7 +224,7 @@ export default function UserViewProfileForm(props: any) {
                 <Input
                   onKeyDown={handleKeyDown}
                   type="text"
-                  label="First Name"
+                  label="First Name *"
                   placeholder="Enter First Name"
                   color="info"
                   className="[&>label>span]:font-medium"
@@ -233,7 +235,7 @@ export default function UserViewProfileForm(props: any) {
                 <Input
                   onKeyDown={handleKeyDown}
                   type="text"
-                  label="Last Name"
+                  label="Last Name *"
                   placeholder="Enter Last Name"
                   color="info"
                   className="[&>label>span]:font-medium"
@@ -251,7 +253,7 @@ export default function UserViewProfileForm(props: any) {
                     <Input
                       onKeyDown={handleKeyDown}
                       type="text"
-                      label="Company name"
+                      label="Company Name *"
                       placeholder="Enter Comapny Name Here..."
                       color="info"
                       className="[&>label>span]:font-medium"
@@ -262,8 +264,8 @@ export default function UserViewProfileForm(props: any) {
                     <Input
                       onKeyDown={handleKeyDown}
                       type="text"
-                      label="Company website"
-                      placeholder="Enter Comapny website Here..."
+                      label="Company Website"
+                      placeholder="Enter Comapny Website Here..."
                       color="info"
                       className="[&>label>span]:font-medium"
                       {...register('company_website')}
@@ -280,7 +282,7 @@ export default function UserViewProfileForm(props: any) {
                             onChange(selectedOption);
                           }}
                           value={value}
-                          label="How many people"
+                          label="How many People"
                           color="info"
                           getOptionValue={(option) => option.value}
                           dropdownClassName="p-1 border w-12 border-gray-100 shadow-lg"
@@ -322,7 +324,7 @@ export default function UserViewProfileForm(props: any) {
                     <Input
                       onKeyDown={handleKeyDown}
                       type="text"
-                      label="Address"
+                      label="Address *"
                       placeholder="Enter address Here..."
                       color="info"
                       className="[&>label>span]:font-medium"
@@ -364,7 +366,7 @@ export default function UserViewProfileForm(props: any) {
                             stateHandleChange(selectedOption);
                           }}
                           label="State"
-                          disabled={stateOptions.length === 0}
+                          disabled={stateOptions.length === 0 || !isOpenEditMode }
                           error={errors?.state?.message as string}
                           getOptionValue={(option) => option.name}
                           dropdownClassName="p-1 border w-12 border-gray-100 shadow-lg"
@@ -383,7 +385,7 @@ export default function UserViewProfileForm(props: any) {
                             onChange(selectedOption);
                             cityHandleChange(selectedOption);
                           }}
-                          disabled={cityOptions.length === 0}
+                          disabled={cityOptions.length === 0 || !isOpenEditMode }
                           label="City"
                           error={errors?.city?.message as string}
                           getOptionValue={(option) => option.name}
@@ -395,7 +397,7 @@ export default function UserViewProfileForm(props: any) {
                     <Input
                       onKeyDown={handleKeyDown}
                       type="text"
-                      label="Pin code"
+                      label="Pin Code"
                       placeholder="Enter pincode Here..."
                       color="info"
                       className="[&>label>span]:font-medium"
@@ -413,6 +415,7 @@ export default function UserViewProfileForm(props: any) {
                     className="hover:gray-700 float-end @xl:w-auto dark:bg-gray-200 dark:text-white"
                     onClick={() => {
                       setIsOpenEditMode(false);
+                      setReset(initialValues);
                     }}
                   >
                     Back
