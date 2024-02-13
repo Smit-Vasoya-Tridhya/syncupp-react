@@ -10,6 +10,9 @@ import { initiateRazorpay } from "@/services/clientpaymentService";
 import { routes } from "@/config/routes";
 import { useState } from "react";
 import Spinner from "@/components/ui/spinner";
+import PageHeader from "@/app/shared/page-header";
+import Link from "next/link";
+import { FaArrowLeft } from "react-icons/fa";
 
 
 export default function ClientPaymentPage() {
@@ -41,6 +44,16 @@ export default function ClientPaymentPage() {
 
     return (
         <>
+            <PageHeader title="Payment">
+
+                <Link href={routes.client} className="w-full">
+                    <Button className="float-end mt-5 bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0">
+                        <FaArrowLeft className="me-1.5 h-[17px] w-[17px]" />
+                        Back
+                    </Button>
+                </Link>
+
+            </PageHeader>
             <div
                 className={cn(
                     'isomorphic-form isomorphic-form mx-auto flex w-full max-w-[1536px] flex-grow flex-col @container [&_label.block>span]:font-medium'

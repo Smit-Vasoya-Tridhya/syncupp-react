@@ -9,10 +9,10 @@ export const metadata = {
   ...metaObject('Reset Password'),
 };
 
-export default function ResetPassword() {
+export default function ResetPassword({ params }: { params: { token: string, email: string } }) {
   return (
     <>
-      <ResetPasswordForm />
+      <ResetPasswordForm params={params} />
     </>
   );
 }

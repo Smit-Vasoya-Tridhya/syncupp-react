@@ -11,6 +11,9 @@ import { useState } from "react";
 import { getAllTeamMember } from "@/redux/slices/user/team-member/teamSlice";
 import Spinner from "@/components/ui/spinner";
 import { Button } from "rizzui";
+import PageHeader from "@/app/shared/page-header";
+import { FaArrowLeft } from "react-icons/fa";
+import Link from "next/link";
 
 
 export default function ClientPaymentPage() {
@@ -42,17 +45,29 @@ export default function ClientPaymentPage() {
 
     return (
         <>
+            <PageHeader title="Payment">
+
+                <Link href={routes.agency_team} className="w-full">
+                    <Button className="float-end mt-5 bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0">
+                        <FaArrowLeft className="me-1.5 h-[17px] w-[17px]" />
+                        Back
+                    </Button>
+                </Link>
+
+            </PageHeader>
             <div
                 className={cn(
                     'isomorphic-form isomorphic-form mx-auto flex w-full max-w-[1536px] flex-grow flex-col @container [&_label.block>span]:font-medium'
                 )}
             >
+
                 <div className="items-start @5xl:grid @5xl:grid-cols-12 @5xl:gap-7 @6xl:grid-cols-10 @7xl:gap-10">
                     <div className="gap-4 border-gray-200 @container @5xl:col-span-8 @5xl:border-e @5xl:pb-12 @5xl:pe-7 @6xl:col-span-7 @7xl:pe-12">
                         <div className="flex flex-col gap-4 @xs:gap-7 @5xl:gap-9">
-                            <Title as="h4" className="mb-3.5 font-semibold @2xl:mb-5">
+                            {/* <Title as="h4" className="mb-3.5 font-semibold @2xl:mb-5">
                                 Payment
-                            </Title>
+                            </Title> */}
+
                             <div className="rounded-lg border border-gray-200">
                                 <div className="px-3 py-2">
                                     <input
