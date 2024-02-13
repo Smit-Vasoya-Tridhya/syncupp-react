@@ -5,7 +5,8 @@ import {
   PiUserPlusDuotone,
 } from 'react-icons/pi';
 import { SiPayloadcms } from 'react-icons/si';
-import { FaRegStar, FaTicketAlt } from 'react-icons/fa';
+import { FaFileInvoiceDollar, FaRegStar, FaTicketAlt } from 'react-icons/fa';
+import { FiClipboard } from 'react-icons/fi';
 
 // Note: do not add href in the label object, it is rendering as label
 export const menuItems = [
@@ -27,12 +28,12 @@ export const menuItems = [
   {
     name: 'Inquiry',
     href: routes.admin.inquiry,
-    icon: <PiUserPlusDuotone />,
+    icon: < FiClipboard />,
   },
   {
     name: 'Payment',
     href: routes.admin.payment,
-    icon: <PiUserPlusDuotone />,
+    icon: <FaFileInvoiceDollar />,
   },
   {
     name: 'FAQ',
