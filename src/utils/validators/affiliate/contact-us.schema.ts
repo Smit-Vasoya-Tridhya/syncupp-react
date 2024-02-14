@@ -12,14 +12,10 @@ export const contactusSchema = z.object({
     first_name: z.string().min(1, { message: messages.firstNameRequired }).max(15, { message: messages.firstNameMaxLength }),
     last_name: z.string().min(1, { message: messages.lastNameRequired }).max(15, { message: messages.lastNameLength }),
     email: validateEmail,
-    contact_number: z.string().trim().nullable().refine(value => {
-        return !value || /^[0-9]{10,13}$/.test(value);
-    }, {
-        message: messages.contactLengthMin,
-    }),
+    contact_number: validateContactNumber,
     country: z.string().optional(),
     no_of_people: z.string().optional(),
-    thoughts: z.string().min(1, { message: messages.thoughtsRequired }).max(1000, { message: messages.thoughtsMaxlength }),
+    thoughts: z.string().min(1, { message: messages.thoughtsRequired }).max(400, { message: messages.thoughtsMaxlength }),
     isAgreedtosyncup: z.boolean().refine(value => value === true, {
         message: "This field is required."
     }),
