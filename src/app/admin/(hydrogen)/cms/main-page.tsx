@@ -59,7 +59,9 @@ export default function TermsAndCondition() {
                         <Text> Price </Text>{' '}
                       </div>
                       <div className="flex">
-                        <PiEyeFill className="mr-3 h-[30px] w-[30px] cursor-pointer" />
+                        <Link href={routes.admin.cmsPricingView}>
+                          <PiEyeFill className="mr-3 h-[30px] w-[30px] cursor-pointer" />
+                        </Link>
                         <Link href={routes.admin.cmsPricing}>
                           <PiNotePencilDuotone className="h-[30px] w-[30px] cursor-pointer" />{' '}
                         </Link>
@@ -72,7 +74,9 @@ export default function TermsAndCondition() {
                         <Text> Contact us </Text>{' '}
                       </div>
                       <div className="flex">
-                        <PiEyeFill className="mr-3 h-[30px] w-[30px] cursor-pointer" />
+                        <Link href={routes.admin.cmsContactView}>
+                          <PiEyeFill className="mr-3 h-[30px] w-[30px] cursor-pointer" />
+                        </Link>
                         <Link href={routes.admin.cmsContact}>
                           <PiNotePencilDuotone className="h-[30px] w-[30px] cursor-pointer" />{' '}
                         </Link>
@@ -98,8 +102,25 @@ export default function TermsAndCondition() {
                         <Text> Privacy policy </Text>{' '}
                       </div>
                       <div className="flex">
-                        <PiEyeFill className="mr-3 h-[30px] w-[30px] cursor-pointer" />
+                        <Link href={routes.admin.cmsPrivacyView}>
+                          <PiEyeFill className="mr-3 h-[30px] w-[30px] cursor-pointer" />
+                        </Link>
                         <Link href={routes.admin.cmsPrivacy}>
+                          <PiNotePencilDuotone className="h-[30px] w-[30px] cursor-pointer" />{' '}
+                        </Link>
+                      </div>
+                    </td>
+                  </div>
+                  <div className="w-full border-b-2 py-2">
+                    <td className="flex w-full justify-between px-6 py-4">
+                      <div className="flex">
+                        <Text>Pricing Compare</Text>{' '}
+                      </div>
+                      <div className="flex">
+                        <Link href={routes.admin.cmsPriceCampareView}>
+                          <PiEyeFill className="mr-3 h-[30px] w-[30px] cursor-pointer" />
+                        </Link>
+                        <Link href={routes.admin.cmsPriceCampare}>
                           <PiNotePencilDuotone className="h-[30px] w-[30px] cursor-pointer" />{' '}
                         </Link>
                       </div>
@@ -111,7 +132,9 @@ export default function TermsAndCondition() {
                         <Text>About US</Text>{' '}
                       </div>
                       <div className="flex">
-                        <PiEyeFill className="mr-3 h-[30px] w-[30px] cursor-pointer" />
+                        <Link href={routes.admin.cmsAboutView}>
+                          <PiEyeFill className="mr-3 h-[30px] w-[30px] cursor-pointer" />
+                        </Link>
                         <Link href={routes.admin.cmsAbout}>
                           <PiNotePencilDuotone className="h-[30px] w-[30px] cursor-pointer" />{' '}
                         </Link>
