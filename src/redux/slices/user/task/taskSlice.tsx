@@ -161,6 +161,21 @@ export const putTaskStatusChange: any = createAsyncThunk(
   }
 );
 
+export const putTaskStatusChangeData: any = createAsyncThunk(
+  "task/putTaskStatusChangeData",
+  async (data: any, { dispatch }) => {
+    try {
+
+      const res: any = await dispatch(putTaskStatusChange(data));
+
+      // const response: any = await putTaskStatusChangeApi(data);
+      // return response;
+    } catch (error: any) {
+      return { status: false, message: error.response.data.message } as PostAPIResponse;
+    }
+  }
+);
+
 export const taskSlice: any = createSlice({
   name: "task",
   initialState,

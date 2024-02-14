@@ -26,6 +26,7 @@ import paymentSlice from './slices/payment/paymentSlice';
 import inquirySlice from './slices/admin/inquiry/inquirySlice';
 import SubscriptionSlice from './slices/user/manage-subscription.tsx/SubscriptionSlice';
 import authSlice from './slices/affiliate/authSlice';
+import taskStatusSlice from './slices/user/task/taskStatusSlice';
 
 const combinedReducer = combineReducers({
   signIn: signinSlice,
@@ -52,6 +53,7 @@ const combinedReducer = combineReducers({
   agreement: agreementSlice,
   clienAgreement: clientAgreementSlice,
   task: taskSlice,
+  taskStatus: taskStatusSlice,
   payment: paymentSlice,
   inquiry: inquirySlice,
   auth: authSlice
