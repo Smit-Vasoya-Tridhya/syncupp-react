@@ -1,15 +1,14 @@
-
 import { metaObject } from '@/config/site.config';
-import TaskPage from './main-page';
+import ViewConatcus from './viewConatcus';
 
 export const metadata = {
-  ...metaObject('Tasks'),
+  ...metaObject('conatct us'),
 };
 
 export default function Page() {
   return (
     <>
-       <TaskPage />
+      <ViewConatcus />
     </>
   );
 }

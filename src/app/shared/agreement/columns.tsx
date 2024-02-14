@@ -127,7 +127,7 @@ export const AgreementColumns = ({
         {
             title: (
                 <HeaderCell
-                    title="RECEIVER"
+                    title="Receiver"
                     sortable
                     ascending={
                         sortConfig?.direction === 'asc' && sortConfig?.key === 'receiver'
@@ -145,7 +145,7 @@ export const AgreementColumns = ({
         {
             title: (
                 <HeaderCell
-                    title="DUEDATE"
+                    title="Duedate"
                     sortable
                     ascending={
                         sortConfig?.direction === 'asc' && sortConfig?.key === 'due_date'
@@ -164,7 +164,7 @@ export const AgreementColumns = ({
         {
             // Need to avoid this issue -> <td> elements in a large <table> do not have table headers.
             title: <HeaderCell
-                title="STATUS"
+                title="Status"
                 sortable
                 ascending={
                     sortConfig?.direction === 'asc' && sortConfig?.key === 'status'

@@ -1,15 +1,14 @@
-
 import { metaObject } from '@/config/site.config';
-import TaskPage from './main-page';
+import ViewAboutus from './ViewAboutus';
 
 export const metadata = {
-  ...metaObject('Tasks'),
+  ...metaObject('AboutUs'),
 };
 
 export default function Page() {
   return (
     <>
-       <TaskPage />
+      <ViewAboutus></ViewAboutus>
     </>
   );
 }

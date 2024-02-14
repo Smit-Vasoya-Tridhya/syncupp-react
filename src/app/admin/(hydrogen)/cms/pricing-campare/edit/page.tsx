@@ -1,15 +1,14 @@
-
 import { metaObject } from '@/config/site.config';
-import TaskPage from './main-page';
+import PricaingCampare from './PricaingCampare';
 
 export const metadata = {
-  ...metaObject('Tasks'),
+  ...metaObject('price campare'),
 };
 
 export default function Page() {
   return (
     <>
-       <TaskPage />
+      <PricaingCampare />
     </>
   );
 }

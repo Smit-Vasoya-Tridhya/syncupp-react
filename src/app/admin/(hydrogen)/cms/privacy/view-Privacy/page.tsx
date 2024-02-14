@@ -1,15 +1,14 @@
-
 import { metaObject } from '@/config/site.config';
-import TaskPage from './main-page';
+import ViewPrivacy from './ViewPrivacy';
 
 export const metadata = {
-  ...metaObject('Tasks'),
+  ...metaObject('Privacy'),
 };
 
 export default function Page() {
   return (
     <>
-       <TaskPage />
+      <ViewPrivacy></ViewPrivacy>
     </>
   );
 }

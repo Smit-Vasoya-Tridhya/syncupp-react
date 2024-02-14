@@ -15,9 +15,11 @@ export const messages = {
   confirmPasswordRequired: 'Confirm Password is required',
   confirmNewPasswordRequired: 'Confirm New Password is required',
   passwordsDidNotMatch: "Password & Confirm password didn't match",
+  newPasswordsDidNotMatch: "New Password & Confirm New Password didn't match",
   reviewIsRequired: 'Review is required',
   nameIsRequired: 'Name is required',
   titleIsRequired: 'Title is required',
+  titleMaxlength:'Title must be at most 100 characters long',
   customerNameRequired: 'Customer name is required',
   companynameRequired: 'Company name is required',
   customerNameMaxLength: 'Customer name maximum length is 15',
@@ -125,4 +127,8 @@ export const messages = {
   brandImageRequired: 'Brand Image is required.',
   maxFileSize: 'Maximum file size is 2 MB.',
   acceptedImageFormats: '.jpg, .jpeg, and .png Files are accepted.',
+  thoughtsRequired:'Thoughts is required',
+  thoughtsMaxlength: 'Thoughts maximum length is 400',
+  descriptionRequired:'Description is required',
+  descriptionmaxLength: 'Description must be at most 4000 characters long'
 };

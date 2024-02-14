@@ -31,7 +31,7 @@ export const routes = {
   clients: {
     verify: '/client/verify',
     payment: '/client/payment',
-    agreement: '/client/agreement'
+    agreement: '/client/agreement',
   },
   agreement: '/agreement',
 
@@ -55,19 +55,25 @@ export const routes = {
     cmsAbout: '/admin/cms/about-us/edit',
     cmsPricing: '/admin/cms/pricing/edit',
     cmsPrivacy: '/admin/cms/privacy/edit',
+    cmsPriceCampare: '/admin/cms/pricing-campare/edit',
+
+    cmsAboutView: '/admin/cms/about-us/view-aboutus',
+    cmsContactView: '/admin/cms/contact-us/view-contactus',
+    cmsPricingView: '/admin/cms/pricing/view-pricing',
+    cmsPrivacyView: '/admin/cms/privacy/view-Privacy',
+    cmsPriceCampareView: '/admin/cms/pricing-campare/view-pricaingcampare',
 
     couponManagement: '/admin/coupon-management',
     createCouponManagement: `/admin/coupon-management/create`,
     UpdateCouponManagement: `/admin/coupon-management/update`,
   },
 
-
   // Affiliate routes
 
-  affiliate:{
-    signup:`/affiliate/signup`,
+  affiliate: {
+    signup: `/affiliate/signup`,
     signin: `/affiliate/signin`,
-    forgotPassword:`/affiliate/forgot-password`,
-    resetPassword:`/affiliate/reset-password`
-  }
+    forgotPassword: `/affiliate/forgot-password`,
+    resetPassword: `/affiliate/reset-password`,
+  },
 };

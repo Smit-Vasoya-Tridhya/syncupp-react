@@ -51,7 +51,7 @@ export default function TeamDataTablePage() {
 
   return (
     <>
-      <PageHeader title={pageHeader.title}>
+      <PageHeader title={pageHeader.title} className='z-40'>
         <div className="mt-4 flex items-center gap-3 @lg:mt-0">
           <ClientSelectionForm />
         </div>
