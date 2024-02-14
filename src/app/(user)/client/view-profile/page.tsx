@@ -1,14 +1,12 @@
 import { metaObject } from '@/config/site.config';
-import SignIn from './main-page'
+import ClientViewProfileForm from './client-view-profile-form';
 
 export const metadata = {
-  ...metaObject('Sign In'),
+  ...metaObject('Client'),
 };
 
 export default function Page() {
   return (
-    <SignIn />
+    <ClientViewProfileForm />
   );
 }
-
-

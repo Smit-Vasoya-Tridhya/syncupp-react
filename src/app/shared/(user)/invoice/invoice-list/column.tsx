@@ -11,11 +11,12 @@ import { ActionIcon, Badge, Button, Popover, Tooltip } from 'rizzui';
 import { routes } from '@/config/routes';
 import dynamic from 'next/dynamic';
 import SelectLoader from '@/components/loader/select-loader';
-import { useDispatch , useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import { AiOutlineMail } from "react-icons/ai";
 import { FaRegFilePdf } from "react-icons/fa";
 import { postDownloadInvoice, postSendInvoice, updateInvoiceStatus } from '@/redux/slices/user/invoice/invoiceSlice';
+import { RiDraftLine } from 'react-icons/ri';
 const Select = dynamic(() => import('@/components/ui/select'), {
   ssr: false,
   loading: () => <SelectLoader />,
@@ -41,48 +42,8 @@ type Columns = {
   onHeaderCellClick: (value: string) => void;
   onChecked?: (id: string) => void;
   row: any;
-  setOpen:any;
+  setOpen: any;
 };
-
-function getStatusBadge(status: string) {
-    switch (status.toLowerCase()) {
-      case 'Draft':
-        return (
-          <div className="flex items-center">
-            <Badge renderAsDot />
-            <Text className="ms-2 font-medium text-dark">{status}</Text>
-          </div>
-        );
-      case 'Paid':
-        return (
-          <div className="flex items-center">
-            <Badge color="success" renderAsDot />
-            <Text className="ms-2 font-medium text-green-dark">{status}</Text>
-          </div>
-        );
-      case 'Unpaid':
-        return (
-          <div className="flex items-center">
-            <Badge color="warning" renderAsDot />
-            <Text className="ms-2 font-medium text-yellow-dark">{status}</Text>
-          </div>
-        );
-      case 'Overdue':
-        return (
-          <div className="flex items-center">
-            <Badge color="danger" renderAsDot />
-            <Text className="ms-2 font-medium text-red-dark">{status}</Text>
-          </div>
-        );
-      default:
-        return (
-          <div className="flex items-center">
-            <Badge renderAsDot className="bg-gray-400" />
-            <Text className="ms-2 font-medium text-gray-600">{status}</Text>
-          </div>
-        );
-    }
-  }
 
 export const InvoiceColumns = ({
   data,
@@ -94,18 +55,18 @@ export const InvoiceColumns = ({
   onChecked,
   row,
   setOpen,
-}: Columns) =>{ 
+}: Columns) => {
 
   const dispatch = useDispatch();
   const invoiceSliceData = useSelector((state: any) => state?.root?.invoice);
-  const [selectedStatus, setSelectedStatus] = useState<string>('draft');
+  const [selectedStatus, setSelectedStatus] = useState<{ status: string, id: string }>({ status: '', id: '' });
 
   const EmailSend = (id: string) => {
     dispatch(postSendInvoice({ invoice_id: id })).then(
       (result: any) => {
         if (postSendInvoice.fulfilled.match(result)) {
           // console.log('resultt', result)
-          if (result && result.payload.success === true) {}
+          if (result && result.payload.success === true) { }
         }
       }
     );
@@ -122,21 +83,23 @@ export const InvoiceColumns = ({
   };
 
   const StatusHandler = (status: string, id: string, setOpen: any) => {
-      // setOpen(false)
-      dispatch(updateInvoiceStatus({ data: { status: status }, id: row?._id })).then((result: any) => {
-          if (updateInvoiceStatus.fulfilled.match(result)) {
-              // console.log('resultt', result)
-              if (result && result.payload.success === true) {
-                  // dispatch(getAllAgencyagreement({ page: currentPage, items_per_page: pageSize, sort_field: sortConfig?.key, sort_order: sortConfig?.direction }));
-              }
-          }
-      })
+    // setOpen(false)
+    dispatch(updateInvoiceStatus({ status: status, invoice_id: id })).then((result: any) => {
+      if (updateInvoiceStatus.fulfilled.match(result)) {
+        // console.log('resultt', result)
+        if (result && result.payload.success === true) {
+          // dispatch(getAllAgencyagreement({ page: currentPage, items_per_page: pageSize, sort_field: sortConfig?.key, sort_order: sortConfig?.direction }));
+        }
+      }
+    })
   }
-  const handleStatusChange = (status: string) => {
-    setSelectedStatus(status);
-    StatusHandler(status, row?._id, setOpen);
+  const handleStatusChange = (_funSetOpen: any, status: string, id: string) => {
+    // setSelectedStatus({ status: "", id:"" });
+    _funSetOpen(false)
+    setSelectedStatus({ status, id });
+    StatusHandler(status, id, setOpen);
   };
-console.log(data, row, "finding")
+  // console.log(data, row, "finding")
 
   return [
     {
@@ -295,37 +258,41 @@ console.log(data, row, "finding")
               <div className="text-gray-700">
                 <Button
                   variant="text"
-                  className={`flex w-full items-center justify-start px-4 py-2.5 focus:outline-none ${
-                    selectedStatus === row?.status ? 'font-semibold' : ''
-                  }`}
-                  onClick={() => handleStatusChange(row?.status)}
+                  className="flex w-full items-center justify-start px-4 py-2.5 focus:outline-none"
+                  // className={`flex w-full items-center justify-start px-4 py-2.5 focus:outline-none ${selectedStatus?.status === 'draft' ? 'font-semibold' : ''
+                  //   }`}
+                  onClick={() => handleStatusChange(setOpen,'draft', row?._id)}
+                  disabled={row?.status === "draft"}
                 >
-                  {row?.status}
+                  Draft
                 </Button>
                 <Button
                   variant="text"
-                  className={`flex w-full items-center justify-start px-4 py-2.5 focus:outline-none ${
-                    selectedStatus === 'overdue' ? 'font-semibold' : ''
-                  }`}
-                  onClick={() => handleStatusChange('overdue')}
+                  className="flex w-full items-center justify-start px-4 py-2.5 focus:outline-none"
+                  // className={`flex w-full items-center justify-start px-4 py-2.5 focus:outline-none ${selectedStatus?.status === 'overdue' ? 'font-semibold' : ''
+                  //   }`}
+                  onClick={() => handleStatusChange(setOpen,'overdue', row?._id)}
+                  disabled={row?.status === "overdue"}
                 >
                   Overdue
                 </Button>
                 <Button
                   variant="text"
-                  className={`flex w-full items-center justify-start px-4 py-2.5 focus:outline-none ${
-                    selectedStatus === 'unpaid' ? 'font-semibold' : ''
-                  }`}
-                  onClick={() => handleStatusChange('unpaid')}
+                  className="flex w-full items-center justify-start px-4 py-2.5 focus:outline-none"
+                  // className={`flex w-full items-center justify-start px-4 py-2.5 focus:outline-none ${selectedStatus?.status === 'unpaid' ? 'font-semibold' : ''
+                  //   }`}
+                  onClick={() => handleStatusChange(setOpen,'unpaid', row?._id)}
+                  disabled={row?.status === "unpaid"}
                 >
                   Unpaid
                 </Button>
                 <Button
                   variant="text"
-                  className={`flex w-full items-center justify-start px-4 py-2.5 focus:outline-none ${
-                    selectedStatus === 'paid' ? 'font-semibold' : ''
-                  }`}
-                  onClick={() => handleStatusChange('paid')}
+                  className="flex w-full items-center justify-start px-4 py-2.5 focus:outline-none"
+                  // className={`flex w-full items-center justify-start px-4 py-2.5 focus:outline-none ${selectedStatus?.status === 'paid' ? 'font-semibold' : ''
+                  //   }`}
+                  onClick={() => handleStatusChange(setOpen,'paid', row?._id)}
+                  disabled={row?.status === "paid"}
                 >
                   Paid
                 </Button>
@@ -334,7 +301,7 @@ console.log(data, row, "finding")
           >
             <ActionIcon variant="text" className="">
               <Button type="button" className="capitalize">
-                {row?.status}
+                {selectedStatus?.id === row?._id ? selectedStatus?.status : row?.status}
               </Button>
             </ActionIcon>
           </Popover>
@@ -390,15 +357,15 @@ console.log(data, row, "finding")
             placement="top"
             color="invert"
           >
-              <Button
-                size="sm"
-                variant="outline"
-                className="bg-white text-black"
-                aria-label={'View Member'}
-                onClick={() => DownloadInvoice(row._id)}
-                >
-                <FaRegFilePdf className="h-4 w-4" />
-              </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              className="bg-white text-black"
+              aria-label={'View Member'}
+              onClick={() => DownloadInvoice(row._id)}
+            >
+              <FaRegFilePdf className="h-4 w-4" />
+            </Button>
           </Tooltip>
           <Tooltip
             size="sm"
@@ -406,16 +373,16 @@ console.log(data, row, "finding")
             placement="top"
             color="invert"
           >
-              <Button
-                size="sm"
-                variant="outline"
-                className="bg-white text-black"
-                aria-label={'View Member'}
-                onClick={() => EmailSend(row._id)}
+            <Button
+              size="sm"
+              variant="outline"
+              className="bg-white text-black"
+              aria-label={'View Member'}
+              onClick={() => EmailSend(row._id)}
 
-              >
-                <AiOutlineMail className="h-4 w-4" />
-              </Button>
+            >
+              <AiOutlineMail className="h-4 w-4" />
+            </Button>
           </Tooltip>
           <DeletePopover
             title={`Delete the FAQ`}

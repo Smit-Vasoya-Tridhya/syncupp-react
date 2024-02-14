@@ -16,10 +16,12 @@ import { routes } from '@/config/routes';
 import Link from 'next/link';
 import Spinner from '@/components/ui/spinner';
 import Profile from '@public/dummyprofile.jpg';
+import { useModal } from '@/app/shared/modal-views/use-modal';
 
 function DropdownMenu() {
 
   const dispatch = useDispatch();
+  const { closeModal } = useModal();
   const router = useRouter();
   const { userProfile , loading} = useSelector((state: any) => state?.root?.signIn);
 
@@ -61,7 +63,7 @@ function DropdownMenu() {
           </Text>
         </div>
       </div>
-      <div className="grid px-3.5 py-3.5 font-medium text-gray-700">
+      <div onClick={()=>{closeModal()}} className="grid px-3.5 py-3.5 font-medium text-gray-700">
         <Link
           className="mt-0 justify-start bg-white text-gray-900"
           href={routes.viewProfile}
@@ -76,7 +78,7 @@ function DropdownMenu() {
           className="mt-0 justify-start bg-white text-gray-900"
         />
       </div>
-      <div className="border-t border-gray-300 px-6 py-4">
+      <div onClick={()=>{closeModal()}} className="border-t border-gray-300 px-6 py-4">
         <Button
           className="ml-2 h-auto w-full justify-start p-0 font-medium text-gray-700 outline-none focus-within:text-gray-600 hover:text-gray-900 focus-visible:ring-0"
           variant="text"

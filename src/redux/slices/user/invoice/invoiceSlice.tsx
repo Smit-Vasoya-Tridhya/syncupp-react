@@ -50,6 +50,7 @@ type SendInvoice = {
     client_id: string,
     due_date: Date,
     invoice_date: Date,
+    sent : boolean,
     invoice_content: [
       {
         item: string,
@@ -61,66 +62,6 @@ type SendInvoice = {
       }
     ]
     }
-//  type GetInvoiceDataByID = 
-//   {
-//     _id: string,
-//     invoice_number: string,
-//     due_date: Date,
-//     invoice_date: Date,
-//     invoice_content: [
-//       {
-//         item: string,
-//         qty: Number,
-//         rate: Number,
-//         tax: string,
-//         amount: Number,
-//         description: string,
-//         _id: string
-//       },
-//     ],
-//     sub_total: Number,
-//     total: Number,
-//     createdAt: Date,
-//     updatedAt: Date,
-//     status: string,
-//     from: {
-//       _id: string,
-//       company_name: string,
-//       address: string,
-//       pincode: Number,
-//       state: {
-//         _id: string,
-//         name: string
-//       },
-//       city: {
-//         _id: string,
-//         name: string
-//       },
-//       country: {
-//         _id: string,
-//         name: string
-//       }
-//     },
-//     to: {
-//       _id: string,
-//       name: string,
-//       company_name: string,
-//       address: string,
-//       pincode: Number,
-//       state: {
-//         _id: string,
-//         name: string
-//       },
-//       city: {
-//         _id: string,
-//         name: string
-//       },
-//       country: {
-//         _id: string,
-//         name: string
-//       }
-//     }
-//   }
   type GetInvoiceDataByID = 
   {
     _id: string,
@@ -338,6 +279,7 @@ const initialState:invoiceInitialState = {
     async (data:UpdateInvoiceStatusByID) => {
       const invoice_id = data?.invoice_id
       delete data?.invoice_id;
+      // console.log("####DADADADA" , invoice_id , data)
       try {
       // const invoce_id = data?.invoice_id
       const response: any = await UpdateInvoiceStatusByIDApi(data , invoice_id);
@@ -524,11 +466,11 @@ const initialState:invoiceInitialState = {
           }
       })
       .addCase(postSendInvoice.fulfilled, (state,action) => {
-        // if(action.payload.status == false){
-        //     toast.error(action.payload.message)
-        // } else {
-        //     toast.success(action.payload.message)
-        // }
+        if(action.payload.status == false){
+            toast.error(action.payload.message)
+        } else {
+            toast.success(action.payload.message)
+        }
         return{
           ...state,
           postSendInvoiceData: action.payload,
@@ -552,11 +494,11 @@ const initialState:invoiceInitialState = {
           }
       })
       .addCase(postDownloadInvoice.fulfilled, (state,action) => {
-        // if(action.payload.status == false){
-        //     toast.error(action.payload.message)
-        // } else {
-        //     toast.success(action.payload.message)
-        // }
+        if(action.payload.status == false){
+            toast.error(action.payload.message)
+        } else {
+            toast.success(action.payload.message)
+        }
         return{
           ...state,
           postDownloadInvoiceData: action.payload,

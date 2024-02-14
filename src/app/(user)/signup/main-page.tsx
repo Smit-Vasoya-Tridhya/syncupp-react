@@ -8,7 +8,7 @@ import WithAuthPublic from '@/utils/public-route-user';
 function SignUpPage() {
 
   const [formData, setFormData] = useState({});
-  const [title, setTitle] = useState('Sign Up!');
+  const [title, setTitle] = useState('Sign Up');
   const [nextBtn, setNextBtn] = useState(false);
   const [fdata, setFdata] = useState({})
 
