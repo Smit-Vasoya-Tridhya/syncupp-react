@@ -5,6 +5,7 @@ export default {
   content: [
     './src/**/*.{js,ts,jsx,tsx}',
     './node_modules/rizzui/dist/*.{js,ts,jsx,tsx}', // must use this line to compile and generate our RizzUI components style
+    './node_modules/flowbite/**/*.js',
   ],
   darkMode: ['class', '[data-theme="dark"]'],
   theme: {
@@ -13,7 +14,7 @@ export default {
       sm: '640px',
       md: '768px',
       lg: '1024px',
-      xl: '1280px',
+      xl: '1400px',
       '2xl': '1536px',
       '3xl': '1920px',
       '4xl': '2560px', // only need to control product grid mode in ultra 4k device
@@ -70,6 +71,19 @@ export default {
           DEFAULT: 'rgb(var(--green-default) / <alpha-value>)',
           dark: 'rgb(var(--green-dark) / <alpha-value>)',
         },
+        lightpurple: '#DFA8E44D',
+        midpurple: '#C9A7F2',
+        purple: '#451E5D',
+        darkpurple: '#560082',
+        lightblack: '#383838',
+        gradientcolor1: '#41236D',
+        gradientcolor2: '#7B2683',
+        lightpink: '#F9BDFF',
+        lightbg: '#FCF9FF',
+        lightgray:'#CECECE',
+      },
+      blur: {
+        'xs': '2px',
       },
       fontFamily: {
         inter: ['var(--font-inter)'],
@@ -88,6 +102,7 @@ export default {
       backgroundImage: {
         skeleton: `linear-gradient(90deg,transparent,#ecebeb,transparent)`,
         'skeleton-dark': `linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent)`,
+        'gradient-bg': 'linear-gradient(90deg, rgba(65,35,109,1) 0%, rgba(123,38,131,1) 100%);',
       },
       keyframes: {
         blink: {
@@ -131,6 +146,7 @@ export default {
       boxShadow: {
         profilePic:
           '0px 2px 4px -2px rgba(0, 0, 0, 0.10), 0px 4px 6px -1px rgba(0, 0, 0, 0.10)',
+          customshadow: '0 0 34px rgba(0, 0, 0, 0.45)',
       },
     },
   },
@@ -141,5 +157,6 @@ export default {
       // required this to prevent any style on readOnly input elements
       addVariant('not-read-only', '&:not(:read-only)');
     }),
+    require('flowbite/plugin'),
   ],
 } satisfies Config;

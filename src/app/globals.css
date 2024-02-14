@@ -4,6 +4,7 @@
 
 @import 'react-big-calendar/lib/css/react-big-calendar.css';
 
+
 @layer base {
   /* default theme */
   :root {
@@ -1219,4 +1220,12 @@ div[style='z-index: 1000001;'],
 
 .facebook-button{
   background-color: none;
+}
+
+.border-custom {
+  border:3px solid transparent;
+  background-image:  linear-gradient(white, white), linear-gradient(90deg, rgba(65,35,109,1) 0%, rgba(123,38,131,1) 100%);
+  border-radius: 4px;
+  background-clip: content-box, border-box;
+  background-origin: border-box;
 }
