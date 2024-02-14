@@ -132,10 +132,8 @@ export const getColumns = ({
     render: (_: string, row: Record<string, string>) => (
       <div className="flex items-center justify-end gap-3 pe-4">
         <CustomeDeletePopover
-          title={jsonData?.admin?.coupon_management?.table?.del_popup?.title}
-          description={
-            jsonData?.admin?.coupon_management?.table?.del_popup?.des
-          }
+          title="Delete the User"
+          description={'Are you sure you want to delete'}
           onDelete={() =>
             onDeleteItem(
               row._id,
