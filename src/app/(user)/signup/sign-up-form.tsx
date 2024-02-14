@@ -49,8 +49,8 @@ export default function SignUpForm(props: any) {
                 onKeyDown={handleKeyDown}
                 type="text"
                 size={isMedium ? 'lg' : 'xl'}
-                label="First Name"
-                placeholder="Enter first name"
+                label="First Name *"
+                placeholder="Enter First name"
                 rounded="pill"
                 color="info"
                 className="[&>label>span]:font-medium"
@@ -61,8 +61,8 @@ export default function SignUpForm(props: any) {
                 onKeyDown={handleKeyDown}
                 type="text"
                 size={isMedium ? 'lg' : 'xl'}
-                label="Last Name"
-                placeholder="Enter last name"
+                label="Last Name *"
+                placeholder="Enter Last Name"
                 rounded="pill"
                 color="info"
                 className="[&>label>span]:font-medium"
@@ -75,8 +75,8 @@ export default function SignUpForm(props: any) {
                 onKeyDown={handleKeyDown}
                 type="email"
                 size={isMedium ? 'lg' : 'xl'}
-                label="Email ID"
-                placeholder="Enter your email"
+                label="Email ID *"
+                placeholder="Enter Your Email"
                 rounded="pill"
                 color="info"
                 className="[&>label>span]:font-medium"
@@ -87,8 +87,8 @@ export default function SignUpForm(props: any) {
                 onKeyDown={handleKeyContactDown}
                 type="text"
                 size={isMedium ? 'lg' : 'xl'}
-                label="Contact Number"
-                placeholder="Enter phone number"
+                label="Contact Number *"
+                placeholder="Enter Phone Number"
                 rounded="pill"
                 color="info"
                 className="[&>label>span]:font-medium"
@@ -99,8 +99,8 @@ export default function SignUpForm(props: any) {
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:gap-5 xl:pb-2">
               <Password
                 onKeyDown={handleKeyDown}
-                label="Password"
-                placeholder="Enter your password"
+                label="Password *"
+                placeholder="Enter Your Password"
                 size={isMedium ? 'lg' : 'xl'}
                 rounded="pill"
                 color="info"
@@ -110,8 +110,8 @@ export default function SignUpForm(props: any) {
               />
               <Password
                 onKeyDown={handleKeyDown}
-                label="Confirm Password"
-                placeholder="Enter your password"
+                label="Confirm Password *"
+                placeholder="Enter Your Password"
                 size={isMedium ? 'lg' : 'xl'}
                 rounded="pill"
                 color="info"

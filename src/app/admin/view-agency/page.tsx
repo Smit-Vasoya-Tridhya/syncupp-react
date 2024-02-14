@@ -1,14 +1,12 @@
 import { metaObject } from '@/config/site.config';
-import SignIn from './main-page'
+import AgencyViewProfileForm from './agency-view-profile-form';
 
 export const metadata = {
-  ...metaObject('Sign In'),
+  ...metaObject('Agency Profile'),
 };
 
 export default function Page() {
   return (
-    <SignIn />
+    <AgencyViewProfileForm />
   );
 }
-
-

@@ -51,6 +51,7 @@ export default function EditInvoice(){
   const invoiceSliceData = useSelector((state: any) => state?.root?.invoice);
   const signIn = useSelector((state: any) => state?.root?.signIn);
   const data :any  = invoiceSliceData?.getInvoiceDataByIDdata?.data?.[0];
+  const [isSent, setIsSent] = useState<any>(null);
   
   useEffect(() => {
     dispatch(getUserProfile());
@@ -307,26 +308,13 @@ export default function EditInvoice(){
                   errors={errors}
                 />
               </div>
-              {/* <Button
-                    type="submit"
-                    className="hover:gray-700 ms-3 @xl:w-auto dark:bg-gray-200 dark:text-white"
-                    disabled={adminFaq?.loading}
-                  >
-                    Save
-                    {adminFaq?.loading && (
-                        <Spinner
-                          size="sm"
-                          tag="div"
-                          className="ms-3"
-                          color="white"
-                        />
-                      )}
-                  </Button> */}
             </div>
 
             <FormFooter
               isLoading={isLoading}
-              submitBtnText={params.id?'Update Invoice' : 'Create Invoice'}
+              // submitBtnText={params.id?'Update Invoice' : 'Create Invoice'}
+              saveAsDraft={() => setIsSent(false)}
+              createInvoice={() => setIsSent(true)}
             />
           </>
         )}
