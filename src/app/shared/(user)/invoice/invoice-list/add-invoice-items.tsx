@@ -7,7 +7,6 @@ import { useEffect, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { ActionIcon } from '@/components/ui/action-icon';
-import { calculateTotalPrice } from '@/utils/calculate-total-price';
 import { PiMinusBold, PiPlusBold, PiTrashBold } from 'react-icons/pi';
 import { FormBlockWrapper } from './form-utils';
 
@@ -42,11 +41,11 @@ function QuantityInput({
     onChange && onChange(inputValue);
   }
 
-  // useEffect(() => {
-  //   setValue(defaultValue ?? 1);
-  //   onChange && onChange(defaultValue ?? 1);
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
+  useEffect(() => {
+    setValue(defaultValue ?? 1);
+    onChange && onChange(defaultValue ?? 1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Input
@@ -89,18 +88,17 @@ function QuantityInput({
 export function AddInvoiceItems({ watch, register, control, errors }: any) {
   const { fields, append, remove } = useFieldArray({
     control,
-    name: 'items',
+    name: 'invoice_content',
   });
-  const shippingCost = watch('shipping') as number;
-  const discount = watch('discount') as number;
-  const taxes = watch('taxes') as number;
-
+  
   function calculateSubTotal(): number {
     let subTotal = 0;
     fields.forEach((_, index) => {
-      const itemPrice = watch(`items.${index}.price` ?? 0) as number;
-      const itemQuantity = watch(`items.${index}.quantity` ?? 1) as number;
-      subTotal += itemPrice * itemQuantity;
+      const taxes = watch(`invoice_content.${index}.tax` )?? 0 as number;
+      const itemPrice = watch(`invoice_content.${index}.rate` )?? 0 as number;
+      const itemQuantity = watch(`invoice_content.${index}.qty` )?? 0 as number;
+      subTotal +=  itemPrice * itemQuantity + (itemPrice * itemQuantity * taxes) / 100
+
     });
     return subTotal as number;
   }
@@ -114,74 +112,75 @@ export function AddInvoiceItems({ watch, register, control, errors }: any) {
       <div className="col-span-2 @container">
         {fields.map((field: any, index) => {
           const priceValue = watch(
-            `items.${index}.price`,
-            field.price ?? 0
+            `invoice_content.${index}.rate`,
+            field.rate ?? 0
           ) as number;
 
           const quantityValue = watch(
-            `items.${index}.quantity`,
-            field.quantity ?? 1
+            `invoice_content.${index}.qty`,
+            field.qty ?? 1
           ) as number;
+      const taxes = watch(`invoice_content.${index}.tax`, field.tax ?? 1) as number;
 
           return (
             <div
               key={field.id}
               className="mb-8 grid grid-cols-1 items-start rounded-lg border border-gray-200 p-4 shadow @md:p-5 @xl:p-6"
             >
-              <div className="grid w-full items-start gap-3 @md:grid-cols-2 @lg:gap-4 @xl:grid-cols-3 @2xl:gap-5 @4xl:grid-cols-4">
+                <div  className='w-full mb-2'>
                 <Input
-                  label="Item"
-                  placeholder="Enter item name"
-                  {...register(`items.${index}.item`)}
+                  label="Item *"
+                  placeholder="Enter Item Name"
+                  {...register(`invoice_content.${index}.item`)}
                   defaultValue={field.item}
-                  error={errors?.items?.[index]?.item?.message}
-                  className="@md:col-span-2 @xl:col-span-3 @2xl:col-span-1 @4xl:col-span-2"
+                  error={errors?.invoice_content?.[index]?.item?.message}
+                  className='w-full'
+                  // className="@md:col-span-2 @xl:col-span-3 @2xl:col-span-1 @4xl:col-span-2"
                 />
+                </div>
+              <div className="grid w-full items-start gap-3 @md:grid-cols-2 @lg:gap-4 @xl:grid-cols-3 @2xl:gap-5 @4xl:grid-cols-4">
                 <Controller
-                  name={`items.${index}.quantity`}
+                  name={`invoice_content.${index}.qty`}
                   control={control}
                   render={({ field: { name, onChange, value } }) => (
                     <QuantityInput
                       name={name}
                       onChange={(value) => onChange(value)}
-                      defaultValue={field.quantity ?? value}
-                      error={errors?.items?.[index]?.quantity?.message}
+                      defaultValue={field.qty ?? value}
+                      error={errors?.invoice_content?.[index]?.qty?.message}
                     />
                   )}
                 />
-                <div className="flex items-start @xl:col-span-2 @2xl:col-span-1 space-x-4">
                   <Input
-                    label="Price"
+                    label="Rate *"
                     type="number"
                     prefix={'$'}
                     placeholder="100"
-                    {...register(`items.${index}.price`)}
-                    defaultValue={field.price}
-                    error={errors?.items?.[index]?.price?.message}
+                    {...register(`invoice_content.${index}.rate`)}
+                    defaultValue={field.rate}
+                    error={errors?.invoice_content?.[index]?.rate?.message}
                     className="w-full"
                   />
                   <Input
                     type="number"
-                    label="Taxes"
+                    label="Taxes *"
                     suffix={'%'}
                     placeholder="15"
-                    {...register('taxes')}
-                    error={errors.taxes?.message}
+                    {...register(`invoice_content.${index}.tax`)}
+                  error={errors?.invoice_content?.[index]?.tax?.message}
                   />
-
                   <div className="ms-3 mt-9 flex items-start text-sm">
-                    <Text className="me-1 text-gray-500">Total:</Text>
-                    <Text as="b" className="font-medium">
-                      ${priceValue * quantityValue}
+                    <Text className="me-1 text-gray-500 text-lg">Total:</Text>
+                    <Text as="b" className="font-medium text-lg">
+                    ${(( priceValue * quantityValue+ (priceValue * quantityValue) / 100 * taxes).toFixed(2)) }
                     </Text>
                   </div>
-                </div>
                 <Textarea
-                  label="Description"
-                  placeholder="Enter item description"
-                  {...register(`items.${index}.description`)}
+                  label="Description *"
+                  placeholder="Enter Item Description"
+                  {...register(`invoice_content.${index}.description`)}
                   defaultValue={field.description}
-                  error={errors?.items?.[index]?.description?.message}
+                  error={errors?.invoice_content?.[index]?.description?.message}
                   className="row-start-2 @md:col-span-2 @xl:col-span-3 @xl:row-start-2 @4xl:col-span-4"
                   textareaClassName="h-20"
                 />
@@ -201,7 +200,7 @@ export function AddInvoiceItems({ watch, register, control, errors }: any) {
         <div className="flex w-full flex-col items-start justify-between @4xl:flex-row @4xl:pt-6">
           <Button
             onClick={() =>
-              append({ item: '', description: '', quantity: 1, price: '' })
+              append({ item: '', description: '', qty: "", rate: "" , tax: ""})
             }
             variant="flat"
             className="-mt-2 mb-7 w-full @4xl:mb-0 @4xl:mt-0 @4xl:w-auto"
@@ -215,28 +214,10 @@ export function AddInvoiceItems({ watch, register, control, errors }: any) {
             </div>
 
             <div className="ms-auto mt-6 grid w-full gap-3.5 text-sm text-gray-600 @xl:max-w-xs">
-              <Text className="flex items-center justify-between">
-                Subtotal:{' '}
-                <Text as="span" className="font-medium text-gray-700">
-                  ${calculateSubTotal()}
-                </Text>
-              </Text>
-              <Text className="flex items-center justify-between">
-                Taxes:{' '}
-                <Text as="span" className="font-medium text-red">
-                  {taxes ? `${taxes}%` : '--'}
-                </Text>
-              </Text>
               <Text className="flex items-center justify-between text-base font-semibold text-gray-900">
                 Total:{' '}
                 <Text as="span">
-                  $
-                  {calculateTotalPrice(
-                    calculateSubTotal(),
-                    shippingCost,
-                    discount,
-                    taxes
-                  ) ?? '--'}
+                ${calculateSubTotal().toFixed(2)}
                 </Text>
               </Text>
             </div>

@@ -17,6 +17,7 @@ function MainPage() {
     const searchParams = useSearchParams();
     const email = searchParams.get("email");
     const agencyId = searchParams.get("agencyId");
+    const clientId = searchParams.get("clientId");
     const token = searchParams.get("token");
     const [redirect, setRedirect] = useState(false);
 
@@ -27,7 +28,7 @@ function MainPage() {
             // console.log(result?.payload?.data?.password_required)
             setRedirect(result?.payload?.data?.password_required)
             if (!result?.payload?.data?.password_required) {
-              dispatch(verifyTeamMember({ email: email, agency_id: agencyId, token: token, redirect: true })).then((result: any) => {
+              dispatch(verifyTeamMember({ email: email, agency_id: agencyId, token: token, client_id: clientId, redirect: true })).then((result: any) => {
                 if (verifyTeamMember.fulfilled.match(result)) {
                   if (result && result.payload.success === true) {
                     router.replace(routes.signIn);
@@ -40,7 +41,7 @@ function MainPage() {
           }
         }
       })
-    }, [dispatch, email, agencyId, router, token])
+    }, [dispatch, email, agencyId, router, token, clientId])
   
 
     // useEffect(() => { redirect &&

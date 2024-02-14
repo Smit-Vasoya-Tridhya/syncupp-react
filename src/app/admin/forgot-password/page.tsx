@@ -5,7 +5,7 @@ import ForgetPasswordForm from './forgot-password-form';
 import { metaObject } from '@/config/site.config';
 
 export const metadata = {
-  ...metaObject('ForgotPassword - Admin'),
+  ...metaObject('Forgot Password - Admin'),
 };
 
 

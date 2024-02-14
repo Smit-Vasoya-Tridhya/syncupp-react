@@ -89,6 +89,7 @@ export default function CustomTable({
     setSelectedRowKeys,
     handleRowSelect,
     handleSelectAll,
+    handlecustomeSelectAll,
     handleDelete,
     handleReset,
   } = useTable(
@@ -111,6 +112,7 @@ export default function CustomTable({
         onDeleteItem,
         onChecked: handleRowSelect,
         handleSelectAll,
+        handlecustomeSelectAll,
         currentPage,
         pageSize,
         searchTerm,

@@ -18,6 +18,8 @@ import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { initiateRazorpay } from '@/services/clientpaymentService';
 import { getAllTeamMember } from '@/redux/slices/user/team-member/teamSlice';
+import { useState } from 'react';
+import Spinner from '@/components/ui/spinner';
 
 
 type Columns = {
@@ -92,6 +94,8 @@ export const GetclientTeamColumns = ({
   const token = localStorage.getItem('token')
   const router = useRouter()
   const dispatch = useDispatch()
+  const [loadingflag, setloadingflag] = useState(false)
+  const [showloaderflag, setshowloaderflag] = useState(null)
 
   const paginationParams = useSelector((state: any) => state?.root?.teamMember?.paginationParams);
 
@@ -140,7 +144,7 @@ export const GetclientTeamColumns = ({
       key: 'name',
       width: 200,
       render: (value: string) => (
-        <Text className="font-medium text-gray-700">{value}</Text>
+        <Text className="font-medium text-gray-700 capitalize">{value}</Text>
       ),
     },
     {
@@ -236,7 +240,10 @@ export const GetclientTeamColumns = ({
       width: 120,
       render: (_: string, row: any) => (
         <>
-          {row?.status === "payment_pending" ? <div> <Button className='w-full' onClick={() => { initiateRazorpay(router, routes.agency_team, token, row?.reference_id?._id, ClintteamlistAPIcall) }}>Pay</Button></div> :
+          {row?.status === "payment_pending" ? <div> <Button disabled={loadingflag} className='w-full' onClick={() => {
+            initiateRazorpay(router, routes.agency_team, token, row?.reference_id?._id, ClintteamlistAPIcall, setloadingflag)
+            setshowloaderflag(row?._id)
+          }}>Pay {loadingflag && showloaderflag === row?._id && < Spinner size="sm" tag='div' className='ms-3' color='white' />}</Button></div> :
 
             <div className="flex items-center justify-end gap-3 pe-4">
 

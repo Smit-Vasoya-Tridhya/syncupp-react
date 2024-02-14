@@ -3,7 +3,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { toast } from 'react-hot-toast';
 
 type AddClientData = {
-  name: string;
+  first_name: string;
+  last_name: string;
   email: string;
   company_name: string;
   company_website?: string;
@@ -18,7 +19,8 @@ type AddClientData = {
 
 type EditClientData = {
   clientId: string,
-  name: string;
+  first_name: string;
+  last_name: string;
   email: string;
   company_name: string;
   company_website?: string;
@@ -316,7 +318,7 @@ export const clientSlice = createSlice({
         if (action.payload.status == false) {
           toast.error(action.payload.message)
         } else {
-          toast.success(action.payload.message)
+          // toast.success(action.payload.message)
         }
         return {
           ...state,

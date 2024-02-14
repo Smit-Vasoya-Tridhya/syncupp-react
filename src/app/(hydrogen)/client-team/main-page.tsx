@@ -21,7 +21,6 @@ export default function TeamDataTablePage() {
   const loading = useSelector((state: any) => state?.root?.client);
 
   // console.log("client data.....", clientSliceData?.data)
-  console.log("loading", loading)
 
   const handleChangePage = async (paginationParams: any) => {
     let { page, items_per_page, sort_field, sort_order, search } = paginationParams;
@@ -46,13 +45,13 @@ export default function TeamDataTablePage() {
         const reponse = await dispatch(getAllTeamMember({ page: currentPage, items_per_page: countPerPage, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm, client_id: clientSliceData?.clientId, pagination: true }));
       }
     } catch (error) {
-      console.error(error);
+      // console.error(error);
     }
   };
 
   return (
     <>
-      <PageHeader title={pageHeader.title}>
+      <PageHeader title={pageHeader.title} className='z-40'>
         <div className="mt-4 flex items-center gap-3 @lg:mt-0">
           <ClientSelectionForm />
         </div>

@@ -67,6 +67,13 @@ export default function AddTaskForm(props: any) {
 
 
 
+  useEffect(() => {
+    if(signIn && signIn?.teamMemberRole === 'team_member') {
+      setTeamId(signIn?.user?.data?.user?.reference_id);
+    }
+  }, [signIn]);
+
+
   // let data = row;
 
   const initialValues: AddTaskSchema = {
@@ -74,7 +81,7 @@ export default function AddTaskForm(props: any) {
     description: '',
     due_date: new Date(),
     client: '',
-    assigned: '',
+    assigned: signIn?.teamMemberRole === 'team_member' ? signIn?.user?.data?.user?.name : '',
     done: false
   };
 
@@ -102,7 +109,7 @@ export default function AddTaskForm(props: any) {
     // due_date: new Date(data?.due_date),
     due_date: moment(data?.due_date).toDate(),
     client: data?.client_fullName,
-    assigned: data?.assign_to_name,
+    assigned: signIn?.teamMemberRole === 'team_member' ? signIn?.user?.data?.user?.name : data?.assigned_to_name,
     done: data?.status === 'completed' ? true : false
   };
 
@@ -186,7 +193,7 @@ export default function AddTaskForm(props: any) {
           validationSchema={addTaskSchema}
           onSubmit={onSubmit}
           useFormProps={{
-            mode: 'onTouched',
+            mode: 'all',
             defaultValues: defaultValuess,
           }}
           className=" p-10 [&_label]:font-medium"
@@ -211,7 +218,7 @@ export default function AddTaskForm(props: any) {
                   <Input
                     type="text"
                     onKeyDown={handleKeyDown}
-                    label="Title"
+                    label="Title *"
                     placeholder="Enter title"
                     color="info"
                     className="[&>label>span]:font-medium"
@@ -225,6 +232,7 @@ export default function AddTaskForm(props: any) {
                       <QuillEditor
                         value={value}
                         onChange={onChange}
+                        onKeyDown={handleKeyDown}
                         placeholder='Enter description'
                         label="Description"
                         className="col-span-full [&_.ql-editor]:min-h-[100px]"
@@ -266,7 +274,7 @@ export default function AddTaskForm(props: any) {
                           }}
                           value={value}
                           placeholder='Select Client'
-                          label='Client'
+                          label='Client *'
                           error={errors?.client?.message as string}
                           color='info'
                           // getOptionValue={(option) => option.value}
@@ -288,9 +296,9 @@ export default function AddTaskForm(props: any) {
                             setTeamId(selectedOption?.value);
                             // handleTeamChange(selectedOption);
                           }}
-                          value={value}
+                          value={signIn?.teamMemberRole === 'team_member' ? signIn?.user?.data?.user?.name : value}
                           placeholder='Select Team member'
-                          label='Assigned'
+                          label='Assigned *'
                           disabled={signIn?.teamMemberRole === 'team_member'}
                           error={errors?.assigned?.message as string}
                           color='info'

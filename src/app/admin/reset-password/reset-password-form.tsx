@@ -48,6 +48,7 @@ export default function ResetPasswordForm() {
         onSubmit={onSubmit}
         useFormProps={{
           defaultValues: initialValues,
+          mode: 'all'
         }}
         className="pt-1.5"
       >

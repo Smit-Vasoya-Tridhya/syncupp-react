@@ -76,9 +76,10 @@ const initialState: SigninState = {
 
 export const signInUser: any = createAsyncThunk(
   "signin/signInUser",
-  async (data: UserData) => {
+  async (data: UserData, { dispatch }) => {
     try {
       const response: any = await PostSignin(data);
+      // await dispatch(getUserProfile())
       return response;
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as PostSigninResponse;
@@ -198,10 +199,10 @@ export const signinSlice: any = createSlice({
         }
       })
       .addCase(getUserProfile.rejected, (state, action) => {
-        if (action.payload.success == true) {
-          toast.success(action.payload.message)
+        if (action?.payload?.success == true) {
+          toast.success(action?.payload?.message)
         } else {
-          toast.error(action.payload.message)
+          toast.error(action?.payload?.message)
         }
         return {
           ...state,
@@ -219,9 +220,9 @@ export const signinSlice: any = createSlice({
       })
       .addCase(updateUserProfile.fulfilled, (state, action) => {
         if (action.payload.success == true) {
-          toast.success(action.payload.message)
+          toast.success(action?.payload?.message)
         } else {
-          toast.error(action.payload.message)
+          toast.error(action?.payload?.message)
         }
         return {
           ...state,
@@ -232,9 +233,9 @@ export const signinSlice: any = createSlice({
       })
       .addCase(updateUserProfile.rejected, (state, action) => {
         if (action.payload.success == true) {
-          toast.success(action.payload.message)
+          toast.success(action?.payload?.message)
         } else {
-          toast.error(action.payload.message)
+          toast.error(action?.payload?.message)
         }
         return {
           ...state,

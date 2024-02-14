@@ -2,7 +2,8 @@ import AxiosDefault from "../../../services/AxiosDefault";
 
 type PostAddTeamMemberApiData = {
   email: string;
-  name: string;
+  first_name: string;
+  last_name: string;
   contact_number?: string;
   role?: string;
   agency_id?: string;
@@ -21,7 +22,8 @@ type PostTeamMemberVerifyApiData = {
 
 type PutEditTeamMemberApiData = {
   id: string;
-  name?: string;
+  first_name?: string;
+  last_name?: string;
   email?: string;
   contact_number?: string;
   role?: string;

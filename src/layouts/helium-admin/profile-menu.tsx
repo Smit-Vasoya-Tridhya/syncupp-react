@@ -13,9 +13,9 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useDispatch , useSelector } from 'react-redux';
 import "../helium/style.css"
-import { getViewProfiles } from '@/redux/slices/admin/auth/viewprofile/viewProfileSlice';
 import Link from 'next/link';
 import Spinner from '@/components/ui/spinner';
+import Profile from '@public/dummyprofile.jpg';
 
 const menuItems = [
   {
@@ -43,9 +43,6 @@ function DropdownMenu() {
     dispatch(logoutUserAdmin(''));
     router.replace('/admin/signin');
   }
-  useEffect(()=>{
-    dispatch(getViewProfiles())
-  }, [dispatch])
   const { data: userData , loading } = useSelector((state: any) => state?.root?.viewProfile);
 
   function capitalizeFirstLetter(str:any) {
@@ -63,7 +60,8 @@ function DropdownMenu() {
     <div className="w-64 text-left rtl:text-right">
       <div className="flex items-center border-b border-gray-300 px-6 pb-5 pt-6">
         <Avatar
-          src="https://isomorphic-furyroad.s3.amazonaws.com/public/avatars-blur/avatar-11.webp"
+          // src="https://isomorphic-furyroad.s3.amazonaws.com/public/avatars-blur/avatar-11.webp"
+          src={Profile?.src}
           name='Admin'
           color="invert"
         />
@@ -136,7 +134,7 @@ export default function ProfileMenu({
         )}
       >
         <Avatar
-          src="https://isomorphic-furyroad.s3.amazonaws.com/public/avatars-blur/avatar-11.webp"
+          src={Profile?.src}
           name=""
           color="invert"
           className={cn('!h-9 w-9 sm:!h-10 sm:w-10', avatarClassName)}

@@ -25,6 +25,7 @@ import {
   updateClientReviewDataByID,
 } from '@/redux/slices/admin/clientReview/clientReviewSlice';
 import UploadIcon from '@/components/shape/upload';
+import { handleKeyDown } from '@/utils/common-functions';
 
 const Select = dynamic(() => import('@/components/ui/select'), {
   ssr: false,
@@ -140,7 +141,7 @@ export default function AddClientReviewForm(props: any) {
           validationSchema={clientReviewSchema}
           onSubmit={onSubmit}
           useFormProps={{
-            mode: 'onChange',
+            mode: 'all',
             defaultValues: defaultValuess,
           }}
           className=" p-10 [&_label]:font-medium"
@@ -162,6 +163,7 @@ export default function AddClientReviewForm(props: any) {
               </div>
               <div className={cn('grid grid-cols-1 gap-4')}>
                 <Input
+                  onKeyDown={handleKeyDown}
                   type="text"
                   label="Customer Name"
                   placeholder="Enter Customer Name here....."
@@ -171,6 +173,7 @@ export default function AddClientReviewForm(props: any) {
                   error={errors?.customer_name?.message}
                 />
                 <Input
+                  onKeyDown={handleKeyDown}
                   type="text"
                   label="Company Name"
                   placeholder="Enter Customer Name here....."
@@ -182,6 +185,7 @@ export default function AddClientReviewForm(props: any) {
               </div>
               <div>
                 <Textarea
+                  onKeyDown={handleKeyDown}
                   label="Review"
                   placeholder="Describe your Content Here..."
                   color="info"
@@ -191,10 +195,15 @@ export default function AddClientReviewForm(props: any) {
                 />
               </div>
               <div className="flex gap-10">
-                <UploadIcon
-                  className="h-12 w-12 cursor-pointer"
+                <div
+                  className="relative flex h-20  w-20 cursor-pointer flex-col items-center justify-center gap-2 rounded-full border-[1.8px]"
                   onClick={handleClickUpload}
-                />
+                >
+                  <UploadIcon className="size-6"></UploadIcon>
+                  <p className="pt-1 text-center text-xs ">
+                    Select or drag file{' '}
+                  </p>
+                </div>
                 <input
                   type="file"
                   onChange={handleFileChange}

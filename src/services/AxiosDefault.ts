@@ -37,7 +37,7 @@ const AxiosDefaultSetting = async ({
           config.headers["Authorization"] = `Bearer ${userData}`;
         }
       } catch (error) {
-        console.log('Axios default error',error);
+        // console.log('Axios default error',error);
       }
       return config;
     },

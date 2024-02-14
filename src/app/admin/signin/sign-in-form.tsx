@@ -46,7 +46,7 @@ export default function SignInForm() {
         validationSchema={loginSchema}
         onSubmit={onSubmit}
         useFormProps={{
-          mode: 'onChange',
+          mode: 'all',
           defaultValues: initialValues,
         }}
       >
@@ -97,7 +97,7 @@ export default function SignInForm() {
               disabled={adminSignIn.loading}
 
             >
-              Sign in
+              Sign In
               {adminSignIn.loading && <Spinner size="sm" tag='div' className='ms-3' />}
             </Button>
           </div>

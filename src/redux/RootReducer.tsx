@@ -14,7 +14,7 @@ import teamSlice from './slices/user/team-member/teamSlice';
 import adminChangePasswordSlice from './slices/admin/auth/updatePassword/changePasswordSlice';
 import adminfaqSlice from './slices/admin/faq/faqSlice';
 import agencySlice from './slices/admin/agency/agencySlice';
-import agencyAgreementSlice from './slices/user/agreement/agreementSlice';
+import agreementSlice from './slices/user/agreement/agreementSlice';
 import clientAgreementSlice from './slices/user/client/agreement/clientAgreementSlice';
 import userAgencySlice from './slices/user/agency/agencySlice';
 import invoiceSlice from './slices/user/invoice/invoiceSlice';
@@ -22,6 +22,11 @@ import taskSlice from './slices/user/task/taskSlice';
 import clientReviewSlice from './slices/admin/clientReview/clientReviewSlice';
 import cmsSlice from './slices/admin/cms/cmsSlice';
 import couponManagementSlice from './slices/admin/coupon-managemnt/couponManagementSlice';
+import paymentSlice from './slices/payment/paymentSlice';
+import inquirySlice from './slices/admin/inquiry/inquirySlice';
+import SubscriptionSlice from './slices/user/manage-subscription.tsx/SubscriptionSlice';
+import authSlice from './slices/affiliate/authSlice';
+import taskStatusSlice from './slices/user/task/taskStatusSlice';
 
 const combinedReducer = combineReducers({
   signIn: signinSlice,
@@ -42,11 +47,16 @@ const combinedReducer = combineReducers({
   teamMember: teamSlice,
   adminAgency: agencySlice,
   adminCoupon: couponManagementSlice,
+  managesubcription: SubscriptionSlice,
   userAgency: userAgencySlice,
   invoice: invoiceSlice,
-  agreement: agencyAgreementSlice,
+  agreement: agreementSlice,
   clienAgreement: clientAgreementSlice,
   task: taskSlice,
+  taskStatus: taskStatusSlice,
+  payment: paymentSlice,
+  inquiry: inquirySlice,
+  auth: authSlice
 });
 
 const rootReducer = (state: any, action: any) => {

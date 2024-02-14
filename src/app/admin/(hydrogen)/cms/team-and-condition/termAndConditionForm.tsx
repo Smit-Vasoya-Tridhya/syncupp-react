@@ -60,6 +60,7 @@ export default function TermsAndConditionFormPage() {
         onSubmit={onSubmit}
         useFormProps={{
           defaultValues: initialValues,
+          mode: 'all'
         }}
         className=" [&_label]:font-medium p-10"
       >

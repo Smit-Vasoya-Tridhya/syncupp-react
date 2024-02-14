@@ -9,11 +9,16 @@ import { Controller } from 'react-hook-form';
 import { useDispatch, useSelector } from "react-redux";
 import Select from '@/components/ui/select';
 import SelectLoader from '@/components/loader/select-loader';
+import { usePathname } from 'next/navigation';
+import { getAllTask } from '@/redux/slices/user/task/taskSlice';
 
 
 export default function AgencySelectionForm() {
     const dispatch = useDispatch();
+    const pathname = usePathname();
     const clientSliceData = useSelector((state: any) => state?.root?.client);
+    const { gridView } = useSelector((state: any) => state?.root?.task);
+
     useEffect(() => { dispatch(getClientAgencies()) }, [dispatch]);
     let initialValue: Record<string, string> = {
         agency_selection: clientSliceData?.agencyName ?? ''
@@ -27,19 +32,24 @@ export default function AgencySelectionForm() {
     const handleAgencyChange = (selectedOption: Record<string, any>) => {
         dispatch(setAgencyName(selectedOption?.name))
         dispatch(setAgencyId(selectedOption?.value))
-        dispatch(getAllTeamMember({
-            sort_field: 'createdAt',
-            sort_order: 'desc',
-            agency_id: selectedOption?.value,
-            pagination: true
-        })
-        );
+        console.log("pathname...", pathname)
+        if(pathname === "/team") {
+            dispatch(getAllTeamMember({
+                sort_field: 'createdAt',
+                sort_order: 'desc',
+                agency_id: selectedOption?.value,
+                pagination: true
+            }));
+        } else if(pathname === "/task") {
+
+            !gridView ? dispatch(getAllTask({ sort_field: 'createdAt', sort_order: 'desc', agency_id: selectedOption?.value, pagination: true })) : dispatch(getAllTask({ pagination: false }))
+        }
     }
 
     const onSubmit = (data: any) => {
     };
 
-    if (clientSliceData?.loading) {
+    if (clientSliceData?.agencies?.length === 0) {
         return <SelectLoader />
     } else {
         return (
@@ -47,7 +57,8 @@ export default function AgencySelectionForm() {
                 <Form
                     onSubmit={onSubmit}
                     useFormProps={{
-                        defaultValues: initialValue
+                        defaultValues: initialValue,
+                        mode: 'all'
                     }}
                 >
                     {({ control, formState: { errors } }) => (

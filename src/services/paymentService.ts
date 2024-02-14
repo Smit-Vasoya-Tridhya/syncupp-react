@@ -2,6 +2,7 @@
 import axios from "axios";
 import { toast } from 'react-hot-toast';
 import { routes } from '@/config/routes';
+import { Paymentloader } from "@/redux/slices/payment/paymentSlice";
 
 
 interface RazorpayResponse {
@@ -19,33 +20,40 @@ interface CustomWindow extends Window {
 declare var window: CustomWindow;
 
 const paymentService = {
-    loadRazorpayScript: async (src: string): Promise<boolean> => {
+    loadRazorpayScript: async (src: string, dispatch: any): Promise<boolean> => {
         return new Promise((resolve) => {
+            dispatch(Paymentloader(true))
             const script = document.createElement("script");
             script.src = src;
             script.onload = () => {
                 resolve(true);
+                dispatch(Paymentloader(false))
             };
             script.onerror = () => {
                 resolve(false);
+                dispatch(Paymentloader(false))
             };
             document.body.appendChild(script);
         });
     },
 
-    createSubscription: async (token: string, router: any): Promise<Object> => {
-        console.log(token, 'token')
+    createSubscription: async (token: string, router: any, dispatch: any): Promise<Object> => {
+        // console.log(token, 'token')
         try {
-            const result = await axios.post<{ data: { payment_id: string } }>(`${process.env.NEXT_PUBLIC_API}/api/v1/payment/create-subscription`, {}, {
+            const result: any = await axios.post<{ data: { payment_id: string } }>(`${process.env.NEXT_PUBLIC_API}/api/v1/payment/create-subscription`, {}, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     // Add any other headers if needed
                 },
             });
-            console.log(result?.data?.data?.payment_id, "result");
+            if (result?.data?.success) {
+                dispatch(Paymentloader(true))
+            }
+            // console.log(result?.data?.data?.payment_id, "result");
 
             return result?.data?.data || {};
         } catch (error: any) {
+            dispatch(Paymentloader(true))
             console.error('Error creating subscription:', error.message);
             router.push(routes.signIn)
             throw new Error('Error creating subscription');
@@ -55,7 +63,7 @@ const paymentService = {
     verifyPaymentSignature: async (data: RazorpayResponse): Promise<string> => {
         try {
             const result = await axios.post<string>(`${process.env.NEXT_PUBLIC_API}/api/v1/payment/verify-signature`, data);
-            console.log(result, "82");
+            // console.log(result, "82");
             return result.data;
         } catch (error: any) {
             console.error('Error verifying payment signature:', error.message);
@@ -74,14 +82,14 @@ const paymentService = {
     },
 
     // New function to initiate Razorpay
-    initiateRazorpay: async (router: any, route: any, signupdata: any): Promise<void> => {
+    initiateRazorpay: async (router: any, route: any, signupdata: any, dispatch: any): Promise<void> => {
 
         try {
-            const subscriptiondata: any = await paymentService.createSubscription(signupdata, router);
-            console.log(subscriptiondata, 'subscriptiondata')
+            const subscriptiondata: any = await paymentService.createSubscription(signupdata, router, dispatch);
+            // console.log(subscriptiondata, 'subscriptiondata')
 
-            const res = await paymentService.loadRazorpayScript("https://checkout.razorpay.com/v1/checkout.js");
-            console.log(res, "24");
+            const res = await paymentService.loadRazorpayScript("https://checkout.razorpay.com/v1/checkout.js", dispatch);
+            // console.log(res, "24");
 
             if (!res) {
                 paymentService.displayPaymentToast("Razorpay SDK failed to load. Are you online?", 'error');
@@ -97,7 +105,7 @@ const paymentService = {
                 description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,",
                 subscription_id: subscriptiondata?.payment_id,
                 handler: async (response: RazorpayResponse) => {
-                    console.log(response, 'response');
+                    // console.log(response, 'response');
                     const data = {
                         razorpay_payment_id: response.razorpay_payment_id,
                         razorpay_order_id: response.razorpay_subscription_id,
@@ -110,7 +118,7 @@ const paymentService = {
                     };
 
                     const verificationResult: any = await paymentService.verifyPaymentSignature(data);
-                    console.log(verificationResult, 'verificationResult')
+                    // console.log(verificationResult, 'verificationResult')
 
 
                     if (verificationResult?.data?.success) {
@@ -120,6 +128,10 @@ const paymentService = {
                         paymentService.displayPaymentToast(verificationResult?.message, 'error');
                     }
                 },
+                prefill: {
+                    email: subscriptiondata?.email, // Pre-filled email
+                    contact: subscriptiondata?.contact_number // Pre-filled phone number
+                },
                 theme: {
                     color: "#111111",
                 },
@@ -128,7 +140,7 @@ const paymentService = {
             const paymentObject = new window.Razorpay(options);
             paymentObject.open();
         } catch (error: any) {
-            console.error('Error during payment:', error.message);
+            // console.error('Error during payment:', error.message);
             paymentService.displayPaymentToast('Error during payment. Please try again.', 'error');
         }
     },

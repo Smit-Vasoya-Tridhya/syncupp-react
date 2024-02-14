@@ -23,6 +23,8 @@ import {
   postEditProfile,
 } from '@/redux/slices/admin/auth/viewprofile/viewProfileSlice';
 import Spinner from '@/components/ui/spinner';
+import Link from 'next/link';
+import { FaArrowLeft } from 'react-icons/fa';
 
 export default function ViewProfileForm(props: any) {
   const [reset, setReset] = useState({});
@@ -55,7 +57,7 @@ export default function ViewProfileForm(props: any) {
     dispatch(postEditProfile(formData)).then((result: any) => {
       if (postEditProfile.fulfilled.match(result)) {
         if (result && result.payload.success === true) {
-          router.replace(routes.admin.dashboard);
+          setIsOpenEditMode(false)
         }
       }
     });
@@ -74,7 +76,7 @@ export default function ViewProfileForm(props: any) {
           resetValues={reset}
           onSubmit={onSubmit}
           useFormProps={{
-            mode: 'onChange',
+            mode: 'all',
             defaultValues: initialValues,
           }}
           className=" p-10 [&_label]:font-medium"
@@ -82,21 +84,26 @@ export default function ViewProfileForm(props: any) {
           {({ register, formState: { errors } }) => (
             <div className="space-y-5">
               <div className="flex items-center justify-between">
-              <div className="mb-6 flex items-center justify-between">
-              <Title>{isOpenEditMode ? 'Edit Profile' : 'View Profile'}</Title>
-                {/* <Title as="h3" className="text-xl xl:text-2xl">
+                <div className="mb-6 flex items-center justify-between">
+                  <Title>
+                    {isOpenEditMode ? 'Edit Profile' : 'View Profile'}
+                  </Title>
+                  {/* <Title as="h3" className="text-xl xl:text-2xl">
                   View Profile
                 </Title> */}
-              </div>
-              <div className="mr-8">
-                {!isOpenEditMode && (
-                  <ActionIcon
-                    size="sm"
-                    variant="text"
-                    onClick={() => {setIsOpenEditMode(!isOpenEditMode);}}
-                    className="p-0 text-gray-500 hover:!text-gray-900"
-                  >
-                    <Button
+                </div>
+                <div className="mr-8">
+                  {!isOpenEditMode && (
+                    <ActionIcon
+                      size="sm"
+                      variant="text"
+                      onClick={() => {
+                        setIsOpenEditMode(!isOpenEditMode);
+                      }}
+                      className="p-0 text-gray-500 hover:!text-gray-900"
+                    >
+                      <div className="ml-[68%]"></div>
+                      <Button
                       className="hover:gray-700 float-end @xl:w-auto dark:bg-gray-200 dark:text-white"
                       onClick={() => {
                         setIsOpenEditMode(false);
@@ -105,11 +112,45 @@ export default function ViewProfileForm(props: any) {
                       <PiNotePencilDuotone className="h-[20px] w-[20px] mr-1" />
                       Edit
                     </Button>
-                  </ActionIcon>
-                )}
+                    </ActionIcon>
+                  )}
+                </div>
               </div>
+              <div className="flex  md:justify-center lg:justify-start items-center gap-8 md:pr-8">
+                <h4>Personal information</h4>
+                {/* <div className="flex justify-end  items-center gap-8 pr-8" id={'we are in button'}>
+                  <div className="">
+                      <Button className="bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0"
+                    disabled={!isOpenEditMode}
+                    >
+                        <FaArrowLeft className="h-[17px] w-[17px]" />
+                        Back
+                      </Button>
+                  </div>
+                  <div className="">
+                    {!isOpenEditMode && (
+                      <ActionIcon
+                        size="sm"
+                        variant="text"
+                        onClick={() => {
+                          setIsOpenEditMode(!isOpenEditMode);
+                        }}
+                        className="flex  text-gray-500 hover:!text-gray-900"
+                      >
+                        <Button
+                          className="hover:gray-700 @xl:w-auto dark:bg-gray-200 dark:text-white"
+                          onClick={() => {
+                            setIsOpenEditMode(false);
+                          }}
+                        >
+                          <PiNotePencilDuotone className="mr-1 h-[20px] w-[20px]" />
+                          Edit
+                        </Button>
+                      </ActionIcon>
+                    )}
+                  </div>
+                </div> */}
               </div>
-              <h4>Personal information</h4>
               <div className="grid grid-cols-2 gap-4 pt-5">
                 <>
                   <Input
@@ -160,7 +201,7 @@ export default function ViewProfileForm(props: any) {
               </div>
               {/* )} */}
               {isOpenEditMode && (
-                <div className={cn('flex space-x-4 float-end')}>
+                <div className={cn('float-end flex space-x-4 justify-between items-center')}>
                   <Button
                     variant="outline"
                     className="@xl:w-auto dark:hover:border-gray-400"

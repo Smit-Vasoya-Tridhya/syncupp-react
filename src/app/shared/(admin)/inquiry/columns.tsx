@@ -36,7 +36,8 @@ export const InquiryColumns = ({
 }: Columns) => {
 
     const dispatch = useDispatch();
-    const { agreementDetails, loading } = useSelector((state: any) => state?.root?.agreement);
+    const { inquirylistDetails, loading } = useSelector((state: any) => state?.root?.inquiry);
+    console.log(inquirylistDetails,'inquirylistDetails')
 
 
     const StatusHandler = (status: string, id: string, setOpen: any) => {
@@ -92,7 +93,7 @@ export const InquiryColumns = ({
             key: 'name',
             width: 200,
             render: (value: string) => (
-                <Text className="font-medium text-gray-700">{value && value != "" ? value : "-"}</Text>
+                <Text className="font-medium text-gray-700 capitalize">{value && value != "" ? value : "-"}</Text>
             ),
         },
         {
@@ -119,13 +120,13 @@ export const InquiryColumns = ({
                     title="Mobile Number"
                     sortable
                     ascending={
-                        sortConfig?.direction === 'asc' && sortConfig?.key === 'mobile_number'
+                        sortConfig?.direction === 'asc' && sortConfig?.key === 'contact_number'
                     }
                 />
             ),
-            onHeaderCell: () => onHeaderCellClick('mobile_number'),
-            dataIndex: 'mobile_number',
-            key: 'mobile_number',
+            onHeaderCell: () => onHeaderCellClick('contact_number'),
+            dataIndex: 'contact_number',
+            key: 'contact_number',
             width: 200,
             render: (value: string) => (
                 <Text className="font-medium text-gray-700">{value && value != "" ? value : "-"}</Text>
@@ -155,13 +156,13 @@ export const InquiryColumns = ({
                     title="Date & Time"
                     sortable
                     ascending={
-                        sortConfig?.direction === 'asc' && sortConfig?.key === 'date_and_time'
+                        sortConfig?.direction === 'asc' && sortConfig?.key === 'createdAt'
                     }
                 />
             ),
-            onHeaderCell: () => onHeaderCellClick('date_and_time'),
-            dataIndex: 'date_and_time',
-            key: 'date_and_time',
+            onHeaderCell: () => onHeaderCellClick('createdAt'),
+            dataIndex: 'createdAt',
+            key: 'createdAt',
             width: 200,
             render: (value: string) => (
                 <Text className="font-medium text-gray-700">{value && value != "" ? moment(value).format('MM/DD/YYYY') : "-"}</Text>
@@ -178,7 +179,7 @@ export const InquiryColumns = ({
             render: (_: string, row: Record<string, string>) => (
                 <div className="flex items-center justify-start gap-3 pe-4">
                     <DeletePopover
-                        title={`Delete the Agreement`}
+                        title={`Delete the Inquiry`}
                         description={`Are you sure you want to delete?`}
                         onDelete={() => onDeleteItem([row._id], currentPage, pageSize, data?.length <= 1 ? true : false, sortConfig, searchTerm)}
                     />

@@ -34,7 +34,7 @@ export default function ForgetPasswordForm() {
         // resetValues={reset}
         onSubmit={onSubmit}
         useFormProps={{
-          mode: 'onTouched',
+          mode: 'all',
           defaultValues: initialValues,
         }}
       >

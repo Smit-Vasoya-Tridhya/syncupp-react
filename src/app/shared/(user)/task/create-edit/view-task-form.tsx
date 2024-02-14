@@ -12,7 +12,7 @@ import { MdOutlineCalendarMonth } from 'react-icons/md';
 import { FaUserCircle } from 'react-icons/fa';
 import { Badge } from 'rizzui';
 import { useDispatch, useSelector } from 'react-redux';
-import { getTaskById, putTaskStatusChange } from '@/redux/slices/user/task/taskSlice';
+import { getAllTask, getTaskById, putTaskStatusChange } from '@/redux/slices/user/task/taskSlice';
 import moment from 'moment';
 import { useEffect } from 'react';
 import Spinner from '@/components/ui/spinner';
@@ -68,7 +68,7 @@ export default function ViewTaskForm(props: any) {
         return (
           <div className="flex items-center">
             <Badge className="bg-gray-400" renderAsDot />
-            <Text className="ms-2 font-medium text-gray-600">Inprogress</Text>
+            <Text className="ms-2 font-medium text-gray-600">In Progress</Text>
           </div>
         );
       default:
@@ -79,6 +79,19 @@ export default function ViewTaskForm(props: any) {
           </div>
         );
     }
+  }
+
+  const handleApiCall = (statusData: Record<string, string>) => {
+
+    dispatch(putTaskStatusChange({ _id: statusData?._id, status: statusData?.status })).then((result: any) => {
+      if (putTaskStatusChange.fulfilled.match(result)) {
+        if (result && result.payload.success === true) {
+          closeModal()
+          dispatch(getAllTask({ pagination: false }));
+        }
+      }
+    });
+  
   }
 
 
@@ -93,22 +106,22 @@ export default function ViewTaskForm(props: any) {
       <>
         <div className=" h-full w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap">
           <div className="flex items-center pt-6 px-6">
-            <Title as="h3" className="text-xl xl:text-2xl">
+            <Title as="h3" className="text-xl xl:text-2xl w-[18rem] truncate">
               {dataa?.title}
             </Title>
             <div className='ms-auto flex items-center gap-3'>
               <div>
                 { getStatusBadge(dataa?.status) }
               </div>
-              {signIn?.role !== 'client' &&
+              {(signIn?.role !== 'client' && signIn?.role !== 'team_client') &&
                 <Popover
-                  placement="left"
-                  className=" min-w-[135px] px-0 dark:bg-gray-100 [&>svg]:dark:fill-gray-100 "
+                  placement="bottom"
+                  className=" min-w-[135px] px-0 dark:bg-gray-100 [&>svg]:dark:fill-gray-100 demo_test"
                   content={({ setOpen }) => (
                     <div className="px-2 text-gray-900">
                       <Button
                         variant="text"
-                        onClick={() => dispatch(putTaskStatusChange({ status: 'pending' }))}
+                        onClick={() => handleApiCall({ _id: dataa?._id, status: 'pending' })}
                         className="flex w-full items-center justify-start px-2 py-2.5 hover:bg-gray-100 focus:outline-none dark:hover:bg-gray-50"
                       >
                         {/* <PiCopySimple className="mr-2 h-5 w-5 text-gray-500" /> */}
@@ -116,7 +129,7 @@ export default function ViewTaskForm(props: any) {
                       </Button>
                       <Button
                         variant="text"
-                        onClick={() => dispatch(putTaskStatusChange({ status: 'in_progress' }))}
+                        onClick={() => handleApiCall({ _id: dataa?._id, status: 'in_progress' })}
                         className="flex w-full items-center justify-start px-2 py-2.5 hover:bg-gray-100 focus:outline-none dark:hover:bg-gray-50"
                       >
                         {/* <PiShareFat className="mr-2 h-5 w-5 text-gray-500" /> */}
@@ -125,7 +138,7 @@ export default function ViewTaskForm(props: any) {
                       <Button
                         variant="text"
                         className="flex w-full items-center justify-start px-2 py-2.5 hover:bg-gray-100 focus:outline-none dark:hover:bg-gray-50"
-                        onClick={() => dispatch(putTaskStatusChange({ status: 'completed' }))}
+                        onClick={() => handleApiCall({ _id: dataa?._id, status: 'completed' })}
                       >
                         {/* <PiTrashSimple className="mr-2 h-5 w-5 text-gray-500" /> */}
                         Completed
@@ -157,44 +170,50 @@ export default function ViewTaskForm(props: any) {
               <Text className="mt-3 xl:leading-6">{event.description}</Text>
             )} */}
 
-            <ul className="mt-7 px-6 flex flex-col gap-[18px] text-gray-600">
-              <li className="flex gap-2">
+            <div className="mt-7 px-6 flex flex-col gap-[18px] text-gray-600">
+              <div className="flex gap-2">
                 <FaUserCircle className="h-5 w-5" />
                 <span>Client: </span>
-                <span className="font-medium text-gray-1000">
+                <span className="font-medium text-gray-1000 capitalize">
                   {dataa?.client_name}
                 </span>
-              </li>
-              <li className="flex gap-2">
+              </div>
+              <div className="flex gap-2">
                 <BsPersonFill className="h-5 w-5" />
                 <span>Assigned by: </span>
-                <span className="font-medium text-gray-1000">
+                <span className="font-medium text-gray-1000 capitalize">
                   {dataa?.assigned_by_name}
                 </span>
-              </li>
-              <li className="flex gap-2">
+              </div>
+              <div className="flex gap-2">
                 <FaPeopleGroup className="h-5 w-5" />
                 <span>Assigned to: </span>
-                <span className="font-medium text-gray-1000">
+                <span className="font-medium text-gray-1000 capitalize">
                   {dataa?.assigned_to_name}
                 </span>
-              </li>
-              <li className="flex gap-2">
+              </div>
+              <div className="flex gap-2">
                 <MdOutlineCalendarMonth className="h-5 w-5" />
                 <span>Created: </span>
                 <span className="font-medium text-gray-1000">
                   {moment(dataa?.createdAt).format("DD MMM, YY - hh:mm A")}
                 </span>
-              </li>
-              <li className="flex gap-2">
+              </div>
+              <div className="flex gap-2">
                 <MdOutlineCalendarMonth className="h-5 w-5" />
                 <span>Deadline: </span>
                 <span className="font-medium text-gray-1000">
                   {moment(dataa?.due_date).format("DD MMM, YY - hh:mm A")}
                 </span>
-              </li>
-
-            </ul>
+              </div>
+              <div className="flex gap-2">
+                <span>Task Description: </span>
+                <span className="font-medium text-gray-1000 capitalize">
+                  {/* {dataa?.internal_info && dataa?.internal_info?.slice(3, dataa?.internal_info?.length - 4)} */}
+                  <p dangerouslySetInnerHTML={{ __html: dataa?.internal_info }}></p>
+                </span>
+              </div>
+            </div>
             {/* <div className={cn('grid grid-cols-2 gap-4 pt-5 ')}>
               <Button
                 variant="outline"

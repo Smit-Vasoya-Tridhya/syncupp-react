@@ -7,7 +7,7 @@ type PostAddInvoiceApiData = {
     role?: string;
   }
 type DeleteInvoice = {
-  invoiceIdsToDelete: [string]
+  invoiceIdsToDelete: string | string[]
   }
 type UpdateInvoiceStatusByID = {
   _id:string,
@@ -58,6 +58,7 @@ type PostCreateInvoice = {
     }
   ]
   }
+  
 type GetInvoiceDataByID = 
   {
     _id: string,
@@ -74,15 +75,6 @@ type GetInvoiceDataByID =
         description: string,
         _id: string
       },
-      {
-        item: string,
-        qty: Number,
-        rate: Number,
-        tax: string,
-        amount: Number,
-        description: string,
-        _id: string
-      }
     ],
     sub_total: Number,
     total: Number,
@@ -91,6 +83,7 @@ type GetInvoiceDataByID =
     status: string,
     from: {
       _id: string,
+      name:string,
       company_name: string,
       address: string,
       pincode: Number,
@@ -151,6 +144,10 @@ type GetInvoiceApiData = {
   company_name: string;
   name: string;
   }
+type GetInvoiceDataClient ={
+    client_id:string
+  }
+
 
    // GET ALL CLIENT LIST APIs
    export const GetInvoiceApi = async (data: GetInvoiceApiData) => {
@@ -175,7 +172,7 @@ type GetInvoiceApiData = {
     return responseData;
   };
   //  Get All INVOICE DATA
-  export const GetInvoiceDataApi = async (data: GetInvoiceData) => {
+  export const GetInvoiceDataApi = async (data: GetInvoiceDataClient) => {
     const response = await AxiosDefault({
       url: "/api/v1/invoice/get-invoice-data",
       method: "POST",
@@ -230,9 +227,9 @@ type GetInvoiceApiData = {
     return responseData;
   };
   // UPDATE INVOICE DATA BY ID
-  export const UpdateInvoiceDataByIDApi = async (data: UpdateInvoiceDataByID) => {
+  export const UpdateInvoiceDataByIDApi = async (data: UpdateInvoiceDataByID , invoice_id : any) => {
     const response = await AxiosDefault({
-      url: `/api/v1/invoice/${data._id}`,
+      url: `/api/v1/invoice/${invoice_id}`,
       method: "PUT",
       data: data,
       contentType: "application/json", 
@@ -241,9 +238,9 @@ type GetInvoiceApiData = {
     return responseData;
   };
   // UPDATE INVOICE STATUS UPDATE BY ID
-  export const UpdateInvoiceStatusByIDApi = async (data: UpdateInvoiceStatusByID) => {
+  export const UpdateInvoiceStatusByIDApi = async (data: UpdateInvoiceStatusByID , invoice_id : any) => {
     const response = await AxiosDefault({
-      url: `/api/v1/invoice/status-update/${data._id}`,
+      url: `/api/v1/invoice/status-update/${invoice_id}`,
       method: "PUT",
       data: data,
       contentType: "application/json", 

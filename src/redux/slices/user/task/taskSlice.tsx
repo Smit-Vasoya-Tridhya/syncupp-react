@@ -38,6 +38,7 @@ type DeleteTaskData = {
 }
 
 type putTaskStatusChangeData = {
+  _id: string;
   status: string;
 }
 interface PostAPIResponse {
@@ -160,6 +161,21 @@ export const putTaskStatusChange: any = createAsyncThunk(
   }
 );
 
+export const putTaskStatusChangeData: any = createAsyncThunk(
+  "task/putTaskStatusChangeData",
+  async (data: any, { dispatch }) => {
+    try {
+
+      const res: any = await dispatch(putTaskStatusChange(data));
+
+      // const response: any = await putTaskStatusChangeApi(data);
+      // return response;
+    } catch (error: any) {
+      return { status: false, message: error.response.data.message } as PostAPIResponse;
+    }
+  }
+);
+
 export const taskSlice: any = createSlice({
   name: "task",
   initialState,
@@ -176,6 +192,13 @@ export const taskSlice: any = createSlice({
         gridView: action.payload
       }
     },
+    setStatusUpdatedData(state, action) {
+      console.log("####", state?.data , action)
+      return {
+        ...state,
+        data: state?.data?.activity?.map((i: any )=>i?._id === action?.payload?._id ? {...i, status: action?.payload?.status} : i)
+      }
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -371,5 +394,5 @@ export const taskSlice: any = createSlice({
   },
 });
 
-export const { RemoveTaskData, setGridView } = taskSlice.actions;
+export const { RemoveTaskData, setGridView, setStatusUpdatedData } = taskSlice.actions;
 export default taskSlice.reducer;

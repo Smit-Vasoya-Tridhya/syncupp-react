@@ -45,7 +45,7 @@ export default function ResetPasswordForm() {
         onSubmit={onSubmit}
         // resetValues={reset}
         useFormProps={{
-          mode: 'onTouched',
+          mode: 'all',
           defaultValues: initialValues,
         }}
       >
@@ -78,6 +78,7 @@ export default function ResetPasswordForm() {
               type="submit"
               color="info"
               rounded="pill"
+              size={isMedium ? 'lg' : 'xl'}
               disabled={resetPassword?.loading}
             >
               Reset Password

@@ -6,9 +6,6 @@ import { Text } from '@/components/ui/text';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Tooltip } from '@/components/ui/tooltip';
 import { routes } from '@/config/routes';
-import EyeIcon from '@/components/icons/eye';
-import { TeamMemberType } from '@/data/products-data';
-import DeletePopover from '@/app/shared/delete-popover';
 import { Badge, Button } from 'rizzui';
 import moment from 'moment';
 import { MdOutlineDone } from 'react-icons/md';
@@ -17,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import { clientteamStatuschange, getAllTeamMember } from '@/redux/slices/user/team-member/teamSlice';
 import { initiateRazorpay } from '@/services/clientpaymentService';
+import { useState } from 'react';
 
 type Columns = {
   data: any[];
@@ -99,7 +97,8 @@ export const GetclientteamColumns = ({
   const dispatch = useDispatch()
   const clientSliceData = useSelector((state: any) => state?.root?.client);
   const loading = useSelector((state: any) => state?.root?.client?.loading);
-  console.log(loading, 'loading')
+
+  const [loadingflag, setloadingflag] = useState(false)
 
 
   const ClintteamlistAPIcall = async () => {
@@ -108,7 +107,7 @@ export const GetclientteamColumns = ({
   }
 
   const StatusHandler = (row: any) => {
-    console.log(row, 'row')
+    // console.log(row, 'row')
     dispatch(clientteamStatuschange({ id: row?.reference_id?._id })).then((result: any) => {
       if (clientteamStatuschange.fulfilled.match(result) && result.payload.success === true) {
         dispatch(getAllTeamMember({ page: currentPage, items_per_page: pageSize, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm, client_id: clientSliceData?.clientId, pagination: true }));
@@ -157,7 +156,7 @@ export const GetclientteamColumns = ({
       key: 'name',
       width: 200,
       render: (value: string) => (
-        <Text className="font-medium text-gray-700">{value}</Text>
+        <Text className="font-medium text-gray-700 capitalize">{value}</Text>
       ),
     },
     {
@@ -261,7 +260,7 @@ export const GetclientteamColumns = ({
               placement="top"
               color="invert"
             >
-              <Button disabled={loading} onClick={() => { initiateRazorpay(router, routes.client_team, token, row?.reference_id?._id, ClintteamlistAPIcall) }} size="sm" variant="outline" className='bg-white text-black' aria-label={'Approve Team member'}>
+              <Button disabled={loadingflag} onClick={() => { initiateRazorpay(router, routes.client_team, token, row?.reference_id?._id, ClintteamlistAPIcall, setloadingflag) }} size="sm" variant="outline" className='bg-white text-black' aria-label={'Approve Team member'}>
                 <MdOutlineDone className="h-4 w-4" />
               </Button>
             </Tooltip>

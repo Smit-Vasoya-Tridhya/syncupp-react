@@ -55,7 +55,7 @@ function getStatusBadge(status: string) {
       return (
         <div className="flex items-center">
           <Badge className="bg-gray-400" renderAsDot />
-          <Text className="ms-2 font-medium text-gray-600">Inprogress</Text>
+          <Text className="ms-2 font-medium text-gray-600">In Progress</Text>
         </div>
       );
     default:
@@ -122,7 +122,7 @@ export const GetColumns = ({
       key: 'title',
       width: 200,
       render: (value: string) => (
-        <Text className="font-medium text-gray-700 truncate">{value}</Text>
+        <Text className="font-medium w-28 text-gray-700 truncate normal-case">{value}</Text>
       ),
     },
     {
@@ -173,7 +173,7 @@ export const GetColumns = ({
       key: 'client_name',
       width: 200,
       render: (value: any) => (
-        <Text className="font-medium text-gray-700">{value}</Text>
+        <Text className="font-medium text-gray-700 capitalize">{value}</Text>
       ),
     },
     {
@@ -192,7 +192,7 @@ export const GetColumns = ({
       width: 200,
       render: (value: string) => {
         // const date = moment(value).fromNow();
-        return <Text className="font-medium text-gray-700">{value}</Text>
+        return <Text className="font-medium text-gray-700 capitalize">{value}</Text>
       },
     },
     {
@@ -211,7 +211,7 @@ export const GetColumns = ({
       width: 200,
       render: (value: string) => {
         // const date = moment(value).fromNow();
-        return <Text className="font-medium text-gray-700">{value}</Text>
+        return <Text className="font-medium text-gray-700 capitalize">{value}</Text>
       },
     },
     {
@@ -241,27 +241,29 @@ export const GetColumns = ({
       render: (_: string, row: TeamMemberType) => {
         return (
           <div>
-            {signIn?.role !== 'client' &&
-              <div className="flex items-center justify-end gap-3 pe-4">
+            <div className="flex items-center justify-end gap-3 pe-4">
+              {(signIn?.role !== 'client' && signIn?.role !== 'team_client') &&
                 <CustomModalButton
                   icon={<PencilIcon className="h-4 w-4" />}
                   view={<AddTaskForm title="Edit Task" row={row} />}
                   customSize="925px"
                   title='Edit Task'
                 />
-                <CustomModalButton
-                  icon={<EyeIcon className="h-4 w-4" />}
-                  view={<ViewTaskForm data={row} />}
-                  customSize="600px"
-                  title='View Task'
-                />
+              }
+              <CustomModalButton
+                icon={<EyeIcon className="h-4 w-4" />}
+                view={<ViewTaskForm data={row} />}
+                customSize="625px"
+                title='View Task'
+              />
+              {(signIn?.role !== 'client' && signIn?.role !== 'team_client') &&
                 <DeletePopover
                   title={`Delete the Task`}
                   description={`Are you sure you want to delete?`}
                   onDelete={() => onDeleteItem(row._id, currentPage, pageSize, data?.length <= 1 ? true : false, sortConfig, searchTerm)}
                 />
-              </div>
-            }
+              }
+            </div>
           </div>
         );
       },

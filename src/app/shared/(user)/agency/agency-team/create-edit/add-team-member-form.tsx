@@ -35,7 +35,7 @@ export default function AddTeamMemberForm(props: any) {
   const router = useRouter()
   const { closeModal } = useModal();
   const [save, setSave] = useState(false)
-  const [loader, setLoader] = useState(true);
+  const [loader, setLoader] = useState(false);
   const [reset, setReset] = useState({})
   const teamMemberData = useSelector(
     (state: any) => state?.root?.teamMember
@@ -45,7 +45,8 @@ export default function AddTeamMemberForm(props: any) {
 
   const initialValues: TeamMemberSchema = {
     email: '',
-    name: '',
+    first_name: '',
+    last_name: '',
     contact_number: '',
     role: ''
   };
@@ -58,21 +59,24 @@ export default function AddTeamMemberForm(props: any) {
   let defaultValuess = {};
   if (data) {
     defaultValuess = {
-      name: data?.name,
+      first_name: data?.first_name,
+      last_name: data?.last_name,
       email: data?.email,
       contact_number: data?.contact_number,
       role: data?.member_role?.name === 'team_member' ? 'Team member' : 'Admin'
     };
-  } else if (signIn?.role === 'client') {
+  } else if (signIn?.role === 'client' || signIn?.role === 'team_client') {
     defaultValuess = {
-      name: '',
+      last_name: '',
+      first_name: '',
       email: '',
       contact_number: '',
       role: 'Team member'
     };
   } else {
     defaultValuess = {
-      name: '',
+      last_name: '',
+      first_name: '',
       email: '',
       contact_number: '',
       role: ''
@@ -83,7 +87,8 @@ export default function AddTeamMemberForm(props: any) {
     let formData = {};
     if (title === 'New Team member') {
       formData = {
-        name: dataa?.name ?? '',
+        first_name: dataa?.first_name ?? '',
+        last_name: dataa?.last_name ?? '',
         email: dataa?.email ?? '',
         contact_number: dataa?.contact_number ?? '',
         role: dataa?.role === 'Team member' ? 'team_member' : 'admin',
@@ -91,7 +96,8 @@ export default function AddTeamMemberForm(props: any) {
       }
     } else {
       formData = {
-        name: dataa?.name ?? '',
+        first_name: dataa?.first_name ?? '',
+        last_name: dataa?.last_name ?? '',
         email: dataa?.email ?? '',
         contact_number: dataa?.contact_number ?? '',
         role: dataa?.role === 'Team member' || dataa?.role === 'team_member' ? 'team_member' : 'admin',
@@ -106,11 +112,13 @@ export default function AddTeamMemberForm(props: any) {
     if (title === 'New Team member') {
       dispatch(addTeamMember(fullData)).then((result: any) => {
         if (addTeamMember.fulfilled.match(result)) {
+          // console.log(result?.payload?.data?.referral_points,'result')
+          // result?.payload?.data?.referral_points         //NOTE : add for future
           setLoader(false);
           setSave(false);
           if (result && result.payload.success === true) {
             router.push(routes.agency_team_payment)
-            save && closeModal();
+            // save && closeModal();
             setReset({ ...initialValues })
             dispatch(getAllTeamMember({ sort_field: 'createdAt', sort_order: 'desc', agency_id: clientSliceData?.agencyId, pagination: true }));
             setSave(false);
@@ -168,15 +176,25 @@ export default function AddTeamMemberForm(props: any) {
                 </ActionIcon>
               </div>
               <div className={cn('grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-4')}>
-                <Input
+              <Input
                   type="text"
                   onKeyDown={handleKeyDown}
-                  label="Name *"
+                  label="First name *"
                   color="info"
                   placeholder="Enter your name"
                   className="[&>label>span]:font-medium"
-                  {...register('name')}
-                  error={errors.name?.message as string}
+                  {...register('first_name')}
+                  error={errors.first_name?.message as string}
+                />
+                <Input
+                  type="text"
+                  onKeyDown={handleKeyDown}
+                  label="Last name *"
+                  color="info"
+                  placeholder="Enter your name"
+                  className="[&>label>span]:font-medium"
+                  {...register('last_name')}
+                  error={errors.last_name?.message as string}
                 />
                 <Input
                   type="email"
@@ -210,7 +228,6 @@ export default function AddTeamMemberForm(props: any) {
                       label="Role *"
                       placeholder='Select role'
                       color="info"
-                      disabled={signIn?.role === 'client'}
                       error={errors?.role?.message as string}
                       getOptionValue={(option) => option?.name}
                     />
@@ -229,7 +246,7 @@ export default function AddTeamMemberForm(props: any) {
                     </Button>
                   </div>
                   <div className='float-right text-right'>
-                    {title === 'New Team member' &&
+                    {/* {title === 'New Team member' &&
                       <Button
                         //  type='submit'
                         className="hover:gray-700 @xl:w-auto dark:bg-gray-200 dark:text-white"
@@ -242,7 +259,7 @@ export default function AddTeamMemberForm(props: any) {
                         Save & New
                         {Object.keys(errors).length === 0 && loader && isSubmitSuccessful && !save && <Spinner size="sm" tag='div' className='ms-3' color='white' />}
                       </Button>
-                    }
+                    } */}
                     <Button
                       type="submit"
                       className="hover:gray-700 ms-3 @xl:w-auto dark:bg-gray-200 dark:text-white"

@@ -91,7 +91,6 @@ export const UpdateCoupenListbyId: any = createAsyncThunk(
   'couponMangemnt/updateByid',
   async ({ data, id }: any) => {
     try {
-      console.log(data, id, 'id');
       const response: any = await UpadatecoupenDataByid(data, id);
       return response;
     } catch (error: any) {

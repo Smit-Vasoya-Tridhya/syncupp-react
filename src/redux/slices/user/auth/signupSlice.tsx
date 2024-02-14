@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { PostSignup, SignupSubscription } from "../../../../api/user/auth/authApis";
 import { toast } from 'react-hot-toast';
-import { setRoleonSingup } from "./signinSlice";
+import { getUserProfile, setRoleonSingup } from "./signinSlice";
 
 type UserData = {
   firstName: string;
@@ -59,6 +59,7 @@ export const signUpUser: any = createAsyncThunk(
       // console.log(response?.data?.user?.role?.name, 'response', response)
       localStorage.setItem("token", response.data?.token);
       await dispatch(setRoleonSingup(response?.data?.user?.role?.name))
+      // await dispatch(getUserProfile())
       return response;
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as PostSignUpResponse;

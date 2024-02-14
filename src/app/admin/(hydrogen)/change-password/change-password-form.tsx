@@ -38,7 +38,7 @@ export default function ChangePasswordForm() {
     dispatch(changePasswordAdmin(data)).then((result: any) => {
       if (changePasswordAdmin.fulfilled.match(result)) {
         if (result && result.payload.success === true ) {
-          router.replace(routes.admin.dashboard);
+        closeModal();
         } 
       }
     })
@@ -52,6 +52,7 @@ export default function ChangePasswordForm() {
         onSubmit={onSubmit}
         useFormProps={{
           defaultValues: initialValues,
+          mode: 'all'
         }}
         className=" [&_label]:font-medium p-10"
       >

@@ -3,25 +3,25 @@ import { messages } from '@/config/messages';
 
 // form zod validation schema
 
-const MAX_FILE_SIZE = 5000000;
+const MAX_FILE_SIZE = 2000000;
 const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png'];
 
 export const CouponManagementForm = z.object({
   brand: z
     .string()
-    .min(1, { message: 'Brand Name is Required' })
-    .max(15, { message: 'Maximum Brand name length is 15!' }), // string
+    .min(1, { message: messages.brandRequired })
+    .max(15, { message: messages.brandMaxLength }), // string
   couponCode: z
     .string()
-    .min(1, { message: 'Coupon Code is Required' })
-    .max(20, { message: 'Maximum Coupon Code length is 20!' }), // dropdown selection
+    .min(1, { message: messages.couponCodeRequired })
+    .max(20, { message: messages.couponCodeMaxLength }), // dropdown selection
   discountTitle: z
     .string()
-    .min(1, { message: 'Discount Title is Required' })
-    .max(15, { message: 'Maximum Discount Title length is 15!' }), // date picker value
+    .min(1, { message: messages.discountTitleRequired })
+    .max(15, { message: messages.discountTitleMaxLength }), // date picker value
   siteURL: z
     .string()
-    .min(1, { message: 'Wesite url is Required' })
+    .min(1, { message: messages.websiteUrlRequired })
     .trim()
     .nullable()
     .refine(
@@ -34,29 +34,28 @@ export const CouponManagementForm = z.object({
         );
       },
       {
-        message: 'Inavalid url',
+        message: messages.invalidUrl,
       }
     ),
   brandLogo: z
     .any()
     .refine((files) => {
-      console.log('Files:', files); // Add this line
       return !!files;
-    }, 'Image is required.')
+    }, messages.brandImageRequired)
     .refine((files) => {
       if (typeof files === 'string') {
         return true;
       } else {
         return files?.size <= MAX_FILE_SIZE;
       }
-    }, `Max file size is 5MB.`)
+    }, messages.maxFileSize)
     .refine((files) => {
       if (typeof files === 'string') {
         return true;
       } else {
         return ACCEPTED_IMAGE_TYPES.includes(files?.type);
       }
-    }, '.jpg, .jpeg and png files are accepted.'),
+    }, messages.acceptedImageFormats),
 });
 
 export type CouponManagementForm = z.infer<typeof CouponManagementForm>;
