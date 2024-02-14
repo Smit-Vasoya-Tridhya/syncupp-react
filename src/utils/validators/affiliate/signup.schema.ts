@@ -15,10 +15,10 @@ export const signUpSchema = z.object({
     company_name: z.string().min(1, { message: messages.companynameRequired }).max(30, { message: messages.companyNameMaxLength }),
     password: validatePassword,
     confirmPassword: validateConfirmPassword,
-    isAgreedtoemail: z.boolean().refine(value => value !== undefined, {
+    isAgreedtoemail: z.boolean().refine(value => value === true, {
         message: "This field is required."
     }),
-    isAgreedtotems: z.boolean().refine(value => value !== undefined, {
+    isAgreedtotems: z.boolean().refine(value => value === true, {
         message: "This field is required."
     }),
 }).refine(data => data.password === data.confirmPassword, {

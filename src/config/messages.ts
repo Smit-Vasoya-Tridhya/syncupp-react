@@ -126,4 +126,6 @@ export const messages = {
   brandImageRequired: 'Brand Image is required.',
   maxFileSize: 'Maximum file size is 2 MB.',
   acceptedImageFormats: '.jpg, .jpeg, and .png Files are accepted.',
+  thoughtsRequired:'Thoughts is required',
+  thoughtsMaxlength: 'Thoughts maximum length is 1000',
 };
