@@ -66,7 +66,25 @@ export const EditCmsPrivacyPolicy = async (data: any): Promise<ApiResponse> => {
   const responseData: ApiResponse = response.data;
   return responseData;
 };
-
+export const EditCmsAboutus = async (data: any): Promise<ApiResponse> => {
+  const response = await AxiosDefault({
+    url: '/api/v1/crm/about-us-update',
+    method: 'PUT',
+    data: data,
+    contentType: 'application/json',
+  });
+  const responseData: ApiResponse = response.data;
+  return responseData;
+};
+export const GetCmsAboutus = async (): Promise<ApiResponse> => {
+  const response = await AxiosDefault({
+    url: '/api/v1/crm/about-us',
+    method: 'GET',
+    contentType: 'application/json',
+  });
+  const responseData: ApiResponse = response.data;
+  return responseData;
+};
 export const GetCmsPrivacyPolicy = async (): Promise<ApiResponse> => {
   const response = await AxiosDefault({
     url: '/api/v1/crm/privacy-policy',

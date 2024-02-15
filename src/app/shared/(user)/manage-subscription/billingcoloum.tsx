@@ -82,7 +82,7 @@ export const billingColumns = ({
     render: (value: string) => (
       <>
         <Text className="font-medium capitalize text-gray-700">
-          {parseFloat(value) / 100}
+          $ {parseFloat(value) / 100}
         </Text>
       </>
     ),

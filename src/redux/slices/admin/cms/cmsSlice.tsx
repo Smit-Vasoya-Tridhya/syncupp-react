@@ -1,6 +1,8 @@
 import {
+  EditCmsAboutus,
   EditCmsConatctUs,
   EditCmsPrivacyPolicy,
+  GetCmsAboutus,
   GetCmsConatctUS,
   GetCmsPrivacyPolicy,
   GetCmsTermscondition,
@@ -57,6 +59,34 @@ export const Gettermsandcondition: any = createAsyncThunk(
   async (data: any) => {
     try {
       const response: any = await GetCmsTermscondition();
+      return response;
+    } catch (error: any) {
+      return {
+        status: false,
+        message: error.response.data.message,
+      } as FaqDataResponse;
+    }
+  }
+);
+export const GetAboutUS: any = createAsyncThunk(
+  'cms/getaboutus',
+  async (data: any) => {
+    try {
+      const response: any = await GetCmsAboutus();
+      return response;
+    } catch (error: any) {
+      return {
+        status: false,
+        message: error.response.data.message,
+      } as FaqDataResponse;
+    }
+  }
+);
+export const EditAboutUs: any = createAsyncThunk(
+  'cms/editaboutus',
+  async (data: any) => {
+    try {
+      const response: any = await EditCmsAboutus(data);
       return response;
     } catch (error: any) {
       return {
@@ -144,6 +174,58 @@ export const cmsSlice = createSlice({
         conatcUSdata: '',
       };
     });
+    //get about us
+    builder
+      .addCase(GetAboutUS.pending, (state) => {
+        return {
+          ...state,
+          loading: true,
+        };
+      })
+      .addCase(GetAboutUS.fulfilled, (state, action) => {
+        return {
+          ...state,
+          // data: action.payload,
+          loading: false,
+          conatcUSdata: action.payload,
+        };
+      })
+      .addCase(GetAboutUS.rejected, (state) => {
+        return {
+          ...state,
+          loading: false,
+          addTermAndConditionStatus: 'error',
+        };
+      });
+    //edit about us
+
+    builder
+      .addCase(EditAboutUs.pending, (state) => {
+        return {
+          ...state,
+          loading: true,
+        };
+      })
+      .addCase(EditAboutUs.fulfilled, (state, action) => {
+        if (action.payload.status == true) {
+          toast.error(action.payload.message);
+        } else {
+          toast.success(action.payload.message);
+        }
+        return {
+          ...state,
+          // data: action.payload,
+          loading: false,
+        };
+      })
+      .addCase(EditAboutUs.rejected, (state) => {
+        return {
+          ...state,
+          loading: false,
+          addTermAndConditionStatus: 'error',
+        };
+      });
+
     builder
       .addCase(GetPrivacy.pending, (state) => {
         return {

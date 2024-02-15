@@ -50,20 +50,18 @@ export const getColumns = ({
         title="Seat No"
         sortable
         ascending={
-          sortConfig?.direction === 'asc' && sortConfig?.key === 'seat_No'
+          sortConfig?.direction === 'asc' && sortConfig?.key === 'seat_no'
         }
       />
     ),
-    onHeaderCell: () => onHeaderCellClick('seat_No'),
-    dataIndex: 'seat_No',
-    key: 'seat_No',
+    onHeaderCell: () => onHeaderCellClick('seat_no'),
+    dataIndex: 'seat_no',
+    key: 'seat_no',
     width: 200,
-    render: (_: string, row: any, index: number) => {
+    render: (value: string, row: any, index: number) => {
       // const capitalizedValue = value.charAt(0).toUpperCase() + value.slice(1);
       return (
-        <Text className="font-medium capitalize text-gray-700">
-          {index + 1}
-        </Text>
+        <Text className="font-medium capitalize text-gray-700">{value}</Text>
       );
     },
   },
@@ -83,7 +81,9 @@ export const getColumns = ({
     width: 200,
     render: (value: string) => (
       <>
-        <Text className="font-medium capitalize text-gray-700">{value || '-'}</Text>
+        <Text className="font-medium capitalize text-gray-700">
+          {value || '-'}
+        </Text>
       </>
     ),
   },
@@ -102,7 +102,13 @@ export const getColumns = ({
     key: 'role',
     width: 200,
     render: (value: string) => (
-      <Text className="font-medium  capitalize text-gray-700">{value || '-'}</Text>
+      <Text className="font-medium  capitalize text-gray-700">
+        {value === 'team_agency'
+          ? 'Team Agency'
+          : value === 'team_client'
+            ? 'Team Client'
+            : value || '-'}
+      </Text>
     ),
   },
   {
@@ -132,47 +138,50 @@ export const getColumns = ({
     key: 'action',
     width: 120,
     render: (value: string, row: Record<string, string>, index: number) => {
-      console.log(data);
-      if (Object.keys(row).length !== 0) {
-        return (
-          <div className="flex items-center justify-end gap-3 pe-4">
-            <CustomeDeletePopover
-              title="Delete the User"
-              description={'Are you sure you want to delete'}
-              onDelete={() =>
-                onDeleteItem(
-                  row.user_id,
-                  currentPage,
-                  pageSize,
-                  data?.length <= 1 ? true : false,
-                  sortConfig,
-                  searchTerm
-                )
-              }
-              text="Remove User"
-            />
-          </div>
-        );
+      const isStatusPresent: any = 'status' in row;
+      if (row.seat_no == '1') {
       } else {
-        return (
-          <div className="flex items-center justify-end gap-3 pe-4">
-            <CustomeDeletePopover
-              title="Delete the User"
-              description={'Are you sure you want to delete'}
-              onDelete={() =>
-                onDeleteItem(
-                  row.user_id,
-                  currentPage,
-                  pageSize,
-                  data?.length <= 1 ? true : false,
-                  sortConfig,
-                  searchTerm
-                )
-              }
-              text="Cancel Subscription"
-            />
-          </div>
-        );
+        if (row.status == 'Allocated') {
+          return (
+            <div className="flex items-center justify-end gap-3 pe-4">
+              <CustomeDeletePopover
+                title="Delete the User"
+                description={'Are you sure you want to delete'}
+                onDelete={() =>
+                  onDeleteItem(
+                    row.user_id,
+                    currentPage,
+                    pageSize,
+                    data?.length <= 1 ? true : false,
+                    sortConfig,
+                    searchTerm
+                  )
+                }
+                text="Remove User"
+              />
+            </div>
+          );
+        } else {
+          return (
+            <div className="flex items-center justify-end gap-3 pe-4">
+              <CustomeDeletePopover
+                title="Cancel Subscription"
+                description={'Are you sure you want Cancel Subscription'}
+                onDelete={() =>
+                  onDeleteItem(
+                    'subscription',
+                    currentPage,
+                    pageSize,
+                    data?.length <= 1 ? true : false,
+                    sortConfig,
+                    searchTerm
+                  )
+                }
+                text="Cancel Subscription"
+              />
+            </div>
+          );
+        }
       }
     },
   },

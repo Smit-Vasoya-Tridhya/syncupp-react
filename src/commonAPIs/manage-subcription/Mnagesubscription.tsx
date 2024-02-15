@@ -49,10 +49,20 @@ export const RemoveUSer = async (id: any) => {
   return responseData;
 };
 
+export const CancleSubcr = async () => {
+  const response = await AxiosDefault({
+    url: '/api/v1/payment/cancel-subscription',
+    method: 'GET',
+    contentType: 'application/json',
+  });
+  const responseData = response.data;
+  return responseData;
+};
+
 export const GetCardData = async (data: any) => {
   const response = await AxiosDefault({
-    url: '/api/v1/',
-    method: 'POST',
+    url: '/api/v1/payment/get-subscription',
+    method: 'GET',
     data: data,
     contentType: 'application/json',
   });
