@@ -4,7 +4,7 @@ import { HeaderCell } from '@/components/ui/table';
 import { Text } from '@/components/ui/text';
 import { Checkbox } from '@/components/ui/checkbox';
 import DeletePopover from '@/app/shared/delete-popover';
-import { useDispatch , useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import { getAllAgencyagreement, updateagreementStatus } from '@/redux/slices/user/agreement/agreementSlice';
 
@@ -37,7 +37,7 @@ export const InquiryColumns = ({
 
     const dispatch = useDispatch();
     const { inquirylistDetails, loading } = useSelector((state: any) => state?.root?.inquiry);
-    console.log(inquirylistDetails,'inquirylistDetails')
+    console.log(inquirylistDetails, 'inquirylistDetails')
 
 
     const StatusHandler = (status: string, id: string, setOpen: any) => {
@@ -84,16 +84,16 @@ export const InquiryColumns = ({
                     title="Name"
                     sortable
                     ascending={
-                        sortConfig?.direction === 'asc' && sortConfig?.key === 'name'
+                        sortConfig?.direction === 'asc' && sortConfig?.key === 'first_name'
                     }
                 />
             ),
-            onHeaderCell: () => onHeaderCellClick('name'),
-            dataIndex: 'name',
-            key: 'name',
+            onHeaderCell: () => onHeaderCellClick('first_name'),
+            dataIndex: 'first_name',
+            key: 'first_name',
             width: 200,
-            render: (value: string) => (
-                <Text className="font-medium text-gray-700 capitalize">{value && value != "" ? value : "-"}</Text>
+            render: (value: string, row: Record<string, string>) => (
+                <Text className="font-medium text-gray-700 capitalize">{row?.first_name && row?.first_name != "" ? row?.first_name + " " + row?.last_name : "-"}</Text>
             ),
         },
         {
@@ -138,14 +138,14 @@ export const InquiryColumns = ({
                     title="Message"
                     sortable
                     ascending={
-                        sortConfig?.direction === 'asc' && sortConfig?.key === 'message'
+                        sortConfig?.direction === 'asc' && sortConfig?.key === 'thoughts'
                     }
                 />
             ),
-            onHeaderCell: () => onHeaderCellClick('message'),
-            dataIndex: 'message',
-            key: 'message',
-            width: 200,
+            onHeaderCell: () => onHeaderCellClick('thoughts'),
+            dataIndex: 'thoughts',
+            key: 'thoughts',
+            width: 500,
             render: (value: string) => (
                 <Text className="font-medium text-gray-700">{value && value != "" ? value : "-"}</Text>
             ),
@@ -169,7 +169,7 @@ export const InquiryColumns = ({
             ),
         },
 
-    
+
         {
             // Need to avoid this issue -> <td> elements in a large <table> do not have table headers.
             title: <HeaderCell title="Actions" className="opacity-0" />,

@@ -117,7 +117,7 @@ export default function CreateAgreementForm() {
     //Preview mode Handler
     const handlePreview = (watch: any, trigger: any, isDirty: any, isValid: any) => {
 
-        console.log(isDirty, isValid,'120')
+     
 
         if (isValid) {
             // Toggle to preview mode
@@ -136,7 +136,7 @@ export default function CreateAgreementForm() {
                 <>
                     <div>
                         <PageHeader title="Create Agreement">
-                            <div className="mr-11">
+                            <div >
                                 <Link href={routes.agreement} className="w-full">
                                     <Button className="float-end mt-5 bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0">
                                         <FaArrowLeft className="me-1.5 h-[17px] w-[17px]" />
@@ -175,7 +175,7 @@ export default function CreateAgreementForm() {
                                                 onKeyDown={handleKeyDown}
                                                 type="text"
                                                 // size={isMedium ? 'lg' : 'xl'}
-                                                label="Enter Title"
+                                                label="Title *"
                                                 placeholder="Website Agreement"
                                                 // rounded="pill"
                                                 color="info"
@@ -231,7 +231,7 @@ export default function CreateAgreementForm() {
                                                     htmlFor="due_date"
                                                     className="mb-1.5 font-medium text-gray-700 dark:text-gray-600"
                                                 >
-                                                    Due Date
+                                                    Due Date *
                                                 </label>
                                                 <Controller
                                                     name="due_date"
@@ -263,7 +263,7 @@ export default function CreateAgreementForm() {
                                                     <QuillEditor
                                                         value={value}
                                                         onChange={onChange}
-                                                        label="Description"
+                                                        label="Description *"
                                                         className="col-span-full [&_.ql-editor]:min-h-[100px]"
                                                         labelClassName="font-medium text-gray-700 dark:text-gray-600 mb-1.5"
                                                     />

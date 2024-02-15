@@ -25,6 +25,7 @@ type Columns = {
     data: any[];
     sortConfig?: any;
     handleSelectAll: any;
+    handlecustomeSelectAll:any;
     checkedItems: string[];
     onDeleteItem: (id: string | string[], currentPage?: any, countPerPage?: number, Islastitem?: boolean, sortConfig?: Record<string, string>, searchTerm?: string) => void;
     onHeaderCellClick: (value: string) => void;
@@ -42,6 +43,7 @@ export const AgreementColumns = ({
     onDeleteItem,
     onHeaderCellClick,
     handleSelectAll,
+    handlecustomeSelectAll,
     onChecked,
     currentPage,
     pageSize,
@@ -82,9 +84,10 @@ export const AgreementColumns = ({
                 <div className="ps-3.5">
                     <Checkbox
                         title={'Select All'}
-                        onChange={handleSelectAll}
+                        onChange={handlecustomeSelectAll}
                         checked={checkedItems.length === data.length}
                         className="cursor-pointer"
+                        
                     />
                 </div>
             ),
@@ -124,7 +127,7 @@ export const AgreementColumns = ({
         {
             title: (
                 <HeaderCell
-                    title="RECEIVER"
+                    title="Receiver"
                     sortable
                     ascending={
                         sortConfig?.direction === 'asc' && sortConfig?.key === 'receiver'
@@ -142,7 +145,7 @@ export const AgreementColumns = ({
         {
             title: (
                 <HeaderCell
-                    title="DUEDATE"
+                    title="Duedate"
                     sortable
                     ascending={
                         sortConfig?.direction === 'asc' && sortConfig?.key === 'due_date'
@@ -161,7 +164,7 @@ export const AgreementColumns = ({
         {
             // Need to avoid this issue -> <td> elements in a large <table> do not have table headers.
             title: <HeaderCell
-                title="STATUS"
+                title="Status"
                 sortable
                 ascending={
                     sortConfig?.direction === 'asc' && sortConfig?.key === 'status'

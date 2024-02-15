@@ -117,7 +117,7 @@ const handleApiCall = (statusData: Record<string, string>) => {
             <CustomModalButton
               icon={<EyeIcon className="h-4 w-4" />}
               view={<ViewTaskForm data={task} />}
-              customSize="600px"
+              customSize="625px"
               title='View Task'
             />
             {(signIn?.role !== 'client' && signIn?.role !== 'team_client') &&

@@ -10,6 +10,7 @@ interface FormFooterProps {
   saveAndDraft?: string;
   preview?: string;
   isLoading?: boolean;
+  isLoad?: boolean;
   invoiceloader?: any;
   handleAltBtn?: () => void;
   saveAsDraft?: () => void; 
@@ -21,8 +22,9 @@ export const negMargin = '-mx-4 md:-mx-5 lg:-mx-6 3xl:-mx-8 4xl:-mx-10';
 
 export default function FormFooter({
   isLoading,
+  isLoad,
   altBtnText = 'Save',
-  submitBtnText = 'Submit',
+  submitBtnText = 'save & send',
   saveAndDraft = 'Submit',
   preview = 'Preview',
   className,
@@ -42,19 +44,13 @@ export default function FormFooter({
         negMargin
       )}
     >
-      {/* <Button
-        variant="outline"
-        className="w-full @xl:w-auto"
-        onClick={handleAltBtn}
-      >
-        {altBtnText}
-      </Button> */}
-
+{/* save and send button */}
       {invoiceloader?.loading ? (
         <>
           <Button
             type="submit"
             isLoading={isLoading}
+            onClick={createInvoice}
             className="w-full @xl:w-auto dark:bg-gray-100 dark:text-white dark:active:bg-gray-100"
             disabled={invoiceSliceData?.loading}
           >
@@ -74,22 +70,35 @@ export default function FormFooter({
           {submitBtnText}
         </Button>
       )}
-      <Button
-        variant="outline"
-        className="w-full @xl:w-auto"
-        onClick={saveAsDraft}
-      >
-        {altBtnText}
-      </Button>
 
-      {/* Third button */}
-      {/* <Button
-        variant="outline"
-        className="w-full @xl:w-auto"
-        onClick={previewButton}
-      >
-        {preview}
-      </Button> */}
+{/*  save button */}
+      {invoiceloader?.loading ? (
+        <>
+          <Button
+            type="submit"
+            isLoading={isLoad}
+            onClick={saveAsDraft}
+            className="w-full @xl:w-auto dark:bg-gray-100 dark:text-white dark:active:bg-gray-100"
+            disabled={invoiceSliceData?.loading}
+          >
+            {saveAndDraft}
+            {invoiceSliceData?.loading && (
+              <Spinner size="sm" tag="div" className="ms-3" color="white" />
+            )}
+          </Button>
+        </>
+      ) : (
+        <Button
+          type="submit"
+          isLoading={isLoad}
+          variant="outline"
+          className="w-full @xl:w-auto"
+          onClick={saveAsDraft}
+        >
+          {saveAndDraft}
+        </Button>
+      )}
+      
     </div>
   );
 }

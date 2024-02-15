@@ -28,7 +28,7 @@ export const clientSchema = z.object({
     }, {
         message: messages.companyUrlInvalid,
     }),
-    address: z.string().optional(),
+    address: z.string().min(5, { message: messages.AddressRequired }),
     city: z.string().optional(),
     state: z.string().optional(),
     country: z.string().optional(),

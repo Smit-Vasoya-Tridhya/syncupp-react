@@ -64,7 +64,7 @@ export const MenuItems = () => {
           icon: <FaFilePen />,
         },
         {
-          name: 'Manage Subcription',
+          name: 'Manage Subsription',
           href: routes.manageSubcription,
           icon: <AiOutlineDollar />,
         },
@@ -72,6 +72,31 @@ export const MenuItems = () => {
       break;
 
     case 'client':
+      menuItems = [
+        {
+          name: 'Dashboard',
+          href: routes.dashboard,
+          icon: <PiFolderNotchDuotone />,
+        },
+        {
+          name: 'Team',
+          href: routes.team,
+          icon: <PiUsersThree />,
+        },
+        {
+          name: 'Tasks',
+          href: routes.task,
+          icon: <FaTasks />,
+        },
+        {
+          name: 'Agreement',
+          href: routes.clients.agreement,
+          icon: <FaFilePen />,
+        },
+      ];
+      break;
+
+    case 'team_client':
       menuItems = [
         {
           name: 'Dashboard',

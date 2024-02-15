@@ -1,20 +1,41 @@
 import { z } from 'zod';
 import { messages } from '@/config/messages';
-import {
-  validateEmail,
-  validatePassword,
-  validateConfirmPassword,
-} from '@/utils/validators/common-rules';
 
 // form zod validation schema
 export const resetPasswordSchema = z
   .object({
     // email: validateEmail,
-    password: validatePassword,
-    confirmPassword: validateConfirmPassword,
+    password: z
+    .string()
+    .min(1, { message: messages.newPasswordRequired })
+    .min(8, { message: messages.passwordvalidation })
+    .regex(new RegExp('.*[A-Z].*'), {
+      message: messages.passwordvalidation,
+    })
+    .regex(new RegExp('.*[a-z].*'), {
+      message: messages.passwordvalidation,
+    })
+    .regex(new RegExp('.*\\d.*'), { message: messages.passwordvalidation })
+    .regex(new RegExp('.*[!@#$%^&*()_+\\-=\\[\\]{};:\'\\",.<>/?`~\\\\].*'), {
+      message: messages.passwordvalidation,
+    }),
+    confirmPassword: z
+    .string()
+    .min(1, { message: messages.confirmNewPasswordRequired })
+    .min(8, { message: messages.passwordvalidation })
+    .regex(new RegExp('.*[A-Z].*'), {
+      message: messages.passwordvalidation,
+    })
+    .regex(new RegExp('.*[a-z].*'), {
+      message: messages.passwordvalidation,
+    })
+    .regex(new RegExp('.*\\d.*'), { message: messages.passwordvalidation })
+    .regex(new RegExp('.*[!@#$%^&*()_+\\-=\\[\\]{};:\'\\",.<>/?`~\\\\].*'), {
+      message: messages.passwordvalidation,
+    }),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: messages.passwordsDidNotMatch,
+    message: messages.newPasswordsDidNotMatch,
     path: ['confirmPassword'], // Correct path for the confirmedPassword field
   });
 

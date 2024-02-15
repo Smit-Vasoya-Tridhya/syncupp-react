@@ -47,6 +47,7 @@ type PostCreateInvoice = {
   client_id: string,
   due_date: Date,
   invoice_date: Date,
+  sent : boolean,
   invoice_content: [
     {
       item: string,

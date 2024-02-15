@@ -11,7 +11,7 @@ type GetAlldata = {
 
 export const GetAllBilling = async (data: GetAlldata) => {
   const response = await AxiosDefault({
-    url: '/api/v1/',
+    url: '/api/v1/payment/history',
     method: 'POST',
     data: data,
     contentType: 'application/json',
@@ -21,9 +21,28 @@ export const GetAllBilling = async (data: GetAlldata) => {
 };
 export const GetAllSeats = async (data: GetAlldata) => {
   const response = await AxiosDefault({
-    url: '/api/v1/',
+    url: '/api/v1/payment/sheets',
     method: 'POST',
     data: data,
+    contentType: 'application/json',
+  });
+  const responseData = response.data;
+  return responseData;
+};
+export const CancleSub = async () => {
+  const response = await AxiosDefault({
+    url: '/api/v1/payment/sheets',
+    method: 'GET',
+    contentType: 'application/json',
+  });
+  const responseData = response.data;
+  return responseData;
+};
+export const RemoveUSer = async (id: any) => {
+  const response = await AxiosDefault({
+    url: '/api/v1/payment/remove-user',
+    method: 'POST',
+    data: id,
     contentType: 'application/json',
   });
   const responseData = response.data;

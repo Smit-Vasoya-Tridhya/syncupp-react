@@ -108,25 +108,7 @@ export const AgreementColumns = ({
         {
             title: (
                 <HeaderCell
-                    title="RECEIVER"
-                    sortable
-                    ascending={
-                        sortConfig?.direction === 'asc' && sortConfig?.key === 'receiver'
-                    }
-                />
-            ),
-            onHeaderCell: () => onHeaderCellClick('receiver'),
-            dataIndex: 'receiver',
-            key: 'receiver',
-            width: 100,
-            render: (value: string) => (
-                <Text className="font-medium text-gray-700">{value && value != "" ? value : "-"}</Text>
-            ),
-        },
-        {
-            title: (
-                <HeaderCell
-                    title="DUEDATE"
+                    title="Duedate"
                     sortable
                     ascending={
                         sortConfig?.direction === 'asc' && sortConfig?.key === 'due_date'
@@ -144,7 +126,7 @@ export const AgreementColumns = ({
         {
             title: (
                 <HeaderCell
-                    title="STATUS"
+                    title="Status"
                     sortable
                     ascending={
                         sortConfig?.direction === 'asc' && sortConfig?.key === 'status'
@@ -163,7 +145,7 @@ export const AgreementColumns = ({
         {
             title: (
                 <HeaderCell
-                    title="ACTION"
+                    title="Actions"
                     sortable
                     ascending={
                         sortConfig?.direction === 'asc' && sortConfig?.key === 'status'
@@ -177,7 +159,7 @@ export const AgreementColumns = ({
             render: (value: string, row: Record<string, string>) => (
 
                 <div className="flex items-center justify-start gap-3 pe-4">
-                    <Popover
+                    {!(row?.status === "agreed") && <Popover
                         placement="left"
                         className="z-50"
                         content={({ setOpen }) => {
@@ -216,7 +198,7 @@ export const AgreementColumns = ({
                             Accept
                         </Button>
 
-                    </Popover>
+                    </Popover>}
                     <Tooltip
                         size="sm"
                         content={() => 'View Agreement'}
