@@ -88,7 +88,7 @@ function WidgetCard({
       </Title>
       <div
         className={cn(
-          'rounded-lg border border-gray-200  @sm:px-7 @5xl:rounded-xl',
+          'rounded-lg border border-gray-200  @sm:px-4 @5xl:rounded-xl',
           childrenWrapperClass
         )}
       >
@@ -169,14 +169,14 @@ export default function AgencyViewProfileForm() {
           <WidgetCard
             title="Personal Information"
             className=""
-            childrenWrapperClass=" text-lg py-5 @5xl:py-8 flex"
+            childrenWrapperClass="text-lg py-1 px-1 @5xl:py-8 flex"
           >
-            <div className="ps-4 @5xl:ps-6">
+            <div className="ps-1 @5xl:ps-6">
               <span className="mb-2 flex items-baseline gap-2">
                 <span className="font-semibold text-gray-900">Name :</span>
-                <Title as="h3" className="text-base font-semibold @7xl:text-lg">
+                <Text as="p" className="text-base @7xl:text-lg">
                   {data?.first_name} {data?.last_name}
-                </Title>
+                </Text>
               </span>
               <span className="mb-2 flex items-baseline gap-2">
                 <span className="font-semibold text-gray-900">Email :</span>
@@ -197,14 +197,14 @@ export default function AgencyViewProfileForm() {
           <WidgetCard
             title="Company Information"
             className="py-6"
-            childrenWrapperClass=" text-lg py-5 @5xl:py-8 flex"
+            childrenWrapperClass="text-lg py-1 px-1 @5xl:py-8 flex"
           >
-            <div className="ps-4 @5xl:ps-6">
+            <div className="ps-1 @5xl:ps-6">
               <span className="mb-2 flex items-baseline gap-2">
                 <span className="font-semibold text-gray-900">Name :</span>
-                <Title as="h3" className="text-base font-semibold @7xl:text-lg">
+                <Text as="p" className="text-base @7xl:text-lg">
                   {data?.reference_id?.company_name}
-                </Title>
+                </Text>
               </span>
               <span className="mb-2 flex items-baseline gap-2">
                 <span className="text-wrap font-semibold text-gray-900">
@@ -236,14 +236,14 @@ export default function AgencyViewProfileForm() {
           <WidgetCard
             title="General Information"
             className=""
-            childrenWrapperClass=" text-lg py-5 @5xl:py-8 flex"
+            childrenWrapperClass="text-lg py-1 px-1 @5xl:py-8 flex"
           >
-            <div className="ps-4 @5xl:ps-6">
+            <div className="ps-1 @5xl:ps-6">
               <span className="mb-2 flex items-baseline gap-2">
                 <span className="font-semibold text-gray-900">Address :</span>
-                <Title as="h3" className="text-base font-semibold @7xl:text-lg">
+                <Text as="p" className="text-base @7xl:text-lg">
                   {data?.reference_id?.address ?? ''}
-                </Title>
+                </Text>
               </span>
               <span className="mb-2 flex items-baseline gap-2">
                 <span className="font-semibold text-gray-900">City :</span>

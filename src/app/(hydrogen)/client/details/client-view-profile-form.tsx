@@ -86,7 +86,7 @@ function WidgetCard({
       </Title>
       <div
         className={cn(
-          'rounded-lg border border-gray-200  @sm:px-7 @5xl:rounded-xl',
+          'rounded-lg border border-gray-200  @sm:px-4 @5xl:rounded-xl',
           childrenWrapperClass
         )}
       >
@@ -139,12 +139,6 @@ export default function ClientViewProfileForm() {
             </Button>
           </a>
         </div>
-        {/* <Link href={routes.invoice} className="w-full">
-        <Button className="float-end mb-2 mt-5 bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0">
-          <FaArrowLeft className="me-1.5 h-[17px] w-[17px]" />
-          Back
-        </Button>
-      </Link> */}
       </div>
       <div className="items-start px-6 pt-10 @5xl:grid @5xl:grid-cols-12 @5xl:gap-7 @6xl:grid-cols-10 @7xl:gap-10">
         {/* Left side */}
@@ -152,14 +146,14 @@ export default function ClientViewProfileForm() {
           <WidgetCard
             title="Personal Information"
             className=""
-            childrenWrapperClass=" text-lg py-5 @5xl:py-8 flex"
+            childrenWrapperClass="text-lg py-1 px-1 @5xl:py-8 flex"
           >
-            <div className="ps-4 @5xl:ps-6">
+            <div className="ps-1 @5xl:ps-6">
               <span className="mb-2 flex items-baseline gap-2">
                 <span className="font-semibold text-gray-900">Name :</span>
-                <Title as="h3" className="text-base font-semibold @7xl:text-lg">
+                <Text as="p" className="text-base @7xl:text-lg">
                   {data?.first_name} {data?.last_name}
-                </Title>
+                </Text>
               </span>
               <span className="mb-2 flex items-baseline gap-2">
                 <span className="font-semibold text-gray-900">Email :</span>
@@ -180,17 +174,17 @@ export default function ClientViewProfileForm() {
           <WidgetCard
             title="Company Information"
             className="py-6"
-            childrenWrapperClass=" text-lg py-5 @5xl:py-8 flex"
+            childrenWrapperClass="text-lg py-1 px-1 @5xl:py-8 flex"
           >
-            <div className="ps-4 @5xl:ps-6">
+            <div className="ps-1 @5xl:ps-6">
               <span className="mb-2 flex items-baseline gap-2">
                 <span className="font-semibold text-gray-900">Name :</span>
-                <Title as="h3" className="text-base font-semibold @7xl:text-lg">
+                <Text as="p" className="text-base  @7xl:text-lg">
                   {data?.reference_id?.company_name}
-                </Title>
+                </Text>
               </span>
               <span className="mb-2 flex items-baseline gap-2">
-                <span className="text-wrap font-semibold text-gray-900">
+                <span className="font-semibold text-wrap  text-gray-900">
                   URL&nbsp;:
                 </span>
                 <a
@@ -219,14 +213,14 @@ export default function ClientViewProfileForm() {
           <WidgetCard
             title="General Information"
             className=""
-            childrenWrapperClass=" text-lg py-5 @5xl:py-8 flex"
+            childrenWrapperClass="text-lg py-1 px-1 @5xl:py-8 flex"
           >
-            <div className="ps-4 @5xl:ps-6">
+            <div className="ps-1 @5xl:ps-6">
               <span className="mb-2 flex items-baseline gap-2">
                 <span className="font-semibold text-gray-900">Address :</span>
-                <Title as="h3" className="text-base font-semibold @7xl:text-lg">
+                <Text as="p" className="text-base @7xl:text-lg">
                   {data?.reference_id?.address ?? ''}
-                </Title>
+                </Text>
               </span>
               <span className="mb-2 flex items-baseline gap-2">
                 <span className="font-semibold text-gray-900">City :</span>
