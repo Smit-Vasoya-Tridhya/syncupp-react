@@ -123,6 +123,7 @@ export default function CouponMangementform(props: any) {
                 >
                   {jsonData?.admin?.coupon_management?.form?.brandLogoLabel}
                 </span>
+
                 <Uploadfile
                   initialPath={false}
                   name="brandLogo"
