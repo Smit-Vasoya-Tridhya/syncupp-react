@@ -72,14 +72,14 @@ export const InvoiceColumns = ({
     );
   };
   const DownloadInvoice = (id: string) => {
-    // dispatch(postDownloadInvoice({ invoice_id:id })).then(
-    //   (result: any) => {
-    //     if (postDownloadInvoice.fulfilled.match(result)) {
-    //       // console.log('resultt', result)
-    //       if (result && result.payload.success === true) {}
-    //     }
-    //   }
-    // );
+    dispatch(postDownloadInvoice({ invoice_id:id })).then(
+      (result: any) => {
+        if (postDownloadInvoice.fulfilled.match(result)) {
+          // console.log('resultt', result)
+          if (result && result.payload.success === true) {}
+        }
+      }
+    );
   };
 
   const StatusHandler = (status: string, id: string, setOpen: any) => {
