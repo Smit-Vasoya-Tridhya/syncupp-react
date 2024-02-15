@@ -9,6 +9,9 @@ import { useEffect } from 'react';
 import { getUserProfile } from '@/redux/slices/user/auth/signinSlice';
 import SimpleBar from 'simplebar-react';
 import { Link } from 'react-scroll';
+import { Button } from 'rizzui';
+import { routes } from '@/config/routes';
+import { FaArrowLeft } from 'react-icons/fa';
 
 
 export const FormParts = {
@@ -125,7 +128,13 @@ export default function ClientViewProfileForm() {
   return (
     <div className="@container">
       <div className="flex flex-wrap justify-center border-b border-t border-gray-300 py-4 px-6 font-medium text-gray-700 @5xl:justify-start">
-        <Title>Client View</Title>
+        <Title>Client Details</Title>
+        {/* <Link href={routes.invoice} className="w-full">
+        <Button className="float-end mb-2 mt-5 bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0">
+          <FaArrowLeft className="me-1.5 h-[17px] w-[17px]" />
+          Back
+        </Button>
+      </Link> */}
       </div>
       <div className="items-start pt-10 @5xl:grid @5xl:grid-cols-12 @5xl:gap-7 @6xl:grid-cols-10 @7xl:gap-10 px-6">
         {/* Left side */}
