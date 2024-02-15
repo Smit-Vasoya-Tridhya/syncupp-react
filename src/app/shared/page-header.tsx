@@ -24,21 +24,6 @@ export default function PageHeader({
           >
             {title}
           </Title>
-
-          <Breadcrumb
-            separator=""
-            separatorVariant="circle"
-            className="flex-wrap"
-          >
-            {breadcrumb?.map((item) => (
-              <Breadcrumb.Item
-                key={item.name}
-                {...(item?.href && { href: item?.href })}
-              >
-                {item.name}
-              </Breadcrumb.Item>
-            ))}
-          </Breadcrumb>
         </div>
         {children}
       </div>

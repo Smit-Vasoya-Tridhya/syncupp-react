@@ -10,6 +10,8 @@ import { getUserProfile } from '@/redux/slices/user/auth/signinSlice';
 import SimpleBar from 'simplebar-react';
 import { Link } from 'react-scroll';
 import { getViewProfiles } from '@/redux/slices/admin/auth/viewprofile/viewProfileSlice';
+import { getAgencyDetails } from '@/redux/slices/admin/agency/agencySlice';
+import Spinner from '@/components/ui/spinner';
 
 export const FormParts = {
   ShippingInfo: 'ShippingInfo',
@@ -95,16 +97,18 @@ function WidgetCard({
 
 export default function AgencyViewProfileForm() {
   const dispatch = useDispatch();
-  const signIn = useSelector((state: any) => state?.root?.signIn);
-  const clientSliceData = useSelector((state: any) => state?.root?.client);
+  // const signIn = useSelector((state: any) => state?.root?.signIn);
+  // const clientSliceData = useSelector((state: any) => state?.root?.client);
+  const agencylistDetails = useSelector((state: any) => state?.root?.adminAgency);
+
   const router = useRouter();
 
-  useEffect(() => {
-    dispatch(getViewProfiles());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(getAgencyDetails());
+  // }, [dispatch]);
 
-  const data = signIn?.userProfile;
-
+  const {data} = agencylistDetails?.agencylistDetails;
+// console.log(data,'data')
   const initialValues = {
     email: data?.email ?? '',
     first_name: data?.first_name ?? '',
@@ -134,10 +138,23 @@ export default function AgencyViewProfileForm() {
   // const orderNote = useAtomValue(orderNoteAtom);
   // const billingAddress = useAtomValue(billingAddressAtom);
   // const shippingAddress = useAtomValue(shippingAddressAtom);
+  if (Object.keys(agencylistDetails?.agencylistDetails?? {}).length === 0) {
+    return (
+      <div className="flex items-center justify-center p-10">
+        <Spinner size="xl" tag="div" className="ms-3" />
+      </div>
+    );
+  } else {
   return (
     <div className="@container">
       <div className="flex flex-wrap justify-center border-b border-t border-gray-300 py-4 px-6 font-medium text-gray-700 @5xl:justify-start">
-        <Title>Agency View</Title>
+        <Title>Agency Details</Title>
+         {/* <Link href={routes.invoice} className="w-full">
+        <Button className="float-end mb-2 mt-5 bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0">
+          <FaArrowLeft className="me-1.5 h-[17px] w-[17px]" />
+          Back
+        </Button>
+      </Link> */}
       </div>
       <div className="items-start pt-10 @5xl:grid @5xl:grid-cols-12 @5xl:gap-7 @6xl:grid-cols-10 @7xl:gap-10 px-6">
         {/* Left side */}
@@ -293,4 +310,5 @@ export default function AgencyViewProfileForm() {
       </div>
     </div>
   );
+}
 }

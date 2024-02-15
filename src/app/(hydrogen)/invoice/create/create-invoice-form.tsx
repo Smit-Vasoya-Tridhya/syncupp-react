@@ -138,11 +138,7 @@ export default function CreateInvoice({
     ...record,
     fromName: `${data?.first_name ?? ''} ${data?.last_name ?? ''}`,
     invoice_number: '',
-    fromAddress: data?.reference_id?.address &&
-    data?.reference_id?.city?.name &&
-    data?.reference_id?.country?.name &&
-    data?.reference_id?.state?.name &&
-    data?.reference_id?.pincode? `${data?.reference_id?.address ?? ''}, ${data?.reference_id?.city?.name ?? ''}, ${data?.reference_id?.country?.name ?? ''}, ${data?.reference_id?.state?.name ?? ''}, ${data?.reference_id?.pincode ?? ''}` :'',
+    fromAddress: `${data?.reference_id?.address ?? ''}, ${data?.reference_id?.city?.name ?? ''},${data?.reference_id?.state?.name ?? ''}, ${data?.reference_id?.country?.name ?? ''},  ${data?.reference_id?.pincode ?? ''}`,
     fromPhone: data?.contact_number ?? '',
     client_id: '',
     toAddress: '',

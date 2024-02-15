@@ -7,7 +7,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import DeletePopover from '@/app/shared/delete-popover';
 import { Badge, Button, Switch, Tooltip } from 'rizzui';
 import { useDispatch } from 'react-redux';
-import { deleteAgency, getAllAgency } from '@/redux/slices/admin/agency/agencySlice';
+import { deleteAgency, getAgencyDetails, getAllAgency } from '@/redux/slices/admin/agency/agencySlice';
 import { LuExternalLink } from "react-icons/lu";
 import { routes } from '@/config/routes';
 import EyeIcon from '@/components/icons/eye';
@@ -48,6 +48,14 @@ export const GetColumns = ({
             console.error(error);
         }
     };
+
+    const GetAgencyDetails = async(id: any , ref_id:any) =>{
+      try{
+        const res = await dispatch(getAgencyDetails({_id : id , reference_id:ref_id?._id}));
+      }catch(error){
+        console.log(error)
+      }
+    }
 
 
     function getStatusBadge(status: string) {
@@ -339,6 +347,7 @@ export const GetColumns = ({
                   variant="outline"
                   className="bg-white text-black"
                   aria-label={'View Member'}
+                  onClick={() =>  GetAgencyDetails(row?._id , row?.reference_id) }
                 >
                   <EyeIcon className="h-4 w-4" />
                 </Button>
