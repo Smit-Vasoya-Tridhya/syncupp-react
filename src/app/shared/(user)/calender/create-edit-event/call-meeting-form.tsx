@@ -339,12 +339,12 @@ export default function AddCallMeetingForm(props: any) {
                       )}
                     />
                   )}
-                  <span className="flex cursor-pointer items-center text-lg gap-2 font-medium">
+                  <span className="flex cursor-pointer items-center gap-2 font-medium">
                     <AiOutlineUsergroupAdd className="h-[25px] w-[25px]" />
                     <Text>Add Attendees</Text>
                   </span>
                   <span
-                    className="flex cursor-pointer items-center text-lg gap-2 font-medium"
+                    className="flex cursor-pointer items-center gap-2 font-medium"
                     onClick={handleAddNoteClick}
                   >
                     <GiNotebook className="h-[25px] w-[25px]" />

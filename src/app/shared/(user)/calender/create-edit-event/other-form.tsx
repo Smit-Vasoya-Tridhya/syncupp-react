@@ -274,7 +274,7 @@ export default function AddCallMeetingForm(props: any) {
                       )}
                     />
                     <div className='flex justify-start items-end'>
-                      <Switch className="[&>label>span.transition]:shrink-0 [&>label>span]:font-medium" label='Recurring' variant='active' onChange={(event) => handleSwitchChange(event)} />
+                      <Switch className="[&>label>span.transition]:shrink-0 [&>label>span]:font-medium" label='Recurring' labelPlacement='left' variant='active' onChange={(event) => handleSwitchChange(event)} />
                       {/* <Switch className="[&>label>span.transition]:shrink-0 [&>label>span]:font-medium" variant='active' onChange={(event) => handleSwitchChange(row._id, event)} disabled={value == "payment_pending"} defaultChecked={value == "confirmed" ? true : false} /> */}
                     </div>
                   </div>
@@ -387,12 +387,12 @@ export default function AddCallMeetingForm(props: any) {
                       )}
                     />
                   )}
-                  <span className="flex cursor-pointer items-center text-lg gap-2 font-medium">
+                  <span className="flex cursor-pointer items-center gap-2 font-medium">
                     <AiOutlineUsergroupAdd className="h-[25px] w-[25px]" />
                     <Text>Add Attendees</Text>
                   </span>
                   <span
-                    className="flex cursor-pointer items-center text-lg gap-2 font-medium"
+                    className="flex cursor-pointer items-center gap-2 font-medium"
                     onClick={handleAddNoteClick}
                   >
                     <GiNotebook className="h-[25px] w-[25px]" />
