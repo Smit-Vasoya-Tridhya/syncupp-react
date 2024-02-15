@@ -1,6 +1,9 @@
 import {
   EditCmsConatctUs,
+  EditCmsPrivacyPolicy,
   GetCmsConatctUS,
+  GetCmsPrivacyPolicy,
+  GetCmsTermscondition,
   PostTermAndCondotionEnroll,
 } from '@/api/admin/cms/cmsApis';
 import { createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
@@ -48,6 +51,22 @@ export const postAddTermAndCondition: any = createAsyncThunk(
     }
   }
 );
+
+export const Gettermsandcondition: any = createAsyncThunk(
+  'cms/gettems',
+  async (data: any) => {
+    try {
+      const response: any = await GetCmsTermscondition();
+      return response;
+    } catch (error: any) {
+      return {
+        status: false,
+        message: error.response.data.message,
+      } as FaqDataResponse;
+    }
+  }
+);
+
 export const EditContactUS: any = createAsyncThunk(
   'cms/editconatcus',
   async (data: any) => {
@@ -67,6 +86,36 @@ export const GetConatcus: any = createAsyncThunk(
   async (data: any) => {
     try {
       const response: any = await GetCmsConatctUS();
+      return response;
+    } catch (error: any) {
+      return {
+        status: false,
+        message: error.response.data.message,
+      } as FaqDataResponse;
+    }
+  }
+);
+
+export const EditPrivacy: any = createAsyncThunk(
+  'cms/editPrivacy',
+  async (data: any) => {
+    try {
+      const response: any = await EditCmsPrivacyPolicy(data);
+      return response;
+    } catch (error: any) {
+      return {
+        status: false,
+        message: error.response.data.message,
+      } as FaqDataResponse;
+    }
+  }
+);
+
+export const GetPrivacy: any = createAsyncThunk(
+  'cms/getgetPRivacy',
+  async (data: any) => {
+    try {
+      const response: any = await GetCmsPrivacyPolicy();
       return response;
     } catch (error: any) {
       return {
@@ -96,6 +145,29 @@ export const cmsSlice = createSlice({
       };
     });
     builder
+      .addCase(GetPrivacy.pending, (state) => {
+        return {
+          ...state,
+          loading: true,
+        };
+      })
+      .addCase(GetPrivacy.fulfilled, (state, action) => {
+        return {
+          ...state,
+          // data: action.payload,
+          loading: false,
+          conatcUSdata: action.payload,
+        };
+      })
+      .addCase(GetPrivacy.rejected, (state) => {
+        return {
+          ...state,
+          loading: false,
+          addTermAndConditionStatus: 'error',
+        };
+      });
+
+    builder
       .addCase(postAddTermAndCondition.pending, (state) => {
         return {
           ...state,
@@ -123,6 +195,30 @@ export const cmsSlice = createSlice({
           addTermAndConditionStatus: 'error',
         };
       });
+    //get terms and conditon
+    builder
+      .addCase(Gettermsandcondition.pending, (state) => {
+        return {
+          ...state,
+          loading: true,
+        };
+      })
+      .addCase(Gettermsandcondition.fulfilled, (state, action) => {
+        return {
+          ...state,
+          // data: action.payload,
+          loading: false,
+          conatcUSdata: action.payload,
+        };
+      })
+      .addCase(Gettermsandcondition.rejected, (state) => {
+        return {
+          ...state,
+          loading: false,
+          addTermAndConditionStatus: 'error',
+        };
+      });
+
     //get conatctus
     builder
       .addCase(GetConatcus.pending, (state) => {
@@ -168,6 +264,34 @@ export const cmsSlice = createSlice({
         };
       })
       .addCase(EditContactUS.rejected, (state) => {
+        return {
+          ...state,
+          loading: false,
+          addTermAndConditionStatus: 'error',
+        };
+      });
+
+    //update privacy
+    builder
+      .addCase(EditPrivacy.pending, (state) => {
+        return {
+          ...state,
+          loading: true,
+        };
+      })
+      .addCase(EditPrivacy.fulfilled, (state, action) => {
+        if (action.payload.status == true) {
+          toast.error(action.payload.message);
+        } else {
+          toast.success(action.payload.message);
+        }
+        return {
+          ...state,
+          // data: action.payload,
+          loading: false,
+        };
+      })
+      .addCase(EditPrivacy.rejected, (state) => {
         return {
           ...state,
           loading: false,

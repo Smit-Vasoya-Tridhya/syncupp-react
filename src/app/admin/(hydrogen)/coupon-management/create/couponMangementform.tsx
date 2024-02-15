@@ -117,12 +117,12 @@ export default function CouponMangementform(props: any) {
                 error={errors?.siteURL?.message}
               />
               <div>
-                <p
+                <span
                   className="rizzui-input-label mb-1.5 block text-sm"
-                  style={{ margin: '0px', fontWeight: '600' }}
+                  style={{ margin: '0px', fontWeight: '500' }}
                 >
                   {jsonData?.admin?.coupon_management?.form?.brandLogoLabel}
-                </p>
+                </span>
                 <Uploadfile
                   initialPath={false}
                   name="brandLogo"
