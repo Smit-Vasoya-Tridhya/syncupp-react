@@ -104,7 +104,7 @@ export default function AddCallMeetingForm(props: any) {
 
   let defaultValuess = {
     title: data?.title,
-    description: data?.internal_info,
+    description: data?.agenda,
     // due_date: new Date(data?.due_date),
     due_date: moment(data?.due_date).toDate(),
     start_time: moment(data?.start_time).toDate(),
@@ -130,12 +130,13 @@ export default function AddCallMeetingForm(props: any) {
   const onSubmit: SubmitHandler<AddCallMeetingSchema> = (dataa) => {
     console.log('Add call meeting form dataa---->', dataa);
 
+
     const formData = {
       title: dataa?.title,
       agenda: dataa?.description,
-      due_date: new String(dataa?.due_date),
-      meeting_start_time: new String(dataa?.start_time),
-      meeting_end_time: new String(dataa?.end_time),
+      due_date: moment(dataa?.due_date).format('DD-MM-YYYY'),
+      meeting_start_time: moment(dataa?.start_time).format('HH:mm'),
+      meeting_end_time: moment(dataa?.end_time).format('HH:mm'),
       client_id: clientId,
       assign_to: teamId,
       activity_type: 'call_meeting',

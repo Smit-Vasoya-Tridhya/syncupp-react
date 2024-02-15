@@ -93,7 +93,7 @@ export default function AddTaskForm(props: any) {
 
   let defaultValuess = {
     title: data?.title,
-    description: data?.internal_info,
+    description: data?.agenda,
     // due_date: new Date(data?.due_date),
     due_date: moment(data?.due_date).toDate(),
     client: data?.client_fullName,
@@ -112,16 +112,6 @@ export default function AddTaskForm(props: any) {
   let teamOptions: Record<string, any>[] = teamMemberData?.teamList && teamMemberData?.teamList?.length > 0 ? teamMemberData?.teamList?.map((team: Record<string, any>) => {
     return { name: team?.name, value: team?.reference_id, key: team }
   }) : [];
-
-  // const handleClientChange = (selectedOption: Record<string, any>) => {
-  //   // console.log("selected option....", selectedOption)
-  //   dispatch(getAllTeamMember({ sort_field: 'createdAt', sort_order: 'desc', client_id: selectedOption?.value, pagination: true }))
-  // }
-
-  // const handleTeamChange = (selectedOption: Record<string, any>) => {
-  //   // console.log("selected option....", selectedOption)
-  //   dispatch(getAllTeamMember({ sort_field: 'createdAt', sort_order: 'desc', client_id: selectedOption?.value, pagination: true }))
-  // }
 
 
 
@@ -145,25 +135,25 @@ export default function AddTaskForm(props: any) {
     );
 
 
-    // if (title === 'New Task') {
-    //   dispatch(postAddTask(filteredFormData)).then((result: any) => {
-    //     if (postAddTask.fulfilled.match(result)) {
-    //       if (result && result.payload.success === true) {
-    //         closeModal();
-    //         dispatch(getAllTask({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
-    //       }
-    //     }
-    //   });
-    // } else {
-    //   dispatch(patchEditTask({ ...filteredFormData, _id: data._id })).then((result: any) => {
-    //     if (patchEditTask.fulfilled.match(result)) {
-    //       if (result && result.payload.success === true) {
-    //         closeModal();
-    //         dispatch(getAllTask({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
-    //       }
-    //     }
-    //   });
-    // }
+    if (title === 'New Activity') {
+      dispatch(postAddTask(filteredFormData)).then((result: any) => {
+        if (postAddTask.fulfilled.match(result)) {
+          if (result && result.payload.success === true) {
+            closeModal();
+            // dispatch(getAllTask({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
+          }
+        }
+      });
+    } else {
+      dispatch(patchEditTask({ ...filteredFormData, _id: data._id })).then((result: any) => {
+        if (patchEditTask.fulfilled.match(result)) {
+          if (result && result.payload.success === true) {
+            closeModal();
+            // dispatch(getAllTask({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
+          }
+        }
+      });
+    }
 
   };
 

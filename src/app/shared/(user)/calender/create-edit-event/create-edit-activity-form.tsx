@@ -107,16 +107,16 @@ export default function AddActivityFormPage(props: any) {
                 </div>
                 <div className="mt-3">
                   {selectedTask === 'Task' && (
-                    <AddTaskForm title={title} className="w-full p-0" />
+                    <AddTaskForm title={title} row={row} />
                   )}
                   {selectedTask === 'Call meeting' && (
                     <div className="h-full">
-                      <AddCallMeetingForm title={title} />
+                      <AddCallMeetingForm title={title} row={row} />
                     </div>
                   )}
                   {selectedTask === 'Others' && (
                     <div>
-                      <AddOtherForm title={title}  />
+                      <AddOtherForm title={title} row={row} />
                     </div>
                   )}
                 </div>

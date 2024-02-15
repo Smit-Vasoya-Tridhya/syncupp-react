@@ -105,7 +105,7 @@ export default function AddCallMeetingForm(props: any) {
 
   let defaultValuess = {
     title: data?.title,
-    description: data?.internal_info,
+    description: data?.agenda,
     // due_date: new Date(data?.due_date),
     due_date: moment(data?.due_date).toDate(),
     recurring_date: moment(data?.recurring_date).toDate(),
@@ -154,18 +154,35 @@ export default function AddCallMeetingForm(props: any) {
   const onSubmit: SubmitHandler<AddOtherFormSchema> = (dataa) => {
     console.log('Add other form dataa---->', dataa);
 
-    const formData = {
-      title: dataa?.title,
-      agenda: dataa?.description,
-      due_date: new String(dataa?.due_date),
-      recurring_end_date: new String(dataa?.recurring_date),
-      meeting_start_time: new String(dataa?.start_time),
-      meeting_end_time: new String(dataa?.end_time),
-      client_id: clientId,
-      assign_to: teamId,
-      activity_type: 'call_meeting',
-      internal_info: dataa?.notes,
-      mark_as_done: dataa?.done,
+    let formData;
+
+    if (recurringStatus) {
+      formData = {
+        title: dataa?.title,
+        agenda: dataa?.description,
+        due_date: moment(dataa?.due_date).format('DD-MM-YYYY'),
+        meeting_start_time: moment(dataa?.start_time).format('HH:mm'),
+        meeting_end_time: moment(dataa?.end_time).format('HH:mm'),
+        recurring_end_date: moment(dataa?.recurring_date).format('DD-MM-YYYY'),
+        client_id: clientId,
+        assign_to: teamId,
+        activity_type: 'others',
+        internal_info: dataa?.notes,
+        mark_as_done: dataa?.done,
+      }
+    } else {
+      formData = {
+        title: dataa?.title,
+        agenda: dataa?.description,
+        due_date: moment(dataa?.due_date).format('DD-MM-YYYY'),
+        meeting_start_time: moment(dataa?.start_time).format('HH:mm'),
+        meeting_end_time: moment(dataa?.end_time).format('HH:mm'),
+        client_id: clientId,
+        assign_to: teamId,
+        activity_type: 'others',
+        internal_info: dataa?.notes,
+        mark_as_done: dataa?.done,
+      }
     }
 
     // console.log('Add activity form dataa---->', formData);
@@ -252,7 +269,7 @@ export default function AddCallMeetingForm(props: any) {
                       />
                     )}
                   />
-                  <div className={cn('grid grid-cols-2 gap-5')}>
+                  <div className={cn('grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-5 items-center')}>
                     <Controller
                       name="due_date"
                       control={control}
@@ -273,71 +290,74 @@ export default function AddCallMeetingForm(props: any) {
                         />
                       )}
                     />
-                    <div className='flex justify-start items-end'>
+                    <Controller
+                      name="start_time"
+                      control={control}
+                      render={({ field: { value, onChange } }) => (
+                        <DatePicker
+                          placeholderText="Select start time"
+                          selected={value}
+                          inputProps={{
+                            label: 'Start Time',
+                            color: 'info'
+                          }}
+                          onChange={onChange}
+                          showTimeSelect
+                          showTimeSelectOnly
+                          dateFormat="hh:mm aa"
+                        />
+                      )}
+                    />
+                    <Controller
+                      name="end_time"
+                      control={control}
+                      render={({ field: { value, onChange } }) => (
+                        <DatePicker
+                          placeholderText="Select end time"
+                          selected={value}
+                          inputProps={{
+                            label: 'End Time',
+                            color: 'info'
+                          }}
+                          onChange={onChange}
+                          showTimeSelect
+                          showTimeSelectOnly
+                          dateFormat="hh:mm aa"
+                        />
+                      )}
+                    />
+
+                  </div>
+                  <div className={cn('flex items-center gap-12 h-[70px]')}>
+                    <div className='flex justify-start items-end w-auto'>
                       <Switch className="[&>label>span.transition]:shrink-0 [&>label>span]:font-medium" label='Recurring' labelPlacement='left' variant='active' onChange={(event) => handleSwitchChange(event)} />
                       {/* <Switch className="[&>label>span.transition]:shrink-0 [&>label>span]:font-medium" variant='active' onChange={(event) => handleSwitchChange(row._id, event)} disabled={value == "payment_pending"} defaultChecked={value == "confirmed" ? true : false} /> */}
                     </div>
+                    {recurringStatus &&
+                      <div className='w-full'>
+                        <Controller
+                          name="recurring_date"
+                          control={control}
+                          render={({ field: { value, onChange } }) => (
+                            <DatePicker
+                              placeholderText="Select recurring date"
+                              selected={value}
+                              inputProps={{
+                                label: 'Recurring Due Date',
+                                color: 'info'
+                              }}
+                              onChange={onChange}
+                              selectsStart
+                              startDate={value}
+                              minDate={new Date()}
+                              // showTimeSelect
+                              dateFormat="MMMM dd, yyyy"
+                            />
+                          )}
+                        />
+                      </div>
+                    }
                   </div>
-                  {recurringStatus &&
-                    <div className={cn('grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-5 items-center')}>
-                      <Controller
-                        name="recurring_date"
-                        control={control}
-                        render={({ field: { value, onChange } }) => (
-                          <DatePicker
-                            placeholderText="Select recurring date"
-                            selected={value}
-                            inputProps={{
-                              label: 'Recurring Due Date',
-                              color: 'info'
-                            }}
-                            onChange={onChange}
-                            selectsStart
-                            startDate={value}
-                            minDate={new Date()}
-                            // showTimeSelect
-                            dateFormat="MMMM dd, yyyy"
-                          />
-                        )}
-                      />
-                      <Controller
-                        name="start_time"
-                        control={control}
-                        render={({ field: { value, onChange } }) => (
-                          <DatePicker
-                            placeholderText="Select start time"
-                            selected={value}
-                            inputProps={{
-                              label: 'Start Time',
-                              color: 'info'
-                            }}
-                            onChange={onChange}
-                            showTimeSelect
-                            showTimeSelectOnly
-                            dateFormat="hh:mm aa"
-                          />
-                        )}
-                      />
-                      <Controller
-                        name="end_time"
-                        control={control}
-                        render={({ field: { value, onChange } }) => (
-                          <DatePicker
-                            placeholderText="Select end time"
-                            selected={value}
-                            inputProps={{
-                              label: 'End Time',
-                              color: 'info'
-                            }}
-                            onChange={onChange}
-                            showTimeSelect
-                            showTimeSelectOnly
-                            dateFormat="hh:mm aa"
-                          />
-                        )}
-                      />
-                    </div>
-                  }
                   {clientSliceData?.loading ? (<SelectLoader />) : (
                     <Controller
                       control={control}
