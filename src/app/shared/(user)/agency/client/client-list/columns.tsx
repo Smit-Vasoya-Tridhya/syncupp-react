@@ -277,11 +277,11 @@ export const GetColumns = ({
                 placement="top"
                 color="invert"
               >
-                {/* <Link href={routes.editTeam}> */}
+                <Link href={routes.clientViewProfile}>
                 <Button size="sm" variant="outline" className='bg-white text-black' aria-label={'View Member'}>
                   <EyeIcon className="h-4 w-4" />
                 </Button>
-                {/* </Link> */}
+                </Link>
               </Tooltip>
               <DeletePopover
                 title={`Delete the Client`}

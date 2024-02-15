@@ -74,7 +74,7 @@ export default function CompanyForm(props: any) {
 
     const handlePrevClick = () => {
         setNextBtn(false);
-        setTitle('Sign Up!');
+        setTitle('Sign Up');
     }
 
     return (

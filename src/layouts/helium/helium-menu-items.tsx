@@ -64,7 +64,7 @@ export const MenuItems = () => {
           icon: <FaFilePen />,
         },
         {
-          name: 'Manage Subcription',
+          name: 'Manage Subsription',
           href: routes.manageSubcription,
           icon: <AiOutlineDollar />,
         },
@@ -96,7 +96,7 @@ export const MenuItems = () => {
       ];
       break;
 
-      case 'team_client':
+    case 'team_client':
       menuItems = [
         {
           name: 'Dashboard',
@@ -120,7 +120,6 @@ export const MenuItems = () => {
         },
       ];
       break;
-      
 
     case 'team_agency':
       if (signIn?.teamMemberRole === 'team_member') {

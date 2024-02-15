@@ -6,7 +6,7 @@ import WithAuthPublic from '@/utils/public-route-user';
 
 function SignIn() {
   return (
-    <AuthWrapperTwo title="SignIn" isSignIn isSocialLoginActive={true}>
+    <AuthWrapperTwo title="Sign In" isSignIn isSocialLoginActive={true}>
       <SignInForm />
     </AuthWrapperTwo>
   );

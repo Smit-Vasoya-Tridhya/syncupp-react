@@ -1,7 +1,9 @@
 import {
+  CancleSub,
   GetAllBilling,
   GetAllSeats,
   GetCardData,
+  RemoveUSer,
 } from '@/commonAPIs/manage-subcription/Mnagesubscription';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { toast } from 'react-hot-toast';
@@ -55,6 +57,34 @@ export const getAllcarddata: any = createAsyncThunk(
   async (data: GetAllSubApiData) => {
     try {
       const response: any = await GetCardData(data);
+      return response;
+    } catch (error: any) {
+      return {
+        status: false,
+        message: error.response.data.message,
+      } as APIErrorResponse;
+    }
+  }
+);
+export const RemoveUsersub: any = createAsyncThunk(
+  'SubcriptionManagement/removeUser',
+  async (data: any) => {
+    try {
+      const response: any = await RemoveUSer(data);
+      return response;
+    } catch (error: any) {
+      return {
+        status: false,
+        message: error.response.data.message,
+      } as APIErrorResponse;
+    }
+  }
+);
+export const CancleSubscription: any = createAsyncThunk(
+  'SubcriptionManagement/cancle',
+  async (data: any) => {
+    try {
+      const response: any = await CancleSub();
       return response;
     } catch (error: any) {
       return {

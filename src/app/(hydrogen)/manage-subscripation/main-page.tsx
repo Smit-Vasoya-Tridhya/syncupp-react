@@ -2,12 +2,17 @@
 import PageHeader from '@/app/shared/page-header';
 import MetricCard from '@/components/cards/metric-card';
 import cn from '@/utils/class-names';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, Title } from '@/components/ui/text';
 import CustomTable from '@/components/common-tables/table';
 import { billingColumns } from '@/app/shared/(user)/manage-subscription/billingcoloum';
 import { getColumns } from '@/app/shared/(user)/manage-subscription/manageseatscoloums';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  RemoveUsersub,
+  getAllBilling,
+  getAllSeats,
+} from '@/redux/slices/user/manage-subscription.tsx/SubscriptionSlice';
 
 const dummyDataBilling = [
   {
@@ -49,43 +54,82 @@ function SubcripationPage() {
   const { BillinglistDetails, SeatsData, CardData, loading } = useSelector(
     (state: any) => state?.root?.managesubcription
   );
+  const disptach = useDispatch();
 
   const [pageSize, setPageSize] = useState<number>(5);
   const handleChangePage = async (paginationParams: any) => {
     let { page, items_per_page, sort_field, sort_order, search } =
       paginationParams;
 
-    // const response = await dispatch(
-    //   getAllCoupone({
-    //     page,
-    //     items_per_page,
-    //     sort_field,
-    //     sort_order,
-    //     search,
-    //     pagination: true,
-    //   })
-    // );
-    // const { data } = response?.payload;
-    // const maxPage: number = data?.page_count;
+    const response = await disptach(
+      getAllBilling({
+        page,
+        items_per_page,
+        sort_field,
+        sort_order,
+        search,
+        pagination: true,
+      })
+    );
+    const { data } = response?.payload;
+    const maxPage: number = data?.page_count;
 
-    // if (page > maxPage) {
-    //   page = maxPage > 0 ? maxPage : 1;
-    //   await dispatch(
-    //     getAllCoupone({
-    //       page,
-    //       items_per_page,
-    //       sort_field,
-    //       sort_order,
-    //       search,
-    //       pagination: true,
-    //     })
-    //   );
-    //   return data?.coupon;
-    // }
-    // if (data && data?.coupon && data?.coupon?.length !== 0) {
-    //   return data?.coupon;
-    // }
+    if (page > maxPage) {
+      page = maxPage > 0 ? maxPage : 1;
+      await disptach(
+        getAllBilling({
+          page,
+          items_per_page,
+          sort_field,
+          sort_order,
+          search,
+          pagination: true,
+        })
+      );
+      return data?.coupon;
+    }
+    if (data && data?.payment_history && data?.payment_history?.length !== 0) {
+      return data?.payment_history;
+    }
   };
+
+  const handleChangePageSheet = async (paginationParams: any) => {
+    let { page, items_per_page, sort_field, sort_order, search } =
+      paginationParams;
+
+    const response = await disptach(
+      getAllSeats({
+        page,
+        items_per_page,
+        sort_field,
+        sort_order,
+        search,
+        pagination: true,
+      })
+    );
+    const { data } = response?.payload;
+    const maxPage: number = data?.page_count;
+
+    if (page > maxPage) {
+      page = maxPage > 0 ? maxPage : 1;
+      await disptach(
+        getAllSeats({
+          page,
+          items_per_page,
+          sort_field,
+          sort_order,
+          search,
+          pagination: true,
+        })
+      );
+      return data?.coupon;
+    }
+    if (data && data?.payment_history && data?.payment_history?.length !== 0) {
+      return data?.payment_history;
+    }
+  };
+
+  console.log(SeatsData, 'seatdata');
 
   const handleDeleteById = async (
     id: string | string[],
@@ -94,25 +138,30 @@ function SubcripationPage() {
     sortConfig?: Record<string, string>,
     searchTerm?: string
   ) => {
+    console.log('remove');
     try {
-      //   const res = await dispatch(DeleteCoupon({ couponIdsToDelete: id }));
-      //   if (res.payload.success === true) {
-      //     closeModal();
-      //     const reponse = await dispatch(
-      //       getAllCoupone({
-      //         page: currentPage,
-      //         items_per_page: countPerPage,
-      //         sort_field: sortConfig?.key,
-      //         sort_order: sortConfig?.direction,
-      //         search: searchTerm,
-      //         pagination: true,
-      //       })
-      //     );
-      //   }
+      const res = await disptach(RemoveUsersub({ userId: id }));
+      if (res.payload.success === true) {
+        //closeModal();
+        const reponse = await disptach(
+          getAllSeats({
+            page: currentPage,
+            items_per_page: countPerPage,
+            sort_field: sortConfig?.key,
+            sort_order: sortConfig?.direction,
+            search: searchTerm,
+            pagination: true,
+          })
+        );
+      }
     } catch (error) {
       console.error(error);
     }
   };
+  useEffect(() => {
+    disptach(getAllBilling({ pagination: false }));
+    disptach(getAllSeats({ pagination: false }));
+  }, [disptach]);
 
   return (
     <>
@@ -171,9 +220,8 @@ function SubcripationPage() {
               className={cn('me-2 inline-flex items-center font-medium')}
             >
               {' '}
-              Earned points
+              Earned points 200
             </Text>
-            200
           </Text>
           <Text className="mt-3 flex items-center leading-none text-gray-500">
             <Text
@@ -181,22 +229,20 @@ function SubcripationPage() {
               className={cn('me-2 inline-flex items-center font-medium')}
             >
               {' '}
-              Available points
+              Available points 200
             </Text>
-            200
           </Text>
         </MetricCard>
       </div>
       <div className="mt-4">
         <Title className="mb-4">Billing History</Title>
         <CustomTable
-          data={dummyDataBilling}
-          //   data={BillinglistDetails?.data?.coupon || []}
+          // data={dummyDataBilling}
+          data={BillinglistDetails?.data?.payment_history || []}
           total={BillinglistDetails?.data?.page_count}
           loading={loading}
           pageSize={pageSize}
           setPageSize={setPageSize}
-          handleDeleteById={handleDeleteById}
           handleChangePage={handleChangePage}
           getColumns={billingColumns}
         />
@@ -204,14 +250,14 @@ function SubcripationPage() {
       <div className="mt-4">
         <Title className="mb-4">Manage Seats</Title>
         <CustomTable
-          data={dummyData}
-          // data={SeatsData?.data?.coupon || []}
+          // data={dummyData}
+          data={SeatsData?.data?.sheets || []}
           total={SeatsData?.data?.page_count}
           loading={loading}
           pageSize={pageSize}
           setPageSize={setPageSize}
           handleDeleteById={handleDeleteById}
-          handleChangePage={handleChangePage}
+          handleChangePage={handleChangePageSheet}
           getColumns={getColumns}
         />
       </div>

@@ -28,6 +28,7 @@ import SubscriptionSlice from './slices/user/manage-subscription.tsx/Subscriptio
 import authSlice from './slices/affiliate/authSlice';
 import taskStatusSlice from './slices/user/task/taskStatusSlice';
 import activitySlice from './slices/user/activity/activitySlice';
+import contactusSlice from './slices/affiliate/contactusSlice';
 
 const combinedReducer = combineReducers({
   signIn: signinSlice,
@@ -58,7 +59,8 @@ const combinedReducer = combineReducers({
   payment: paymentSlice,
   inquiry: inquirySlice,
   auth: authSlice,
-  activity: activitySlice
+  activity: activitySlice,
+  contactus: contactusSlice
 });
 
 const rootReducer = (state: any, action: any) => {
