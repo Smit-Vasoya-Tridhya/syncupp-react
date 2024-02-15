@@ -3,8 +3,8 @@ import cn from '@/utils/class-names';
 import Link from 'next/link';
 import { Fragment } from 'react';
 import { PiFolderNotchDuotone, PiUser, PiUsersThree } from 'react-icons/pi';
-import { FaTasks, FaFileInvoiceDollar, FaRegCalendarAlt } from 'react-icons/fa';
-import { FaFilePen } from 'react-icons/fa6';
+import { FaTasks, FaFileInvoiceDollar, FaRegCalendarAlt } from "react-icons/fa";
+import { FaFilePen } from "react-icons/fa6";
 import { useSelector } from 'react-redux';
 import { Title } from '@/components/ui/text';
 import { usePathname } from 'next/navigation';
@@ -67,6 +67,11 @@ export const MenuItems = () => {
           name: 'Manage Subsription',
           href: routes.manageSubcription,
           icon: <AiOutlineDollar />,
+        },
+        {
+          name: 'Refferal',
+          href: routes.referal,
+          icon: <PiUsersThree />,
         },
       ];
       break;
