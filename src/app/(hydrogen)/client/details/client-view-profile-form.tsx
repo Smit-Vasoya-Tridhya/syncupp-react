@@ -127,8 +127,18 @@ export default function ClientViewProfileForm() {
 
   return (
     <div className="@container">
-      <div className="flex flex-wrap justify-center border-b border-t border-gray-300 py-4 px-6 font-medium text-gray-700 @5xl:justify-start">
+      <div className="flex justify-between border-b border-t border-gray-300 px-6 py-4 font-medium text-gray-700 @5xl:justify-start">
+        <div>
         <Title>Client Details</Title>
+        </div>
+        <div className='ms-auto'>
+          <a href={routes.client}>
+            <Button className="bg-none text-xs @lg:w-auto sm:text-sm">
+              <FaArrowLeft className="me-1.5 h-[17px] w-[17px]" />
+              Back
+            </Button>
+          </a>
+        </div>
         {/* <Link href={routes.invoice} className="w-full">
         <Button className="float-end mb-2 mt-5 bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0">
           <FaArrowLeft className="me-1.5 h-[17px] w-[17px]" />
@@ -136,7 +146,7 @@ export default function ClientViewProfileForm() {
         </Button>
       </Link> */}
       </div>
-      <div className="items-start pt-10 @5xl:grid @5xl:grid-cols-12 @5xl:gap-7 @6xl:grid-cols-10 @7xl:gap-10 px-6">
+      <div className="items-start px-6 pt-10 @5xl:grid @5xl:grid-cols-12 @5xl:gap-7 @6xl:grid-cols-10 @7xl:gap-10">
         {/* Left side */}
         <div className="pt-8 @container @5xl:col-span-4 @5xl:space-y-10 @5xl:pt-0 @6xl:col-span-3">
           <WidgetCard
@@ -180,10 +190,17 @@ export default function ClientViewProfileForm() {
                 </Title>
               </span>
               <span className="mb-2 flex items-baseline gap-2">
-                <span className="font-semibold text-gray-900">URL :</span>
-                <Text as="p" className="text-base @7xl:text-lg">
+                <span className="text-wrap font-semibold text-gray-900">
+                  URL&nbsp;:
+                </span>
+                <a
+                  href={data?.reference_id?.company_website}
+                  target="_blank"
+                  rel=""
+                  className="break-all text-base text-blue-600 hover:underline @7xl:text-lg"
+                >
                   {data?.reference_id?.company_website}
-                </Text>
+                </a>
               </span>
               <span className="mb-2 flex items-baseline gap-2">
                 <span className="font-semibold text-gray-900">Industry :</span>
@@ -241,51 +258,51 @@ export default function ClientViewProfileForm() {
 
         {/*  Right side  */}
         <div className="space-y-7 @5xl:col-span-8 @5xl:space-y-10 @6xl:col-span-7">
-        <div
-      className={cn(
-        'sticky top-[68px] z-20 border-b border-gray-300 bg-white py-0 font-medium text-gray-500 @2xl:top-[72px] dark:bg-gray-50 2xl:top-20',
-        // className
-      )}
-    >
-      <SimpleBar>
-        <div className="inline-grid grid-flow-col gap-5 md:gap-7 lg:gap-10">
-          {menuItems.map((tab, idx) => (
-            <Link
-              key={tab.value}
-              to={tab.value}
-              spy={true}
-              hashSpy={true}
-              smooth={true}
-              offset={idx === 0 ? -260 : -150}
-              duration={500}
-              // className="relative cursor-pointer whitespace-nowrap py-4 hover:text-gray-1000"
-              // activeClass="active before:absolute before:bottom-0 before:left-0 before:z-[1] before:h-0.5 before:w-full before:bg-gray-1000 font-semibold text-gray-1000"
-            >
-              {tab.label}
-            </Link>
-          ))}
-        </div>
-      </SimpleBar>
-    </div>
-      <SimpleBar>
-        <div className="inline-grid grid-flow-col gap-5 md:gap-7 lg:gap-10">
-          {menuButtons.map((tab, idx) => (
-            <Link
-              key={tab.value}
-              to={tab.value}
-              spy={true}
-              hashSpy={true}
-              smooth={true}
-              offset={idx === 0 ? -260 : -150}
-              duration={500}
-              // className="relative cursor-pointer whitespace-nowrap py-4 hover:text-gray-1000"
-              // activeClass="active before:absolute before:bottom-0 before:left-0 before:z-[1] before:h-0.5 before:w-full before:bg-gray-1000 font-semibold text-gray-1000"
-            >
-              {tab.label}
-            </Link>
-          ))}
-        </div>
-      </SimpleBar>
+          <div
+            className={cn(
+              'sticky top-[68px] z-20 border-b border-gray-300 bg-white py-0 font-medium text-gray-500 @2xl:top-[72px] dark:bg-gray-50 2xl:top-20'
+              // className
+            )}
+          >
+            <SimpleBar>
+              <div className="inline-grid grid-flow-col gap-5 md:gap-7 lg:gap-10">
+                {menuItems.map((tab, idx) => (
+                  <Link
+                    key={tab.value}
+                    to={tab.value}
+                    spy={true}
+                    hashSpy={true}
+                    smooth={true}
+                    offset={idx === 0 ? -260 : -150}
+                    duration={500}
+                    // className="relative cursor-pointer whitespace-nowrap py-4 hover:text-gray-1000"
+                    // activeClass="active before:absolute before:bottom-0 before:left-0 before:z-[1] before:h-0.5 before:w-full before:bg-gray-1000 font-semibold text-gray-1000"
+                  >
+                    {tab.label}
+                  </Link>
+                ))}
+              </div>
+            </SimpleBar>
+          </div>
+          <SimpleBar>
+            <div className="inline-grid grid-flow-col gap-5 md:gap-7 lg:gap-10">
+              {menuButtons.map((tab, idx) => (
+                <Link
+                  key={tab.value}
+                  to={tab.value}
+                  spy={true}
+                  hashSpy={true}
+                  smooth={true}
+                  offset={idx === 0 ? -260 : -150}
+                  duration={500}
+                  // className="relative cursor-pointer whitespace-nowrap py-4 hover:text-gray-1000"
+                  // activeClass="active before:absolute before:bottom-0 before:left-0 before:z-[1] before:h-0.5 before:w-full before:bg-gray-1000 font-semibold text-gray-1000"
+                >
+                  {tab.label}
+                </Link>
+              ))}
+            </div>
+          </SimpleBar>
         </div>
       </div>
     </div>
