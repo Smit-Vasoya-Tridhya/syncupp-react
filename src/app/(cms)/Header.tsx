@@ -24,16 +24,16 @@ const Header = () => {
         <div className="items-center justify-between hidden w-full lg:flex lg:w-auto lg:order-1 lg:static absolute lg:bg-transparent bg-white left-0 right-0 lg:px-0 px-4 top-full" id="navbar-cta">
           <ul className="flex flex-col rtl:space-x-reverse lg:flex-row md:gap-12 gap-4 ">
             <li>
-              <a href="#" className="block font-inter font-normal text-lg md:leading-5 text-lightblack hover:text-darkpurple capitalize" aria-current="page">Home</a>
+              <a href="#" className="block font-interr font-normal text-lg md:leading-5 text-lightblack hover:text-darkpurple capitalize" aria-current="page">Home</a>
             </li>
             <li>
-              <a href="#" className="block font-inter font-normal text-lg md:leading-5 text-lightblack hover:text-darkpurple capitalize ">Features</a>
+              <a href="#" className="block font-interr font-normal text-lg md:leading-5 text-lightblack hover:text-darkpurple capitalize ">Features</a>
             </li>
             <li>
-              <a href="#" className="block font-inter font-normal text-lg md:leading-5 text-lightblack hover:text-darkpurple capitalize ">Price</a>
+              <a href="#" className="block font-interr font-normal text-lg md:leading-5 text-lightblack hover:text-darkpurple capitalize ">Price</a>
             </li>
             <li>
-              <a href="#" className="block font-inter font-normal text-lg md:leading-5 text-lightblack hover:text-darkpurple capitalize ">Contact</a>
+              <a href="#" className="block font-interr font-normal text-lg md:leading-5 text-lightblack hover:text-darkpurple capitalize ">Contact</a>
             </li>
           </ul>
         </div>

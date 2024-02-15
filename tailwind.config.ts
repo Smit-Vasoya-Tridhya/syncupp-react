@@ -81,6 +81,8 @@ export default {
         lightpink: '#F9BDFF',
         lightbg: '#FCF9FF',
         lightgray:'#CECECE',
+        bgpink: '#F7E5F8',
+        textcolor: '#595959',
       },
       blur: {
         'xs': '2px',
@@ -88,6 +90,8 @@ export default {
       fontFamily: {
         inter: ['var(--font-inter)'],
         lexend: ['var(--font-lexend)'],
+        koulen:   ['Koulen', 'sans-serif'],
+        interr: ['Inter'],
       },
       // required these animations for the Loader component
       animation: {
@@ -103,6 +107,7 @@ export default {
         skeleton: `linear-gradient(90deg,transparent,#ecebeb,transparent)`,
         'skeleton-dark': `linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent)`,
         'gradient-bg': 'linear-gradient(90deg, rgba(65,35,109,1) 0%, rgba(123,38,131,1) 100%);',
+        'faq-banner': "url('/public/assets/images/faq-banner.png');",
       },
       keyframes: {
         blink: {

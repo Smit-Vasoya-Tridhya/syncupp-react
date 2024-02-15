@@ -19,19 +19,19 @@ function Footer() {
                     </a>
                 </div>
                 <ul className='pt-7 flex justify-center sm:flex-row flex-col'>
-                    <li className='lg:px-14 md:px-6 px-3 sm:border-r border-lightblack leading-3'><Link href="#" className='text-lightblack font-inter leading-normal text-base'>FAQ</Link></li>
-                    <li className='lg:px-14 md:px-6 px-3 sm:border-r border-lightblack leading-normal'><Link href="#" className='text-lightblack font-inter leading-normal text-base'>Contact us</Link></li>
-                    <li className='lg:px-14 md:px-6 px-3 sm:border-r border-lightblack leading-normal'><Link href="#" className='text-lightblack font-inter leading-normal text-base'>Affiliate Program</Link></li>
-                    <li className='lg:px-14 md:px-6 px-3 sm:border-r border-lightblack leading-normal'><Link href="#" className='text-lightblack font-inter leading-normal text-base'>Teams and condition</Link></li>
-                    <li className='lg:px-14 md:px-6 px-3 leading-normal'><Link href="#" className='text-lightblack font-inter leading-normal text-base'>Privacy Policy</Link></li>
+                    <li className='lg:px-14 md:px-6 px-3 sm:border-r border-lightblack leading-3 lg:text-left text-center'><Link href="#" className='text-lightblack font-interr leading-normal text-base font-normal'>FAQ</Link></li>
+                    <li className='lg:px-14 md:px-6 px-3 sm:border-r border-lightblack leading-normal lg:text-left text-center'><Link href="#" className='text-lightblack font-interr leading-normal text-base font-normal'>Contact us</Link></li>
+                    <li className='lg:px-14 md:px-6 px-3 sm:border-r border-lightblack leading-normal lg:text-left text-center'><Link href="#" className='text-lightblack font-interr leading-normal text-base font-normal'>Affiliate Program</Link></li>
+                    <li className='lg:px-14 md:px-6 px-3 sm:border-r border-lightblack leading-normal lg:text-left text-center'><Link href="#" className='text-lightblack font-interr leading-normal text-base font-normal'>Teams and condition</Link></li>
+                    <li className='lg:px-14 md:px-6 px-3 leading-normal lg:text-left text-center'><Link href="#" className='text-lightblack font-interr leading-normal text-base'>Privacy Policy</Link></li>
                 </ul>
             </div>
         </div>
         <div>
             <div className='max-w-screen-xl mx-auto w-full xl:px-0 px-4'>
                 <div className='flex md:justify-between justify-center lg:py-6 py-3 md:flex-row flex-col gap-4'>
-                    <div>
-                        <span>© 2023 SyncUpp</span>
+                    <div className='text-center'>
+                        <span className='text-base text-lightgray font-normal leading-5 font-interr'>© 2023 SyncUpp</span>
                     </div>
                     <div>
                         <ul className='flex lg:gap-8 gap-4 md:justify-end justify-center'>
