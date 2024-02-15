@@ -22,8 +22,7 @@ export default function ReferalPage({ className }: { className?: string }) {
                 <div className="flex-col col-span-2 w-full ">
                     <div className="w-full  block md:flex ">
                         <MetricCard
-                            className={cn('w-full max-w-full justify-between', className)}
-                        >
+                            className={cn('w-full max-w-full justify-between', className)} title={''} metric={undefined}                        >
                             <Title>
                                 Share your referral link
                             </Title>
@@ -41,7 +40,7 @@ export default function ReferalPage({ className }: { className?: string }) {
                                                 // onKeyDown={handleKeyDown}
 
                                                 placeholder="http://104.248.10.11:4014/signup?referral=l6qYgcmT"
-                                                color="text"
+                                                // color="text" //removed becuse of the build
                                                 className="[&>label>span]:font-medium md:me-4 mb-4 md:mb-0"
                                             // {...register('title')}
                                             // error={errors?.title?.message}
@@ -70,8 +69,7 @@ export default function ReferalPage({ className }: { className?: string }) {
                     </div>
                     <div className="w-full  block md:flex my-4">
                         <MetricCard
-                            className={cn('w-full max-w-full justify-between', className)}
-                        >
+                            className={cn('w-full max-w-full justify-between', className)} title={''} metric={undefined}                        >
                             <Title>
                                 Invite with email
                             </Title>
@@ -89,7 +87,7 @@ export default function ReferalPage({ className }: { className?: string }) {
                                                 // onKeyDown={handleKeyDown}
 
                                                 placeholder="Enter email for invite"
-                                                color="text"
+                                                // color="text" //removed becuse of the build
                                                 className="[&>label>span]:font-medium md:me-4 mb-4 md:mb-0"
                                             // {...register('title')}
                                             // error={errors?.title?.message}
@@ -98,7 +96,7 @@ export default function ReferalPage({ className }: { className?: string }) {
                                         </label>
 
                                         <Button
-                                            c
+                                            
                                             className="@xl:w-auto dark:hover:border-gray-400 primary-dark"
                                         // onClick={() => closeModal()}
                                         >
@@ -117,8 +115,7 @@ export default function ReferalPage({ className }: { className?: string }) {
                     </Title>
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-3 my-6">
                         <MetricCard
-                            className={cn('w-full max-w-full justify-between', className)}
-                        >
+                            className={cn('w-full max-w-full justify-between', className)} title={''} metric={undefined}                        >
                             <div className="flex-col">
                                 <div className="mb-4">
                                     <span className="rounded-full bg-[#000000] text-white h-[10px] w-[10px] px-[10px] py-[5px] text-[11px] font-bold">
@@ -135,8 +132,7 @@ export default function ReferalPage({ className }: { className?: string }) {
                             </div>
                         </MetricCard>
                         <MetricCard
-                            className={cn('w-full max-w-full justify-between', className)}
-                        >
+                            className={cn('w-full max-w-full justify-between', className)} title={''} metric={undefined}                        >
                             <div className="flex-col">
                                 <div className="mb-4">
                                     <span className="rounded-full bg-[#000000] text-white h-[10px] w-[10px] px-[10px] py-[5px] text-[11px] font-bold">
@@ -153,8 +149,7 @@ export default function ReferalPage({ className }: { className?: string }) {
                             </div>
                         </MetricCard>
                         <MetricCard
-                            className={cn('w-full max-w-full justify-between', className)}
-                        >
+                            className={cn('w-full max-w-full justify-between', className)} title={''} metric={undefined}                        >
                             <div className="flex-col">
                                 <div className="mb-4">
                                     <span className="rounded-full bg-[#000000] text-white h-[10px] w-[10px] px-[10px] py-[5px] text-[11px] font-bold">
@@ -178,14 +173,14 @@ export default function ReferalPage({ className }: { className?: string }) {
                 {/*right side sections*/}
                 <div className="flex-col w-full ">
                     <div className="w-full  block md:flex ">
-                        <MetricCard className=" w-full ">
+                        <MetricCard className=" w-full " title={''} metric={undefined}>
                             <div className="flex-col">
                                 <div className="mb-4">
                                     <span className=" text-[16px] font-bold">
                                         Your referral stats
                                     </span>
                                 </div>
-                                <ul class="list-none w-full">
+                                <ul className="list-none w-full">
                                     <li className="flex my-2">
                                         <span className="text-[14px] w-[80%]">
                                             Succesfull signups
