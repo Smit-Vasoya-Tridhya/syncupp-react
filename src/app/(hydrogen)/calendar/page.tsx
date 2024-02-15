@@ -1,6 +1,6 @@
 
 import { metaObject } from '@/config/site.config';
-import CalenderTablePage from './main-page';
+import CalendarMainPage from './main-page';
 
 export const metadata = {
   ...metaObject('Calendar'),
@@ -9,7 +9,7 @@ export const metadata = {
 export default function CalenderPage() {
   return (
     <>
-    <CalenderTablePage/>
+      <CalendarMainPage />
     </>
   );
 }

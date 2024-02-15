@@ -1,6 +1,5 @@
 'use client';
 
-import { Title, ActionIcon } from '@/components/ui/text';
 import { Button } from '@/components/ui/button';
 import { Controller, SubmitHandler, useFormContext } from 'react-hook-form';
 import { Form } from '@/components/ui/form';
@@ -9,24 +8,23 @@ import { useRouter } from 'next/navigation';
 import Spinner from '@/components/ui/spinner';
 import { useModal } from '@/app/shared/modal-views/use-modal';
 import cn from '@/utils/class-names';
-import { PiXBold } from 'react-icons/pi';
 import { Input } from '@/components/ui/input';
 import dynamic from 'next/dynamic';
 import SelectLoader from '@/components/loader/select-loader';
 import { useEffect, useState } from 'react';
 import { handleKeyDown } from '@/utils/common-functions';
-// import SelectBox from '@/components/ui/select';
-import { AddTaskSchema, addTaskSchema } from '@/utils/validators/add-task.schema';
 import QuillLoader from '@/components/loader/quill-loader';
 import { DatePicker } from '@/components/ui/datepicker';
-import EventCalendarView from './calendar';
 import { Checkbox } from '@/components/ui/checkbox';
-import { getAllTask, getTaskById, patchEditTask, postAddTask } from '@/redux/slices/user/task/taskSlice';
 import Select from '@/components/ui/select';
 import { getAllClient, setClientId, setClientName } from '@/redux/slices/user/client/clientSlice';
 import { getAllTeamMember } from '@/redux/slices/user/team-member/teamSlice';
-import { formatDate } from '@/utils/format-date';
 import moment from 'moment';
+import { AddCallMeetingSchema, addCallMeetingSchema } from '@/utils/validators/add-activity.schema';
+import { Text, Textarea } from 'rizzui';
+import { AiOutlineUsergroupAdd } from 'react-icons/ai';
+import { GiNotebook } from 'react-icons/gi';
+import { getActivityById, patchEditActivity, postAddActivity } from '@/redux/slices/user/activity/activitySlice';
 
 const QuillEditor = dynamic(() => import('@/components/ui/quill-editor'), {
   ssr: false,
@@ -34,14 +32,7 @@ const QuillEditor = dynamic(() => import('@/components/ui/quill-editor'), {
 });
 
 
-
-const typeOption = [
-  { name: 'Team Member', value: 'team_member' },
-  { name: 'Admin', value: 'admin' },
-]
-
-
-export default function AddTaskForm(props: any) {
+export default function AddCallMeetingForm(props: any) {
 
   const { title, row } = props;
   // console.log("row data....", row);
@@ -54,9 +45,14 @@ export default function AddTaskForm(props: any) {
   const [teamId, setTeamId] = useState('');
   const clientSliceData = useSelector((state: any) => state?.root?.client);
   const teamMemberData = useSelector((state: any) => state?.root?.teamMember);
-  const taskData = useSelector((state: any) => state?.root?.task);
+  const activityData = useSelector((state: any) => state?.root?.activity);
   const signIn = useSelector((state: any) => state?.root?.signIn);
 
+  const [isTextAreaVisible, setTextAreaVisible] = useState(false);
+
+  const handleAddNoteClick = () => {
+    setTextAreaVisible((prevVisible) => !prevVisible);
+  };
 
   // api call for get clients and team member
 
@@ -68,7 +64,7 @@ export default function AddTaskForm(props: any) {
 
 
   useEffect(() => {
-    if(signIn && signIn?.teamMemberRole === 'team_member') {
+    if (signIn && signIn?.teamMemberRole === 'team_member') {
       setTeamId(signIn?.user?.data?.user?.reference_id);
     }
   }, [signIn]);
@@ -76,20 +72,23 @@ export default function AddTaskForm(props: any) {
 
   // let data = row;
 
-  const initialValues: AddTaskSchema = {
+  const initialValues: AddCallMeetingSchema = {
     title: '',
     description: '',
     due_date: new Date(),
+    start_time: new Date(),
+    end_time: new Date(),
     client: '',
     assigned: signIn?.teamMemberRole === 'team_member' ? signIn?.user?.data?.user?.name : '',
+    notes: '',
     done: false
   };
 
 
 
   useEffect(() => {
-    row && dispatch(getTaskById({ taskId: row?._id })).then((result: any) => {
-      if (getTaskById.fulfilled.match(result)) {
+    row && dispatch(getActivityById({ activityId: row?._id })).then((result: any) => {
+      if (getActivityById.fulfilled.match(result)) {
         if (result && result.payload.success === true) {
           setClientId(result?.payload?.data[0]?.client_id);
           setTeamId(result?.payload?.data[0]?.assign_to);
@@ -98,7 +97,7 @@ export default function AddTaskForm(props: any) {
     });
   }, [row, dispatch]);
 
-  let [data] = taskData?.task;
+  let [data] = activityData?.activity ?? [{}];
 
   // const dueee_date = moment(data?.due_date).toDate();
   // console.log(dueee_date, "formateedddd", data?.due_date)
@@ -108,6 +107,8 @@ export default function AddTaskForm(props: any) {
     description: data?.internal_info,
     // due_date: new Date(data?.due_date),
     due_date: moment(data?.due_date).toDate(),
+    start_time: moment(data?.start_time).toDate(),
+    end_time: moment(data?.end_time).toDate(),
     client: data?.client_fullName,
     assigned: signIn?.teamMemberRole === 'team_member' ? signIn?.user?.data?.user?.name : data?.assigned_to_name,
     done: data?.status === 'completed' ? true : false
@@ -125,53 +126,45 @@ export default function AddTaskForm(props: any) {
     return { name: team?.name, value: team?.reference_id, key: team }
   }) : [];
 
-  // const handleClientChange = (selectedOption: Record<string, any>) => {
-  //   // console.log("selected option....", selectedOption)
-  //   dispatch(getAllTeamMember({ sort_field: 'createdAt', sort_order: 'desc', client_id: selectedOption?.value, pagination: true }))
-  // }
 
-  // const handleTeamChange = (selectedOption: Record<string, any>) => {
-  //   // console.log("selected option....", selectedOption)
-  //   dispatch(getAllTeamMember({ sort_field: 'createdAt', sort_order: 'desc', client_id: selectedOption?.value, pagination: true }))
-  // }
-
-
-
-
-
-
-  const onSubmit: SubmitHandler<AddTaskSchema> = (dataa) => {
-    // console.log('Add task dataa---->', dataa);
+  const onSubmit: SubmitHandler<AddCallMeetingSchema> = (dataa) => {
+    console.log('Add call meeting form dataa---->', dataa);
 
     const formData = {
-      ...dataa,
+      title: dataa?.title,
+      agenda: dataa?.description,
       due_date: new String(dataa?.due_date),
-      client: clientId,
-      assigned: teamId
+      meeting_start_time: new String(dataa?.start_time),
+      meeting_end_time: new String(dataa?.end_time),
+      client_id: clientId,
+      assign_to: teamId,
+      activity_type: 'call_meeting',
+      internal_info: dataa?.notes,
+      mark_as_done: dataa?.done,
     }
 
-    // console.log('Add task form dataa---->', formData);
+    // console.log('Add activity form dataa---->', formData);
 
     const filteredFormData = Object.fromEntries(
       Object.entries(formData).filter(([_, value]) => value !== undefined && value !== '')
     );
 
 
-    if (title === 'New Task') {
-      dispatch(postAddTask(filteredFormData)).then((result: any) => {
-        if (postAddTask.fulfilled.match(result)) {
+    if (title === 'New Activity') {
+      dispatch(postAddActivity(filteredFormData)).then((result: any) => {
+        if (postAddActivity.fulfilled.match(result)) {
           if (result && result.payload.success === true) {
             closeModal();
-            dispatch(getAllTask({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
+            // dispatch(getAllTask({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
           }
         }
       });
     } else {
-      dispatch(patchEditTask({ ...filteredFormData, _id: data._id })).then((result: any) => {
-        if (patchEditTask.fulfilled.match(result)) {
+      dispatch(patchEditActivity({ ...filteredFormData, _id: data._id })).then((result: any) => {
+        if (patchEditActivity.fulfilled.match(result)) {
           if (result && result.payload.success === true) {
             closeModal();
-            dispatch(getAllTask({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
+            // dispatch(getAllTask({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
           }
         }
       });
@@ -180,7 +173,7 @@ export default function AddTaskForm(props: any) {
   };
 
 
-  if (!taskData?.task && title === 'Edit Task') {
+  if (!activityData?.activity && title === 'Edit Activity') {
     return (
       <div className='p-10 flex items-center justify-center'>
         <Spinner size="xl" tag='div' className='ms-3' />
@@ -189,32 +182,25 @@ export default function AddTaskForm(props: any) {
   } else {
     return (
       <>
-        <Form<AddTaskSchema>
-          validationSchema={addTaskSchema}
+        <Form<AddCallMeetingSchema>
+          validationSchema={addCallMeetingSchema}
           onSubmit={onSubmit}
           useFormProps={{
             mode: 'all',
             defaultValues: defaultValuess,
           }}
-          className=" p-10 [&_label]:font-medium"
+          className="[&_label]:font-medium"
         >
           {({ register, control, formState: { errors }, }) => (
             <div className="space-y-5">
-              <div className="mb-6 flex items-center justify-between">
+              {/* <div className="mb-6 flex items-center justify-between">
                 <Title as="h3" className="text-xl xl:text-2xl">
                   {title}
+                  New activity
                 </Title>
-                <ActionIcon
-                  size="sm"
-                  variant="text"
-                  onClick={() => closeModal()}
-                  className="p-0 text-gray-500 hover:!text-gray-900"
-                >
-                  <PiXBold className="h-[18px] w-[18px]" />
-                </ActionIcon>
-              </div>
-              <div className={cn('grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-4')}>
-                <div className='grid gap-4'>
+              </div> */}
+              <div>
+                <div className='grid gap-5'>
                   <Input
                     type="text"
                     onKeyDown={handleKeyDown}
@@ -240,26 +226,70 @@ export default function AddTaskForm(props: any) {
                       />
                     )}
                   />
-                  <Controller
-                    name="due_date"
-                    control={control}
-                    render={({ field: { value, onChange } }) => (
-                      <DatePicker
-                        selected={value}
-                        inputProps={{
-                          label: 'Due Date & Time',
-                          color: 'info'
-                        }}
-                        placeholderText='Select due date & time'
-                        onChange={onChange}
-                        selectsStart
-                        startDate={value}
-                        minDate={new Date()}
-                        showTimeSelect
-                        dateFormat="MMMM d, yyyy h:mm aa"
+                  <div className={cn('grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-5 items-center')}>
+                    <div>
+                      <Controller
+                        name="due_date"
+                        control={control}
+                        render={({ field: { value, onChange } }) => (
+                          <DatePicker
+                            placeholderText="Select Due date"
+                            selected={value}
+                            inputProps={{
+                              label: 'Due Date',
+                              color: 'info'
+                            }}
+                            onChange={onChange}
+                            selectsStart
+                            startDate={value}
+                            minDate={new Date()}
+                            // showTimeSelect
+                            dateFormat="MMMM dd, yyyy"
+                          />
+                        )}
                       />
-                    )}
-                  />
+                    </div>
+                    <div>
+                      <Controller
+                        name="start_time"
+                        control={control}
+                        render={({ field: { value, onChange } }) => (
+                          <DatePicker
+                            placeholderText="Select start time"
+                            selected={value}
+                            inputProps={{
+                              label: 'Start Time',
+                              color: 'info'
+                            }}
+                            onChange={onChange}
+                            showTimeSelect
+                            showTimeSelectOnly
+                            dateFormat="hh:mm aa"
+                          />
+                        )}
+                      />
+                    </div>
+                    <div>
+                      <Controller
+                        name="end_time"
+                        control={control}
+                        render={({ field: { value, onChange } }) => (
+                          <DatePicker
+                            placeholderText="Select end time"
+                            selected={value}
+                            inputProps={{
+                              label: 'End Time',
+                              color: 'info'
+                            }}
+                            onChange={onChange}
+                            showTimeSelect
+                            showTimeSelectOnly
+                            dateFormat="hh:mm aa"
+                          />
+                        )}
+                      />
+                    </div>
+                  </div>
                   {clientSliceData?.loading ? (<SelectLoader />) : (
                     <Controller
                       control={control}
@@ -309,13 +339,30 @@ export default function AddTaskForm(props: any) {
                       )}
                     />
                   )}
-                </div>
-                <div className='grid gap-4'>
-                  <EventCalendarView />
+                  <span className="flex cursor-pointer items-center text-lg gap-2 font-medium">
+                    <AiOutlineUsergroupAdd className="h-[25px] w-[25px]" />
+                    <Text>Add Attendees</Text>
+                  </span>
+                  <span
+                    className="flex cursor-pointer items-center text-lg gap-2 font-medium"
+                    onClick={handleAddNoteClick}
+                  >
+                    <GiNotebook className="h-[25px] w-[25px]" />
+                    <Text>Add Internal Note & Location</Text>
+                  </span>
+                  {isTextAreaVisible && (
+                    <Textarea
+                      placeholder="Add your internal note and location..."
+                      {...register('notes')}
+                      error={errors?.notes?.message as string}
+                    // textareaClassName="h-20"
+                    // className="col-span-2"
+                    />
+                  )}
                 </div>
               </div>
               <div>
-                <div className={cn('grid grid-cols-2 gap-5 pt-5')}>
+                <div className='flex items-center gap-[20px] pt-[0.25rem] pb-5'>
                   <div>
                     <Button
                       variant="outline"
@@ -325,7 +372,7 @@ export default function AddTaskForm(props: any) {
                       Cancel
                     </Button>
                   </div>
-                  <div className='flex justify-end items-center gap-2'>
+                  <div className='flex justify-end items-center gap-2 ms-auto'>
                     <Checkbox
                       {...register('done')}
                       label="Mark as done"
@@ -336,10 +383,10 @@ export default function AddTaskForm(props: any) {
                     <Button
                       type="submit"
                       className="hover:gray-700 @xl:w-auto dark:bg-gray-200 dark:text-white"
-                      disabled={taskData?.loading}
+                      disabled={activityData?.loading}
                     >
                       Save
-                      {taskData?.loading && <Spinner size="sm" tag='div' className='ms-3' color='white' />}
+                      {activityData?.loading && <Spinner size="sm" tag='div' className='ms-3' color='white' />}
                     </Button>
                   </div>
                 </div>

@@ -9,7 +9,8 @@ export const metadata = {
 };
 
 const pageHeader = {
-  title: 'Event Calendar',};
+  title: 'Event Calendar',
+};
 
 export default function EventCalendarPage() {
   return (
