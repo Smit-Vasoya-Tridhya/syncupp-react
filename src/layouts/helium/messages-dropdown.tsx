@@ -144,7 +144,7 @@ function MessagesList({
       </div>
       <SimpleBar className="max-h-[406px]">
         <div className="grid grid-cols-1 ps-4">
-          {data.map((item) => (
+          {data?.map((item) => (
             <div
               key={item.name + item.id}
               className="group grid cursor-pointer grid-cols-[auto_minmax(0,1fr)] gap-2.5 rounded-md px-2 py-2.5 pe-3 transition-colors hover:bg-gray-100 dark:hover:bg-gray-50"

@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Form } from '@/components/ui/form';
 import { handleKeyDown } from '@/utils/common-functions';
 import { SetPasswordSchema, setPasswordSchema } from '@/utils/validators/set-password-schema';
+import { Title, Text } from '@/components/ui/text';
 import { useDispatch, useSelector } from 'react-redux';
 import { postVerifyClient } from '@/redux/slices/user/client/clientSlice';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -22,11 +23,12 @@ export default function SetPasswordForm(props: any) {
   const clientSliceData = useSelector((state: any) => state?.root?.client);
   const searchParams = useSearchParams();
   const email = searchParams.get("email");
+  const name = searchParams.get("name");
   const agency = searchParams.get("agency");
   
   const initialValues = {
-    firstName: '',
-    lastName: '',
+    // firstName: '',
+    // lastName: '',
     email: email ?? '' ,
     password: '',
     confirmPassword: '',
@@ -37,8 +39,8 @@ export default function SetPasswordForm(props: any) {
       email: email,
       agency_id: agency,
       password: data?.password,
-      first_name: data?.firstName,
-      last_name: data?.lastName,
+      // first_name: data?.firstName,
+      // last_name: data?.lastName,
       redirect: redirect
     }
     dispatch(postVerifyClient(apiData)).then((result: any) => {
@@ -56,13 +58,19 @@ export default function SetPasswordForm(props: any) {
           validationSchema={setPasswordSchema}
           onSubmit={onSubmit}
           useFormProps={{
-            mode: 'onTouched',
+            mode: 'all',
             defaultValues: initialValues,
           }}
         >
           {({ register, formState: { errors } }) => (
             <div className="space-y-5">
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:gap-5 xl:pb-2">
+              <Title
+              // as="h6"
+              className="mb-0.5 flex items-start text-sm text-gray-500 sm:items-center"
+            >
+              {name} invited you to their Syncupp. Setup your password to join {name} on Syncupp.
+            </Title> <br />
+              {/* <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:gap-5 xl:pb-2">
                 <Input
                   onKeyDown={handleKeyDown}
                   type="text"
@@ -87,7 +95,7 @@ export default function SetPasswordForm(props: any) {
                   {...register('lastName')}
                   error={errors?.lastName?.message}
                 />
-              </div>
+              </div> */}
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:gap-5 xl:pb-2">
                 <Input
                   onKeyDown={handleKeyDown}

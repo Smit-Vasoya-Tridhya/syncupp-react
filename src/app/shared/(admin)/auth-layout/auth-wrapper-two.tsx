@@ -136,12 +136,10 @@ function IntroBannerBlock() {
             as="h2"
             className="mb-5 pt-3.5 text-[26px] font-semibold leading-snug text-white md:text-3xl md:!leading-normal xl:mb-7 xl:text-4xl xl:text-[28px] xl:leading-snug 2xl:text-5xl 2xl:leading-snug"
           >
-            Start turning your ideas into reality.
+            Admin Panel Login
           </Title>
           <Text className="mb-5 text-base leading-loose xl:mb-7 2xl:pe-20">
-            Sign up now and start taking advantage to a wealth of information
-            that will help you improve your business and stay ahead of the
-            competition.
+          This page is designed to ensure secure access, allowing authorized personnel to manage and control various aspects of the platform.
           </Text>
         </div>
         <SocialLinks />
@@ -165,7 +163,7 @@ const socialLinks = [
 function SocialLinks() {
   return (
     <div className="-mx-2 flex items-center pt-24 text-white xl:-mx-2.5 2xl:pb-5 2xl:pt-40 [&>a>svg]:w-5 xl:[&>a>svg]:w-6">
-      {socialLinks.map((item) => (
+      {socialLinks?.map((item) => (
         <a
           key={item.title}
           href={item.link}

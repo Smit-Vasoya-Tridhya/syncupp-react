@@ -7,7 +7,7 @@ import { Title, Text } from '@/components/ui/text';
 import { usePathname, useRouter } from 'next/navigation';
 import { routes } from '@/config/routes';
 import cn from '@/utils/class-names';
-import {PiArrowLineRight,PiFacebookLogo,PiGoogleLogo,PiUserCirclePlus} from 'react-icons/pi';
+import { PiArrowLineRight, PiFacebookLogo, PiGoogleLogo, PiUserCirclePlus } from 'react-icons/pi';
 import { FcGoogle } from 'react-icons/fc';
 import { FaFacebook } from "react-icons/fa";
 import { siteConfig } from '@/config/site.config';
@@ -19,6 +19,8 @@ import { facebookSignUpUser, googleSignUpUser } from '@/redux/slices/user/auth/s
 import Spinner from '@/components/ui/spinner';
 import FacebookLogin from 'react-facebook-login';
 import { useState } from 'react';
+import { signUpUserSubscription } from '@/redux/slices/user/auth/signupSlice';
+import { initiateRazorpay } from '@/services/paymentService';
 
 export default function AuthWrapperTwo({
   children,
@@ -100,12 +102,12 @@ function AuthNavBar(props: any) {
         {props.title !== 'Set your password' &&
           <AuthNavLink href={routes.signUp}>
             <PiUserCirclePlus className="h-6 w-6" />
-            Sign up
+            Sign Up
           </AuthNavLink>
         }
         <AuthNavLink href={routes.signIn}>
           <PiArrowLineRight className="h-[22px] w-[22px]" />
-          Login
+          Sign In
         </AuthNavLink>
       </div>
     </div>
@@ -118,7 +120,7 @@ function SocialAuth({
   isSignIn?: boolean;
 }) {
 
- 
+
   const dispatch = useDispatch();
   const router = useRouter();
   const socialSignup = useSelector((state: any) => state?.root?.socialSignup)
@@ -136,88 +138,102 @@ function SocialAuth({
     dispatch(facebookSignUpUser(data)).then((result: any) => {
       if (facebookSignUpUser.fulfilled.match(result)) {
         if (result && result.payload.success === true) {
-          router.replace(routes.dashboard);
+          // router.replace(routes.dashboard);
+          if (result?.payload?.data?.user?.status === "payment_pending") {
+            initiateRazorpay(router, routes.dashboard, result?.payload?.data?.token, dispatch)
+            // dispatch(signUpUserSubscription({})).then((resulturl: any) => {
+            //   // window.location.href = resulturl?.payload?.data?.payment_url;
+            // })
+          } else {
+            router.replace(routes.dashboard);
+          }
         }
         setLoader(false);
       }
     });
 
   };
-  const failureFacebook = async (response: any) => {}
-  
+  const failureFacebook = async (response: any) => { }
+
   return (
     <div className="grid grid-cols-1 gap-4 pb-7 md:grid-cols-1 lg:grid-cols-2 xl:gap-5 xl:pb-8">
 
-            <div className="google-button relative flex content-start ">
-              {/*original google button*/}
-              <GoogleLogin
+      <div className="google-button relative flex content-start ">
+        {/*original google button*/}
+        <GoogleLogin
           //       className="rouned_button_transparent
           // border-transparent bg-[#5F82E5] text-center mx-auto absulate h-[50px] mt-[20px] w-[50%] md:w-full"
-                auto_select={false}
-                // className="hidden"
-                theme="outline"
-                size="large"
-                shape="pill"
-                logo_alignment="left"
-                text="continue_with"
-                width="261"
-                onSuccess={(credentialResponse: any) => {
-                  const data = {
-                    signupId: credentialResponse.credential
+          auto_select={false}
+          // className="hidden"
+          theme="outline"
+          size="large"
+          shape="pill"
+          logo_alignment="left"
+          text="continue_with"
+          width="261"
+          onSuccess={(credentialResponse: any) => {
+            const data = {
+              signupId: credentialResponse.credential
+            }
+            dispatch(googleSignUpUser(data)).then((result: any) => {
+              if (googleSignUpUser.fulfilled.match(result)) {
+                if (result && result.payload.success === true) {
+                  // console.log(result?.payload?.user?.data?.user?.status === "payment_pending", 'result', result?.payload?.data?.user?.status)
+                  if (result?.payload?.data?.user?.status === "payment_pending") {
+                    initiateRazorpay(router, routes.dashboard, result?.payload?.data?.token, dispatch)
+                  } else {
+                    router.replace(routes.dashboard);
                   }
-                  dispatch(googleSignUpUser(data)).then((result: any) => {
-                    if (googleSignUpUser.fulfilled.match(result)) {
-                      if (result && result.payload.success === true ) {
-                        router.replace(routes.dashboard);
-                      } 
-                    }
-                  });
-                }}
-                onError={() => {
-                }}
-              />
-              <div className="testinggs overflow-hidden w-[50%]">
-                <GoogleLogin
-          //         className="absolute z-30 rouned_button_transparent
-          // border-transparent bg-whtie text-center mx-auto  h-[50px] mt-[20px] w-[50%] md:w-full"
-                  auto_select={false}
-                  // className="hidden"
-                  theme="outline"
-                  size="large"
-                  shape="pill"
-                  logo_alignment="left"
-                  text="continue_with"
-                  width="400 | 200"
-                  onSuccess={(credentialResponse: any) => {
-                    const data = {
-                      signupId: credentialResponse.credential
-                    }
-                    dispatch(googleSignUpUser(data)).then((result: any) => {
-                      if (googleSignUpUser.fulfilled.match(result)) {
-                        if (result && result.payload.success === true ) {
-                          router.replace(routes.dashboard);
-                        } 
-                      }
-                    });
-                  }}
-                  onError={() => {
-                  }}
-                />
-              </div>    
 
-              {/*custom button to show*/}
-              <div className="absolute z-30 top-0 left-0 w-full cursor-pointer">
-                <Button variant="outline" className="h-11 w-full text-wrap bg-white facebook-button small" 
-                  rounded="pill" disabled={socialSignup.loading && !loader}>
-                  <FcGoogle className="me-2 h-4 w-4 shrink-0" />
-                  <span className="text-wrap">{`${isSignIn ? 'Login' : 'Sign up'} with Google`}</span>
-                  { socialSignup.loading && !loader && <Spinner size="sm" tag='div' className='ms-3' color='white' /> }    
-                </Button> 
-              </div>
-            </div>
+                }
+              }
+            });
+          }}
+          onError={() => {
+          }}
+        />
+        <div className="testinggs overflow-hidden w-[50%]">
+          <GoogleLogin
+            //         className="absolute z-30 rouned_button_transparent
+            // border-transparent bg-whtie text-center mx-auto  h-[50px] mt-[20px] w-[50%] md:w-full"
+            auto_select={false}
+            // className="hidden"
+            theme="outline"
+            size="large"
+            shape="pill"
+            logo_alignment="left"
+            text="continue_with"
+            width="400 | 200"
+            onSuccess={(credentialResponse: any) => {
+              const data = {
+                signupId: credentialResponse.credential
+              }
+              dispatch(googleSignUpUser(data)).then((result: any) => {
+                if (googleSignUpUser.fulfilled.match(result)) {
+                  if (result && result.payload.success === true) {
+                    // router.replace(routes.dashboard);
+                  }
+                }
+              });
+            }}
+            onError={() => {
+            }}
+          />
+        </div>
+
+        {/*custom button to show*/}
+        <div className="absolute z-30 top-0 left-0 w-full cursor-pointer">
+          <Button variant="outline" className="h-11 w-full text-wrap bg-white facebook-button small"
+            rounded="pill" disabled={socialSignup.loading && !loader}>
+            <FcGoogle className="me-2 h-4 w-4 shrink-0" />
+            <span className="text-wrap">{`${isSignIn ? 'Login' : 'Sign up'} with Google`}</span>
+            {socialSignup.loading && !loader && <Spinner size="sm" tag='div' className='ms-3' color='white' />}
+          </Button>
+        </div>
+      </div>
 
 
-      
+
       <Button variant="outline" className="h-11 w-full relative" rounded="pill" disabled={loader} onClick={handleFacebookClick}>
         <FaFacebook className="me-2 h-4 w-4 shrink-0 text-blue-700" />
         {facebookLogin && <FacebookLogin
@@ -278,7 +294,7 @@ function IntroBannerBlock() {
 const socialLinks = [
   {
     title: 'Facebook',
-    link: 'https://www.facebook.com/redqinc',
+    link: 'https://www.facebook.com/',
     icon: <PiFacebookLogo className="h-auto w-4" />,
   },
   {
@@ -290,7 +306,7 @@ const socialLinks = [
 function SocialLinks() {
   return (
     <div className="-mx-2 flex items-center pt-24 text-white xl:-mx-2.5 2xl:pb-5 2xl:pt-40 [&>a>svg]:w-5 xl:[&>a>svg]:w-6">
-      {socialLinks.map((item) => (
+      {socialLinks?.map((item) => (
         <a
           key={item.title}
           href={item.link}

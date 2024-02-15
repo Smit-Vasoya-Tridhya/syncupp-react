@@ -16,7 +16,8 @@ function MainPage() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const email = searchParams.get("email");
-    const agency = searchParams.get("agency");
+    const agencyId = searchParams.get("agencyId");
+    const clientId = searchParams.get("clientId");
     const token = searchParams.get("token");
     const [redirect, setRedirect] = useState(false);
 
@@ -27,7 +28,7 @@ function MainPage() {
             // console.log(result?.payload?.data?.password_required)
             setRedirect(result?.payload?.data?.password_required)
             if (!result?.payload?.data?.password_required) {
-              dispatch(verifyTeamMember({ email: email, agency_id: agency, token: token, redirect: true })).then((result: any) => {
+              dispatch(verifyTeamMember({ email: email, agency_id: agencyId, token: token, client_id: clientId, redirect: true })).then((result: any) => {
                 if (verifyTeamMember.fulfilled.match(result)) {
                   if (result && result.payload.success === true) {
                     router.replace(routes.signIn);
@@ -40,18 +41,18 @@ function MainPage() {
           }
         }
       })
-    }, [dispatch, email, agency, router, token])
+    }, [dispatch, email, agencyId, router, token, clientId])
   
 
     // useEffect(() => { redirect &&
-    //     dispatch(verifyTeamMember({email: email, agency_id: agency, redirect: redirect, token: token })).then((result: any) => {
+    //     dispatch(verifyTeamMember({email: email, agency_id: agencyId, redirect: redirect, token: token })).then((result: any) => {
     //       if (verifyTeamMember.fulfilled.match(result)) {
     //         if (result && result.payload.success === true ) {
     //           router.replace(routes.signIn);
     //         } 
     //       }
     //     })
-    //   }, [dispatch, router, agency, email, token, redirect]);
+    //   }, [dispatch, router, agencyId, email, token, redirect]);
 
   return (
     <>

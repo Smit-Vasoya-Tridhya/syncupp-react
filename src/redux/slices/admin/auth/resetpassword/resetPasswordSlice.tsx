@@ -1,6 +1,6 @@
 'use client';
 
-import { PostResetPassword } from "@/api/auth/signin/signin";
+import { PostResetPassword } from "@/api/admin/signin/signin";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import toast, { Toast } from "react-hot-toast";
 

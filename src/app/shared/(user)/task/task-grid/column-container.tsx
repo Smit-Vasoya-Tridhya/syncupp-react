@@ -1,35 +1,28 @@
 import { SortableContext, useSortable } from "@dnd-kit/sortable";
-import TrashIcon from "./icon/trash-icon";
 import { Column, Id, Task } from "./types";
 // import { CSS } from "@dnd-kit/utilities";
 import { useMemo, useState } from "react";
-import PlusIcon from "./icon/plus-icon";
 import TaskCard from "./task-card";
+import SimpleBar from '@/components/ui/simplebar';
+import { Empty } from "rizzui";
+import { Text } from '@/components/ui/text';
+import { useSelector } from "react-redux";
+import Spinner from "@/components/ui/spinner";
 
 interface Props {
   column: Column;
-  deleteColumn: (id: Id) => void;
-  updateColumn: (id: Id, title: string) => void;
-
-  createTask: (columnId: Id) => void;
-  updateTask: (id: Id, content: string) => void;
-  deleteTask: (id: Id) => void;
   tasks: Task[];
 }
 
 function ColumnContainer({
   column,
-  deleteColumn,
-  updateColumn,
-  createTask,
   tasks,
-  deleteTask,
-  updateTask,
 }: Props) {
-  const [editMode, setEditMode] = useState(false);
+
+  const taskData = useSelector((state: any) => state?.root?.task);
 
   const tasksIds = useMemo(() => {
-    return tasks.map((task) => task.id);
+    return tasks?.map((task) => task?._id);
   }, [tasks]);
 
   const {
@@ -40,12 +33,11 @@ function ColumnContainer({
     transition,
     isDragging,
   } = useSortable({
-    id: column.id,
+    id: column._id,
     data: {
       type: "Column",
       column,
     },
-    disabled: editMode,
   });
 
   const style = {
@@ -58,17 +50,7 @@ function ColumnContainer({
       <div
         ref={setNodeRef}
         style={style}
-        className="
-      opacity-40
-      border-2
-      w-[350px]
-      h-[500px]
-      max-h-[500px]
-      rounded-md
-      flex
-      flex-col
-      "
-      ></div>
+        className="opacity-40 border-2 w-[350px] h-[600px] max-h-[600px] rounded-md flex flex-col"></div>
     );
   }
 
@@ -76,69 +58,44 @@ function ColumnContainer({
     <div
       ref={setNodeRef}
       style={style}
-      className="
-  w-[350px]
-  h-[500px]
-  max-h-[500px]
-  rounded-md
-  flex
-  flex-col
-  "
-    >
+      className="w-[350px] h-[650px] max-h-[650px] rounded-md flex flex-col bg-gray-100">
       {/* Column title */}
       <div
         {...attributes}
         {...listeners}
-        onClick={() => {
-          setEditMode(true);
-        }}
-        className="
-      text-md
-      h-[60px]
-      cursor-grab
-      rounded-md
-      rounded-b-none
-      p-3
-      font-bold
-      border-4
-      flex
-      items-center
-      justify-between
-      "
-      >
+        className="bg-gray-100 text-md text-black h-[48px] cursor-grab border rounded-md rounded-b-none p-3 font-bold flex justify-center items-center">
         <div className="flex justify-center items-center">
-          {!editMode && column.title}
-          {editMode && (
-            <input
-              className=" border-none focus:border-none rounded outline-none px-2"
-              value={column.title}
-              onChange={(e) => updateColumn(column.id, e.target.value)}
-              autoFocus
-              onBlur={() => {
-                setEditMode(false);
-              }}
-              onKeyDown={(e) => {
-                if (e.key !== "Enter") return;
-                setEditMode(false);
-              }}
-            />
-          )}
+          {column?.title}
         </div>
       </div>
 
       {/* Column task container */}
-      <div className="flex flex-grow flex-col gap-4 p-2 overflow-x-hidden overflow-y-auto">
-        <SortableContext items={tasksIds}>
-          {tasks.map((task) => (
-            <TaskCard
-              key={task.id}
-              task={task}
-              deleteTask={deleteTask}
-              updateTask={updateTask}
-            />
-          ))}
-        </SortableContext>
-      </div>
+      <SimpleBar className="max-h-[600px]">
+        {taskData?.getAllTaskStatus === 'pending' ? (
+          <div className="grid mt-40 h-full min-h-[128px] flex-grow place-content-center items-center justify-center">
+            <Spinner size="xl" />
+          </div>
+        ) : (
+          <SortableContext items={tasksIds}>
+            {tasks && tasks?.length > 0 ?
+              (tasks?.map((task) => (
+                <div key={task?._id} className="px-2 pt-2">
+                  <TaskCard
+                    key={task?._id}
+                    task={task}
+                  />
+                </div>
+              ))) : (
+                <div className="py-5 mt-28 text-center lg:py-8">
+                  <Empty /> <Text className="mt-3">No Data</Text>
+                </div>
+              )
+            }
+          </SortableContext>
+        )
+
+        }
+      </SimpleBar>
     </div>
   );
 }

@@ -57,8 +57,8 @@ export default function CompanyDetailsForm(props: any) {
           <Input
             onKeyDown={handleKeyDown}
             type="text"
-            label="Company Name"
-            placeholder="Enter company name"
+            label="Company Name *"
+            placeholder="Enter Company Name"
             rounded="pill"
             size={isMedium ? 'lg' : 'xl'}
             color="info"
@@ -69,8 +69,8 @@ export default function CompanyDetailsForm(props: any) {
           <Input
             onKeyDown={handleKeyDown}
             type="text"
-            label="Company Website"
-            placeholder="Enter website url"
+            label="Company Website *"
+            placeholder="Enter Website URL"
             rounded="pill"
             size={isMedium ? 'lg' : 'xl'}
             color="info"
@@ -91,7 +91,7 @@ export default function CompanyDetailsForm(props: any) {
                   peopleCountChange(selectedOption);
                 }}
                 value={value}
-                label="How many people"
+                label="How many people *"
                 rounded="pill"
                 color="info"
                 size={isMedium ? 'lg' : 'xl'}
@@ -113,7 +113,7 @@ export default function CompanyDetailsForm(props: any) {
                   industryChange(selectedOption);
                 }}
                 value={value}
-                label="Industry"
+                label="Industry *"
                 size={isMedium ? 'lg' : 'xl'}
                 rounded="pill"
                 color="info"

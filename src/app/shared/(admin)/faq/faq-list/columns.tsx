@@ -68,7 +68,7 @@ export const getColumns = ({
     key: 'title',
     width: 200,
     render: (value: string) => (
-      <Text className="font-medium text-gray-700">{value}</Text>
+      <Text className="font-medium text-gray-700 capitalize">{value}</Text>
     ),
   },
   {
@@ -86,7 +86,7 @@ export const getColumns = ({
     key: 'description',
     width: 200,
     render: (value: string) => (
-      <Text className="font-medium text-gray-700">{value}</Text>
+      <Text className="font-medium text-gray-700 capitalize">{value}</Text>
     ),
   },
 

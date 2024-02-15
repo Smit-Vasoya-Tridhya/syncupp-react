@@ -1,21 +1,12 @@
 'use client';
 
-import Link from 'next/link';
 import { HeaderCell } from '@/components/ui/table';
 import { Text } from '@/components/ui/text';
 import { Checkbox } from '@/components/ui/checkbox';
 import DeletePopover from '@/app/shared/delete-popover';
-import { useDispatch } from 'react-redux';
-import PencilIcon from '@/components/icons/pencil';
-import { ActionIcon, Button, Popover, Tooltip } from 'rizzui';
-import EyeIcon from '@/components/icons/eye';
-import { AiOutlineFilePdf } from "react-icons/ai";
-import { HiOutlineMail } from "react-icons/hi";
+import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
-import { downloadAgreement, getAllAgencyagreement, sendAgreement, updateagreementStatus } from '@/redux/slices/user/agreement/agreementSlice';
-import { useSelector } from 'react-redux';
-
-
+import { getAllAgencyagreement, updateagreementStatus } from '@/redux/slices/user/agreement/agreementSlice';
 
 type Columns = {
     data: any[];
@@ -45,7 +36,8 @@ export const InquiryColumns = ({
 }: Columns) => {
 
     const dispatch = useDispatch();
-    const { agreementDetails, loading } = useSelector((state: any) => state?.root?.agreement);
+    const { inquirylistDetails, loading } = useSelector((state: any) => state?.root?.inquiry);
+    console.log(inquirylistDetails, 'inquirylistDetails')
 
 
     const StatusHandler = (status: string, id: string, setOpen: any) => {
@@ -92,16 +84,16 @@ export const InquiryColumns = ({
                     title="Name"
                     sortable
                     ascending={
-                        sortConfig?.direction === 'asc' && sortConfig?.key === 'name'
+                        sortConfig?.direction === 'asc' && sortConfig?.key === 'first_name'
                     }
                 />
             ),
-            onHeaderCell: () => onHeaderCellClick('name'),
-            dataIndex: 'name',
-            key: 'name',
+            onHeaderCell: () => onHeaderCellClick('first_name'),
+            dataIndex: 'first_name',
+            key: 'first_name',
             width: 200,
-            render: (value: string) => (
-                <Text className="font-medium text-gray-700">{value && value != "" ? value : "-"}</Text>
+            render: (value: string, row: Record<string, string>) => (
+                <Text className="font-medium text-gray-700 capitalize">{row?.first_name && row?.first_name != "" ? row?.first_name + " " + row?.last_name : "-"}</Text>
             ),
         },
         {
@@ -128,13 +120,13 @@ export const InquiryColumns = ({
                     title="Mobile Number"
                     sortable
                     ascending={
-                        sortConfig?.direction === 'asc' && sortConfig?.key === 'mobile_number'
+                        sortConfig?.direction === 'asc' && sortConfig?.key === 'contact_number'
                     }
                 />
             ),
-            onHeaderCell: () => onHeaderCellClick('mobile_number'),
-            dataIndex: 'mobile_number',
-            key: 'mobile_number',
+            onHeaderCell: () => onHeaderCellClick('contact_number'),
+            dataIndex: 'contact_number',
+            key: 'contact_number',
             width: 200,
             render: (value: string) => (
                 <Text className="font-medium text-gray-700">{value && value != "" ? value : "-"}</Text>
@@ -146,14 +138,14 @@ export const InquiryColumns = ({
                     title="Message"
                     sortable
                     ascending={
-                        sortConfig?.direction === 'asc' && sortConfig?.key === 'message'
+                        sortConfig?.direction === 'asc' && sortConfig?.key === 'thoughts'
                     }
                 />
             ),
-            onHeaderCell: () => onHeaderCellClick('message'),
-            dataIndex: 'message',
-            key: 'message',
-            width: 200,
+            onHeaderCell: () => onHeaderCellClick('thoughts'),
+            dataIndex: 'thoughts',
+            key: 'thoughts',
+            width: 500,
             render: (value: string) => (
                 <Text className="font-medium text-gray-700">{value && value != "" ? value : "-"}</Text>
             ),
@@ -164,20 +156,20 @@ export const InquiryColumns = ({
                     title="Date & Time"
                     sortable
                     ascending={
-                        sortConfig?.direction === 'asc' && sortConfig?.key === 'date_and_time'
+                        sortConfig?.direction === 'asc' && sortConfig?.key === 'createdAt'
                     }
                 />
             ),
-            onHeaderCell: () => onHeaderCellClick('date_and_time'),
-            dataIndex: 'date_and_time',
-            key: 'date_and_time',
+            onHeaderCell: () => onHeaderCellClick('createdAt'),
+            dataIndex: 'createdAt',
+            key: 'createdAt',
             width: 200,
             render: (value: string) => (
                 <Text className="font-medium text-gray-700">{value && value != "" ? moment(value).format('MM/DD/YYYY') : "-"}</Text>
             ),
         },
 
-    
+
         {
             // Need to avoid this issue -> <td> elements in a large <table> do not have table headers.
             title: <HeaderCell title="Actions" className="opacity-0" />,
@@ -187,7 +179,7 @@ export const InquiryColumns = ({
             render: (_: string, row: Record<string, string>) => (
                 <div className="flex items-center justify-start gap-3 pe-4">
                     <DeletePopover
-                        title={`Delete the Agreement`}
+                        title={`Delete the Inquiry`}
                         description={`Are you sure you want to delete?`}
                         onDelete={() => onDeleteItem([row._id], currentPage, pageSize, data?.length <= 1 ? true : false, sortConfig, searchTerm)}
                     />

@@ -2,7 +2,7 @@ import { metaObject } from '@/config/site.config';
 import SignIn from './main-page'
 
 export const metadata = {
-  ...metaObject('Signin'),
+  ...metaObject('Sign In'),
 };
 
 export default function Page() {
