@@ -135,12 +135,12 @@ export default function AddTaskForm(props: any) {
     );
 
 
-    if (title === 'New Activity') {
+    if (title === 'New Activity' || title === 'New Task') {
       dispatch(postAddTask(filteredFormData)).then((result: any) => {
         if (postAddTask.fulfilled.match(result)) {
           if (result && result.payload.success === true) {
             closeModal();
-            // dispatch(getAllTask({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
+            dispatch(getAllTask({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
           }
         }
       });
@@ -149,7 +149,7 @@ export default function AddTaskForm(props: any) {
         if (patchEditTask.fulfilled.match(result)) {
           if (result && result.payload.success === true) {
             closeModal();
-            // dispatch(getAllTask({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
+            dispatch(getAllTask({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
           }
         }
       });
@@ -158,10 +158,10 @@ export default function AddTaskForm(props: any) {
   };
 
 
-  if (!taskData?.task && title === 'Edit Task') {
+  if (!taskData?.task && (title === 'Edit Activity' || title === 'Edit Task')) {
     return (
       <div className='p-10 flex items-center justify-center'>
-        <Spinner size="xl" tag='div' className='ms-3' />
+        <Spinner size="xl" tag='div' />
       </div>
     )
   } else {

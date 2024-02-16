@@ -2,6 +2,7 @@
 
 import { RemoveclientReviewData } from '@/redux/slices/admin/clientReview/clientReviewSlice';
 import { RemoveFaqData } from '@/redux/slices/admin/faq/faqSlice';
+import { RemoveActivityData } from '@/redux/slices/user/activity/activitySlice';
 import { RemoveClientData, RemoveRegionalData } from '@/redux/slices/user/client/clientSlice';
 import { RemoveTaskData } from '@/redux/slices/user/task/taskSlice';
 import { RemoveTeamMemberData } from '@/redux/slices/user/team-member/teamSlice';
@@ -46,6 +47,7 @@ export function useModal() {
     dispatch(RemoveFaqData())
     dispatch(RemoveTeamMemberData())
     dispatch(RemoveTaskData())
+    dispatch(RemoveActivityData())
     dispatch(RemoveclientReviewData())
     setState({
       ...state,

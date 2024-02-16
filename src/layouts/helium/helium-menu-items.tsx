@@ -89,6 +89,11 @@ export const MenuItems = () => {
           icon: <FaTasks />,
         },
         {
+          name: 'Calendar',
+          href: routes.userCalendar,
+          icon: <FaRegCalendarAlt />,
+        },
+        {
           name: 'Agreement',
           href: routes.clients.agreement,
           icon: <FaFilePen />,
@@ -114,6 +119,11 @@ export const MenuItems = () => {
           icon: <FaTasks />,
         },
         {
+          name: 'Calendar',
+          href: routes.userCalendar,
+          icon: <FaRegCalendarAlt />,
+        },
+        {
           name: 'Agreement',
           href: routes.clients.agreement,
           icon: <FaFilePen />,
@@ -133,6 +143,11 @@ export const MenuItems = () => {
             name: 'Tasks',
             href: routes.task,
             icon: <FaTasks />,
+          },
+          {
+            name: 'Calendar',
+            href: routes.userCalendar,
+            icon: <FaRegCalendarAlt />,
           },
         ];
       } else if (signIn?.teamMemberRole === 'admin') {

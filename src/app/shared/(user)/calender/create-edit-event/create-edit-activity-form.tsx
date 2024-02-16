@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useModal } from '@/app/shared/modal-views/use-modal';
 import cn from '@/utils/class-names';
 import { PiXBold } from 'react-icons/pi';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import EventCalendarDayView from './calendar-day-view';
 import AddTaskForm from './task-form';
 import { FaRegCalendarAlt } from 'react-icons/fa';
@@ -28,7 +28,7 @@ const menuItems = [
 
 export default function AddActivityFormPage(props: any) {
 
-  const { title, row } = props;
+  const { title, row, form, isTaskModule } = props;
   // console.log("row data....", row);
 
   const dispatch = useDispatch();
@@ -39,6 +39,16 @@ export default function AddActivityFormPage(props: any) {
   const taskData = useSelector(
     (state: any) => state?.root?.task
   );
+
+  // useEffect(() => {
+  //   if(form === 'Task'){
+  //     setSelectedTask('Task');
+  //   } else if(form === 'Call meeting'){
+  //     setSelectedTask('Call meeting');
+  //   } else if(form === 'Others'){
+  //     setSelectedTask('Others');
+  //   }
+  // }, [selectedTask, form])
 
 
   const handleTaskClick = (task: any) => {
@@ -69,21 +79,8 @@ export default function AddActivityFormPage(props: any) {
               )}
             >
               <div>
-                {/* <div className="grid grid-cols-[repeat(3,1fr)] w-full bg-gray-100 cursor-pointer">
-                      <div className={`inline-flex gap-2 items-center text-[17px] p-3 ${selectedTask === 'task' ? 'bg-gray-500 text-white' : ``}`} onClick={() => handleTaskClick('task')}>
-                          <PiNotepadDuotone className="h-[25px] w-[25px]" />
-                          <Text>Task</Text>
-                      </div>
-                      <div  className={`inline-flex gap-2 items-center text-[17px] p-3 ${selectedTask === 'meeting' ? 'bg-gray-500 text-white' : ``}`} onClick={() => handleTaskClick('meeting')}>
-                          <PiPhoneCallDuotone className="h-[25px] w-[25px]" />
-                          <Text>Call Meeting</Text>
-                      </div>
-                      <div  className={`inline-flex gap-2 items-center text-[17px] p-3 ${selectedTask === 'others' ? 'bg-gray-500 text-white' : ``}`} onClick={() => handleTaskClick('others')}>
-                      <FaRegCalendarAlt className="h-[25px] w-[25px]"/>
-                        <Text className="cursor-pointer">Others</Text>
-                      </div>
-                    </div> */}
-                <div className='border-b-[1px]'>
+                { !isTaskModule && 
+                  <div className='border-b-[1px]'>
                   {menuItems.map((menu, index) => (
                     <Button
                       key={index}
@@ -94,6 +91,7 @@ export default function AddActivityFormPage(props: any) {
                           : 'before:invisible before:w-0 before:opacity-0'
                       )}
                       variant='text'
+                      // disabled={menu.label !== selectedTask}
                       onClick={() => handleTaskClick(menu.label)}
                     >
                       <Text
@@ -105,6 +103,7 @@ export default function AddActivityFormPage(props: any) {
                     </Button>
                   ))}
                 </div>
+                }
                 <div className="mt-3">
                   {selectedTask === 'Task' && (
                     <AddTaskForm title={title} row={row} />
