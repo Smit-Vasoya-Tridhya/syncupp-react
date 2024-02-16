@@ -41,3 +41,21 @@ export const DeleteAgencysApi = async (data: DeleteAgency) => {
     const responseData = response.data;
     return responseData;
 };
+
+// Get Agency Data
+
+type GetAgencyDetails = {
+  _id: string;
+  reference_id: string;
+};
+
+export const GetAgencyDetailsApi = async (data: GetAgencyDetails) => {
+    const response = await AxiosDefault({
+        url: `/api/v1/admin/agency/get`,
+        method: "POST",
+        data: data,
+        contentType: "application/json",
+    });
+    const responseData = response.data;
+    return responseData;
+};

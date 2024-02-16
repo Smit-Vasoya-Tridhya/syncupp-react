@@ -1,5 +1,6 @@
 import {
   CancleSub,
+  CancleSubcr,
   GetAllBilling,
   GetAllSeats,
   GetCardData,
@@ -84,7 +85,7 @@ export const CancleSubscription: any = createAsyncThunk(
   'SubcriptionManagement/cancle',
   async (data: any) => {
     try {
-      const response: any = await CancleSub();
+      const response: any = await CancleSubcr();
       return response;
     } catch (error: any) {
       return {
@@ -117,6 +118,59 @@ export const CouponSlice = createSlice({
   reducers: {},
 
   extraReducers: (builder) => {
+    //cancle sub
+    builder
+      .addCase(CancleSubscription.pending, (state) => {
+        return {
+          ...state,
+          loading: true,
+        };
+      })
+      .addCase(CancleSubscription.fulfilled, (state, action) => {
+        if (action.payload.status == false) {
+          toast.error(action.payload.message);
+        } else {
+          toast.success(action.payload.message);
+        }
+        return {
+          ...state,
+          loading: false,
+        };
+      })
+      .addCase(CancleSubscription.rejected, (state) => {
+        return {
+          ...state,
+          loading: false,
+        };
+      });
+
+    builder
+      .addCase(RemoveUsersub.pending, (state) => {
+        return {
+          ...state,
+          loading: true,
+        };
+      })
+      .addCase(RemoveUsersub.fulfilled, (state, action) => {
+        if (action.payload.status == false) {
+          toast.error(action.payload.message);
+        } else {
+          if (action?.payload?.data?.force_fully_remove === false) {
+            toast.success(action.payload.message);
+          }
+        }
+        return {
+          ...state,
+          loading: false,
+        };
+      })
+      .addCase(RemoveUsersub.rejected, (state) => {
+        return {
+          ...state,
+          loading: false,
+        };
+      });
+
     //list of coupon
     builder
       .addCase(getAllBilling.pending, (state) => {
@@ -171,7 +225,6 @@ export const CouponSlice = createSlice({
       .addCase(getAllcarddata.pending, (state) => {
         return {
           ...state,
-          loading: true,
         };
       })
       .addCase(getAllcarddata.fulfilled, (state, action) => {
@@ -181,13 +234,11 @@ export const CouponSlice = createSlice({
         return {
           ...state,
           CardData: action.payload,
-          loading: false,
         };
       })
       .addCase(getAllcarddata.rejected, (state) => {
         return {
           ...state,
-          loading: false,
         };
       });
   },

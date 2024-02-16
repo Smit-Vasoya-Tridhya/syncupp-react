@@ -1,4 +1,4 @@
-import { DeleteAgencysApi, GetAllAgencyApi } from "@/commonAPIs/adminAPIs/agency/agencyAPIs";
+import { DeleteAgencysApi, GetAgencyDetailsApi, GetAllAgencyApi } from "@/commonAPIs/adminAPIs/agency/agencyAPIs";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { toast } from 'react-hot-toast';
 
@@ -41,12 +41,31 @@ type DeleteAgency = {
     delete?: boolean
 }
 
-
 export const deleteAgency: any = createAsyncThunk(
     "adminAgency/deleteAgency",
     async (data: DeleteAgency) => {
         try {
             const response: any = await DeleteAgencysApi(data);
+            return response;
+        } catch (error: any) {
+            return { status: false, message: error.response.data.message } as APIErrorResponse;
+        }
+    }
+);
+
+
+//  Get Agency Data
+
+type GetAgencyDetails = {
+    _id: string;
+    reference_id: string;
+  };
+
+  export const getAgencyDetails: any = createAsyncThunk(
+    "adminAgency/getAgencyDetails",
+    async (data: GetAgencyDetails) => {
+        try {
+            const response: any = await GetAgencyDetailsApi(data);
             return response;
         } catch (error: any) {
             return { status: false, message: error.response.data.message } as APIErrorResponse;
@@ -129,6 +148,30 @@ export const agencySlice = createSlice({
                     loading: false,
                 }
             });
+         // Agency Details
+         builder
+         .addCase(getAgencyDetails.pending, (state) => {
+             return {
+                 ...state,
+                 loading: true,
+             }
+         })
+         .addCase(getAgencyDetails.fulfilled, (state, action) => {
+             if (action.payload.status == false) {
+                 toast.error(action.payload.message)
+             }
+             return {
+                 ...state,
+                 agencylistDetails: action.payload,
+                 loading: false,
+             }
+         })
+         .addCase(getAgencyDetails.rejected, (state) => {
+             return {
+                 ...state,
+                 loading: false,
+             }
+         });
     }
 });
 
