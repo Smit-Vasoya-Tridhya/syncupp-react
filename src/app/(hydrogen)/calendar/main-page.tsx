@@ -4,17 +4,18 @@ import PageHeader from '@/app/shared/page-header';
 import ModalButton from '@/app/shared/modal-button';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteClient, getAllClient } from '@/redux/slices/user/client/clientSlice';
 import { useRouter } from 'next/navigation';
 import { useModal } from '@/app/shared/modal-views/use-modal';
 import { GetColumns } from '@/app/shared/(user)/task/task-list/columns';
 import CustomTable from '@/components/common-tables/table';
-import { PiGridFour, PiListBullets, PiPlusBold } from 'react-icons/pi';
+import { PiListBullets, PiPlusBold } from 'react-icons/pi';
 import { ActionIcon, Button } from 'rizzui';
 import cn from '@/utils/class-names';
 import { deleteTask, getAllTask, setGridView } from '@/redux/slices/user/task/taskSlice';
-import KanbanBoard from '@/app/shared/(user)/task/task-grid/kanban-board';
 import AddActivityFormPage from '@/app/shared/(user)/calender/create-edit-event/create-edit-activity-form';
+import EventCalendarView from '@/app/shared/(user)/calender/event-calendar';
+import { FaRegCalendarAlt } from 'react-icons/fa';
+import ActivitySelectionForm from '@/app/shared/(user)/forms/activity-selection-form';
 
 const pageHeader = {
   title: 'Activity',
@@ -94,85 +95,99 @@ export default function TaskPage() {
         </div>
       </PageHeader>
 
-      <div>
-        <div className="ms-auto mt-4 grid grid-cols-3 md:grid-cols-7 lg:grid-cols-7 xl:grid-cols-7 gap-3">
-          <Button className="mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0">
-            To Do
-          </Button>
-          <Button
-            variant="outline"
-            className="mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0"
-          >
-            Overdue
-          </Button>
-          <Button
-            variant="outline"
-            className="mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0"
-          >
-            Done
-          </Button>
-          <Button
-            variant="outline"
-            className="mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0"
-          >
-            Today
-          </Button>
-          <Button
-            variant="outline"
-            className="mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0"
-          >
-            Tomorrow
-          </Button>
-          <Button
-            variant="outline"
-            className="mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0"
-          >
-            This Week
-          </Button>
-          <Button
-            variant="outline"
-            className="mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0"
-          >
-            Select Period
-          </Button>
-        </div>
-        <div className="flex justify-end items-center gap-2 w-fit ms-auto rounded-lg border border-gray-200 p-1.5 px-1.5">
-          <ActionIcon
-            size="sm"
-            variant="flat"
+      <div className="flex justify-end items-center gap-2 w-fit ms-auto rounded-lg border border-gray-200 p-1.5 px-1.5">
+        <ActionIcon
+          size="sm"
+          variant="flat"
+          className={cn(
+            'group bg-transparent hover:enabled:bg-gray-100 dark:hover:enabled:bg-gray-200',
+            !gridView && 'bg-gray-900 dark:bg-gray-200'
+          )}
+          onClick={handleListView}
+        >
+          <PiListBullets
             className={cn(
-              'group bg-transparent hover:enabled:bg-gray-100 dark:hover:enabled:bg-gray-200',
-              !gridView && 'bg-gray-900 dark:bg-gray-200'
+              'h-5 w-5 transition-colors group-hover:text-gray-900',
+              !gridView && 'text-white'
             )}
-            onClick={handleListView}
-          >
-            <PiListBullets
-              className={cn(
-                'h-5 w-5 transition-colors group-hover:text-gray-900',
-                !gridView && 'text-white'
-              )}
-            />
-          </ActionIcon>
-          <ActionIcon
-            size="sm"
-            variant="flat"
+          />
+        </ActionIcon>
+        <ActionIcon
+          size="sm"
+          variant="flat"
+          className={cn(
+            'group bg-transparent hover:enabled:bg-gray-100  dark:hover:enabled:bg-gray-200',
+            gridView && 'bg-gray-900 dark:bg-gray-200'
+          )}
+          onClick={handleGridView}
+        >
+          <FaRegCalendarAlt
             className={cn(
-              'group bg-transparent hover:enabled:bg-gray-100  dark:hover:enabled:bg-gray-200',
-              gridView && 'bg-gray-900 dark:bg-gray-200'
+              'h-5 w-5 transition-colors group-hover:text-gray-900',
+              gridView && 'text-white'
             )}
-            onClick={handleGridView}
-          >
-            <PiGridFour
-              className={cn(
-                'h-5 w-5 transition-colors group-hover:text-gray-900',
-                gridView && 'text-white'
-              )}
-            />
-          </ActionIcon>
-        </div>
+          />
+        </ActionIcon>
       </div>
       {!gridView ? (
-        <div>
+        <div className='mt-4'>
+          <div className="ms-auto mt-4 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-9 xl:grid-cols-9 gap-3">
+            <Button variant="outline" className="mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0">
+              To Do
+            </Button>
+            <Button
+              variant="outline"
+              className="mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0"
+            >
+              Overdue
+            </Button>
+            <Button
+              variant="outline"
+              className="mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0"
+            >
+              Done
+            </Button>
+            <Button
+              variant="outline"
+              className="mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0"
+            >
+              Today
+            </Button>
+            <Button
+              variant="outline"
+              className="mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0"
+            >
+              Tomorrow
+            </Button>
+            <Button
+              variant="outline"
+              className="mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0"
+            >
+              This Week
+            </Button>
+            <Button
+              variant="outline"
+              className="mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0"
+            >
+              Select Period
+            </Button>
+            <div className='mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0'>
+              <ActivitySelectionForm />
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className='mt-4'>
+          <div className="ms-auto mt-4 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 xl:grid-cols-7 gap-3">
+            <Button variant="outline" className="mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0">
+              Select Period
+            </Button>
+          </div>
+        </div>
+      )
+      }
+      {!gridView ? (
+        <div className='mt-8'>
           <CustomTable
             data={taskData && taskData?.data?.activity}
             total={taskData && taskData?.data?.page_count}
@@ -185,7 +200,9 @@ export default function TaskPage() {
           />
         </div>
       ) : (
-        <KanbanBoard />
+        <div className='mt-12'>
+          <EventCalendarView />
+        </div>
       )
       }
     </>
