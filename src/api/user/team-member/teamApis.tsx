@@ -44,6 +44,7 @@ type GetAllTeamMemberApiData = {
   agency_id?: string;
   client_id?: string;
   pagination?: boolean;
+  client_team?: boolean;
 }
 
 type GetTeamMemberProfileApiData = {

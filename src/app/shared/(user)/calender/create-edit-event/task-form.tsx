@@ -49,7 +49,7 @@ export default function AddTaskForm(props: any) {
   // api call for get clients and team member
 
   useEffect(() => {
-    dispatch(getAllClient({ pagination: false }))
+    dispatch(getAllClient({ pagination: false, for_activity: true }))
     dispatch(getAllTeamMember({ pagination: false }))
   }, [dispatch]);
 

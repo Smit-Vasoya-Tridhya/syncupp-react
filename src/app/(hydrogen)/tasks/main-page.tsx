@@ -47,10 +47,10 @@ export default function TaskPage() {
       page = maxPage > 0 ? maxPage : 1;
       // await dispatch(getAllTask({ page, items_per_page, sort_field, sort_order, search, pagination: true }));
       signIn?.role !== 'client' && signIn?.role !== 'team_client' ? await dispatch(getAllTask({ page, items_per_page, sort_field, sort_order, search, pagination: true })) : await dispatch(getAllTask({ page, items_per_page, sort_field, sort_order, search, agency_id: clientSliceData?.agencyId, pagination: true }));
-      return data?.client
+      return data?.activity
     }
-    if (data && data?.client && data?.client?.length !== 0) {
-      return data?.client
+    if (data && data?.activity && data?.activity?.length > 0) {
+      return data?.activity
     }
   };
 
