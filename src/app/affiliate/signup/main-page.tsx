@@ -148,6 +148,7 @@ export default function RegisterPage() {
                                 label="I agree to affiliate terms and conditions"
                                 color="info"
                                 variant="flat"
+                                // labelClassName="text-red"
                                 className="[&>label>span]:font-medium"
                                 error={errors.isAgreedtotems?.message}
                             />
