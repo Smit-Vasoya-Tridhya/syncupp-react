@@ -48,6 +48,7 @@ export default function CreateInvoice({
 }) {
   const [reset, setReset] = useState({});
   const [isLoading, setLoading] = useState(false);
+  const [isLoad, setLoad] = useState(false);
   const [client, setClient] = useState('');
   const dispatch = useDispatch();
   const router = useRouter();
@@ -55,6 +56,8 @@ export default function CreateInvoice({
   const invoiceSliceData = useSelector((state: any) => state?.root?.invoice);
   const signIn = useSelector((state: any) => state?.root?.signIn);
   const [isOpenEditMode, setIsOpenEditMode] = useState<boolean>(false);
+  const [isSent, setIsSent] = useState<any>(null);
+
 
   useEffect(() => {
     dispatch(getUserProfile());
@@ -75,7 +78,7 @@ export default function CreateInvoice({
     invoiceSliceData?.getInvoiceApidata?.data?.map(
       (client: Record<string, string>) => {
         receipentOptions.push({
-          name: `${client?.name}(${client.company_name})`,
+          name: `${client?.client_full_name}(${client.company_name})`,
           value: client?._id,
         });
       }
@@ -88,10 +91,11 @@ export default function CreateInvoice({
       ...data,
       // name: client,
       client_id:client,
+      sent: isSent,
       invoice_date: formated_invoice_date,
       due_date: formated_due_date
     };
-
+    setLoading(true);
     dispatch(postCreateInvoice(formData)).then((result: any) => {
       if (postCreateInvoice.fulfilled.match(result)) {
         if (result && result.payload.success === true) {
@@ -99,8 +103,9 @@ export default function CreateInvoice({
           dispatch(getAllInvoiceDataTable({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
         }
       }
+    }) .finally(() => {
+      setLoading(false);;
     });
-
     const SaveAndDrafButton = ()=>{
       dispatch(postCreateInvoice(formData)).then((result: any) => {
         if (postCreateInvoice.fulfilled.match(result)) {
@@ -131,9 +136,9 @@ export default function CreateInvoice({
 
   const defaultValuess: InvoiceFormInput = {
     ...record,
-    fromName: data?.first_name ?? '',
+    fromName: `${data?.first_name ?? ''} ${data?.last_name ?? ''}`,
     invoice_number: '',
-    fromAddress: `${data?.reference_id?.address ?? ''}, ${data?.reference_id?.city?.name ?? ''}, ${data?.reference_id?.country?.name ?? ''}, ${data?.reference_id?.state?.name ?? ''}, ${data?.reference_id?.pincode ?? ''}` ?? '',
+    fromAddress: `${data?.reference_id?.address ?? ''}, ${data?.reference_id?.city?.name ?? ''},${data?.reference_id?.state?.name ?? ''}, ${data?.reference_id?.country?.name ?? ''},  ${data?.reference_id?.pincode ?? ''}`,
     fromPhone: data?.contact_number ?? '',
     client_id: '',
     toAddress: '',
@@ -241,7 +246,7 @@ export default function CreateInvoice({
                             }
                           });
                         }}
-                        label="Name"
+                        label="Name *"
                         error={errors?.client_id?.message as string}
                         dropdownClassName="p-1 border w-12 border-gray-100 shadow-lg"
                         className="font-medium"
@@ -304,6 +309,7 @@ export default function CreateInvoice({
                             placeholderText="Select Date"
                             selected={value}
                             onChange={onChange}
+                            minDate={watch('invoice_date')}
                           />
                         )}
                       />
@@ -322,9 +328,10 @@ export default function CreateInvoice({
 
             <FormFooter
               isLoading={isLoading}
-              submitBtnText={id ? 'Update Invoice' : 'Save & Send'}
-              // previewButton={PreviewButton}
-              // saveAsDraft={SaveAndDrafButton}
+              isLoad={isLoad}
+              // submitBtnText={id ? 'Update Invoice' : 'Save & Send'}
+              saveAsDraft={() => setIsSent(false)}
+              createInvoice={() => setIsSent(true)}
             />
           </>
         )}

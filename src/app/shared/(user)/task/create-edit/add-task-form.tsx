@@ -105,7 +105,7 @@ export default function AddTaskForm(props: any) {
 
   let defaultValuess = {
     title: data?.title,
-    description: data?.internal_info,
+    description: data?.agenda,
     // due_date: new Date(data?.due_date),
     due_date: moment(data?.due_date).toDate(),
     client: data?.client_fullName,
@@ -278,7 +278,7 @@ export default function AddTaskForm(props: any) {
                           error={errors?.client?.message as string}
                           color='info'
                           // getOptionValue={(option) => option.value}
-                          className="font-medium"
+                          className="[&>label>span]:font-medium"
                           dropdownClassName="p-1 border w-auto border-gray-100 shadow-lg"
                         />
                       )}
@@ -303,7 +303,7 @@ export default function AddTaskForm(props: any) {
                           error={errors?.assigned?.message as string}
                           color='info'
                           // getOptionValue={(option) => option.value}
-                          className="font-medium"
+                          className="[&>label>span]:font-medium"
                           dropdownClassName="p-1 border w-auto border-gray-100 shadow-lg"
                         />
                       )}

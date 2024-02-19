@@ -17,15 +17,14 @@ export const PostTermAndCondotionEnroll = async (
   data: AddTermAndConditionData
 ): Promise<ApiResponse> => {
   const response = await AxiosDefault({
-    url: '/api/v1/admin/add-term-and-condition',
-    method: 'POST',
+    url: '/api/v1/crm/term-and-condition',
+    method: 'PUT',
     data: data,
     contentType: 'application/json',
   });
   const responseData: ApiResponse = response.data;
   return responseData;
 };
-
 export const EditCmsAbotus = async (data: any): Promise<ApiResponse> => {
   const response = await AxiosDefault({
     url: '/api/v1/admin/add-term-and-condition',
@@ -57,11 +56,58 @@ export const GetCmsConatctUS = async (): Promise<ApiResponse> => {
   return responseData;
 };
 
+export const EditCmsPrivacyPolicy = async (data: any): Promise<ApiResponse> => {
+  const response = await AxiosDefault({
+    url: '/api/v1/crm/privacy-policy',
+    method: 'PUT',
+    data: data,
+    contentType: 'application/json',
+  });
+  const responseData: ApiResponse = response.data;
+  return responseData;
+};
+export const EditCmsAboutus = async (data: any): Promise<ApiResponse> => {
+  const response = await AxiosDefault({
+    url: '/api/v1/crm/about-us-update',
+    method: 'PUT',
+    data: data,
+    contentType: 'application/json',
+  });
+  const responseData: ApiResponse = response.data;
+  return responseData;
+};
+export const GetCmsAboutus = async (): Promise<ApiResponse> => {
+  const response = await AxiosDefault({
+    url: '/api/v1/crm/about-us',
+    method: 'GET',
+    contentType: 'application/json',
+  });
+  const responseData: ApiResponse = response.data;
+  return responseData;
+};
+export const GetCmsPrivacyPolicy = async (): Promise<ApiResponse> => {
+  const response = await AxiosDefault({
+    url: '/api/v1/crm/privacy-policy',
+    method: 'GET',
+    contentType: 'application/json',
+  });
+  const responseData: ApiResponse = response.data;
+  return responseData;
+};
 export const ViewCmsAbotus = async (data: any): Promise<ApiResponse> => {
   const response = await AxiosDefault({
     url: '/api/v1/admin/add-term-and-condition',
     method: 'GET',
     data: data,
+    contentType: 'application/json',
+  });
+  const responseData: ApiResponse = response.data;
+  return responseData;
+};
+export const GetCmsTermscondition = async (): Promise<ApiResponse> => {
+  const response = await AxiosDefault({
+    url: '/api/v1/crm/term-and-condition',
+    method: 'GET',
     contentType: 'application/json',
   });
   const responseData: ApiResponse = response.data;

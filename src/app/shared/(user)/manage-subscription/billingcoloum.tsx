@@ -8,6 +8,7 @@ import PencilIcon from '@/components/icons/pencil';
 import DeletePopover from '@/app/shared/delete-popover';
 //import AddClientForm from '../create-edit/add-client-form';
 import { Badge, Button } from 'rizzui';
+import moment from 'moment';
 
 type Columns = {
   data: any[];
@@ -55,10 +56,12 @@ export const billingColumns = ({
     dataIndex: 'No',
     key: 'No',
     width: 200,
-    render: (value: string, row: any) => {
+    render: (_: string, row: any, index: number) => {
       // const capitalizedValue = value.charAt(0).toUpperCase() + value.slice(1);
       return (
-        <Text className="font-medium capitalize text-gray-700">{value}</Text>
+        <Text className="font-medium capitalize text-gray-700">
+          {index + 1}
+        </Text>
       );
     },
   },
@@ -68,18 +71,19 @@ export const billingColumns = ({
         title="Billing Amount"
         sortable
         ascending={
-          sortConfig?.direction === 'asc' &&
-          sortConfig?.key === 'billing_amount'
+          sortConfig?.direction === 'asc' && sortConfig?.key === 'amount'
         }
       />
     ),
-    onHeaderCell: () => onHeaderCellClick('billing_amount'),
-    dataIndex: 'billing_amount',
-    key: 'billing_amount',
+    onHeaderCell: () => onHeaderCellClick('amount'),
+    dataIndex: 'amount',
+    key: 'amount',
     width: 200,
     render: (value: string) => (
       <>
-        <Text className="font-medium text-gray-700">{value}</Text>
+        <Text className="font-medium capitalize text-gray-700">
+          $ {parseFloat(value) / 100}
+        </Text>
       </>
     ),
   },
@@ -89,16 +93,18 @@ export const billingColumns = ({
         title="Date"
         sortable
         ascending={
-          sortConfig?.direction === 'asc' && sortConfig?.key === 'Date'
+          sortConfig?.direction === 'asc' && sortConfig?.key === 'createdAt'
         }
       />
     ),
-    onHeaderCell: () => onHeaderCellClick('Date'),
-    dataIndex: 'Date',
-    key: 'Date',
+    onHeaderCell: () => onHeaderCellClick('createdAt'),
+    dataIndex: 'createdAt',
+    key: 'createdAt',
     width: 200,
     render: (value: string) => (
-      <Text className="font-medium text-gray-700">{value}</Text>
+      <Text className="font-medium  text-gray-700">
+        {moment(value).format('Do MMM. ‘YY')}
+      </Text>
     ),
   },
   {
@@ -117,7 +123,9 @@ export const billingColumns = ({
     width: 200,
     render: (value: string) => {
       return (
-        <Text className="font-medium  capitalize text-gray-700">{value}</Text>
+        <Text className="font-medium  capitalize text-gray-700">
+          {!value ? 1 : value}
+        </Text>
       );
     },
   },

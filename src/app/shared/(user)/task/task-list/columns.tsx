@@ -14,6 +14,7 @@ import moment from 'moment';
 import AddTaskForm from '../create-edit/add-task-form';
 import { useSelector } from 'react-redux';
 import ViewTaskForm from '../create-edit/view-task-form';
+import AddActivityFormPage from '../../calender/create-edit-event/create-edit-activity-form';
 
 type Columns = {
   data: any[];
@@ -245,8 +246,8 @@ export const GetColumns = ({
               {(signIn?.role !== 'client' && signIn?.role !== 'team_client') &&
                 <CustomModalButton
                   icon={<PencilIcon className="h-4 w-4" />}
-                  view={<AddTaskForm title="Edit Task" row={row} />}
-                  customSize="925px"
+                  view={<AddActivityFormPage title="Edit Task" row={row} isTaskModule={true} />}
+                  customSize="1050px"
                   title='Edit Task'
                 />
               }

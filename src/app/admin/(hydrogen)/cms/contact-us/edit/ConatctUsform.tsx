@@ -111,7 +111,7 @@ export default function CmsContactus() {
   //   console.log(editor.getHTML());
   // };
 
-  if (Object.entries(termAndCondition?.conatcUSdata).length === 0) {
+  if (!termAndCondition?.conatcUSdata) {
     return (
       <div className="flex items-center justify-center p-10">
         <Spinner size="xl" tag="div" className="ms-3" />

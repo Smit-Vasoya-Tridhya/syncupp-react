@@ -15,6 +15,7 @@ import { ActionIcon, Button } from 'rizzui';
 import cn from '@/utils/class-names';
 import { deleteTask, getAllTask, setGridView } from '@/redux/slices/user/task/taskSlice';
 import KanbanBoard from '@/app/shared/(user)/task/task-grid/kanban-board';
+import AddActivityFormPage from '@/app/shared/(user)/calender/create-edit-event/create-edit-activity-form';
 
 const pageHeader = {
   title: 'Tasks',
@@ -46,10 +47,10 @@ export default function TaskPage() {
       page = maxPage > 0 ? maxPage : 1;
       // await dispatch(getAllTask({ page, items_per_page, sort_field, sort_order, search, pagination: true }));
       signIn?.role !== 'client' && signIn?.role !== 'team_client' ? await dispatch(getAllTask({ page, items_per_page, sort_field, sort_order, search, pagination: true })) : await dispatch(getAllTask({ page, items_per_page, sort_field, sort_order, search, agency_id: clientSliceData?.agencyId, pagination: true }));
-      return data?.client
+      return data?.activity
     }
-    if (data && data?.client && data?.client?.length !== 0) {
-      return data?.client
+    if (data && data?.activity && data?.activity?.length > 0) {
+      return data?.activity
     }
   };
 
@@ -85,9 +86,9 @@ export default function TaskPage() {
           {(signIn?.role !== 'client' && signIn?.role !== 'team_client') &&
             <ModalButton
             label="Add Task"
-            view={<AddTaskForm title="New Task" />}
-            customSize="925px"
-            className="mt-0 w-full hover:bg-gray-700 @lg:w-auto dark:bg-gray-100 dark:text-white dark:hover:bg-gray-200 dark:active:bg-gray-100"
+            view={<AddActivityFormPage title="New Task" isTaskModule={true} />}
+            customSize="1050px"
+            className="mt-0 w-full max-h-[800px] overflow-auto hover:bg-gray-700 @lg:w-auto dark:bg-gray-100 dark:text-white dark:hover:bg-gray-200 dark:active:bg-gray-100"
             icon={<PiPlusBold className="me-1.5 h-[17px] w-[17px]" />}
           />
           }
