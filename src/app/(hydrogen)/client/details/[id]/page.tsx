@@ -2,11 +2,11 @@ import { metaObject } from '@/config/site.config';
 import ClientViewProfileForm from './client-view-profile-form';
 
 export const metadata = {
-  ...metaObject('Client'),
+  ...metaObject('Client Details'),
 };
 
-export default function Page() {
+export default function Page({ params }: any) {
   return (
-    <ClientViewProfileForm />
+    <ClientViewProfileForm id={params?.id} />
   );
 }

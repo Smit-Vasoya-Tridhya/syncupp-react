@@ -165,13 +165,11 @@ export default function TaskPage() {
             >
               This Week
             </Button>
-            <Button
-              variant="outline"
-              className="mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0"
-            >
-              Select Period
-            </Button>
             <div className='mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0'>
+              <ActivitySelectionForm />
+            </div>
+            <div className='mt-5 w-full bg-none text-xs grid col-span-6
+             @lg:w-auto sm:text-sm lg:mt-0'>
               <ActivitySelectionForm />
             </div>
           </div>

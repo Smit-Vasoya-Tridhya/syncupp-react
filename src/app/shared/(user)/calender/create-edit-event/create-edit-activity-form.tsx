@@ -79,30 +79,33 @@ export default function AddActivityFormPage(props: any) {
               )}
             >
               <div>
-                { !isTaskModule && 
+                {!isTaskModule &&
                   <div className='border-b-[1px]'>
-                  {menuItems.map((menu, index) => (
-                    <Button
-                      key={index}
-                      className={cn(
-                        'group relative cursor-pointer whitespace-nowrap py-2.5 font-medium text-gray-500 before:absolute before:bottom-0 before:left-0 before:z-[1] before:h-0.5  before:bg-gray-1000 before:transition-all hover:text-gray-900',
-                        menu.label === selectedTask
-                          ? 'before:visible before:w-full before:opacity-100'
-                          : 'before:invisible before:w-0 before:opacity-0'
-                      )}
-                      variant='text'
-                      // disabled={menu.label !== selectedTask}
-                      onClick={() => handleTaskClick(menu.label)}
-                    >
-                      <Text
-                        as="span"
-                        className="inline-flex rounded-md px-2.5 py-1.5 transition-all duration-200 group-hover:bg-gray-100/70"
+                    {menuItems.map((menu, index) => (
+                      <Button
+                        key={index}
+                        className={cn(
+                          'group relative cursor-pointer whitespace-nowrap py-2.5 font-medium text-gray-500 before:absolute before:bottom-0 before:left-0 before:z-[1] before:h-0.5  before:bg-gray-1000 before:transition-all hover:text-gray-900',
+                          menu.label === selectedTask
+                            ? 'before:visible before:w-full before:opacity-100'
+                            : 'before:invisible before:w-0 before:opacity-0'
+                        )}
+                        variant='text'
+                        // disabled={menu.label !== selectedTask}
+                        onClick={() => handleTaskClick(menu.label)}
                       >
-                        {menu.label}
-                      </Text>
-                    </Button>
-                  ))}
-                </div>
+                        <Text
+                          as="span"
+                          className={cn(
+                            "inline-flex rounded-md px-2.5 py-1.5 transition-all duration-200 group-hover:bg-gray-100/70",
+                            menu.label === selectedTask && 'text-black'
+                          )}
+                        >
+                          {menu.label}
+                        </Text>
+                      </Button>
+                    ))}
+                  </div>
                 }
                 <div className="mt-3">
                   {selectedTask === 'Task' && (

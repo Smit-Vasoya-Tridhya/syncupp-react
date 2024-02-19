@@ -259,7 +259,7 @@ export const GetclientTeamColumns = ({
                 placement="top"
                 color="invert"
               >
-                {/* <Link href={routes.viewTeam}> */}
+                {/* <Link href={routes?.agency_teams?.details(row?._id)}> */}
                 <Button size="sm" variant="outline" className='bg-white text-black' aria-label={'View Member'}>
                   <EyeIcon className="h-4 w-4" />
                 </Button>

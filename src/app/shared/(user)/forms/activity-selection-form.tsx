@@ -63,7 +63,7 @@ export default function ActivitySelectionForm() {
                     }}
                 >
                     {({ control, formState: { errors } }) => (
-                        <div className="w-[10rem]">
+                        <div>
                             <Controller
                                 control={control}
                                 name="agency_selection"

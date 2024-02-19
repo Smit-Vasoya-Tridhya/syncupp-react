@@ -9,9 +9,17 @@ export const routes = {
   viewProfile: '/view-profile',
   dashboard: '/dashboard',
   client: '/client',
-  clientViewProfile: '/client/details',
+  clients: {
+    verify: '/client/verify',
+    payment: '/client/payment',
+    agreement: '/client/agreement',
+    details: (id: string) => `/client/details/${id}`,
+  },
   team: '/team',
   agency_team: '/agency-team',
+  agency_teams: {
+    details: (id: string) => `/agency-team/details/${id}`,
+  },
   agency_team_payment: '/agency-team/payment',
   client_team: '/client-team',
   referal: '/referal',
@@ -28,11 +36,6 @@ export const routes = {
 
   teams: {
     verify: '/team/verify',
-  },
-  clients: {
-    verify: '/client/verify',
-    payment: '/client/payment',
-    agreement: '/client/agreement',
   },
   agreement: '/agreement',
 
