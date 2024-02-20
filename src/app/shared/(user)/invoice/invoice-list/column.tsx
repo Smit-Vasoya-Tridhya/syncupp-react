@@ -60,6 +60,8 @@ export const InvoiceColumns = ({
   const dispatch = useDispatch();
   const invoiceSliceData = useSelector((state: any) => state?.root?.invoice);
   const [selectedStatus, setSelectedStatus] = useState<{ status: string, id: string }>({ status: '', id: '' });
+  const loading = useSelector((state: any) => state?.root?.invoice)
+  console.log(loading, 'loading')
 
   const EmailSend = (id: string) => {
     dispatch(postSendInvoice({ invoice_id: id })).then(
@@ -72,11 +74,11 @@ export const InvoiceColumns = ({
     );
   };
   const DownloadInvoice = (id: string) => {
-    dispatch(postDownloadInvoice({ invoice_id:id })).then(
+    dispatch(postDownloadInvoice({ invoice_id: id })).then(
       (result: any) => {
         if (postDownloadInvoice.fulfilled.match(result)) {
           // console.log('resultt', result)
-          if (result && result.payload.success === true) {}
+          if (result && result.payload.success === true) { }
         }
       }
     );
@@ -261,7 +263,7 @@ export const InvoiceColumns = ({
                   className="flex w-full items-center justify-start px-4 py-2.5 focus:outline-none"
                   // className={`flex w-full items-center justify-start px-4 py-2.5 focus:outline-none ${selectedStatus?.status === 'draft' ? 'font-semibold' : ''
                   //   }`}
-                  onClick={() => handleStatusChange(setOpen,'draft', row?._id)}
+                  onClick={() => handleStatusChange(setOpen, 'draft', row?._id)}
                   disabled={row?.status === "draft"}
                 >
                   Draft
@@ -271,7 +273,7 @@ export const InvoiceColumns = ({
                   className="flex w-full items-center justify-start px-4 py-2.5 focus:outline-none"
                   // className={`flex w-full items-center justify-start px-4 py-2.5 focus:outline-none ${selectedStatus?.status === 'overdue' ? 'font-semibold' : ''
                   //   }`}
-                  onClick={() => handleStatusChange(setOpen,'overdue', row?._id)}
+                  onClick={() => handleStatusChange(setOpen, 'overdue', row?._id)}
                   disabled={row?.status === "overdue"}
                 >
                   Overdue
@@ -281,7 +283,7 @@ export const InvoiceColumns = ({
                   className="flex w-full items-center justify-start px-4 py-2.5 focus:outline-none"
                   // className={`flex w-full items-center justify-start px-4 py-2.5 focus:outline-none ${selectedStatus?.status === 'unpaid' ? 'font-semibold' : ''
                   //   }`}
-                  onClick={() => handleStatusChange(setOpen,'unpaid', row?._id)}
+                  onClick={() => handleStatusChange(setOpen, 'unpaid', row?._id)}
                   disabled={row?.status === "unpaid"}
                 >
                   Unpaid
@@ -291,7 +293,7 @@ export const InvoiceColumns = ({
                   className="flex w-full items-center justify-start px-4 py-2.5 focus:outline-none"
                   // className={`flex w-full items-center justify-start px-4 py-2.5 focus:outline-none ${selectedStatus?.status === 'paid' ? 'font-semibold' : ''
                   //   }`}
-                  onClick={() => handleStatusChange(setOpen,'paid', row?._id)}
+                  onClick={() => handleStatusChange(setOpen, 'paid', row?._id)}
                   disabled={row?.status === "paid"}
                 >
                   Paid
@@ -359,6 +361,7 @@ export const InvoiceColumns = ({
           >
             <Button
               size="sm"
+              disabled={invoiceSliceData?.loading}
               variant="outline"
               className="bg-white text-black"
               aria-label={'View Member'}
@@ -379,7 +382,7 @@ export const InvoiceColumns = ({
               className="bg-white text-black"
               aria-label={'View Member'}
               onClick={() => EmailSend(row._id)}
-
+              disabled={invoiceSliceData?.loading}
             >
               <AiOutlineMail className="h-4 w-4" />
             </Button>
