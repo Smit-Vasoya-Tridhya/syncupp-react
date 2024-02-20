@@ -14,6 +14,9 @@ import moment from 'moment';
 import { useSelector } from 'react-redux';
 import ViewTaskForm from '@/app/shared/(user)/task/create-edit/view-task-form';
 import AddActivityFormPage from '../../calender/create-edit-event/create-edit-activity-form';
+import { PiXBold } from 'react-icons/pi';
+import { MdOutlineDone } from 'react-icons/md';
+import ConfirmationPopover from '@/app/shared/confirmation-popover';
 
 type Columns = {
   data: any[];
@@ -68,7 +71,30 @@ function getStatusBadge(status: string) {
   }
 }
 
-export const GetColumns = ({
+function getActivityName(value: string) {
+  switch (value?.toLowerCase()) {
+    case 'task':
+      return (
+        <div className="flex items-center">
+          <Text className="font-medium text-gray-700">Task</Text>
+        </div>
+      );
+    case 'call_meeting':
+      return (
+        <div className="flex items-center">
+          <Text className="font-medium text-gray-700">Call meeting</Text>
+        </div>
+      );
+    case 'others':
+      return (
+        <div className="flex items-center">
+          <Text className="font-medium text-gray-700">Others</Text>
+        </div>
+      );
+  }
+}
+
+export const GetActivityColumns = ({
   data,
   sortConfig,
   checkedItems,
@@ -87,65 +113,42 @@ export const GetColumns = ({
     {
       title: (
         <div className="ps-3.5">
-          <Checkbox
-            title={'Select All'}
-            onChange={handleSelectAll}
-            checked={checkedItems.length === data.length}
-            className="cursor-pointer"
+          <HeaderCell
+            title="Title"
+            sortable
+            ascending={
+              sortConfig?.direction === 'asc' && sortConfig?.key === 'title'
+            }
           />
         </div>
       ),
-      dataIndex: 'checked',
-      key: 'checked',
-      width: 50,
-      render: (_: any, row: any) => (
-        <div className="inline-flex ps-3.5">
-          <Checkbox
-            className="cursor-pointer"
-            checked={checkedItems.includes(row._id)}
-            {...(onChecked && { onChange: () => onChecked(row._id) })}
-          />
-        </div>
-      ),
-    },
-    {
-      title: (
-        <HeaderCell
-          title="Task Name"
-          sortable
-          ascending={
-            sortConfig?.direction === 'asc' && sortConfig?.key === 'title'
-          }
-        />),
       onHeaderCell: () => onHeaderCellClick('title'),
       dataIndex: 'title',
       key: 'title',
       width: 200,
       render: (value: string) => (
-        <Text className="font-medium w-28 text-gray-700 truncate normal-case">{value}</Text>
+        <Text className="ps-3.5 font-medium w-28 text-gray-700 truncate normal-case">{value}</Text>
       ),
     },
     {
       title: (
         <HeaderCell
-          title="Created"
+          title="Type"
           sortable
           ascending={
-            sortConfig?.direction === 'asc' && sortConfig?.key === 'createdAt'
+            sortConfig?.direction === 'asc' && sortConfig?.key === 'activity_type.name'
           }
         />),
-      onHeaderCell: () => onHeaderCellClick('createdAt'),
-      dataIndex: 'createdAt',
-      key: 'createdAt',
-      width: 300,
-      render: (value: string) => (
-        <Text className="font-medium text-gray-700">{moment(value).format("DD MMM, YY - hh:mm A")}</Text>
-      ),
+      onHeaderCell: () => onHeaderCellClick('activity_type.name'),
+      dataIndex: 'activity_type',
+      key: 'activity_type',
+      width: 200,
+      render: (value: Record<string, string>) => getActivityName(value?.name),
     },
     {
       title: (
         <HeaderCell
-          title="Deadline"
+          title="Date"
           sortable
           ascending={
             sortConfig?.direction === 'asc' && sortConfig?.key === 'due_date'
@@ -154,64 +157,44 @@ export const GetColumns = ({
       onHeaderCell: () => onHeaderCellClick('due_date'),
       dataIndex: 'due_date',
       key: 'due_date',
-      width: 300,
-      render: (value: any) => (
-        <Text className="font-medium text-gray-700">{moment(value).format("DD MMM, YY - hh:mm A")}</Text>
-      ),
-    },
-    {
-      title: (
-        <HeaderCell
-          title="Client"
-          sortable
-          ascending={
-            sortConfig?.direction === 'asc' && sortConfig?.key === 'client_name'
-          }
-        />),
-      onHeaderCell: () => onHeaderCellClick('client_name'),
-      dataIndex: 'client_name',
-      key: 'client_name',
       width: 200,
-      render: (value: any) => (
-        <Text className="font-medium text-gray-700 capitalize">{value}</Text>
+      render: (value: string) => (
+        <Text className="font-medium text-gray-700">{moment(value).format("DD MMM, YYYY")}</Text>
       ),
     },
-    {
-      title: (
-        <HeaderCell
-          title="Assigned By"
-          sortable
-          ascending={
-            sortConfig?.direction === 'asc' && sortConfig?.key === 'assigned_by_name'
-          }
-        />
-      ),
-      onHeaderCell: () => onHeaderCellClick('assigned_by_name'),
-      dataIndex: 'assigned_by_name',
-      key: 'assigned_by_name',
-      width: 200,
-      render: (value: string) => {
-        // const date = moment(value).fromNow();
-        return <Text className="font-medium text-gray-700 capitalize">{value}</Text>
-      },
-    },
+    // {
+    //   title: (
+    //     <HeaderCell
+    //       title="Customer"
+    //       sortable
+    //       ascending={
+    //         sortConfig?.direction === 'asc' && sortConfig?.key === 'client_id.name'
+    //       }
+    //     />),
+    //   onHeaderCell: () => onHeaderCellClick('client_id.name'),
+    //   dataIndex: 'client_id',
+    //   key: 'client_id',
+    //   width: 200,
+    //   render: (value: any) => (
+    //     <Text className="font-medium text-gray-700 capitalize">{value?.name}</Text>
+    //   ),
+    // },
     {
       title: (
         <HeaderCell
           title="Assigned To"
           sortable
           ascending={
-            sortConfig?.direction === 'asc' && sortConfig?.key === 'assigned_to_name'
+            sortConfig?.direction === 'asc' && sortConfig?.key === 'assign_to.name'
           }
         />
       ),
-      onHeaderCell: () => onHeaderCellClick('assigned_to_name'),
-      dataIndex: 'assigned_to_name',
-      key: 'assigned_to_name',
+      onHeaderCell: () => onHeaderCellClick('assign_to.name'),
+      dataIndex: 'assign_to',
+      key: 'assign_to',
       width: 200,
-      render: (value: string) => {
-        // const date = moment(value).fromNow();
-        return <Text className="font-medium text-gray-700 capitalize">{value}</Text>
+      render: (value: Record<string, string>) => {
+        return <Text className="font-medium text-gray-700 capitalize">{value?.name}</Text>
       },
     },
     {
@@ -220,17 +203,14 @@ export const GetColumns = ({
           title="Status"
           sortable
           ascending={
-            sortConfig?.direction === 'asc' && sortConfig?.key === 'status'
+            sortConfig?.direction === 'asc' && sortConfig?.key === 'activity_status.name'
           }
         />),
-      onHeaderCell: () => onHeaderCellClick('status'),
-      dataIndex: 'status',
-      key: 'status',
+      onHeaderCell: () => onHeaderCellClick('activity_status.name'),
+      dataIndex: 'activity_status',
+      key: 'activity_status',
       width: 200,
-      render: (value: string) => getStatusBadge(value),
-      // render: (_: any, row: any) => (
-      //   <Text className="font-medium text-gray-700">{row.status}</Text>
-      // ),
+      render: (value: any) => getStatusBadge(value?.name),
     },
     {
       // Need to avoid this issue -> <td> elements in a large <table> do not have table headers.
@@ -238,32 +218,36 @@ export const GetColumns = ({
       dataIndex: 'action',
       key: 'action',
       width: 120,
-      render: (_: string, row: TeamMemberType) => {
+      render: (_: string, row: any) => {
         return (
           <div>
-            <div className="flex items-center justify-end gap-3 pe-4">
-              {(signIn?.role !== 'client' && signIn?.role !== 'team_client') &&
+            {(signIn?.role !== 'client' && signIn?.role !== 'team_client') &&
+              <div className="flex items-center justify-end gap-3 pe-4">
                 <CustomModalButton
                   icon={<PencilIcon className="h-4 w-4" />}
                   view={<AddActivityFormPage title="Edit Activity" row={row} isTaskModule={false} />}
                   customSize="1050px"
                   title='Edit Activity'
                 />
-              }
-              <CustomModalButton
-                icon={<EyeIcon className="h-4 w-4" />}
-                view={<ViewTaskForm data={row} />}
-                customSize="625px"
-                title='View Task'
-              />
-              {(signIn?.role !== 'client' && signIn?.role !== 'team_client') &&
-                <DeletePopover
-                  title={`Delete the Activity`}
-                  description={`Are you sure you want to delete?`}
-                  onDelete={() => onDeleteItem(row._id, currentPage, pageSize, data?.length <= 1 ? true : false, sortConfig, searchTerm)}
+                <ConfirmationPopover
+                  title={`Complete the meeting`}
+                  description={`Are you sure you want to complete the meeting?`}
+                  action='Complete'
+                  icon={<MdOutlineDone className="h-4 w-4" />}
+                  data={row?._id}
                 />
-              }
-            </div>
+                <ConfirmationPopover
+                  title={`Cancel the meeting`}
+                  description={`Are you sure you want to cancel the meeting?`}
+                  action='Cancel'
+                  icon={<PiXBold className="h-4 w-4" />}
+                  data={row?._id}
+                />
+                {/* <Button size="sm" variant="outline" className='bg-white text-black' aria-label={'Cancel Activity'}>
+                    <PiXBold className="h-4 w-4" />
+                  </Button> */}
+              </div>
+            }
           </div>
         );
       },

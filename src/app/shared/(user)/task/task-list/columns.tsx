@@ -239,7 +239,7 @@ export const GetColumns = ({
       dataIndex: 'action',
       key: 'action',
       width: 120,
-      render: (_: string, row: TeamMemberType) => {
+      render: (_: string, row: any) => {
         return (
           <div>
             <div className="flex items-center justify-end gap-3 pe-4">

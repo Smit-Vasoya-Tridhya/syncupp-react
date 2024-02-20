@@ -22,6 +22,7 @@ import Select from '@/components/ui/select';
 import { getAllClient, setClientId, setClientName } from '@/redux/slices/user/client/clientSlice';
 import { getAllTeamMember } from '@/redux/slices/user/team-member/teamSlice';
 import moment from 'moment';
+import { getAllActivity } from '@/redux/slices/user/activity/activitySlice';
 
 const QuillEditor = dynamic(() => import('@/components/ui/quill-editor'), {
   ssr: false,
@@ -56,7 +57,7 @@ export default function AddTaskForm(props: any) {
 
 
   useEffect(() => {
-    if(signIn && signIn?.teamMemberRole === 'team_member') {
+    if (signIn && signIn?.teamMemberRole === 'team_member') {
       setTeamId(signIn?.user?.data?.user?.reference_id);
     }
   }, [signIn]);
@@ -141,6 +142,7 @@ export default function AddTaskForm(props: any) {
           if (result && result.payload.success === true) {
             closeModal();
             dispatch(getAllTask({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
+            dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc' }))
           }
         }
       });
@@ -150,6 +152,7 @@ export default function AddTaskForm(props: any) {
           if (result && result.payload.success === true) {
             closeModal();
             dispatch(getAllTask({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
+            dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc' }))
           }
         }
       });
@@ -294,13 +297,15 @@ export default function AddTaskForm(props: any) {
                     </Button>
                   </div>
                   <div className='flex justify-end items-center gap-2 ms-auto'>
-                    <Checkbox
-                      {...register('done')}
-                      label="Mark as done"
-                      color="info"
-                      variant="flat"
-                      className="[&>label>span]:font-medium"
-                    />
+                    {(title === 'Edit Activity' || title === 'Edit Task') &&
+                      <Checkbox
+                        {...register('done')}
+                        label="Mark as done"
+                        color="info"
+                        variant="flat"
+                        className="[&>label>span]:font-medium"
+                      />
+                    }
                     <Button
                       type="submit"
                       className="hover:gray-700 @xl:w-auto dark:bg-gray-200 dark:text-white"
