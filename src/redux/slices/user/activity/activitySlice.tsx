@@ -40,6 +40,7 @@ type GetAllActivityData = {
   client_id?: string;
   agency_id?: string;
   activity_type?: string;
+  filter?: any;
 }
 
 type GetActivityByIdData = {

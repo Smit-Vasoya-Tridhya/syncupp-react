@@ -155,8 +155,8 @@ export const CouponSlice = createSlice({
         if (action.payload.status == false) {
           toast.error(action.payload.message);
         } else {
-          if (action?.payload?.data?.force_fully_remove === false) {
-            toast.success(action.payload.message);
+          if (action.payload.message) {
+            toast.success(action?.payload?.message);
           }
         }
         return {

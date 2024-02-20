@@ -31,6 +31,7 @@ function KanbanBoard() {
   }, [dispatch]);
 
   const taskData = useSelector((state: any) => state?.root?.task);
+  const signIn = useSelector((state: any) => state?.root?.signIn);
   // console.log("Tasks.....", taskData?.data?.activity)
 
   const [columns, setColumns] = useState<Column[]>(defaultCols);
@@ -84,7 +85,7 @@ function KanbanBoard() {
     const { active, over } = event;
 
     if(activeTask?._id === active?.id) {
-      dispatch(putTaskKanbanStatusChange({ _id: active?.data?.current?.task?._id, status: active?.data?.current?.task?.status }))
+      (signIn?.role !== 'client' && signIn?.role !== 'team_client') && dispatch(putTaskKanbanStatusChange({ _id: active?.data?.current?.task?._id, status: active?.data?.current?.task?.status }))
     }
 
 
