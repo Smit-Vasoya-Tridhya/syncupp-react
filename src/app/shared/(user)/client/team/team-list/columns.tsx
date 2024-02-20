@@ -208,7 +208,6 @@ export const GetColumns = ({
       width: 120,
       render: (_: string, row: TeamMemberType) => (
         <div className="flex items-center justify-end gap-3 pe-4">
-
           <CustomModalButton
             icon={<PencilIcon className="h-4 w-4" />}
             view={<AddTeamMemberForm title="Edit Team member" row={row} />}
@@ -221,11 +220,11 @@ export const GetColumns = ({
             placement="top"
             color="invert"
           >
-            {/* <Link href={routes.viewTeam}> */}
+            <Link href={routes?.teams?.details(row?._id)}>
             <Button size="sm" variant="outline" className='bg-white text-black' aria-label={'View Member'}>
               <EyeIcon className="h-4 w-4" />
             </Button>
-            {/* </Link> */}
+            </Link>
           </Tooltip>
           { signIn?.user?.data?.user?.email !== row?.email &&
             <DeletePopover

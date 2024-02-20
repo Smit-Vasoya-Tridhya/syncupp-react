@@ -259,11 +259,11 @@ export const GetclientTeamColumns = ({
                 placement="top"
                 color="invert"
               >
-                {/* <Link href={routes?.agency_teams?.details(row?._id)}> */}
+                <Link href={routes?.agency_teams?.details(row?._id)}>
                 <Button size="sm" variant="outline" className='bg-white text-black' aria-label={'View Member'}>
                   <EyeIcon className="h-4 w-4" />
                 </Button>
-                {/* </Link> */}
+                </Link>
               </Tooltip>
               <DeletePopover
                 title={`Delete the Team member`}
