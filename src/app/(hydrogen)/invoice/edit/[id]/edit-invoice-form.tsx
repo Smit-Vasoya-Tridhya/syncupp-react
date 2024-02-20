@@ -642,7 +642,7 @@ export default function EditInvoice({ params }: { params: { id: string } }) {
                         className="w-full @xl:w-auto dark:bg-gray-100 dark:text-white dark:active:bg-gray-100"
                       // disabled={invoiceSliceData?.loading}
                       >
-                        Submit
+                        Save
                         {false && (
                           <Spinner
                             size="sm"
