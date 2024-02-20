@@ -5,11 +5,11 @@ export const metadata = {
   ...metaObject('Invoice'),
 };
 
-export default function Page() {
+export default function Page({ params }: { params: { id: string } }) {
 
   return (
     <>
-    <EditInvoice/>
+      <EditInvoice params={params} />
     </>
   );
 }

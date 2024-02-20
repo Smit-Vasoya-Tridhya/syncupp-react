@@ -138,6 +138,7 @@ export function AddInvoiceItems({ watch, register, control, errors }: any) {
                   // className="@md:col-span-2 @xl:col-span-3 @2xl:col-span-1 @4xl:col-span-2"
                 />
                 </div>
+                
               <div className="grid w-full items-start gap-3 @md:grid-cols-2 @lg:gap-4 @xl:grid-cols-3 @2xl:gap-5 @4xl:grid-cols-4">
                 <Controller
                   name={`invoice_content.${index}.qty`}
