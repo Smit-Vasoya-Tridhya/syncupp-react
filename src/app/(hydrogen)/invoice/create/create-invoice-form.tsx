@@ -43,6 +43,7 @@ export default function CreateInvoice() {
 
   const invoiceSliceData = useSelector((state: any) => state?.root?.invoice);
   const InvoiceLoader = useSelector((state: any) => state?.root?.invoice)?.loading
+  const Invoiceformloader = useSelector((state: any) => state?.root?.invoice)?.loading
   const { userProfile, loading } = useSelector((state: any) => state?.root?.signIn);
   // const { loading } = useSelector((state: any) => state?.root?.invoiceform);
   const [selectedClient, setselectedClient] = useState<any>(null);
@@ -181,32 +182,8 @@ export default function CreateInvoice() {
                         placeholder="Enter your address"
                         textareaClassName="h-20"
                         className="col-span-2"
-                        defaultValue={`${userProfile?.reference_id?.address &&
-                          userProfile?.reference_id?.address != ''
-                          ? userProfile?.reference_id?.address + ','
-                          : ''
-                          } 
-                        ${userProfile?.reference_id?.city?.name &&
-                            userProfile?.reference_id?.city?.name != ''
-                            ? userProfile?.reference_id?.city?.name + ','
-                            : ''
-                          } 
-                        ${userProfile?.reference_id?.state?.name &&
-                            userProfile?.reference_id?.state?.name != ''
-                            ? userProfile?.reference_id?.state?.name + ','
-                            : ''
-                          }
-                         ${userProfile?.reference_id?.country?.name &&
-                            userProfile?.reference_id?.country?.name != ''
-                            ? userProfile?.reference_id?.country?.name + ','
-                            : ''
-                          }
-                        ${userProfile?.reference_id?.pincode &&
-                            userProfile?.reference_id?.pincode != ''
-                            ? userProfile?.reference_id?.pincode + ','
-                            : ''
-                          }
-                       `}
+                        value={`${userProfile?.reference_id?.address && userProfile?.reference_id?.address !== '' ? userProfile?.reference_id?.address + ',' : ''} ${userProfile?.reference_id?.city?.name && userProfile?.reference_id?.city?.name !== '' ? userProfile?.reference_id?.city?.name + ',' : ''} ${userProfile?.reference_id?.state?.name && userProfile?.reference_id?.state?.name !== '' ? userProfile?.reference_id?.state?.name + ',' : ''} ${userProfile?.reference_id?.country?.name && userProfile?.reference_id?.country?.name !== '' ? userProfile?.reference_id?.country?.name + ',' : ''} ${userProfile?.reference_id?.pincode && userProfile?.reference_id?.pincode !== '' ? userProfile?.reference_id?.pincode + ',' : ''}`}
+
                         disabled={true}
                       />
                     </FormBlockWrapper>
@@ -256,6 +233,8 @@ export default function CreateInvoice() {
                         textareaClassName="h-20"
                         className="col-span-2"
                         disabled={true}
+                        value={`${selectedClient?.key?.address && selectedClient?.key?.address !== '' ? selectedClient?.key?.address + ',' : ''} ${selectedClient?.key?.city?.name && selectedClient?.key?.city?.name !== '' ? selectedClient?.key?.city?.name + ',' : ''} ${selectedClient?.key?.state?.name && selectedClient?.key?.state?.name !== '' ? selectedClient?.key?.state?.name + ',' : ''} ${selectedClient?.key?.country?.name && selectedClient?.key?.country?.name !== '' ? selectedClient?.key?.country?.name + ',' : ''} ${selectedClient?.key?.pincode && selectedClient?.key?.pincode !== '' ? selectedClient?.key?.pincode + ',' : ''}`}
+
                       />
                     </FormBlockWrapper>
 
@@ -619,10 +598,10 @@ export default function CreateInvoice() {
                         }}
                         // isLoading={isLoading}
                         className="w-full @xl:w-auto dark:bg-gray-100 dark:text-white dark:active:bg-gray-100"
-                      // disabled={invoiceSliceData?.loading}
+                        disabled={Invoiceformloader && sentstatus}
                       >
                         Save & Send
-                        {false && (
+                        {(Invoiceformloader && sentstatus) && (
                           <Spinner
                             size="sm"
                             tag="div"
@@ -639,10 +618,10 @@ export default function CreateInvoice() {
                         }}
                         // isLoading={isLoading}
                         className="w-full @xl:w-auto dark:bg-gray-100 dark:text-white dark:active:bg-gray-100"
-                      // disabled={invoiceSliceData?.loading}
+                        disabled={Invoiceformloader && !sentstatus}
                       >
-                        Submit
-                        {false && (
+                        Save as Draft
+                        {(Invoiceformloader && !sentstatus) && (
                           <Spinner
                             size="sm"
                             tag="div"

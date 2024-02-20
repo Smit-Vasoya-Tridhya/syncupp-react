@@ -35,9 +35,9 @@ import { PiMinusBold, PiPlusBold, PiTrashBold } from 'react-icons/pi';
 import cn from '@/utils/class-names';
 import { handleKeyDown } from '@/utils/common-functions';
 import { createinvoiceapicall } from '@/redux/slices/user/invoice/invoicesformSlice';
-import { getInvoiceApi } from '@/redux/slices/user/invoice/invoiceSlice';
+import { getInvoiceApi, getInvoiceDataByID, updateInvoice } from '@/redux/slices/user/invoice/invoiceSlice';
 
-export default function CreateInvoice() {
+export default function EditInvoice({ params }: { params: { id: string } }) {
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -48,7 +48,9 @@ export default function CreateInvoice() {
   const [selectedClient, setselectedClient] = useState<any>(null);
   const [sentstatus, setsentStatus] = useState<any>(false);
 
-  console.log(InvoiceLoader, 'InvoiceLoader')
+  const SingleInvoiceData: any = invoiceSliceData?.getInvoiceDataByIDdata?.data?.[0];
+
+  console.log(SingleInvoiceData, 'SingleInvoiceData')
 
   const clientOptions =
     invoiceSliceData?.getInvoiceApidata?.data &&
@@ -67,6 +69,14 @@ export default function CreateInvoice() {
     dispatch(getInvoiceApi());
   }, []);
 
+  useEffect(() => {
+    if (params.id) {
+
+      dispatch(getInvoiceDataByID({ _id: params.id }));
+      setselectedClient(clientOptions.find((option: any) => option.value === SingleInvoiceData?.to?._id))
+    }
+  }, [params.id]);
+
   const calculateTotalTax = (invoiceContent: any) => {
     return invoiceContent
       .reduce((totalTax: any, item: any) => {
@@ -78,19 +88,20 @@ export default function CreateInvoice() {
   };
 
   const initialsValue: InvoiceFormInput = {
-    invoice_number: '',
-    client_id: '',
-    due_date: new Date(),
-    invoice_date: new Date(),
-    invoice_content: [
-      {
-        item: '',
-        description: '',
-        qty: 1,
-        rate: 0,
-        tax: 0,
-      },
-    ],
+    invoice_number: SingleInvoiceData?.invoice_number,
+    client_id: SingleInvoiceData?.to?._id,
+    due_date: SingleInvoiceData?.due_date ? new Date(SingleInvoiceData?.due_date) : new Date(),
+    invoice_date: SingleInvoiceData?.invoice_date ? new Date(SingleInvoiceData?.invoice_date) : new Date(),
+    invoice_content: SingleInvoiceData?.invoice_content || []
+    // invoice_content: [
+    //   {
+    //     item: '',
+    //     description: '',
+    //     qty: 1,
+    //     rate: 0,
+    //     tax: 0,
+    //   },
+    // ],
   };
 
   const handleSubmit = (values: any) => {
@@ -103,14 +114,27 @@ export default function CreateInvoice() {
       'ddd MMM DD YYYY HH:mm:ss'
     ).format('YYYY-MM-DD');
     values.sent = sentstatus;
+    // values?.invoice_id = params.id,
 
-    dispatch(createinvoiceapicall(values)).then((result: any) => {
-      if (createinvoiceapicall.fulfilled.match(result)) {
-        if (result && result.payload.success === true) {
-          router.push(routes.invoice);
+    console.log(values, 'values')
+    // dispatch(createinvoiceapicall(values)).then((result: any) => {
+    //   if (createinvoiceapicall.fulfilled.match(result)) {
+    //     if (result && result.payload.success === true) {
+    //       router.push(routes.invoice);
+    //     }
+    //   }
+    // });
+    const formData = values
+    formData.invoice_id = params.id,
+
+      dispatch(updateInvoice(formData)).then((result: any) => {
+        if (updateInvoice.fulfilled.match(result)) {
+          if (result && result.payload.success === true) {
+            router.replace(routes.invoice);
+          }
         }
-      }
-    });
+      });
+
   };
 
   // Inside the onChange event handler of the Select component
@@ -181,32 +205,7 @@ export default function CreateInvoice() {
                         placeholder="Enter your address"
                         textareaClassName="h-20"
                         className="col-span-2"
-                        defaultValue={`${userProfile?.reference_id?.address &&
-                          userProfile?.reference_id?.address != ''
-                          ? userProfile?.reference_id?.address + ','
-                          : ''
-                          } 
-                        ${userProfile?.reference_id?.city?.name &&
-                            userProfile?.reference_id?.city?.name != ''
-                            ? userProfile?.reference_id?.city?.name + ','
-                            : ''
-                          } 
-                        ${userProfile?.reference_id?.state?.name &&
-                            userProfile?.reference_id?.state?.name != ''
-                            ? userProfile?.reference_id?.state?.name + ','
-                            : ''
-                          }
-                         ${userProfile?.reference_id?.country?.name &&
-                            userProfile?.reference_id?.country?.name != ''
-                            ? userProfile?.reference_id?.country?.name + ','
-                            : ''
-                          }
-                        ${userProfile?.reference_id?.pincode &&
-                            userProfile?.reference_id?.pincode != ''
-                            ? userProfile?.reference_id?.pincode + ','
-                            : ''
-                          }
-                       `}
+                        value={`${userProfile?.reference_id?.address && userProfile?.reference_id?.address !== '' ? userProfile?.reference_id?.address + ',' : ''} ${userProfile?.reference_id?.city?.name && userProfile?.reference_id?.city?.name !== '' ? userProfile?.reference_id?.city?.name + ',' : ''} ${userProfile?.reference_id?.state?.name && userProfile?.reference_id?.state?.name !== '' ? userProfile?.reference_id?.state?.name + ',' : ''} ${userProfile?.reference_id?.country?.name && userProfile?.reference_id?.country?.name !== '' ? userProfile?.reference_id?.country?.name + ',' : ''} ${userProfile?.reference_id?.pincode && userProfile?.reference_id?.pincode !== '' ? userProfile?.reference_id?.pincode + ',' : ''}`}
                         disabled={true}
                       />
                     </FormBlockWrapper>
@@ -256,6 +255,8 @@ export default function CreateInvoice() {
                         textareaClassName="h-20"
                         className="col-span-2"
                         disabled={true}
+                        value={`${selectedClient?.key?.address && selectedClient?.key?.address !== '' ? selectedClient?.key?.address + ',' : ''} ${selectedClient?.key?.city?.name && selectedClient?.key?.city?.name !== '' ? selectedClient?.key?.city?.name + ',' : ''} ${selectedClient?.key?.state?.name && selectedClient?.key?.state?.name !== '' ? selectedClient?.key?.state?.name + ',' : ''} ${selectedClient?.key?.country?.name && selectedClient?.key?.country?.name !== '' ? selectedClient?.key?.country?.name + ',' : ''} ${selectedClient?.key?.pincode && selectedClient?.key?.pincode !== '' ? selectedClient?.key?.pincode + ',' : ''}`}
+
                       />
                     </FormBlockWrapper>
 
