@@ -232,12 +232,36 @@ export const PostDownloadInvoiceApi = async (data: DownloadInvoice) => {
   };
 
   const response = await AxiosDefault({
-    url: "/api/v1/invoice/download-invoice",
-    method: "POST",
-    data: data,
+    url: `/api/v1/invoice/download-invoice/${data?.invoice_id}`,
+    method: "GET",
+    // data: data,
     contentType: "application/pdf",
-    // customHeaders
+    customHeaders
   });
+
+
+  // Set headers on the frontend
+  const contentType = 'application/pdf';
+  const contentDisposition = 'attachment; filename="document.pdf"';
+
+
+  // Convert the numeric array to a Uint8Array
+  const uint8Array = new Uint8Array(response?.data?.data?.data);
+
+  // Convert Uint8Array to Blob
+  const blob = new Blob([uint8Array], { type: 'application/pdf' });
+
+  // Create a URL for the Blob
+  const pdfUrl = URL.createObjectURL(blob);
+
+
+
+  // Create a link element and simulate a click to trigger the download
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = contentDisposition.split('=')[1].replace(/"/g, '');
+  link.click();
+
   const responseData = response.data;
   return responseData;
 };
