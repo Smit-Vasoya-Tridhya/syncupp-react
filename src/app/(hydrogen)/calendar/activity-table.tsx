@@ -8,7 +8,9 @@ import { GetActivityColumns } from '@/app/shared/(user)/calender/calender-list/c
 import { getAllActivity } from '@/redux/slices/user/activity/activitySlice';
 
 
-export default function ActivityTablePage() {
+export default function ActivityTablePage(props: any) {
+
+    const { statusType, activityType } = props;
 
 
     const dispatch = useDispatch();
@@ -23,14 +25,14 @@ export default function ActivityTablePage() {
     const handleChangePage = async (paginationParams: any) => {
         let { page, items_per_page, sort_field, sort_order, search } = paginationParams;
 
-        const response = signIn?.role !== 'client' && signIn?.role !== 'team_client' ? await dispatch(getAllActivity({ page, items_per_page, sort_field, sort_order, search })) : await dispatch(getAllActivity({ page, items_per_page, sort_field, sort_order, search, agency_id: clientSliceData?.agencyId }));
+        const response = signIn?.role !== 'client' && signIn?.role !== 'team_client' ? await dispatch(getAllActivity({ page, items_per_page, sort_field, sort_order, search, filter: { status: statusType, activity_type: activityType } })) : await dispatch(getAllActivity({ page, items_per_page, sort_field, sort_order, search, agency_id: clientSliceData?.agencyId, filter: { status: statusType, activity_type: activityType } }));
         const { data } = response?.payload;
         const maxPage: number = data?.page_count;
 
         if (page > maxPage) {
             page = maxPage > 0 ? maxPage : 1;
             // await dispatch(getAllActivity({ page, items_per_page, sort_field, sort_order, search }));
-            signIn?.role !== 'client' && signIn?.role !== 'team_client' ? await dispatch(getAllActivity({ page, items_per_page, sort_field, sort_order, search })) : await dispatch(getAllActivity({ page, items_per_page, sort_field, sort_order, search, agency_id: clientSliceData?.agencyId }));
+            signIn?.role !== 'client' && signIn?.role !== 'team_client' ? await dispatch(getAllActivity({ page, items_per_page, sort_field, sort_order, search, filter: { status: statusType, activity_type: activityType } })) : await dispatch(getAllActivity({ page, items_per_page, sort_field, sort_order, search, agency_id: clientSliceData?.agencyId, filter: { status: statusType, activity_type: activityType } }));
             return data?.client
         }
         if (data && data?.client && data?.client?.length !== 0) {
@@ -45,7 +47,7 @@ export default function ActivityTablePage() {
         try {
             const res = await dispatch(deleteTask({ taskIdsToDelete: id }));
             if (res.payload.success === true) {
-                const reponse = signIn?.role !== 'client' && signIn?.role !== 'team_client' ? await dispatch(getAllActivity({ page: currentPage, items_per_page: countPerPage, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm })) : await dispatch(getAllActivity({ page: currentPage, items_per_page: countPerPage, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm, agency_id: clientSliceData?.agencyId }));
+                const reponse = signIn?.role !== 'client' && signIn?.role !== 'team_client' ? await dispatch(getAllActivity({ page: currentPage, items_per_page: countPerPage, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm, filter: { status: statusType, activity_type: activityType } })) : await dispatch(getAllActivity({ page: currentPage, items_per_page: countPerPage, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm, agency_id: clientSliceData?.agencyId, filter: { status: statusType, activity_type: activityType } }));
             }
         } catch (error) {
             console.error(error);

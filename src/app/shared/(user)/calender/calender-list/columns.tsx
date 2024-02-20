@@ -221,7 +221,69 @@ export const GetActivityColumns = ({
       render: (_: string, row: any) => {
         return (
           <div>
-            {(signIn?.role !== 'client' && signIn?.role !== 'team_client') &&
+            {row?.activity_type?.name === "task" ? (
+              <div className="flex items-center justify-end gap-3 pe-4">
+                {(signIn?.role !== 'client' && signIn?.role !== 'team_client') &&
+                  <CustomModalButton
+                    icon={<PencilIcon className="h-4 w-4" />}
+                    view={<AddActivityFormPage title="Edit Task" row={row} isTaskModule={true} />}
+                    customSize="1050px"
+                    title='Edit Task'
+                  />
+                }
+                <CustomModalButton
+                  icon={<EyeIcon className="h-4 w-4" />}
+                  view={<ViewTaskForm data={row} />}
+                  customSize="625px"
+                  title='View Task'
+                />
+                {(signIn?.role !== 'client' && signIn?.role !== 'team_client') &&
+                  <DeletePopover
+                    title={`Delete the Task`}
+                    description={`Are you sure you want to delete?`}
+                    onDelete={() => onDeleteItem(row._id, currentPage, pageSize, data?.length <= 1 ? true : false, sortConfig, searchTerm)}
+                  />
+                }
+              </div>
+            ) : (
+              <div>
+                <div className="flex items-center justify-end gap-3 pe-4">
+                  {(signIn?.role !== 'client' && signIn?.role !== 'team_client') &&
+                    <CustomModalButton
+                      icon={<PencilIcon className="h-4 w-4" />}
+                      view={<AddActivityFormPage title="Edit Activity" row={row} isTaskModule={false} />}
+                      customSize="1050px"
+                      title='Edit Activity'
+                    />
+                  }
+                  <CustomModalButton
+                    icon={<EyeIcon className="h-4 w-4" />}
+                    view={<ViewTaskForm data={row} />}
+                    customSize="625px"
+                    title='View Task'
+                  />
+                  {(signIn?.role !== 'client' && signIn?.role !== 'team_client') &&
+                    <ConfirmationPopover
+                      title={`Complete the meeting`}
+                      description={`Are you sure you want to complete the meeting?`}
+                      action='Complete'
+                      icon={<MdOutlineDone className="h-4 w-4" />}
+                      data={row?._id}
+                    />
+                  }
+                  {(signIn?.role !== 'client' && signIn?.role !== 'team_client') &&
+                    <ConfirmationPopover
+                      title={`Cancel the meeting`}
+                      description={`Are you sure you want to cancel the meeting?`}
+                      action='Cancel'
+                      icon={<PiXBold className="h-4 w-4" />}
+                      data={row?._id}
+                    />
+                  }
+                </div>
+              </div>
+            )}
+            {/* {(signIn?.role !== 'client' && signIn?.role !== 'team_client') &&
               <div className="flex items-center justify-end gap-3 pe-4">
                 <CustomModalButton
                   icon={<PencilIcon className="h-4 w-4" />}
@@ -243,11 +305,8 @@ export const GetActivityColumns = ({
                   icon={<PiXBold className="h-4 w-4" />}
                   data={row?._id}
                 />
-                {/* <Button size="sm" variant="outline" className='bg-white text-black' aria-label={'Cancel Activity'}>
-                    <PiXBold className="h-4 w-4" />
-                  </Button> */}
               </div>
-            }
+            } */}
           </div>
         );
       },

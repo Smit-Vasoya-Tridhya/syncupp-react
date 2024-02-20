@@ -13,6 +13,8 @@ import EventCalendarView from '@/app/shared/(user)/calender/event-calendar';
 import { FaRegCalendarAlt } from 'react-icons/fa';
 import ActivitySelectionForm from '@/app/shared/(user)/forms/activity-selection-form';
 import ActivityTablePage from './activity-table';
+import { useState } from 'react';
+import { getAllActivity } from '@/redux/slices/user/activity/activitySlice';
 
 const pageHeader = {
   title: 'Activity',
@@ -28,7 +30,17 @@ export default function CalendarMainPage() {
   const activityData = useSelector((state: any) => state?.root?.activity);
   const { gridView } = useSelector((state: any) => state?.root?.task);
 
-  console.log("Activity is....", activityData?.activityName)
+  const [activityType, setActivityType] = useState('');
+  const [statusType, setStatusType] = useState('');
+
+  // console.log("Activity is....", activityData?.activityName)
+  console.log("Activity is....", activityType)
+
+  const handleStatusFilterApiCall = (filterStatusValue: string) => {
+    setStatusType(filterStatusValue);
+    activityType !== '' ? dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', filter: { status: filterStatusValue, activity_type: activityType } })) : dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', filter: { status: filterStatusValue } }))
+
+  }
 
 
   const handleListView = () => {
@@ -93,18 +105,33 @@ export default function CalendarMainPage() {
       {!gridView ? (
         <div className='mt-4'>
           <div className="ms-auto mt-4 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-9 xl:grid-cols-9 gap-3">
-            <Button variant="outline" className="mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0">
+            <Button
+              variant="outline"
+              className={cn(
+                "mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0",
+                statusType === 'todo' && 'text-white bg-black'
+              )}
+              onClick={() => handleStatusFilterApiCall("todo")}
+            >
               To Do
             </Button>
             <Button
               variant="outline"
-              className="mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0"
+              className={cn(
+                "mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0",
+                statusType === 'overdue' && 'text-white bg-black'
+              )}
+              onClick={() => handleStatusFilterApiCall("overdue")}
             >
               Overdue
             </Button>
             <Button
               variant="outline"
-              className="mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0"
+              className={cn(
+                "mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0",
+                statusType === 'done' && 'text-white bg-black'
+              )}
+              onClick={() => handleStatusFilterApiCall("done")}
             >
               Done
             </Button>
@@ -112,7 +139,7 @@ export default function CalendarMainPage() {
               <ActivitySelectionForm />
             </div>
             <div className='mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0 col-span-3 lg:col-span-2 md:col-span-2 sm:col-span-2'>
-              <ActivitySelectionForm />
+              <ActivitySelectionForm setActivityType={setActivityType} />
             </div>
           </div>
         </div>
@@ -146,7 +173,7 @@ export default function CalendarMainPage() {
       }
       {!gridView ? (
         <div className='mt-8'>
-          <ActivityTablePage />
+          <ActivityTablePage statusType={statusType} activityType={activityType} />
         </div>
       ) : (
         <div className='mt-12'>
