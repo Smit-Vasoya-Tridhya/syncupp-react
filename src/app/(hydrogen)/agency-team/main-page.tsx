@@ -72,9 +72,30 @@ export default function TeamDataTablePage() {
     searchTerm?: string
   ) => {
     try {
-      console.log('delete');
-      const res = await dispatch(deleteTeamMember({ teamMemberIds: id }));
-      if (res.payload.success === true) {
+      console.log('delete', id);
+      const res = await dispatch(
+        deleteTeamMember({ teamMemberIds: id, force_fully_remove: false })
+      );
+
+      if (res?.payload?.data?.force_fully_remove === true) {
+        openModal({
+          view: (
+            <DeleteModel
+              forsfully={res?.payload?.data?.force_fully_remove}
+              id={id}
+              page={currentPage}
+              items_per_page={countPerPage}
+              sort_field={sortConfig?.key}
+              sort_order={sortConfig?.direction}
+              search={searchTerm}
+              pagination={true}
+            />
+          ),
+          customSize: '500px',
+        });
+      }
+
+      if (res.payload.success && !res.payload.data?.force_fully_remove) {
         const reponse = await dispatch(
           getAllTeamMember({
             page: currentPage,
@@ -85,23 +106,6 @@ export default function TeamDataTablePage() {
             pagination: true,
           })
         );
-        if (res?.payload?.data?.force_fully_remove === true) {
-          openModal({
-            view: (
-              <DeleteModel
-                forsfully={res?.payload?.data?.force_fully_remove}
-                id={id}
-                page={currentPage}
-                items_per_page={countPerPage}
-                sort_field={sortConfig?.key}
-                sort_order={sortConfig?.direction}
-                search={searchTerm}
-                pagination={true}
-              />
-            ),
-            customSize: '500px',
-          });
-        }
       }
     } catch (error) {
       console.error(error);
