@@ -108,6 +108,17 @@ export default function CalendarMainPage() {
             >
               Done
             </Button>
+            <div className='mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0 col-span-3 lg:col-span-2 md:col-span-2 sm:col-span-2'>
+              <ActivitySelectionForm />
+            </div>
+            <div className='mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0 col-span-3 lg:col-span-2 md:col-span-2 sm:col-span-2'>
+              <ActivitySelectionForm />
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className='mt-4'>
+          <div className="ms-auto mt-4 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 xl:grid-cols-7 gap-3">
             <Button
               variant="outline"
               className="mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0"
@@ -126,21 +137,9 @@ export default function CalendarMainPage() {
             >
               This Week
             </Button>
-            <div className='mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0'>
+            <div className='mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0 col-span-3 lg:col-span-2 md:col-span-2 sm:col-span-2'>
               <ActivitySelectionForm />
             </div>
-            <div className='mt-5 w-full bg-none text-xs grid col-span-6
-             @lg:w-auto sm:text-sm lg:mt-0'>
-              <ActivitySelectionForm />
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className='mt-4'>
-          <div className="ms-auto mt-4 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 xl:grid-cols-7 gap-3">
-            <Button variant="outline" className="mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0">
-              Select Period
-            </Button>
           </div>
         </div>
       )

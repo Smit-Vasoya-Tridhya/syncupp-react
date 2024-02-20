@@ -24,7 +24,7 @@ export default function ActivitySelectionForm() {
     ]
 
     const handleAgencyChange = (selectedOption: Record<string, any>) => {
-        dispatch(setActivityName(selectedOption?.name));
+        dispatch(setActivityName(selectedOption?.value));
         dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', activity_type: selectedOption?.value }))
     }
 
