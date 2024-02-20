@@ -22,62 +22,61 @@ export default function InvoiceDetails(props: any) {
   const invoiceSliceData = useSelector((state: any) => state?.root?.invoice);
   const dispatch = useDispatch();
   const router = useSearchParams();
-  const _id  = router.get('_id');
-  
+  const _id = router.get('_id');
+
   useEffect(() => {
-    dispatch(getInvoiceDataByID({ _id: _id }))
-  }, [_id , dispatch]); 
-  const data  = invoiceSliceData?.getInvoiceDataByIDdata?.data?.[0];
+    dispatch(getInvoiceDataByID({ _id: _id }));
+  }, [_id, dispatch]);
+  const data = invoiceSliceData?.getInvoiceDataByIDdata?.data?.[0];
 
   const defaultValuess = {
-      invoice_number: data?.invoice_number ?? '',
-      due_date: data?.due_date ?? '',
-      invoice_date: data?.invoice_date ?? '',
-      invoice_content: 
-        {
-          item: data?.invoice_content?.item ?? '',
-          qty: data?.invoice_content?.qty ?? '',
-          rate: data?.invoice_content?.rate ?? '',
-          tax: data?.invoice_content?.tax ?? '',
-          amount: data?.invoice_content?.amount ?? '',
-          description: data?.invoice_content?.description ?? '',
-        },
-      
-      sub_total: data?.sub_total ?? 0,
-      total: data?.total ?? 0,
-      createdAt: data?.createdAt ?? '',
-      updatedAt: data?.updatedAt ?? '',
-      status: data?.status ?? '',
-      from: {
-        name: data?.from?.name ?? '',
-        company_name: data?.from?.company_name ?? '',
-        address: data?.from?.address ?? '',
-        pincode: data?.from?.pincode ?? 0,
-        state: {
-          name: data?.from?.state?.name ?? '',
-        },
-        city: {
-          name: data?.from?.city?.name ?? '',
-        },
-        country: {
-          name: data?.from?.country?.name ?? '',
-        },
+    invoice_number: data?.invoice_number ?? '',
+    due_date: data?.due_date ?? '',
+    invoice_date: data?.invoice_date ?? '',
+    invoice_content: {
+      item: data?.invoice_content?.item ?? '',
+      qty: data?.invoice_content?.qty ?? '',
+      rate: data?.invoice_content?.rate ?? '',
+      tax: data?.invoice_content?.tax ?? '',
+      amount: data?.invoice_content?.amount ?? '',
+      description: data?.invoice_content?.description ?? '',
+    },
+
+    sub_total: data?.sub_total ?? 0,
+    total: data?.total ?? 0,
+    createdAt: data?.createdAt ?? '',
+    updatedAt: data?.updatedAt ?? '',
+    status: data?.status ?? '',
+    from: {
+      name: data?.from?.name ?? '',
+      company_name: data?.from?.company_name ?? '',
+      address: data?.from?.address ?? '',
+      pincode: data?.from?.pincode ?? 0,
+      state: {
+        name: data?.from?.state?.name ?? '',
       },
-      to: {
-        name: data?.to?.name ?? '',
-        company_name: data?.to?.company_name ?? '',
-        address: data?.to?.address ?? '',
-        pincode: data?.to?.pincode ?? 0,
-        state: {
-          name: data?.to?.state?.name ?? '',
-        },
-        city: {
-          name: data?.to?.city?.name ?? '',
-        },
-        country: {
-          name: data?.to?.country?.name ?? '',
-        },
+      city: {
+        name: data?.from?.city?.name ?? '',
       },
+      country: {
+        name: data?.from?.country?.name ?? '',
+      },
+    },
+    to: {
+      name: data?.to?.name ?? '',
+      company_name: data?.to?.company_name ?? '',
+      address: data?.to?.address ?? '',
+      pincode: data?.to?.pincode ?? 0,
+      state: {
+        name: data?.to?.state?.name ?? '',
+      },
+      city: {
+        name: data?.to?.city?.name ?? '',
+      },
+      country: {
+        name: data?.to?.country?.name ?? '',
+      },
+    },
   };
 
   const columns = [
@@ -88,7 +87,7 @@ export default function InvoiceDetails(props: any) {
       render: (product: any) => (
         <>
           <Title as="h6" className="mb-0.5 text-sm font-medium">
-            {product?.item}
+            {product?.item && product?.item != '' ? product?.item : "-"}
           </Title>
         </>
       ),
@@ -100,7 +99,7 @@ export default function InvoiceDetails(props: any) {
       render: (product: any) => (
         <>
           <Title as="h6" className="mb-0.5 text-sm font-medium">
-            {product?.qty}
+            {product?.qty && product?.qty != '' ? product?.qty : "-"}
           </Title>
         </>
       ),
@@ -112,7 +111,7 @@ export default function InvoiceDetails(props: any) {
       render: (product: any) => (
         <>
           <Title as="h6" className="mb-0.5 text-sm font-medium">
-            {product?.rate}
+            {product?.rate && product?.rate != '' ? product?.rate : "-"}
           </Title>
         </>
       ),
@@ -124,7 +123,7 @@ export default function InvoiceDetails(props: any) {
       render: (product: any) => (
         <>
           <Title as="h6" className="mb-0.5 text-sm font-medium">
-            {product?.tax}
+            {product?.tax && product?.tax != '' ? product?.tax : "-"}
           </Title>
         </>
       ),
@@ -136,7 +135,7 @@ export default function InvoiceDetails(props: any) {
       render: (product: any) => (
         <>
           <Title as="h6" className="mb-0.5 text-sm font-medium">
-            {product?.amount}
+            {product?.amount && product?.amount != '' ? product?.amount : "-"}
           </Title>
         </>
       ),
@@ -148,7 +147,7 @@ export default function InvoiceDetails(props: any) {
       render: (product: any) => (
         <>
           <Title as="h6" className="mb-0.5 text-sm font-medium">
-            {product?.description}
+            {product?.description && product?.description != '' ? product?.description : "-"}
           </Title>
         </>
       ),
@@ -176,7 +175,7 @@ export default function InvoiceDetails(props: any) {
   return (
     <>
       <Link href={routes.invoice} className="w-full">
-        <Button className="float-end mb-2 mt-5 bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0">
+        <Button className="float-end mb-3 mt-5 bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0">
           <FaArrowLeft className="me-1.5 h-[17px] w-[17px]" />
           Back
         </Button>
@@ -198,12 +197,12 @@ export default function InvoiceDetails(props: any) {
                 data?.status === 'draft'
                   ? 'primary'
                   : data?.status === 'paid'
-                  ? 'success'
-                  : data?.status === 'unpaid'
-                  ? 'warning'
-                  : data?.status === 'overdue'
-                  ? 'danger'
-                  : 'primary'
+                    ? 'success'
+                    : data?.status === 'unpaid'
+                      ? 'warning'
+                      : data?.status === 'overdue'
+                        ? 'danger'
+                        : 'primary'
               }
               rounded="md"
               className="mb-3 md:mb-2"
@@ -221,17 +220,17 @@ export default function InvoiceDetails(props: any) {
               From
             </Title>
             <Text className="mb-1.5 text-sm font-semibold uppercase">
-              {data?.from?.name}
+              {data?.from?.name && data?.from?.name != '' && data?.from?.name}
             </Text>
-            <Text className="mb-1.5">{data?.from?.company_name}</Text>
+            <Text className="mb-1.5"> {data?.from?.company_name && data?.from?.company_name != '' && data?.from?.company_name} </Text>
             <Text className="mb-1.5">
-              {data?.from?.address}, <br /> {data?.from?.city.name},{' '}
-              {data?.from?.state.name}, {data?.from?.country.name}
+              {data?.from?.address && data?.from?.address != '' && data?.from?.address + ","} <br /> {data?.from?.city?.name && data?.from?.city?.name != '' && data?.from?.city?.name + ","}
+              {data?.from?.state?.name && data?.from?.state?.name != '' && data?.from?.state?.name + ","} {data?.from?.country?.name && data?.from?.country?.name != '' && data?.from?.country?.name + ","}
             </Text>
-            <Text className="mb-4 sm:mb-6 md:mb-8">{data?.from?.pincode}</Text>
+            <Text className="mb-4 sm:mb-6 md:mb-8">{data?.from?.pincode && data?.from?.pincode != '' && data?.from?.pincode}</Text>
             <div>
               <Text className="mb-2 text-sm font-semibold">Creation Date</Text>
-              <Text>{data?.createdAt ? formatDate(data.createdAt) : ''}</Text>
+              <Text>{data?.createdAt ? formatDate(data?.createdAt) : '-'}</Text>
             </div>
           </div>
           <div className="mt-4 xs:mt-0">
@@ -239,17 +238,17 @@ export default function InvoiceDetails(props: any) {
               Bill To
             </Title>
             <Text className="mb-1.5 text-sm font-semibold uppercase">
-              {data?.to?.name}
+              {data?.to?.name && data?.to?.name != '' && data?.to?.name}
             </Text>
-            <Text className="mb-1.5">{data?.to?.company_name}</Text>
+            <Text className="mb-1.5">{data?.to?.company_name && data?.to?.company_name != '' && data?.to?.company_name}</Text>
             <Text className="mb-1.5">
-              {data?.to?.address}, <br /> {data?.to?.city.name},{' '}
-              {data?.to?.state.name}, {data?.to?.country.name}
+              {data?.to?.address && data?.to?.address != '' && data?.to?.address + ","} <br /> {data?.to?.city?.name && data?.to?.city?.name != '' && data?.to?.city?.name + ","}
+              {data?.to?.state?.name && data?.to?.state?.name != '' && data?.to?.state?.name + ","} {data?.to?.country?.name && data?.to?.country?.name != '' && data?.to?.country?.name + ","}
             </Text>
-            <Text className="mb-4 sm:mb-6 md:mb-8">{data?.to?.pincode}</Text>
+            <Text className="mb-4 sm:mb-6 md:mb-8">{data?.to?.pincode && data?.to?.pincode != '' && data?.to?.pincode}</Text>
             <div>
               <Text className="mb-2 text-sm font-semibold">Due Date</Text>
-              <Text>{data?.due_date ? formatDate(data.due_date) : ''}</Text>
+              <Text>{data?.due_date ? formatDate(data?.due_date) : '-'}</Text>
             </div>
           </div>
         </div>
@@ -260,7 +259,7 @@ export default function InvoiceDetails(props: any) {
           <div className="mt-6 max-w-md pe-4 xs:mt-0"></div>
           <div className=" w-full max-w-sm">
             <Text className="flex items-center justify-between pt-4 text-base font-semibold text-gray-900 lg:pt-5">
-              Total: <Text as="span">${data?.total}</Text>
+              Total: <Text as="span">${data?.total && data?.total != '' ? data?.total : 0}</Text>
             </Text>
           </div>
         </div>

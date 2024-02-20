@@ -287,90 +287,107 @@ export const GetclientteamColumns = ({
       dataIndex: 'action',
       key: 'action',
       width: 80,
-      render: (_: string, row: any) => (
-        <>
-          <Tooltip
-            size="sm"
-            content={() => 'View Team member'}
-            placement="top"
-            color="invert"
-          >
-            <Link href={routes.client_team_details}>
+      render: (_: string, row: any) =>
+        row?.status === 'requested' ? (
+          <div className="flex items-center justify-end gap-3 pe-4">
+            <Tooltip
+              size="sm"
+              content={() => 'View Team member'}
+              placement="top"
+              color="invert"
+            >
+              <Link href={routes?.client_teams?.details(row?._id)}>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="bg-white text-black"
+                  aria-label={'View Member'}
+                >
+                  <EyeIcon className="h-4 w-4" />
+                </Button>
+              </Link>
+            </Tooltip>
+            <Tooltip
+              size="sm"
+              content={() => 'Approve'}
+              placement="top"
+              color="invert"
+            >
               <Button
+                disabled={loadingflag}
+                onClick={() => {
+                  initiateRazorpay(
+                    router,
+                    routes.client_team,
+                    token,
+                    row?.reference_id?._id,
+                    ClintteamlistAPIcall,
+                    setloadingflag
+                  );
+                }}
                 size="sm"
                 variant="outline"
                 className="bg-white text-black"
-                aria-label={'View Member'}
+                aria-label={'Approve Team member'}
               >
-                <EyeIcon className="h-4 w-4" />
+                <MdOutlineDone className="h-4 w-4" />
               </Button>
-            </Link>
-          </Tooltip>
-          {row?.status === 'requested' && (
-            <div className="flex items-center justify-end gap-3 pe-4">
-              <Tooltip
+            </Tooltip>
+            <Tooltip
+              size="sm"
+              content={() => 'Reject'}
+              placement="top"
+              color="invert"
+            >
+              <Button
+                disabled={loading}
+                onClick={() => {
+                  StatusHandler(row);
+                }}
                 size="sm"
-                content={() => 'Approve'}
-                placement="top"
-                color="invert"
+                variant="outline"
+                className="bg-white text-black"
+                aria-label={'Reject Team member'}
               >
+                <PiXBold className="h-4 w-4" />
+              </Button>
+            </Tooltip>
+            <DeletePopover
+              title={`Delete the Team member`}
+              description={`Are you sure you want to delete?`}
+              onDelete={() =>
+                onDeleteItem(
+                  row.reference_id._id,
+                  currentPage,
+                  pageSize,
+                  data?.length <= 1 ? true : false,
+                  sortConfig,
+                  searchTerm
+                )
+              }
+            />
+          </div>
+        ) : (
+          <div className="flex items-center justify-end gap-3 pe-4">
+            <Tooltip
+              size="sm"
+              content={() => 'View Team member'}
+              placement="top"
+              color="invert"
+            >
+              <Link href={routes?.client_teams?.details(row?._id)}>
                 <Button
-                  disabled={loadingflag}
-                  onClick={() => {
-                    initiateRazorpay(
-                      router,
-                      routes.client_team,
-                      token,
-                      row?.reference_id?._id,
-                      ClintteamlistAPIcall,
-                      setloadingflag
-                    );
-                  }}
                   size="sm"
                   variant="outline"
                   className="bg-white text-black"
-                  aria-label={'Approve Team member'}
+                  aria-label={'View Member'}
                 >
-                  <MdOutlineDone className="h-4 w-4" />
+                  <EyeIcon className="h-4 w-4" />
                 </Button>
-              </Tooltip>
-              <Tooltip
-                size="sm"
-                content={() => 'Reject'}
-                placement="top"
-                color="invert"
-              >
-                <Button
-                  disabled={loading}
-                  onClick={() => {
-                    StatusHandler(row);
-                  }}
-                  size="sm"
-                  variant="outline"
-                  className="bg-white text-black"
-                  aria-label={'Reject Team member'}
-                >
-                  <PiXBold className="h-4 w-4" />
-                </Button>
-              </Tooltip>
-              <DeletePopover
-                title={`Delete the Team member`}
-                description={`Are you sure you want to delete?`}
-                onDelete={() =>
-                  onDeleteItem(
-                    row.reference_id._id,
-                    currentPage,
-                    pageSize,
-                    data?.length <= 1 ? true : false,
-                    sortConfig,
-                    searchTerm
-                  )
-                }
-              />
-            </div>
-          )}
-        </>
-      ),
+              </Link>
+            </Tooltip>
+          </div>
+        ),
     },
   ];
 };

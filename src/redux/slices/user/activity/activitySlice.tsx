@@ -37,6 +37,10 @@ type GetAllActivityData = {
   sort_order?: string;
   sort_field?: string;
   search?: string;
+  client_id?: string;
+  agency_id?: string;
+  activity_type?: string;
+  filter?: any;
 }
 
 type GetActivityByIdData = {
@@ -57,6 +61,7 @@ interface ActivityInitialState {
   loading: boolean;
   data: any;
   activity: any;
+  activityName: string;
   addActivityStatus: string;
   getAllActivityStatus: string;
   getActivityStatus: string;
@@ -68,6 +73,7 @@ const initialState: ActivityInitialState = {
   loading: false,
   data: '',
   activity: '',
+  activityName: '',
   addActivityStatus: '',
   getAllActivityStatus: '',
   getActivityStatus: '',
@@ -161,6 +167,12 @@ export const activitySlice: any = createSlice({
       return {
         ...state,
         activity: ''
+      }
+    },
+    setActivityName(state, action) {
+      return {
+        ...state,
+        activityName: action?.payload
       }
     },
   },
@@ -322,5 +334,5 @@ export const activitySlice: any = createSlice({
   },
 });
 
-export const { RemoveActivityData } = activitySlice.actions;
+export const { RemoveActivityData, setActivityName } = activitySlice.actions;
 export default activitySlice.reducer;

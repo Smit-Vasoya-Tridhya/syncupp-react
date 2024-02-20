@@ -9,12 +9,26 @@ export const routes = {
   viewProfile: '/view-profile',
   dashboard: '/dashboard',
   client: '/client',
-  clientViewProfile: '/client/details',
+  clients: {
+    verify: '/client/verify',
+    payment: '/client/payment',
+    agreement: '/client/agreement',
+    details: (id: string) => `/client/details/${id}`,
+  },
   team: '/team',
+  teams: {
+    verify: '/team/verify',
+    details: (id: string) => `/team/details/${id}`,
+  },
   agency_team: '/agency-team',
+  agency_teams: {
+    details: (id: string) => `/agency-team/details/${id}`,
+  },
   agency_team_payment: '/agency-team/payment',
   client_team: '/client-team',
-  client_team_details: '/client-team/details',
+  client_teams: {
+    details: (id: string) => `/client-team/details/${id}`,
+  },
   referal: '/referal',
   invoice: '/invoice',
   invoiceForm: '/invoice/create',
@@ -26,15 +40,7 @@ export const routes = {
   userCalendar: '/calendar',
   userCalendarForm: '/calendar/calendar-form',
   userCalendarAddActivity: '/calendar/create-edit',
-
-  teams: {
-    verify: '/team/verify',
-  },
-  clients: {
-    verify: '/client/verify',
-    payment: '/client/payment',
-    agreement: '/client/agreement',
-  },
+  
   agreement: '/agreement',
 
   // Admin panel

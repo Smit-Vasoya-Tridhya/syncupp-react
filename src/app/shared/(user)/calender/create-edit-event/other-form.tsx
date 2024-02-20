@@ -24,7 +24,7 @@ import { AddOtherFormSchema, addOtherFormSchema } from '@/utils/validators/add-a
 import { Switch, Text, Textarea } from 'rizzui';
 import { AiOutlineUsergroupAdd } from 'react-icons/ai';
 import { GiNotebook } from 'react-icons/gi';
-import { getActivityById, patchEditActivity, postAddActivity } from '@/redux/slices/user/activity/activitySlice';
+import { getActivityById, getAllActivity, patchEditActivity, postAddActivity } from '@/redux/slices/user/activity/activitySlice';
 
 const QuillEditor = dynamic(() => import('@/components/ui/quill-editor'), {
   ssr: false,
@@ -108,13 +108,20 @@ export default function AddCallMeetingForm(props: any) {
     description: data?.agenda,
     // due_date: new Date(data?.due_date),
     due_date: moment(data?.due_date).toDate(),
-    recurring_date: moment(data?.recurring_date).toDate(),
-    start_time: moment(data?.start_time).toDate(),
-    end_time: moment(data?.end_time).toDate(),
-    client: data?.client_fullName,
+    recurring_date: moment(data?.recurring_end_date).toDate(),
+    start_time: moment(data?.meeting_start_time).toDate(),
+    end_time: moment(data?.meeting_end_time).toDate(),
+    client: data?.client_name,
     assigned: signIn?.teamMemberRole === 'team_member' ? signIn?.user?.data?.user?.name : data?.assigned_to_name,
-    done: data?.status === 'completed' ? true : false
+    done: data?.status === 'completed' ? true : false,
+    notes: data?.internal_info
   };
+
+  useEffect(() => {
+    if (title === 'Edit Activity' && data?.recurring_end_date) {
+      setRecurringStatus(true)
+    }
+  }, [title, data])
 
 
 
@@ -152,7 +159,7 @@ export default function AddCallMeetingForm(props: any) {
 
 
   const onSubmit: SubmitHandler<AddOtherFormSchema> = (dataa) => {
-    console.log('Add other form dataa---->', dataa);
+    // console.log('Add other form dataa---->', dataa);
 
     let formData;
 
@@ -197,7 +204,7 @@ export default function AddCallMeetingForm(props: any) {
         if (postAddActivity.fulfilled.match(result)) {
           if (result && result.payload.success === true) {
             closeModal();
-            // dispatch(getAllTask({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
+            dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc' }))
           }
         }
       });
@@ -206,7 +213,7 @@ export default function AddCallMeetingForm(props: any) {
         if (patchEditActivity.fulfilled.match(result)) {
           if (result && result.payload.success === true) {
             closeModal();
-            // dispatch(getAllTask({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
+            dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc' }))
           }
         }
       });
@@ -275,10 +282,10 @@ export default function AddCallMeetingForm(props: any) {
                       control={control}
                       render={({ field: { value, onChange } }) => (
                         <DatePicker
-                          placeholderText="Select Due date"
+                          placeholderText="Select start date"
                           selected={value}
                           inputProps={{
-                            label: 'Due Date',
+                            label: 'Start Date',
                             color: 'info'
                           }}
                           onChange={onChange}
@@ -330,7 +337,7 @@ export default function AddCallMeetingForm(props: any) {
                   </div>
                   <div className={cn('flex items-center gap-12 h-[70px]')}>
                     <div className='flex justify-start items-end w-auto'>
-                      <Switch className="[&>label>span.transition]:shrink-0 [&>label>span]:font-medium" label='Recurring' labelPlacement='left' variant='active' onChange={(event) => handleSwitchChange(event)} />
+                      <Switch className="[&>label>span.transition]:shrink-0 [&>label>span]:font-medium" label='Recurring' labelPlacement='left' variant='active' checked={data?.recurring_end_date && title === 'Edit Activity'} onChange={(event) => handleSwitchChange(event)} />
                       {/* <Switch className="[&>label>span.transition]:shrink-0 [&>label>span]:font-medium" variant='active' onChange={(event) => handleSwitchChange(row._id, event)} disabled={value == "payment_pending"} defaultChecked={value == "confirmed" ? true : false} /> */}
                     </div>
                     {recurringStatus &&
@@ -340,10 +347,10 @@ export default function AddCallMeetingForm(props: any) {
                           control={control}
                           render={({ field: { value, onChange } }) => (
                             <DatePicker
-                              placeholderText="Select recurring date"
+                              placeholderText="Select recurring end date"
                               selected={value}
                               inputProps={{
-                                label: 'Recurring Due Date',
+                                label: 'Recurring End Date',
                                 color: 'info'
                               }}
                               onChange={onChange}
@@ -441,13 +448,15 @@ export default function AddCallMeetingForm(props: any) {
                     </Button>
                   </div>
                   <div className='flex justify-end items-center gap-2 ms-auto'>
-                    <Checkbox
-                      {...register('done')}
-                      label="Mark as done"
-                      color="info"
-                      variant="flat"
-                      className="[&>label>span]:font-medium"
-                    />
+                    {title === 'Edit Activity' &&
+                      <Checkbox
+                        {...register('done')}
+                        label="Mark as done"
+                        color="info"
+                        variant="flat"
+                        className="[&>label>span]:font-medium"
+                      />
+                    }
                     <Button
                       type="submit"
                       className="hover:gray-700 @xl:w-auto dark:bg-gray-200 dark:text-white"

@@ -304,14 +304,9 @@ export const GetclientTeamColumns = ({
                 color="invert"
               >
                 <Link href={routes.viewTeam}>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="bg-white text-black"
-                    aria-label={'View Member'}
-                  >
-                    <EyeIcon className="h-4 w-4" />
-                  </Button>
+                <Button size="sm" variant="outline" className='bg-white text-black' aria-label={'View Member'}>
+                  <EyeIcon className="h-4 w-4" />
+                </Button>
                 </Link>
               </Tooltip>
               <DeletePopover

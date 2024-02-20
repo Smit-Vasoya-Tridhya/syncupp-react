@@ -24,7 +24,7 @@ import { AddCallMeetingSchema, addCallMeetingSchema } from '@/utils/validators/a
 import { Text, Textarea } from 'rizzui';
 import { AiOutlineUsergroupAdd } from 'react-icons/ai';
 import { GiNotebook } from 'react-icons/gi';
-import { getActivityById, patchEditActivity, postAddActivity } from '@/redux/slices/user/activity/activitySlice';
+import { getActivityById, getAllActivity, patchEditActivity, postAddActivity } from '@/redux/slices/user/activity/activitySlice';
 
 const QuillEditor = dynamic(() => import('@/components/ui/quill-editor'), {
   ssr: false,
@@ -100,16 +100,16 @@ export default function AddCallMeetingForm(props: any) {
   let [data] = activityData?.activity ?? initialValues;
 
   // const dueee_date = moment(data?.due_date).toDate();
-  // console.log(dueee_date, "formateedddd", data?.due_date)
+  // console.log("formateedddd", moment(data?.meeting_start_time).format('hh:mm A'))
 
   let defaultValuess = {
     title: data?.title,
     description: data?.agenda,
     // due_date: new Date(data?.due_date),
     due_date: moment(data?.due_date).toDate(),
-    start_time: moment(data?.start_time).toDate(),
-    end_time: moment(data?.end_time).toDate(),
-    client: data?.client_fullName,
+    start_time: moment(data?.meeting_start_time).toDate(),
+    end_time: moment(data?.meeting_end_time).toDate(),
+    client: data?.client_name,
     assigned: signIn?.teamMemberRole === 'team_member' ? signIn?.user?.data?.user?.name : data?.assigned_to_name,
     done: data?.status === 'completed' ? true : false
   };
@@ -156,7 +156,7 @@ export default function AddCallMeetingForm(props: any) {
         if (postAddActivity.fulfilled.match(result)) {
           if (result && result.payload.success === true) {
             closeModal();
-            // dispatch(getAllTask({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
+            dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc' }))
           }
         }
       });
@@ -165,7 +165,7 @@ export default function AddCallMeetingForm(props: any) {
         if (patchEditActivity.fulfilled.match(result)) {
           if (result && result.payload.success === true) {
             closeModal();
-            // dispatch(getAllTask({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
+            dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc' }))
           }
         }
       });
@@ -234,10 +234,10 @@ export default function AddCallMeetingForm(props: any) {
                         control={control}
                         render={({ field: { value, onChange } }) => (
                           <DatePicker
-                            placeholderText="Select Due date"
+                            placeholderText="Select start date"
                             selected={value}
                             inputProps={{
-                              label: 'Due Date',
+                              label: 'Start Date',
                               color: 'info'
                             }}
                             onChange={onChange}
@@ -374,13 +374,15 @@ export default function AddCallMeetingForm(props: any) {
                     </Button>
                   </div>
                   <div className='flex justify-end items-center gap-2 ms-auto'>
-                    <Checkbox
-                      {...register('done')}
-                      label="Mark as done"
-                      color="info"
-                      variant="flat"
-                      className="[&>label>span]:font-medium"
-                    />
+                    {title === 'Edit Activity' &&
+                      <Checkbox
+                        {...register('done')}
+                        label="Mark as done"
+                        color="info"
+                        variant="flat"
+                        className="[&>label>span]:font-medium"
+                      />
+                    }
                     <Button
                       type="submit"
                       className="hover:gray-700 @xl:w-auto dark:bg-gray-200 dark:text-white"

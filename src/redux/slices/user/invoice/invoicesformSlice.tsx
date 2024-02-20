@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { toast } from 'react-hot-toast';
-import { ContactusApi } from "@/commonAPIs/affiliateAPIs/contactusAPIs";
+import { PostCreateInvoiceApi } from "@/api/user/invoice/invoiceApis";
 
 // API error response type
 interface APIErrorResponse {
@@ -8,32 +8,40 @@ interface APIErrorResponse {
     message: string
 }
 
-interface SigninState {
+interface InitialState {
     loading: boolean;
 }
 
-const initialState: SigninState = {
+const initialState: InitialState = {
     loading: false,
 };
 
-
-// Contact us 
-type ContactusState = {
-    first_name: string,
-    last_name: string,
-    email: string,
-    contact_number: string,
-    country: string,
-    no_of_people: string,
-    thoughts: string,
-    isAgreedtosyncup: false,
+type PostCreateInvoice = {
+    invoice_number: string,
+    client_id: string,
+    due_date: string,
+    invoice_date: string,
+    invoice_content: [
+        {
+            item: string,
+            description: string,
+            qty: Number,
+            rate: Number,
+            tax: Number,
+            amount: Number
+        }
+    ],
+    sent?: boolean,
 }
 
-export const contactusformapicall: any = createAsyncThunk(
-    "contactus/contactusformapicall",
-    async (data: ContactusState) => {
+
+// Create Invoice 
+
+export const createinvoiceapicall: any = createAsyncThunk(
+    "invoiceform/createinvoiceapicall",
+    async (data: PostCreateInvoice) => {
         try {
-            const response: any = await ContactusApi(data);
+            const response: any = await PostCreateInvoiceApi(data);
             return response;
         } catch (error: any) {
             return { status: false, message: error.response.data.message } as APIErrorResponse;
@@ -42,8 +50,8 @@ export const contactusformapicall: any = createAsyncThunk(
 );
 
 
-export const contactusSlice = createSlice({
-    name: 'contactus',
+export const invoicesformSlice = createSlice({
+    name: 'invoiceform',
     initialState,
     reducers: {
 
@@ -51,26 +59,25 @@ export const contactusSlice = createSlice({
     extraReducers: (builder) => {
         // contact-us
         builder
-            .addCase(contactusformapicall.pending, (state) => {
+            .addCase(createinvoiceapicall.pending, (state) => {
                 return {
                     ...state,
                     loading: true,
                 }
             })
-            .addCase(contactusformapicall.fulfilled, (state, action) => {
-                console.log(action, 'action')
-                if (action.payload.success == true) {
+            .addCase(createinvoiceapicall.fulfilled, (state, action) => {
+                if (action.payload.success === true) {
                     toast.success(action.payload.message);
-                    // localStorage.setItem('token', action.payload.data.token);
                 } else {
                     toast.error(action.payload.message);
                 }
+
                 return {
                     ...state,
                     loading: false,
                 }
             })
-            .addCase(contactusformapicall.rejected, (state) => {
+            .addCase(createinvoiceapicall.rejected, (state) => {
                 return {
                     ...state,
                     loading: false,
@@ -80,4 +87,4 @@ export const contactusSlice = createSlice({
 });
 
 
-export default contactusSlice.reducer;
+export default invoicesformSlice.reducer;

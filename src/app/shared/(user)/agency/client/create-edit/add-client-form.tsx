@@ -40,7 +40,6 @@ export default function AddClientForm(props: any) {
   const [save, setSave] = useState(false)
   const [loader, setLoader] = useState(false);
   const [reset, setReset] = useState({})
-  // const {  } = props;
 
   // const peopleCountChange = (titleOption: string) => {
   //     peopleCount: titleOption
@@ -73,7 +72,8 @@ export default function AddClientForm(props: any) {
   let data = clientSliceData?.client;
   
   let defaultValuess = {
-    name: data?.name,
+    first_name: data?.first_name,
+    last_name: data?.last_name,
     email: data?.email,
     company_name: data?.client?.company_name,
     company_website: data?.client?.company_website,
