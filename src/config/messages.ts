@@ -131,4 +131,6 @@ export const messages = {
   thoughtsMaxlength: 'Thoughts maximum length is 400',
   descriptionRequired: 'Description is required',
   descriptionmaxLength: 'Description must be at most 4000 characters long',
+  ratemaxDigitLength: 'Rate cannot exceed 7 digits',
+  quantitymaxDigitLength: 'Item quantity cannot exceed 7 digits.'
 };

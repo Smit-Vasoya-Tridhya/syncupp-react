@@ -385,7 +385,7 @@ export const InvoiceColumns = ({
             </Button>
           </Tooltip>
           <DeletePopover
-            title={`Delete the FAQ`}
+            title={`Delete the Invoice`}
             description={`Are you sure you want to delete?`}
             onDelete={() => onDeleteItem(row._id)}
           />

@@ -48,6 +48,7 @@ export const GetAgencyData = async () => {
   const responseData = response.data;
   return responseData;
 };
+
 export const PostAgencyUpdateDataAPI = async (data: PostAgencyUpdateData) => {
   const response = await AxiosDefault({
     url: "/api/v1/agency/update-profile",
