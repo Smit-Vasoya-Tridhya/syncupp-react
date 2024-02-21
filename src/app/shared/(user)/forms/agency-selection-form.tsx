@@ -46,7 +46,7 @@ export default function AgencySelectionForm() {
         } else if(pathname === "/tasks") {
             !gridView ? dispatch(getAllTask({ sort_field: 'createdAt', sort_order: 'desc', agency_id: selectedOption?.value, pagination: true })) : dispatch(getAllTask({ pagination: false, agency_id: selectedOption?.value }))
         } else if(pathname === "/calendar") {
-            !calendarView ? dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', agency_id: selectedOption?.value })) : dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', agency_id: selectedOption?.value }))
+            !calendarView ? dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', agency_id: selectedOption?.value, pagination: true })) : dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', agency_id: selectedOption?.value, pagination: false }))
         }
     }
 

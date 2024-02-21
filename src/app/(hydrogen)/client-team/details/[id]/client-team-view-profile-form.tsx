@@ -57,7 +57,7 @@ export default function ClientTeamMemberViewProfileForm(props: any) {
     <>
       <PageHeader title={pageHeader.title}>
         <div className="mt-4 flex items-center gap-3 @lg:mt-0">
-          <Link href={routes?.agency_team}>
+          <Link href={routes?.client_team}>
             <Button className="mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0">
               <FaArrowLeft className="me-1.5 h-[17px] w-[17px]" />
               Back

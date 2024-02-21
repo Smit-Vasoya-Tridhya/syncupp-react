@@ -230,7 +230,7 @@ export const GetActivityColumns = ({
           <div>
             {row?.activity_type?.name === "task" ? (
               <div className="flex items-center justify-end gap-3 pe-4">
-                {(signIn?.role !== 'client' && signIn?.role !== 'team_client') &&
+                {(signIn?.role !== 'client' && signIn?.role !== 'team_client' && row?.activity_status?.name !== 'completed') &&
                   <CustomModalButton
                     icon={<PencilIcon className="h-4 w-4" />}
                     view={<AddActivityFormPage title="Edit Activity" row={row} isTaskModule={false} />}
@@ -255,7 +255,7 @@ export const GetActivityColumns = ({
             ) : (
               <div>
                 <div className="flex items-center justify-end gap-3 pe-4">
-                  {(signIn?.role !== 'client' && signIn?.role !== 'team_client') &&
+                  {(signIn?.role !== 'client' && signIn?.role !== 'team_client' && row?.activity_status?.name !== 'completed' && row?.activity_status?.name !== 'cancel') &&
                     <CustomModalButton
                       icon={<PencilIcon className="h-4 w-4" />}
                       view={<AddActivityFormPage title="Edit Activity" row={row} isTaskModule={false} />}

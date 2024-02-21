@@ -37,7 +37,7 @@ export default function ConfirmationPopover({
                         dispatch(putTaskStatusChange({ _id: data, status: 'completed' })).then((result: any) => {
                             if (putTaskStatusChange.fulfilled.match(result)) {
                               if (result && result.payload.success === true) {
-                                dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc' }))
+                                dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }))
                               }
                             }
                           });
@@ -45,7 +45,7 @@ export default function ConfirmationPopover({
                         dispatch(putTaskStatusChange({ _id: data, status: 'cancel' })).then((result: any) => {
                             if (putTaskStatusChange.fulfilled.match(result)) {
                               if (result && result.payload.success === true) {
-                                dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc' }))
+                                dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }))
                               }
                             }
                           });

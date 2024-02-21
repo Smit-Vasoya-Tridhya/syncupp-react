@@ -228,7 +228,7 @@ export const GetColumns = ({
         return (
           <div>
             <div className="flex items-center justify-end gap-3 pe-4">
-              {(signIn?.role !== 'client' && signIn?.role !== 'team_client') &&
+              {(signIn?.role !== 'client' && signIn?.role !== 'team_client' && row?.status !== 'completed') &&
                 <CustomModalButton
                   icon={<PencilIcon className="h-4 w-4" />}
                   view={<AddActivityFormPage title="Edit Task" row={row} isTaskModule={true} />}

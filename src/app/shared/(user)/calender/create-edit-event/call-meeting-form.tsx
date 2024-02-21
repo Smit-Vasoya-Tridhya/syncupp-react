@@ -156,7 +156,7 @@ export default function AddCallMeetingForm(props: any) {
         if (postAddActivity.fulfilled.match(result)) {
           if (result && result.payload.success === true) {
             closeModal();
-            dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc' }))
+            dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }))
           }
         }
       });
@@ -165,7 +165,7 @@ export default function AddCallMeetingForm(props: any) {
         if (patchEditActivity.fulfilled.match(result)) {
           if (result && result.payload.success === true) {
             closeModal();
-            dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc' }))
+            dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }))
           }
         }
       });

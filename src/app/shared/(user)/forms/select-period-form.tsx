@@ -15,7 +15,7 @@ import { getAllActivity } from '@/redux/slices/user/activity/activitySlice';
 
 export default function DatePeriodSelectionForm(props: any) {
 
-    const { setStartDate, setEndDate, activityType, statusType, setPeriod } = props;
+    const { setStartDate, setEndDate, activityType, statusType, setPeriod, clientId } = props;
 
     const dispatch = useDispatch();
     const pathname = usePathname();
@@ -37,9 +37,9 @@ export default function DatePeriodSelectionForm(props: any) {
         !!end && setEndDate(moment(end).format('DD-MM-YYYY'))
 
         if (signIn?.role !== 'client' && signIn?.role !== 'team_client') {
-            !!end && dispatch(getAllActivity({ page: 1, sort_field: 'createdAt', sort_order: 'desc', filter: { status: statusType, activity_type: activityType, date: 'period', start_date: moment(start).format('DD-MM-YYYY'), end_date: moment(end).format('DD-MM-YYYY') } }))
+            !!end && dispatch(getAllActivity({ page: 1, sort_field: 'createdAt', sort_order: 'desc', client_id: clientId, filter: { status: statusType, activity_type: activityType, date: 'period', start_date: moment(start).format('DD-MM-YYYY'), end_date: moment(end).format('DD-MM-YYYY') }, pagination: true }))
         } else {
-            !!end && dispatch(getAllActivity({ page: 1, sort_field: 'createdAt', sort_order: 'desc', agency_id: clientSliceData?.agencyId, filter: { status: statusType, activity_type: activityType, date: 'period', start_date: moment(start).format('DD-MM-YYYY'), end_date: moment(end).format('DD-MM-YYYY') } }))
+            !!end && dispatch(getAllActivity({ page: 1, sort_field: 'createdAt', sort_order: 'desc', agency_id: clientSliceData?.agencyId, filter: { status: statusType, activity_type: activityType, date: 'period', start_date: moment(start).format('DD-MM-YYYY'), end_date: moment(end).format('DD-MM-YYYY') }, pagination: true }))
         }
 
         !!end && setPeriod('period')

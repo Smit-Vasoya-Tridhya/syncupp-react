@@ -13,6 +13,8 @@ import { routes } from '@/config/routes';
 import { FaArrowLeft } from 'react-icons/fa';
 import PageHeader from '@/app/shared/page-header';
 import { getClientById } from '@/redux/slices/user/client/clientSlice';
+import ClientActivityTablePage from './client-activity-details';
+import Spinner from '@/components/ui/spinner';
 
 
 
@@ -41,11 +43,19 @@ export default function ClientViewProfileForm(props: any) {
   const router = useRouter();
 
   const [selectedTask, setSelectedTask] = useState('Activity');
+  const [clientId, setClientId] = useState('');
+
 
 
   useEffect(() => {
-    id && dispatch(getClientById({ clientId: id }))
-  }, [id, dispatch]); 
+    id && dispatch(getClientById({ clientId: id })).then((result: any) => {
+      if (getClientById.fulfilled.match(result)) {
+        if (result && result.payload.success === true) {
+          setClientId(result?.payload?.data?.reference_id)
+        }
+      }
+    })
+  }, [id, dispatch]);
 
   let data = clientSliceData?.client;
 
@@ -100,7 +110,15 @@ export default function ClientViewProfileForm(props: any) {
       </div>
       <div className="mt-3">
         {selectedTask === 'Activity' && (
-          <span>Activity</span>
+          <div>
+            {clientId === '' ? (
+              <div className='p-10 flex items-center justify-center'>
+                <Spinner size="xl" tag='div' />
+              </div>
+            ) : (
+              <ClientActivityTablePage clientId={clientId} />
+            )}
+          </div>
         )}
         {selectedTask === 'Agreement' && (
           <span>Agreement</span>

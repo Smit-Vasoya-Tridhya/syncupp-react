@@ -141,8 +141,8 @@ export default function AddTaskForm(props: any) {
         if (postAddTask.fulfilled.match(result)) {
           if (result && result.payload.success === true) {
             closeModal();
-            dispatch(getAllTask({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
-            dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc' }))
+            title === 'New Task' && dispatch(getAllTask({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
+            title === 'New Activity' && dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }))
           }
         }
       });
@@ -151,8 +151,8 @@ export default function AddTaskForm(props: any) {
         if (patchEditTask.fulfilled.match(result)) {
           if (result && result.payload.success === true) {
             closeModal();
-            dispatch(getAllTask({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
-            dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc' }))
+            title === 'Edit Task' && dispatch(getAllTask({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
+            title === 'Edit Activity' && dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }))
           }
         }
       });

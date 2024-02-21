@@ -9,7 +9,7 @@ import { getAllActivity, setActivityName } from '@/redux/slices/user/activity/ac
 
 
 export default function ActivitySelectionForm(props: any) {
-    const { setActivityType, statusType, startDate, endDate, period } = props;
+    const { setActivityType, statusType, startDate, endDate, period, clientId } = props;
     const dispatch = useDispatch();
     const activityData = useSelector((state: any) => state?.root?.activity);
     const signIn = useSelector((state: any) => state?.root?.signIn)
@@ -33,16 +33,16 @@ export default function ActivitySelectionForm(props: any) {
         if (signIn?.role !== 'client' && signIn?.role !== 'team_client') {
 
             endDate === '' ?
-                dispatch(getAllActivity({ page: 1, sort_field: 'createdAt', sort_order: 'desc', filter: { status: statusType, activity_type: selectedOption?.value } }))
+                dispatch(getAllActivity({ page: 1, sort_field: 'createdAt', sort_order: 'desc', client_id: clientId, filter: { status: statusType, activity_type: selectedOption?.value }, pagination: true }))
                 :
-                dispatch(getAllActivity({ page: 1, sort_field: 'createdAt', sort_order: 'desc', filter: { status: statusType, activity_type: selectedOption?.value, date: period, start_date: startDate, end_date: endDate } }))
+                dispatch(getAllActivity({ page: 1, sort_field: 'createdAt', sort_order: 'desc', client_id: clientId, filter: { status: statusType, activity_type: selectedOption?.value, date: period, start_date: startDate, end_date: endDate }, pagination: true }))
 
         } else {
 
             endDate === '' ?
-                dispatch(getAllActivity({ page: 1, sort_field: 'createdAt', sort_order: 'desc', agency_id: clientSliceData?.agencyId, filter: { status: statusType, activity_type: selectedOption?.value } }))
+                dispatch(getAllActivity({ page: 1, sort_field: 'createdAt', sort_order: 'desc', agency_id: clientSliceData?.agencyId, filter: { status: statusType, activity_type: selectedOption?.value }, pagination: true }))
                 :
-                dispatch(getAllActivity({ page: 1, sort_field: 'createdAt', sort_order: 'desc', agency_id: clientSliceData?.agencyId, filter: { status: statusType, activity_type: selectedOption?.value, date: period, start_date: startDate, end_date: endDate } }))
+                dispatch(getAllActivity({ page: 1, sort_field: 'createdAt', sort_order: 'desc', agency_id: clientSliceData?.agencyId, filter: { status: statusType, activity_type: selectedOption?.value, date: period, start_date: startDate, end_date: endDate }, pagination: true }))
 
         }
 
