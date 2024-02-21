@@ -6,11 +6,13 @@ import CustomTable from '@/components/common-tables/table';
 import { deleteTask } from '@/redux/slices/user/task/taskSlice';
 import { GetActivityColumns } from '@/app/shared/(user)/calender/calender-list/columns';
 import { getAllActivity } from '@/redux/slices/user/activity/activitySlice';
+import cn from '@/utils/class-names';
+import { Button } from 'rizzui';
+import DatePeriodSelectionForm from '@/app/shared/(user)/forms/select-period-form';
+import ActivitySelectionForm from '@/app/shared/(user)/forms/activity-selection-form';
 
 
 export default function ActivityTablePage(props: any) {
-
-    const { statusType, activityType, startDate, endDate, period } = props;
 
 
     const dispatch = useDispatch();
@@ -20,6 +22,29 @@ export default function ActivityTablePage(props: any) {
     const activityData = useSelector((state: any) => state?.root?.activity);
 
     const [pageSize, setPageSize] = useState<number>(5);
+    const [activityType, setActivityType] = useState('');
+    const [statusType, setStatusType] = useState('');
+    const [period, setPeriod] = useState('');
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
+
+    // console.log("Activity is....", activityData?.activityName)
+    // console.log("Activity is....", activityType)
+    // console.log("Start date is....", startDate)
+    // console.log("End date is....", endDate)
+
+    const handleStatusFilterApiCall = (filterStatusValue: string) => {
+        setStatusType(filterStatusValue);
+        if (activityType === '' && endDate === '' && startDate === '') {
+            dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', filter: { status: filterStatusValue } }))
+        } else if (endDate === '' && startDate === '' && activityType !== '') {
+            dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', filter: { status: filterStatusValue, activity_type: activityType } }))
+        } else if (endDate !== '' && startDate !== '' && activityType !== '') {
+            dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', filter: { status: filterStatusValue, activity_type: activityType, date: period, start_date: startDate, end_date: endDate } }))
+        } else if (endDate !== '' && startDate !== '' && activityType === '') {
+            dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', filter: { status: filterStatusValue, date: period, start_date: startDate, end_date: endDate } }))
+        }
+    }
 
 
     const handleChangePage = async (paginationParams: any) => {
@@ -57,16 +82,58 @@ export default function ActivityTablePage(props: any) {
 
     return (
         <>
-            <CustomTable
-              data={activityData && activityData?.data?.activity}
-              total={activityData && activityData?.data?.page_count}
-              loading={activityData && activityData?.loading}
-              pageSize={pageSize}
-              setPageSize={setPageSize}
-              handleDeleteById={handleDeleteById}
-              handleChangePage={handleChangePage}
-              getColumns={GetActivityColumns}
-            />
+            <div className='mt-4'>
+                <div className="ms-auto mt-4 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-9 xl:grid-cols-9 gap-3">
+                    <Button
+                        variant="outline"
+                        className={cn(
+                            "mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0",
+                            statusType === 'todo' && 'text-white bg-black'
+                        )}
+                        onClick={() => handleStatusFilterApiCall("todo")}
+                    >
+                        To Do
+                    </Button>
+                    <Button
+                        variant="outline"
+                        className={cn(
+                            "mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0",
+                            statusType === 'overdue' && 'text-white bg-black'
+                        )}
+                        onClick={() => handleStatusFilterApiCall("overdue")}
+                    >
+                        Overdue
+                    </Button>
+                    <Button
+                        variant="outline"
+                        className={cn(
+                            "mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0",
+                            statusType === 'done' && 'text-white bg-black'
+                        )}
+                        onClick={() => handleStatusFilterApiCall("done")}
+                    >
+                        Done
+                    </Button>
+                    <div className='mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0 col-span-3 lg:col-span-2 md:col-span-2 sm:col-span-2'>
+                        <DatePeriodSelectionForm setStartDate={setStartDate} setEndDate={setEndDate} statusType={statusType} activityType={activityType} setPeriod={setPeriod} />
+                    </div>
+                    <div className='mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0 col-span-3 lg:col-span-2 md:col-span-2 sm:col-span-2'>
+                        <ActivitySelectionForm setActivityType={setActivityType} statusType={statusType} startDate={startDate} endDate={endDate} period={period} />
+                    </div>
+                </div>
+            </div>
+            <div className='mt-8'>
+                <CustomTable
+                    data={activityData && activityData?.data?.activity}
+                    total={activityData && activityData?.data?.page_count}
+                    loading={activityData && activityData?.loading}
+                    pageSize={pageSize}
+                    setPageSize={setPageSize}
+                    handleDeleteById={handleDeleteById}
+                    handleChangePage={handleChangePage}
+                    getColumns={GetActivityColumns}
+                />
+            </div>
         </>
     );
 }
