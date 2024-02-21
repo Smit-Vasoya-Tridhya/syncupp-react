@@ -34,8 +34,8 @@ import { useRouter } from 'next/navigation';
 import { PiMinusBold, PiPlusBold, PiTrashBold } from 'react-icons/pi';
 import cn from '@/utils/class-names';
 import { handleKeyDown } from '@/utils/common-functions';
-import { createinvoiceapicall } from '@/redux/slices/user/invoice/invoicesformSlice';
-import { getInvoiceApi, getInvoiceDataByID, updateInvoice } from '@/redux/slices/user/invoice/invoiceSlice';
+import { createinvoiceapicall, updateInvoice } from '@/redux/slices/user/invoice/invoicesformSlice';
+import { getInvoiceApi, getInvoiceDataByID } from '@/redux/slices/user/invoice/invoiceSlice';
 
 export default function EditInvoice({ params }: { params: { id: string } }) {
   const dispatch = useDispatch();
@@ -43,6 +43,7 @@ export default function EditInvoice({ params }: { params: { id: string } }) {
 
   const invoiceSliceData = useSelector((state: any) => state?.root?.invoice);
   const InvoiceLoader = useSelector((state: any) => state?.root?.invoice)?.loading
+  // const updateloader = useSelector((state: any) => state?.root?.invoiceform)
   const { userProfile, loading } = useSelector((state: any) => state?.root?.signIn);
   // const { loading } = useSelector((state: any) => state?.root?.invoiceform);
   const [selectedClient, setselectedClient] = useState<any>(null);
@@ -50,7 +51,7 @@ export default function EditInvoice({ params }: { params: { id: string } }) {
 
   const SingleInvoiceData: any = invoiceSliceData?.getInvoiceDataByIDdata?.data?.[0];
 
-  console.log(SingleInvoiceData, 'SingleInvoiceData')
+  // console.log(updateloader, 'updateloader')
 
   const clientOptions =
     invoiceSliceData?.getInvoiceApidata?.data &&
@@ -71,7 +72,6 @@ export default function EditInvoice({ params }: { params: { id: string } }) {
 
   useEffect(() => {
     if (params.id) {
-
       dispatch(getInvoiceDataByID({ _id: params.id }));
       setselectedClient(clientOptions.find((option: any) => option.value === SingleInvoiceData?.to?._id))
     }
@@ -620,7 +620,7 @@ export default function EditInvoice({ params }: { params: { id: string } }) {
                         }}
                         // isLoading={isLoading}
                         className="w-full @xl:w-auto dark:bg-gray-100 dark:text-white dark:active:bg-gray-100"
-                      // disabled={invoiceSliceData?.loading}
+                        // disabled={updateloader}
                       >
                         Save & Send
                         {false && (
@@ -640,7 +640,7 @@ export default function EditInvoice({ params }: { params: { id: string } }) {
                         }}
                         // isLoading={isLoading}
                         className="w-full @xl:w-auto dark:bg-gray-100 dark:text-white dark:active:bg-gray-100"
-                      // disabled={invoiceSliceData?.loading}
+                        // disabled={updateloader}
                       >
                         Save
                         {false && (

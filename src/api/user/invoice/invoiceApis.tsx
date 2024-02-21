@@ -16,6 +16,7 @@ type UpdateInvoiceStatusByID = {
 type UpdateInvoiceDataByID = {
   _id: string,
   client_id: string,
+  invoice_id: string,
   due_date: Date,
   invoice_date: Date,
   invoice_content: [
@@ -266,9 +267,9 @@ export const PostDownloadInvoiceApi = async (data: DownloadInvoice) => {
   return responseData;
 };
 // UPDATE INVOICE DATA BY ID
-export const UpdateInvoiceDataByIDApi = async (data: UpdateInvoiceDataByID, invoice_id: any) => {
+export const UpdateInvoiceDataByIDApi = async (data: UpdateInvoiceDataByID) => {
   const response = await AxiosDefault({
-    url: `/api/v1/invoice/${invoice_id}`,
+    url: `/api/v1/invoice/${data?.invoice_id}`,
     method: "PUT",
     data: data,
     contentType: "application/json",
@@ -276,6 +277,7 @@ export const UpdateInvoiceDataByIDApi = async (data: UpdateInvoiceDataByID, invo
   const responseData = response.data;
   return responseData;
 };
+
 // UPDATE INVOICE STATUS UPDATE BY ID
 export const UpdateInvoiceStatusByIDApi = async (data: UpdateInvoiceStatusByID, invoice_id: any) => {
   const response = await AxiosDefault({

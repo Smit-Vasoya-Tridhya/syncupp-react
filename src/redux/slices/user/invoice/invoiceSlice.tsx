@@ -271,19 +271,19 @@ export const postDownloadInvoice: any = createAsyncThunk(
   }
 );
 
-export const updateInvoice: any = createAsyncThunk(
-  "invoice/updateInvoice",
-  async (data: UpdateInvoiceDataByID) => {
-    const invoce_id = data?.invoice_id
-    delete data?.invoice_id;
-    try {
-      const response: any = await UpdateInvoiceDataByIDApi(data, invoce_id);
-      return response;
-    } catch (error: any) {
-      return { status: false, message: error.response.data.message } as PostAPIResponse;
-    }
-  }
-);
+// export const updateInvoice: any = createAsyncThunk(
+//   "invoice/updateInvoice",
+//   async (data: UpdateInvoiceDataByID) => {
+//     const invoce_id = data?.invoice_id
+//     delete data?.invoice_id;
+//     try {
+//       const response: any = await UpdateInvoiceDataByIDApi(data, invoce_id);
+//       return response;
+//     } catch (error: any) {
+//       return { status: false, message: error.response.data.message } as PostAPIResponse;
+//     }
+//   }
+// );
 
 export const updateInvoiceStatus: any = createAsyncThunk(
   "invoice/updateInvoiceStatus",
@@ -530,34 +530,34 @@ export const invoiceSlice = createSlice({
           getInvoiceStatus: 'error'
         }
       });
-    builder
-      .addCase(updateInvoice.pending, (state) => {
-        return {
-          ...state,
-          loading: true,
-          getInvoiceStatus: 'pending'
-        }
-      })
-      .addCase(updateInvoice.fulfilled, (state, action) => {
-        // if(action.payload.status == false){
-        //     toast.error(action.payload.message)
-        // } else {
-        //     toast.success(action.payload.message)
-        // }
-        return {
-          ...state,
-          updateInvoiceData: action.payload,
-          loading: false,
-          getInvoiceStatus: 'success'
-        }
-      })
-      .addCase(updateInvoice.rejected, (state) => {
-        return {
-          ...state,
-          loading: false,
-          getInvoiceStatus: 'error'
-        }
-      });
+    // builder
+    //   .addCase(updateInvoice.pending, (state) => {
+    //     return {
+    //       ...state,
+    //       loading: true,
+    //       getInvoiceStatus: 'pending'
+    //     }
+    //   })
+    //   .addCase(updateInvoice.fulfilled, (state, action) => {
+    //     if (action.payload.success === true) {
+    //       toast.success(action.payload.message)
+    //     } else {
+    //       toast.error(action.payload.message)
+    //     }
+    //     return {
+    //       ...state,
+    //       // updateInvoiceData: action.payload,
+    //       loading: false,
+    //       getInvoiceStatus: 'success'
+    //     }
+    //   })
+    //   .addCase(updateInvoice.rejected, (state) => {
+    //     return {
+    //       ...state,
+    //       loading: false,
+    //       getInvoiceStatus: 'error'
+    //     }
+    //   });
     builder
       .addCase(updateInvoiceStatus.pending, (state) => {
         return {
