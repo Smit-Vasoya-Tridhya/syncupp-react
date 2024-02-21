@@ -166,6 +166,7 @@ interface invoiceInitialState {
   updateInvoiceData: any;
   updateInvoiceStatusData: any;
   DeleteInvoiceData: any;
+  paginationParams?: any
 }
 
 const initialState: invoiceInitialState = {
@@ -182,7 +183,8 @@ const initialState: invoiceInitialState = {
   postDownloadInvoiceData: '',
   updateInvoiceData: '',
   updateInvoiceStatusData: '',
-  DeleteInvoiceData: ''
+  DeleteInvoiceData: '',
+  paginationParams: {}
 };
 
 export const getInvoiceApi: any = createAsyncThunk(
@@ -196,6 +198,7 @@ export const getInvoiceApi: any = createAsyncThunk(
     }
   }
 );
+
 export const getInvoiceDataByID: any = createAsyncThunk(
   "invoice/getInvoiceDataByID",
   async (data: GetInvoiceDataByID) => {
@@ -207,6 +210,7 @@ export const getInvoiceDataByID: any = createAsyncThunk(
     }
   }
 );
+
 export const getInvoiceData: any = createAsyncThunk(
   "invoice/getInvoiceData",
   async (data: GetInvoiceDataClient) => {
@@ -218,6 +222,7 @@ export const getInvoiceData: any = createAsyncThunk(
     }
   }
 );
+
 export const postCreateInvoice: any = createAsyncThunk(
   "invoice/postCreateInvoice",
   async (data: PostCreateInvoice) => {
@@ -229,6 +234,7 @@ export const postCreateInvoice: any = createAsyncThunk(
     }
   }
 );
+
 export const getAllInvoiceDataTable: any = createAsyncThunk(
   "invoice/getAllInvoiceDataTable",
   async (data: GetAllInvoiceData) => {
@@ -240,6 +246,7 @@ export const getAllInvoiceDataTable: any = createAsyncThunk(
     }
   }
 );
+
 export const postSendInvoice: any = createAsyncThunk(
   "invoice/postSendInvoice",
   async (data: SendInvoice) => {
@@ -251,6 +258,7 @@ export const postSendInvoice: any = createAsyncThunk(
     }
   }
 );
+
 export const postDownloadInvoice: any = createAsyncThunk(
   "invoice/postDownloadInvoice",
   async (data: DownloadInvoice) => {
@@ -262,6 +270,7 @@ export const postDownloadInvoice: any = createAsyncThunk(
     }
   }
 );
+
 export const updateInvoice: any = createAsyncThunk(
   "invoice/updateInvoice",
   async (data: UpdateInvoiceDataByID) => {
@@ -275,6 +284,7 @@ export const updateInvoice: any = createAsyncThunk(
     }
   }
 );
+
 export const updateInvoiceStatus: any = createAsyncThunk(
   "invoice/updateInvoiceStatus",
   async (data: UpdateInvoiceStatusByID) => {
@@ -290,6 +300,7 @@ export const updateInvoiceStatus: any = createAsyncThunk(
     }
   }
 );
+
 export const DeleteInvoice: any = createAsyncThunk(
   "invoice/DeleteInvoice",
   async (data: DeleteInvoice) => {
@@ -306,6 +317,12 @@ export const invoiceSlice = createSlice({
   name: "invoice",
   initialState,
   reducers: {
+    setPagginationParams(state, action) {
+      return {
+        ...state,
+        paginationParams: action.payload
+      }
+    },
     RemoveRegionalData(state) {
       return {
         ...state,
@@ -599,4 +616,7 @@ export const invoiceSlice = createSlice({
       });
   },
 });
+
+
+export const { setPagginationParams } = invoiceSlice.actions;
 export default invoiceSlice.reducer;

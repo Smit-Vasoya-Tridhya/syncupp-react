@@ -15,8 +15,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import { AiOutlineMail } from "react-icons/ai";
 import { FaRegFilePdf } from "react-icons/fa";
-import { postDownloadInvoice, postSendInvoice, updateInvoiceStatus } from '@/redux/slices/user/invoice/invoiceSlice';
+import { getAllInvoiceDataTable, postDownloadInvoice, postSendInvoice, updateInvoiceStatus } from '@/redux/slices/user/invoice/invoiceSlice';
 import { RiDraftLine } from 'react-icons/ri';
+import moment from 'moment';
+import TrashIcon from '@/components/icons/trash';
 const Select = dynamic(() => import('@/components/ui/select'), {
   ssr: false,
   loading: () => <SelectLoader />,
@@ -59,20 +61,28 @@ export const InvoiceColumns = ({
 
   const dispatch = useDispatch();
   const invoiceSliceData = useSelector((state: any) => state?.root?.invoice);
+  const paginationParams = useSelector((state: any) => state?.root?.invoice?.paginationParams);
+
   const [selectedStatus, setSelectedStatus] = useState<{ status: string, id: string }>({ status: '', id: '' });
   const loading = useSelector((state: any) => state?.root?.invoice)
   console.log(loading, 'loading')
 
   const EmailSend = (id: string) => {
+
+    let { page, items_per_page, sort_field, sort_order, search } = paginationParams;
+
     dispatch(postSendInvoice({ invoice_id: id })).then(
       (result: any) => {
         if (postSendInvoice.fulfilled.match(result)) {
           // console.log('resultt', result)
-          if (result && result.payload.success === true) { }
+          if (result && result.payload.success === true) {
+            dispatch(getAllInvoiceDataTable({ page, items_per_page, sort_field, sort_order, search }));
+          }
         }
       }
     );
   };
+
   const DownloadInvoice = (id: string) => {
     dispatch(postDownloadInvoice({ invoice_id: id })).then(
       (result: any) => {
@@ -85,12 +95,16 @@ export const InvoiceColumns = ({
   };
 
   const StatusHandler = (status: string, id: string, setOpen: any) => {
+
+
+    let { page, items_per_page, sort_field, sort_order, search } = paginationParams;
+
     // setOpen(false)
     dispatch(updateInvoiceStatus({ status: status, invoice_id: id })).then((result: any) => {
       if (updateInvoiceStatus.fulfilled.match(result)) {
         // console.log('resultt', result)
         if (result && result.payload.success === true) {
-          // dispatch(getAllAgencyagreement({ page: currentPage, items_per_page: pageSize, sort_field: sortConfig?.key, sort_order: sortConfig?.direction }));
+          dispatch(getAllInvoiceDataTable({ page, items_per_page, sort_field, sort_order, search }));
         }
       }
     })
@@ -144,7 +158,7 @@ export const InvoiceColumns = ({
       key: 'invoice_number',
       width: 200,
       render: (value: string) => (
-        <Text className="font-medium text-gray-700">{value}</Text>
+        <Text className="font-medium text-gray-700">{value && value != '' ? value : "-"}</Text>
       ),
     },
     {
@@ -158,12 +172,12 @@ export const InvoiceColumns = ({
           }
         />
       ),
-      onHeaderCell: () => onHeaderCellClick('customer_name'),
-      dataIndex: 'customer_name',
-      key: 'customer_name',
+      onHeaderCell: () => onHeaderCellClick('client_full_name'),
+      dataIndex: 'client_full_name',
+      key: 'client_full_name',
       width: 200,
       render: (value: string) => (
-        <Text className="font-medium text-gray-700">{value}</Text>
+        <Text className="font-medium text-gray-700">{value && value != '' ? value : "-"}</Text>
       ),
     },
     {
@@ -181,7 +195,7 @@ export const InvoiceColumns = ({
       key: 'total',
       width: 200,
       render: (value: string) => (
-        <Text className="font-medium text-gray-700">{value}</Text>
+        <Text className="font-medium text-gray-700">{value && value != '' ? value : "-"}</Text>
       ),
     },
     {
@@ -200,14 +214,10 @@ export const InvoiceColumns = ({
       key: 'invoice_date',
       width: 200,
       render: (value: string) => {
-        const date = new Date(value);
-        const formattedDate = date.toLocaleDateString('en-CA', {
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit',
-        });
+
         return (
-          <Text className="font-medium text-gray-700">{formattedDate}</Text>
+
+          <Text className="font-medium text-gray-700">{value && value != '' ? moment(value).format("MMM DD, YYYY") : "-"}</Text>
         );
       },
     },
@@ -226,14 +236,9 @@ export const InvoiceColumns = ({
       key: 'due_date',
       width: 200,
       render: (value: string) => {
-        const date = new Date(value);
-        const formattedDate = date.toLocaleDateString('en-CA', {
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit',
-        });
+
         return (
-          <Text className="font-medium text-gray-700">{formattedDate}</Text>
+          <Text className="font-medium text-gray-700">{value && value != '' ? moment(value).format("MMM DD, YYYY") : "-"}</Text>
         );
       },
     },
@@ -264,7 +269,7 @@ export const InvoiceColumns = ({
                   // className={`flex w-full items-center justify-start px-4 py-2.5 focus:outline-none ${selectedStatus?.status === 'draft' ? 'font-semibold' : ''
                   //   }`}
                   onClick={() => handleStatusChange(setOpen, 'draft', row?._id)}
-                  disabled={row?.status === "draft"}
+                  disabled={true}
                 >
                   Draft
                 </Button>
@@ -274,7 +279,7 @@ export const InvoiceColumns = ({
                   // className={`flex w-full items-center justify-start px-4 py-2.5 focus:outline-none ${selectedStatus?.status === 'overdue' ? 'font-semibold' : ''
                   //   }`}
                   onClick={() => handleStatusChange(setOpen, 'overdue', row?._id)}
-                  disabled={row?.status === "overdue"}
+                  disabled={true}
                 >
                   Overdue
                 </Button>
@@ -284,7 +289,7 @@ export const InvoiceColumns = ({
                   // className={`flex w-full items-center justify-start px-4 py-2.5 focus:outline-none ${selectedStatus?.status === 'unpaid' ? 'font-semibold' : ''
                   //   }`}
                   onClick={() => handleStatusChange(setOpen, 'unpaid', row?._id)}
-                  disabled={row?.status === "unpaid"}
+                  disabled={row?.status === "unpaid" || row?.status === "paid" || row?.status === "overdue"}
                 >
                   Unpaid
                 </Button>
@@ -387,11 +392,22 @@ export const InvoiceColumns = ({
               <AiOutlineMail className="h-4 w-4" />
             </Button>
           </Tooltip>
-          <DeletePopover
+
+          {row?.status === 'draft' ? <DeletePopover
             title={`Delete the Invoice`}
             description={`Are you sure you want to delete?`}
             onDelete={() => onDeleteItem(row._id)}
-          />
+          /> : <Button
+            size="sm"
+            variant="outline"
+            className="bg-white text-black"
+            aria-label={'View Member'}
+            disabled={true}
+          >
+            <TrashIcon className="h-4 w-4" />
+          </Button>
+          }
+
         </div>
       ),
     },
