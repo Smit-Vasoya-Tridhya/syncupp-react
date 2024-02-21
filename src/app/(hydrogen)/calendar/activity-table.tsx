@@ -45,7 +45,7 @@ export default function ActivityTablePage(props: any) {
         // console.log("delete id in main page....", id)
 
         try {
-            const res = await dispatch(deleteTask({ taskIdsToDelete: id }));
+            const res = typeof id === 'string' ? await dispatch(deleteTask({ taskIdsToDelete: [id] })) : await dispatch(deleteTask({ taskIdsToDelete: id }));
             if (res.payload.success === true) {
                 const reponse = signIn?.role !== 'client' && signIn?.role !== 'team_client' ? await dispatch(getAllActivity({ page: currentPage, items_per_page: countPerPage, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm, filter: { status: statusType, activity_type: activityType, date: period, start_date: startDate, end_date: endDate } })) : await dispatch(getAllActivity({ page: currentPage, items_per_page: countPerPage, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm, agency_id: clientSliceData?.agencyId, filter: { status: statusType, activity_type: activityType, date: period, start_date: startDate, end_date: endDate } }));
             }
