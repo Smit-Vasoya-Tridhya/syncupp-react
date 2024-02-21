@@ -348,7 +348,7 @@ export const InvoiceColumns = ({
             placement="top"
             color="invert"
           >
-            <Link href={`${routes.invoiceView}/?_id=${row._id}`}>
+            <Link href={`${routes.invoiceView(row._id)}`}>
               <Button
                 size="sm"
                 variant="outline"

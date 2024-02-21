@@ -17,9 +17,9 @@ export const MenuItems = () => {
   const pathname = usePathname();
   let menuItems: Record<string, any>[] = [];
   switch (
-    signIn?.user?.data?.user?.role?.name ||
-    socialSignup?.user?.data?.user?.role?.name ||
-    signIn?.role
+  signIn?.user?.data?.user?.role?.name ||
+  socialSignup?.user?.data?.user?.role?.name ||
+  signIn?.role
   ) {
     case 'agency':
       menuItems = [
@@ -97,6 +97,11 @@ export const MenuItems = () => {
           name: 'Calendar',
           href: routes.userCalendar,
           icon: <FaRegCalendarAlt />,
+        },
+        {
+          name: 'Invoice',
+          href: routes.clients.invoice,
+          icon: <FaFileInvoiceDollar />,
         },
         {
           name: 'Agreement',
