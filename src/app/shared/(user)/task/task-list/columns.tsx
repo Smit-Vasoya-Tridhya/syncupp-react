@@ -15,6 +15,7 @@ import AddTaskForm from '../create-edit/add-task-form';
 import { useSelector } from 'react-redux';
 import ViewTaskForm from '../create-edit/view-task-form';
 import AddActivityFormPage from '../../calender/create-edit-event/create-edit-activity-form';
+import cn from '@/utils/class-names';
 
 type Columns = {
   data: any[];
@@ -84,46 +85,30 @@ export const GetColumns = ({
 
   const signIn = useSelector((state: any) => state?.root?.signIn)
 
-  return [
+
+
+  let taskColumnArray = [
     {
       title: (
-        <div className="ps-3.5">
-          <Checkbox
-            title={'Select All'}
-            onChange={handleSelectAll}
-            checked={checkedItems.length === data.length}
-            className="cursor-pointer"
+        <div className={cn((signIn?.role === 'client' || signIn?.role === 'team_client') && 'ps-3.5')}>
+          <HeaderCell
+            title="Task Name"
+            sortable
+            ascending={
+              sortConfig?.direction === 'asc' && sortConfig?.key === 'title'
+            }
           />
         </div>
       ),
-      dataIndex: 'checked',
-      key: 'checked',
-      width: 50,
-      render: (_: any, row: any) => (
-        <div className="inline-flex ps-3.5">
-          <Checkbox
-            className="cursor-pointer"
-            checked={checkedItems.includes(row._id)}
-            {...(onChecked && { onChange: () => onChecked(row._id) })}
-          />
-        </div>
-      ),
-    },
-    {
-      title: (
-        <HeaderCell
-          title="Task Name"
-          sortable
-          ascending={
-            sortConfig?.direction === 'asc' && sortConfig?.key === 'title'
-          }
-        />),
       onHeaderCell: () => onHeaderCellClick('title'),
       dataIndex: 'title',
       key: 'title',
       width: 200,
       render: (value: string) => (
-        <Text className="font-medium w-28 text-gray-700 truncate normal-case">{value}</Text>
+        <Text className={cn(
+          "font-medium w-28 text-gray-700 truncate normal-case",
+          (signIn?.role === 'client' || signIn?.role === 'team_client') && 'ps-3.5'
+        )}>{value}</Text>
       ),
     },
     {
@@ -270,4 +255,33 @@ export const GetColumns = ({
       },
     },
   ];
+
+  if (signIn?.role !== 'client' && signIn?.role !== 'team_client') {
+    taskColumnArray.unshift({
+      title: (
+        <div className="ps-3.5">
+          <Checkbox
+            title={'Select All'}
+            onChange={handleSelectAll}
+            checked={checkedItems.length === data.length}
+            className="cursor-pointer"
+          />
+        </div>
+      ),
+      dataIndex: 'checked',
+      key: 'checked',
+      width: 50,
+      render: (_: any, row: any) => (
+        <div className="inline-flex ps-3.5">
+          <Checkbox
+            className="cursor-pointer"
+            checked={checkedItems.includes(row._id)}
+            {...(onChecked && { onChange: () => onChecked(row._id) })}
+          />
+        </div>
+      ),
+    },)
+  }
+
+  return taskColumnArray
 }

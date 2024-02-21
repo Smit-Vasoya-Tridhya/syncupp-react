@@ -15,6 +15,7 @@ import ActivitySelectionForm from '@/app/shared/(user)/forms/activity-selection-
 import ActivityTablePage from './activity-table';
 import { useState } from 'react';
 import { getAllActivity } from '@/redux/slices/user/activity/activitySlice';
+import DatePeriodSelectionForm from '@/app/shared/(user)/forms/select-period-form';
 
 const pageHeader = {
   title: 'Activity',
@@ -32,14 +33,26 @@ export default function CalendarMainPage() {
 
   const [activityType, setActivityType] = useState('');
   const [statusType, setStatusType] = useState('');
+  const [period, setPeriod] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
 
   // console.log("Activity is....", activityData?.activityName)
-  console.log("Activity is....", activityType)
+  // console.log("Activity is....", activityType)
+  // console.log("Start date is....", startDate)
+  // console.log("End date is....", endDate)
 
   const handleStatusFilterApiCall = (filterStatusValue: string) => {
     setStatusType(filterStatusValue);
-    activityType !== '' ? dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', filter: { status: filterStatusValue, activity_type: activityType } })) : dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', filter: { status: filterStatusValue } }))
-
+    if(activityType === '' && endDate === '' && startDate === '') {
+      dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', filter: { status: filterStatusValue } }))
+    } else if(endDate === '' && startDate === '' && activityType !== '') {
+      dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', filter: { status: filterStatusValue, activity_type: activityType } }))
+    } else if(endDate !== '' && startDate !== '' && activityType !== '') {
+      dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', filter: { status: filterStatusValue, activity_type: activityType, date: period, start_date: startDate, end_date: endDate } }))
+    } else if(endDate !== '' && startDate !== '' && activityType === '') {
+      dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', filter: { status: filterStatusValue, date: period, start_date: startDate, end_date: endDate } }))
+    }
   }
 
 
@@ -102,6 +115,7 @@ export default function CalendarMainPage() {
           />
         </ActionIcon>
       </div>
+      
       {!gridView ? (
         <div className='mt-4'>
           <div className="ms-auto mt-4 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-9 xl:grid-cols-9 gap-3">
@@ -136,10 +150,10 @@ export default function CalendarMainPage() {
               Done
             </Button>
             <div className='mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0 col-span-3 lg:col-span-2 md:col-span-2 sm:col-span-2'>
-              <ActivitySelectionForm />
+              <DatePeriodSelectionForm setStartDate={setStartDate} setEndDate={setEndDate} statusType={statusType} activityType={activityType} setPeriod={setPeriod} />
             </div>
             <div className='mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0 col-span-3 lg:col-span-2 md:col-span-2 sm:col-span-2'>
-              <ActivitySelectionForm setActivityType={setActivityType} />
+              <ActivitySelectionForm setActivityType={setActivityType} statusType={statusType} startDate={startDate} endDate={endDate} period={period} />
             </div>
           </div>
         </div>
@@ -165,7 +179,7 @@ export default function CalendarMainPage() {
               This Week
             </Button>
             <div className='mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0 col-span-3 lg:col-span-2 md:col-span-2 sm:col-span-2'>
-              <ActivitySelectionForm />
+              <DatePeriodSelectionForm setStartDate={setStartDate} setEndDate={setEndDate} statusType={statusType} activityType={activityType} />
             </div>
           </div>
         </div>
@@ -173,7 +187,7 @@ export default function CalendarMainPage() {
       }
       {!gridView ? (
         <div className='mt-8'>
-          <ActivityTablePage statusType={statusType} activityType={activityType} />
+          <ActivityTablePage statusType={statusType} activityType={activityType} startDate={startDate} endDate={endDate} period={period} />
         </div>
       ) : (
         <div className='mt-12'>

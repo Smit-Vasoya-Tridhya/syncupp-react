@@ -61,6 +61,13 @@ function getStatusBadge(status: string) {
           <Text className="ms-2 font-medium text-gray-600">In Progress</Text>
         </div>
       );
+    case 'cancel':
+      return (
+        <div className="flex items-center">
+          <Badge color="danger" renderAsDot />
+          <Text className="ms-2 font-medium text-red-dark">Cancel</Text>
+        </div>
+      );
     default:
       return (
         <div className="flex items-center">
@@ -226,16 +233,16 @@ export const GetActivityColumns = ({
                 {(signIn?.role !== 'client' && signIn?.role !== 'team_client') &&
                   <CustomModalButton
                     icon={<PencilIcon className="h-4 w-4" />}
-                    view={<AddActivityFormPage title="Edit Task" row={row} isTaskModule={true} />}
+                    view={<AddActivityFormPage title="Edit Activity" row={row} isTaskModule={false} />}
                     customSize="1050px"
-                    title='Edit Task'
+                    title='Edit Activity'
                   />
                 }
                 <CustomModalButton
                   icon={<EyeIcon className="h-4 w-4" />}
                   view={<ViewTaskForm data={row} />}
                   customSize="625px"
-                  title='View Task'
+                  title='View Activity'
                 />
                 {(signIn?.role !== 'client' && signIn?.role !== 'team_client') &&
                   <DeletePopover
@@ -260,9 +267,9 @@ export const GetActivityColumns = ({
                     icon={<EyeIcon className="h-4 w-4" />}
                     view={<ViewTaskForm data={row} />}
                     customSize="625px"
-                    title='View Task'
+                    title='View Activity'
                   />
-                  {(signIn?.role !== 'client' && signIn?.role !== 'team_client') &&
+                  {(signIn?.role !== 'client' && signIn?.role !== 'team_client' && row?.activity_status?.name !== 'completed' && row?.activity_status?.name !== 'cancel') &&
                     <ConfirmationPopover
                       title={`Complete the meeting`}
                       description={`Are you sure you want to complete the meeting?`}
@@ -271,7 +278,7 @@ export const GetActivityColumns = ({
                       data={row?._id}
                     />
                   }
-                  {(signIn?.role !== 'client' && signIn?.role !== 'team_client') &&
+                  {(signIn?.role !== 'client' && signIn?.role !== 'team_client' && row?.activity_status?.name !== 'completed' && row?.activity_status?.name !== 'cancel') &&
                     <ConfirmationPopover
                       title={`Cancel the meeting`}
                       description={`Are you sure you want to cancel the meeting?`}
@@ -283,30 +290,6 @@ export const GetActivityColumns = ({
                 </div>
               </div>
             )}
-            {/* {(signIn?.role !== 'client' && signIn?.role !== 'team_client') &&
-              <div className="flex items-center justify-end gap-3 pe-4">
-                <CustomModalButton
-                  icon={<PencilIcon className="h-4 w-4" />}
-                  view={<AddActivityFormPage title="Edit Activity" row={row} isTaskModule={false} />}
-                  customSize="1050px"
-                  title='Edit Activity'
-                />
-                <ConfirmationPopover
-                  title={`Complete the meeting`}
-                  description={`Are you sure you want to complete the meeting?`}
-                  action='Complete'
-                  icon={<MdOutlineDone className="h-4 w-4" />}
-                  data={row?._id}
-                />
-                <ConfirmationPopover
-                  title={`Cancel the meeting`}
-                  description={`Are you sure you want to cancel the meeting?`}
-                  action='Cancel'
-                  icon={<PiXBold className="h-4 w-4" />}
-                  data={row?._id}
-                />
-              </div>
-            } */}
           </div>
         );
       },
