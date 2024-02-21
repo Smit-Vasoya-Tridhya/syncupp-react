@@ -129,6 +129,36 @@ export default function TermsAndCondition() {
                   <div className="w-full border-b-2 py-2">
                     <td className="flex w-full justify-between px-6 py-4">
                       <div className="flex">
+                        <Text>Shipping And Delivery</Text>{' '}
+                      </div>
+                      <div className="flex">
+                        <Link href={routes.admin.cmsPriceCampareView}>
+                          <PiEyeFill className="mr-3 h-[30px] w-[30px] cursor-pointer" />
+                        </Link>
+                        <Link href={routes.admin.cmsshippinganddelivery}>
+                          <PiNotePencilDuotone className="h-[30px] w-[30px] cursor-pointer" />{' '}
+                        </Link>
+                      </div>
+                    </td>
+                  </div>
+                  <div className="w-full border-b-2 py-2">
+                    <td className="flex w-full justify-between px-6 py-4">
+                      <div className="flex">
+                        <Text>Cancellation And Refund</Text>{' '}
+                      </div>
+                      <div className="flex">
+                        <Link href={routes.admin.cmsPriceCampareView}>
+                          <PiEyeFill className="mr-3 h-[30px] w-[30px] cursor-pointer" />
+                        </Link>
+                        <Link href={routes.admin.cmscancellationandrefund}>
+                          <PiNotePencilDuotone className="h-[30px] w-[30px] cursor-pointer" />{' '}
+                        </Link>
+                      </div>
+                    </td>
+                  </div>
+                  <div className="w-full border-b-2 py-2">
+                    <td className="flex w-full justify-between px-6 py-4">
+                      <div className="flex">
                         <Text>About US</Text>{' '}
                       </div>
                       <div className="flex">

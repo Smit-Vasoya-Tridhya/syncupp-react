@@ -66,6 +66,44 @@ export const EditCmsPrivacyPolicy = async (data: any): Promise<ApiResponse> => {
   const responseData: ApiResponse = response.data;
   return responseData;
 };
+export const EditCmscancellation = async (data: any): Promise<ApiResponse> => {
+  const response = await AxiosDefault({
+    url: '/api/v1/crm/Cancellation-and-Refund',
+    method: 'PUT',
+    data: data,
+    contentType: 'application/json',
+  });
+  const responseData: ApiResponse = response.data;
+  return responseData;
+};
+export const getCmscancellation = async (): Promise<ApiResponse> => {
+  const response = await AxiosDefault({
+    url: '/api/v1/crm/Cancellation-and-Refund',
+    method: 'GET',
+    contentType: 'application/json',
+  });
+  const responseData: ApiResponse = response.data;
+  return responseData;
+};
+export const EditCmsshipping = async (data: any): Promise<ApiResponse> => {
+  const response = await AxiosDefault({
+    url: '/api/v1/crm/Shipping-and-Delivery',
+    method: 'PUT',
+    data: data,
+    contentType: 'application/json',
+  });
+  const responseData: ApiResponse = response.data;
+  return responseData;
+};
+export const getCmsshipping = async (): Promise<ApiResponse> => {
+  const response = await AxiosDefault({
+    url: '/api/v1/crm/Shipping-and-Delivery',
+    method: 'GET',
+    contentType: 'application/json',
+  });
+  const responseData: ApiResponse = response.data;
+  return responseData;
+};
 export const EditCmsAboutus = async (data: any): Promise<ApiResponse> => {
   const response = await AxiosDefault({
     url: '/api/v1/crm/about-us-update',

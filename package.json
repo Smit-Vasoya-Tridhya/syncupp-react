@@ -99,6 +99,7 @@
     "rizzui": "^0.7.0",
     "sharp": "^0.33.0",
     "simplebar-react": "^3.2.4",
+    "socket.io-client": "^4.7.4",
     "swiper": "^11.0.5",
     "tailwind-merge": "^2.1.0",
     "typescript": "5.3.3",
