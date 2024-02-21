@@ -20,6 +20,7 @@ export default function DatePeriodSelectionForm(props: any) {
     const dispatch = useDispatch();
     const pathname = usePathname();
     const clientSliceData = useSelector((state: any) => state?.root?.client);
+    const signIn = useSelector((state: any) => state?.root?.signIn)
     const { gridView } = useSelector((state: any) => state?.root?.task);
 
     let initialValue: Record<string, string> = {
@@ -34,7 +35,13 @@ export default function DatePeriodSelectionForm(props: any) {
         setEndRangeDate(end);
         setStartDate(moment(start).format('DD-MM-YYYY'))
         !!end && setEndDate(moment(end).format('DD-MM-YYYY'))
-        !!end && dispatch(getAllActivity({ page: 1, sort_field: 'createdAt', sort_order: 'desc', filter: { status: statusType, activity_type: activityType, date: 'period', start_date: moment(start).format('DD-MM-YYYY'), end_date: moment(end).format('DD-MM-YYYY') } }))
+
+        if (signIn?.role !== 'client' && signIn?.role !== 'team_client') {
+            !!end && dispatch(getAllActivity({ page: 1, sort_field: 'createdAt', sort_order: 'desc', filter: { status: statusType, activity_type: activityType, date: 'period', start_date: moment(start).format('DD-MM-YYYY'), end_date: moment(end).format('DD-MM-YYYY') } }))
+        } else {
+            !!end && dispatch(getAllActivity({ page: 1, sort_field: 'createdAt', sort_order: 'desc', agency_id: clientSliceData?.agencyId, filter: { status: statusType, activity_type: activityType, date: 'period', start_date: moment(start).format('DD-MM-YYYY'), end_date: moment(end).format('DD-MM-YYYY') } }))
+        }
+
         !!end && setPeriod('period')
 
     };

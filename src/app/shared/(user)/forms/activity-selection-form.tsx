@@ -12,6 +12,8 @@ export default function ActivitySelectionForm(props: any) {
     const { setActivityType, statusType, startDate, endDate, period } = props;
     const dispatch = useDispatch();
     const activityData = useSelector((state: any) => state?.root?.activity);
+    const signIn = useSelector((state: any) => state?.root?.signIn)
+    const clientSliceData = useSelector((state: any) => state?.root?.client);
 
 
     let initialValue: Record<string, string> = {
@@ -27,10 +29,24 @@ export default function ActivitySelectionForm(props: any) {
     const handleAgencyChange = (selectedOption: Record<string, any>) => {
         setActivityType(selectedOption?.value)
         dispatch(setActivityName(selectedOption?.value));
-        endDate === '' ? 
-            dispatch(getAllActivity({ page: 1, sort_field: 'createdAt', sort_order: 'desc', filter: { status: statusType, activity_type: selectedOption?.value } })) 
-        :
-            dispatch(getAllActivity({ page: 1, sort_field: 'createdAt', sort_order: 'desc', filter: { status: statusType, activity_type: selectedOption?.value, date: period, start_date: startDate, end_date: endDate } }))
+
+        if (signIn?.role !== 'client' && signIn?.role !== 'team_client') {
+
+            endDate === '' ?
+                dispatch(getAllActivity({ page: 1, sort_field: 'createdAt', sort_order: 'desc', filter: { status: statusType, activity_type: selectedOption?.value } }))
+                :
+                dispatch(getAllActivity({ page: 1, sort_field: 'createdAt', sort_order: 'desc', filter: { status: statusType, activity_type: selectedOption?.value, date: period, start_date: startDate, end_date: endDate } }))
+
+        } else {
+
+            endDate === '' ?
+                dispatch(getAllActivity({ page: 1, sort_field: 'createdAt', sort_order: 'desc', agency_id: clientSliceData?.agencyId, filter: { status: statusType, activity_type: selectedOption?.value } }))
+                :
+                dispatch(getAllActivity({ page: 1, sort_field: 'createdAt', sort_order: 'desc', agency_id: clientSliceData?.agencyId, filter: { status: statusType, activity_type: selectedOption?.value, date: period, start_date: startDate, end_date: endDate } }))
+
+        }
+
+
     }
 
     const onSubmit = (data: any) => {

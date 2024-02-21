@@ -11,6 +11,7 @@ import useEventCalendar from '@/hooks/use-event-calendar';
 import cn from '@/utils/class-names';
 import { Button } from 'rizzui';
 import DatePeriodSelectionForm from '../../forms/select-period-form';
+import AddActivityFormPage from '../create-edit-event/create-edit-activity-form';
 
 const localizer = dayjsLocalizer(dayjs);
 // rbc-active -> black button active
@@ -30,8 +31,9 @@ export default function EventCalendarView() {
   const handleSelectSlot = useCallback(
     ({ start, end }: { start: Date; end: Date }) => {
       openModal({
-        view: <EventForm startDate={start} endDate={end} />,
-        customSize: '650px',
+        // view: <EventForm startDate={start} endDate={end} />,
+        view: <AddActivityFormPage title="Add Activity" />,
+        customSize: '1050px',
       });
     },
     [openModal]
@@ -43,7 +45,8 @@ export default function EventCalendarView() {
     (event: CalendarEvent) => {
       openModal({
         view: <DetailsEvents event={event} />,
-        customSize: '500px',
+        // view: <AddActivityFormPage title="Edit Activity" />,
+        customSize: '1050px',
       });
     },
     [openModal]

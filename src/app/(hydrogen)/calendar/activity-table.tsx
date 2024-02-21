@@ -35,14 +35,26 @@ export default function ActivityTablePage(props: any) {
 
     const handleStatusFilterApiCall = (filterStatusValue: string) => {
         setStatusType(filterStatusValue);
-        if (activityType === '' && endDate === '' && startDate === '') {
-            dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', filter: { status: filterStatusValue } }))
-        } else if (endDate === '' && startDate === '' && activityType !== '') {
-            dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', filter: { status: filterStatusValue, activity_type: activityType } }))
-        } else if (endDate !== '' && startDate !== '' && activityType !== '') {
-            dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', filter: { status: filterStatusValue, activity_type: activityType, date: period, start_date: startDate, end_date: endDate } }))
-        } else if (endDate !== '' && startDate !== '' && activityType === '') {
-            dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', filter: { status: filterStatusValue, date: period, start_date: startDate, end_date: endDate } }))
+        if (signIn?.role !== 'client' && signIn?.role !== 'team_client') {
+            if (activityType === '' && endDate === '' && startDate === '') {
+                dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', filter: { status: filterStatusValue } }))
+            } else if (endDate === '' && startDate === '' && activityType !== '') {
+                dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', filter: { status: filterStatusValue, activity_type: activityType } }))
+            } else if (endDate !== '' && startDate !== '' && activityType !== '') {
+                dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', filter: { status: filterStatusValue, activity_type: activityType, date: period, start_date: startDate, end_date: endDate } }))
+            } else if (endDate !== '' && startDate !== '' && activityType === '') {
+                dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', filter: { status: filterStatusValue, date: period, start_date: startDate, end_date: endDate } }))
+            }
+        } else {
+            if (activityType === '' && endDate === '' && startDate === '') {
+                dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', agency_id: clientSliceData?.agencyId, filter: { status: filterStatusValue } }))
+            } else if (endDate === '' && startDate === '' && activityType !== '') {
+                dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', agency_id: clientSliceData?.agencyId, filter: { status: filterStatusValue, activity_type: activityType } }))
+            } else if (endDate !== '' && startDate !== '' && activityType !== '') {
+                dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', agency_id: clientSliceData?.agencyId, filter: { status: filterStatusValue, activity_type: activityType, date: period, start_date: startDate, end_date: endDate } }))
+            } else if (endDate !== '' && startDate !== '' && activityType === '') {
+                dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', agency_id: clientSliceData?.agencyId, filter: { status: filterStatusValue, date: period, start_date: startDate, end_date: endDate } }))
+            }
         }
     }
 
