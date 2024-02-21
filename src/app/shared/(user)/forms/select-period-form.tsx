@@ -58,7 +58,7 @@ export default function DatePeriodSelectionForm(props: any) {
                             onChange={handleRangeChange}
                             startDate={startRangeDate}
                             endDate={endRangeDate}
-                            monthsShown={2}
+                            monthsShown={1}
                             placeholderText="Select Date in a Range"
                             className="[&>label>span]:font-medium"
                             selectsRange
