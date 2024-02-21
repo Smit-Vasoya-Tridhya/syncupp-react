@@ -116,7 +116,7 @@ export default function EditInvoice({ params }: { params: { id: string } }) {
     values.sent = sentstatus;
     // values?.invoice_id = params.id,
 
-    console.log(values, 'values')
+    // console.log(values, 'values')
     // dispatch(createinvoiceapicall(values)).then((result: any) => {
     //   if (createinvoiceapicall.fulfilled.match(result)) {
     //     if (result && result.payload.success === true) {
@@ -158,7 +158,7 @@ export default function EditInvoice({ params }: { params: { id: string } }) {
         // enableReinitialize
         >
           {({ values, isSubmitting, setFieldValue, errors }: any) => (
-            console.log(errors, 'errors', values),
+            // console.log(errors, 'errors', values),
             (
               <Form className="flex flex-grow flex-col @container [&_label]:font-medium">
                 <div className="flex-grow pb-10">
@@ -294,7 +294,7 @@ export default function EditInvoice({ params }: { params: { id: string } }) {
                                 inputProps={{ label: 'Date Create' }}
                                 placeholderText="Select Date"
                                 onChange={(e) => {
-                                  console.log(e, 'eeeeeeee');
+                                  // console.log(e, 'eeeeeeee');
                                   setFieldValue('invoice_date', e);
                                   // Update the form field value
                                 }}
@@ -321,7 +321,7 @@ export default function EditInvoice({ params }: { params: { id: string } }) {
                                 minDate={values.invoice_date}
                                 placeholderText="Select Date"
                                 onChange={(e) => {
-                                  console.log(e, 'eeeeeeee');
+                                  // console.log(e, 'eeeeeeee');
                                   setFieldValue('due_date', e);
                                   // Update the form field value
                                 }}
@@ -620,7 +620,7 @@ export default function EditInvoice({ params }: { params: { id: string } }) {
                         }}
                         // isLoading={isLoading}
                         className="w-full @xl:w-auto dark:bg-gray-100 dark:text-white dark:active:bg-gray-100"
-                        // disabled={updateloader}
+                      // disabled={updateloader}
                       >
                         Save & Send
                         {false && (
@@ -640,7 +640,7 @@ export default function EditInvoice({ params }: { params: { id: string } }) {
                         }}
                         // isLoading={isLoading}
                         className="w-full @xl:w-auto dark:bg-gray-100 dark:text-white dark:active:bg-gray-100"
-                        // disabled={updateloader}
+                      // disabled={updateloader}
                       >
                         Save
                         {false && (

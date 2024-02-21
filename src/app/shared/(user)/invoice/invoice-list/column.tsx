@@ -336,6 +336,7 @@ export const InvoiceColumns = ({
                 variant="outline"
                 className="bg-white text-black"
                 aria-label={'View Member'}
+                disabled={row?.status != 'draft'}
               >
                 <PencilIcon className="h-4 w-4" />
               </Button>
