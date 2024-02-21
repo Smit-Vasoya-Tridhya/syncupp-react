@@ -9,7 +9,7 @@ import { getAllActivity, setActivityName } from '@/redux/slices/user/activity/ac
 
 
 export default function ActivitySelectionForm(props: any) {
-    const { setActivityType } = props;
+    const { setActivityType, statusType, startDate, endDate, period } = props;
     const dispatch = useDispatch();
     const activityData = useSelector((state: any) => state?.root?.activity);
 
@@ -27,7 +27,10 @@ export default function ActivitySelectionForm(props: any) {
     const handleAgencyChange = (selectedOption: Record<string, any>) => {
         setActivityType(selectedOption?.value)
         dispatch(setActivityName(selectedOption?.value));
-        dispatch(getAllActivity({ page: 1, sort_field: 'createdAt', sort_order: 'desc', filter: { activity_type: selectedOption?.value } }))
+        endDate === '' ? 
+            dispatch(getAllActivity({ page: 1, sort_field: 'createdAt', sort_order: 'desc', filter: { status: statusType, activity_type: selectedOption?.value } })) 
+        :
+            dispatch(getAllActivity({ page: 1, sort_field: 'createdAt', sort_order: 'desc', filter: { status: statusType, activity_type: selectedOption?.value, date: period, start_date: startDate, end_date: endDate } }))
     }
 
     const onSubmit = (data: any) => {
@@ -57,7 +60,7 @@ export default function ActivitySelectionForm(props: any) {
                                     value={value}
                                     placeholder='Select Activity'
                                     // getOptionValue={(option) => option.value}
-                                    className="font-medium"
+                                    className="font-medium [&>label>span]:font-medium"
                                     dropdownClassName="p-1 border w-auto border-gray-100 shadow-lg absolute"
                                 />
                             )}

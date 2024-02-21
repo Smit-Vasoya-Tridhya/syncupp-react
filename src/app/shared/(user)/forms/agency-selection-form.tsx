@@ -32,7 +32,7 @@ export default function AgencySelectionForm() {
     const handleAgencyChange = (selectedOption: Record<string, any>) => {
         dispatch(setAgencyName(selectedOption?.name))
         dispatch(setAgencyId(selectedOption?.value))
-        console.log("pathname...", pathname)
+        // console.log("pathname...", pathname)
         if(pathname === "/team") {
             dispatch(getAllTeamMember({
                 sort_field: 'createdAt',
