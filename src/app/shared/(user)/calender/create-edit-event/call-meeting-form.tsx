@@ -97,7 +97,7 @@ export default function AddCallMeetingForm(props: any) {
     });
   }, [row, dispatch]);
 
-  let data = activityData?.activity ?? initialValues;
+  let [data] = activityData?.activity ?? initialValues;
 
   // const dueee_date = moment(data?.due_date).toDate();
   // console.log("formateedddd", moment(data?.meeting_start_time).format('hh:mm A'))

@@ -46,6 +46,7 @@ type GetAllActivityApiData = {
   client_id?: string;
   agency_id?: string;
   activity_type?: string;
+  filter?: any;
 }
 
 

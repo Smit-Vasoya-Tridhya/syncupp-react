@@ -1,6 +1,14 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { toast } from 'react-hot-toast';
-import { DeleteTeamMemberApi, GetAllTeamMemberApi, GetTeamMemberProfileApi, MemberStatusChangeApi, PostAddTeamMemberApi, PostTeamMemberVerifyApi, PutEditTeamMemberApi } from "@/api/user/team-member/teamApis";
+import {
+  DeleteTeamMemberApi,
+  GetAllTeamMemberApi,
+  GetTeamMemberProfileApi,
+  MemberStatusChangeApi,
+  PostAddTeamMemberApi,
+  PostTeamMemberVerifyApi,
+  PutEditTeamMemberApi,
+} from '@/api/user/team-member/teamApis';
 
 type TeamData = {
   _id: string;
@@ -10,7 +18,7 @@ type TeamData = {
   contact_number?: string;
   role?: string;
   sort_field?: string;
-  sort_order?: string,
+  sort_order?: string;
   page?: any;
   items_per_page?: number;
   search?: string;
@@ -18,12 +26,12 @@ type TeamData = {
   client_id?: string;
   pagination?: boolean;
   client_team?: boolean;
-}
+};
 
 type DeleteTeamMemberData = {
   teamMemberIds: string[];
   agency_id?: string;
-}
+};
 type GetTeamMemberProfileApiData = {
   _id: string;
   name: string;
@@ -47,7 +55,7 @@ type PostTeamMemberVerifyData = {
   password?: string;
   // first_name?: string;
   // last_name?: string;
-}
+};
 
 type StatusChange = {
   id: string;
@@ -55,7 +63,7 @@ type StatusChange = {
 
 interface TeamMemberDataResponse {
   status: boolean;
-  message: string
+  message: string;
 }
 
 const initialState = {
@@ -72,12 +80,12 @@ const initialState = {
   deleteTeamMemberStatus: '',
   getTeamMemberProfileStatus: '',
   verifyTeamMemberStatus: '',
-  paginationParams: "",
-  addClientteamdetails: ""
+  paginationParams: '',
+  addClientteamdetails: '',
 };
 
 export const addTeamMember: any = createAsyncThunk(
-  "team/addTeamMember",
+  'team/addTeamMember',
   async (data: TeamData) => {
     const apiData = {
       id: data._id,
@@ -86,43 +94,54 @@ export const addTeamMember: any = createAsyncThunk(
       last_name: data.last_name,
       contact_number: data.contact_number,
       role: data.role,
-      agency_id: data?.agency_id
-    }
+      agency_id: data?.agency_id,
+    };
     try {
       const response: any = await PostAddTeamMemberApi(apiData);
       return response;
     } catch (error: any) {
-      return { status: false, message: error.response.data.message } as TeamMemberDataResponse;
+      return {
+        status: false,
+        message: error.response.data.message,
+      } as TeamMemberDataResponse;
     }
   }
 );
 
 export const clientteamStatuschange: any = createAsyncThunk(
-  "team/clientteamStatuschange",
+  'team/clientteamStatuschange',
   async (data: StatusChange) => {
     try {
       const response: any = await MemberStatusChangeApi(data);
       return response;
     } catch (error: any) {
-      return { status: false, message: error.response.data.message, code: error.response.data.status } as any;
+      return {
+        status: false,
+        message: error.response.data.message,
+        code: error.response.data.status,
+      } as any;
     }
   }
 );
 
 export const verifyTeamMember: any = createAsyncThunk(
-  "team/verifyTeamMember",
+  'team/verifyTeamMember',
   async (data: PostTeamMemberVerifyData) => {
     try {
       const response: any = await PostTeamMemberVerifyApi(data);
       return response;
     } catch (error: any) {
-      return { status: false, message: error.response.data.message, code: error.response.data.status } as any;
+      return {
+        status: false,
+        message: error.response.data.message,
+        code: error.response.data.status,
+      } as any;
     }
   }
 );
 
 export const editTeamMember: any = createAsyncThunk(
-  "team/editTeamMember",
+  'team/editTeamMember',
   async (data: TeamData) => {
     const apiData = {
       id: data._id,
@@ -131,29 +150,35 @@ export const editTeamMember: any = createAsyncThunk(
       last_name: data.last_name,
       contact_number: data.contact_number,
       role: data.role,
-      agency_id: data?.agency_id
-    }
+      agency_id: data?.agency_id,
+    };
     try {
       const response: any = await PutEditTeamMemberApi(apiData);
       return response;
     } catch (error: any) {
-      return { status: false, message: error.response.data.message } as TeamMemberDataResponse;
+      return {
+        status: false,
+        message: error.response.data.message,
+      } as TeamMemberDataResponse;
     }
   }
 );
 export const getAllTeamMember: any = createAsyncThunk(
-  "teamMember/getAllTeamMember",
+  'teamMember/getAllTeamMember',
   async (data: TeamData) => {
     try {
       const response: any = await GetAllTeamMemberApi(data);
       return { response: response, pagination: data?.pagination };
     } catch (error: any) {
-      return { status: false, message: error.response.data.message } as TeamMemberDataResponse;
+      return {
+        status: false,
+        message: error.response.data.message,
+      } as TeamMemberDataResponse;
     }
   }
 );
 export const getTeamMemberProfile: any = createAsyncThunk(
-  "teamMember/getTeamMemberProfile",
+  'teamMember/getTeamMemberProfile',
   async (data: GetTeamMemberProfileApiData) => {
     const apiData = {
       _id: data?._id,
@@ -172,43 +197,47 @@ export const getTeamMemberProfile: any = createAsyncThunk(
       const response: any = await GetTeamMemberProfileApi(apiData);
       return response;
     } catch (error: any) {
-      return { status: false, message: error.response.data.message } as TeamMemberDataResponse;
+      return {
+        status: false,
+        message: error.response.data.message,
+      } as TeamMemberDataResponse;
     }
   }
 );
 export const deleteTeamMember: any = createAsyncThunk(
-  "teamMember/deleteTeamMember",
+  'teamMember/deleteTeamMember',
   async (data: DeleteTeamMemberData) => {
     try {
       const apiData = {
         teamMemberIds: data.teamMemberIds,
-        agency_id: data?.agency_id
-      }
+        agency_id: data?.agency_id,
+      };
       const response: any = await DeleteTeamMemberApi(data);
       return response;
     } catch (error: any) {
-      return { status: false, message: error.response.data.message } as TeamMemberDataResponse;
+      return {
+        status: false,
+        message: error.response.data.message,
+      } as TeamMemberDataResponse;
     }
   }
 );
 
-
 export const teamSlice = createSlice({
-  name: "teamMember",
+  name: 'teamMember',
   initialState,
   reducers: {
-
     RemoveTeamMemberData(state) {
       return {
         ...state,
-        teamMember: ''
+        teamMember: '',
       };
     },
     setPagginationParams(state, action) {
       return {
         ...state,
-        paginationParams: action.payload
-      }
+        paginationParams: action.payload,
+      };
     },
   },
   extraReducers: (builder) => {
@@ -217,26 +246,26 @@ export const teamSlice = createSlice({
         return {
           ...state,
           loading: true,
-          addTeamMemberStatus: 'pending'
-        }
+          addTeamMemberStatus: 'pending',
+        };
       })
       .addCase(addTeamMember.fulfilled, (state, action) => {
         if (action?.payload?.status === false) {
-          toast.error(action.payload.message)
-        } 
+          toast.error(action.payload.message);
+        }
         return {
           ...state,
           addClientteamdetails: action.payload,
           loading: false,
-          addTeamMemberStatus: 'success'
-        }
+          addTeamMemberStatus: 'success',
+        };
       })
       .addCase(addTeamMember.rejected, (state) => {
         return {
           ...state,
           loading: false,
-          addTeamMemberStatus: 'error'
-        }
+          addTeamMemberStatus: 'error',
+        };
       });
 
     // new cases for verify team member
@@ -245,29 +274,29 @@ export const teamSlice = createSlice({
         return {
           ...state,
           loading: true,
-          verifyTeamMemberStatus: 'pending'
-        }
+          verifyTeamMemberStatus: 'pending',
+        };
       })
       .addCase(verifyTeamMember.fulfilled, (state, action) => {
         if (action.payload.success == true) {
-          toast.success(action.payload.message)
+          toast.success(action.payload.message);
           localStorage.clear();
         } else {
-          toast.error(action.payload.message)
+          toast.error(action.payload.message);
         }
         return {
           ...state,
           // user: action.payload,
           loading: false,
-          verifyTeamMemberStatus: 'success'
-        }
+          verifyTeamMemberStatus: 'success',
+        };
       })
       .addCase(verifyTeamMember.rejected, (state) => {
         return {
           ...state,
           loading: false,
-          verifyTeamMemberStatus: 'error'
-        }
+          verifyTeamMemberStatus: 'error',
+        };
       });
     // new cases for edit team member
     builder
@@ -275,28 +304,28 @@ export const teamSlice = createSlice({
         return {
           ...state,
           loading: true,
-          editTeamMemberStatus: 'pending'
-        }
+          editTeamMemberStatus: 'pending',
+        };
       })
       .addCase(editTeamMember.fulfilled, (state, action) => {
         if (action.payload.success == true) {
-          toast.success(action.payload.message)
+          toast.success(action.payload.message);
         } else {
-          toast.error(action.payload.message)
+          toast.error(action.payload.message);
         }
         return {
           ...state,
           // user: action.payload,
           loading: false,
-          editTeamMemberStatus: 'success'
-        }
+          editTeamMemberStatus: 'success',
+        };
       })
       .addCase(editTeamMember.rejected, (state) => {
         return {
           ...state,
           loading: false,
-          editTeamMemberStatus: 'error'
-        }
+          editTeamMemberStatus: 'error',
+        };
       });
     // new cases for get all team member
     builder
@@ -304,64 +333,64 @@ export const teamSlice = createSlice({
         return {
           ...state,
           loading: true,
-          getAllTeamMemberStatus: 'pending'
-        }
+          getAllTeamMemberStatus: 'pending',
+        };
       })
       .addCase(getAllTeamMember.fulfilled, (state, action) => {
         if (action?.payload?.status == false) {
-          toast.error(action.payload.message)
+          toast.error(action.payload.message);
           return {
             ...state,
-            loading: false
-          }
+            loading: false,
+          };
         } else if (action?.payload?.pagination) {
           return {
             ...state,
             data: action?.payload?.response?.data,
             loading: false,
-            getAllTeamMemberStatus: 'success'
-          }
+            getAllTeamMemberStatus: 'success',
+          };
         } else {
           return {
             ...state,
             loading: false,
             teamList: action?.payload?.response?.data,
-          }
+          };
         }
       })
       .addCase(getAllTeamMember.rejected, (state) => {
         return {
           ...state,
           loading: false,
-          getAllTeamMemberStatus: 'error'
-        }
+          getAllTeamMemberStatus: 'error',
+        };
       });
 
-    //clientteamMembers Status change 
+    //clientteamMembers Status change
 
     builder
       .addCase(clientteamStatuschange.pending, (state) => {
         return {
           ...state,
           loading: true,
-        }
+        };
       })
       .addCase(clientteamStatuschange.fulfilled, (state, action) => {
         if (action?.payload?.status === false) {
-          toast.error(action.payload.message)
+          toast.error(action.payload.message);
         } else {
-          toast.success(action.payload.message)
+          toast.success(action.payload.message);
         }
         return {
           ...state,
           loading: false,
-        }
+        };
       })
       .addCase(clientteamStatuschange.rejected, (state) => {
         return {
           ...state,
           loading: false,
-        }
+        };
       });
 
     // new cases for get team member profile
@@ -370,23 +399,23 @@ export const teamSlice = createSlice({
         return {
           ...state,
           loading: true,
-          getTeamMemberProfileStatus: 'pending'
-        }
+          getTeamMemberProfileStatus: 'pending',
+        };
       })
       .addCase(getTeamMemberProfile.fulfilled, (state, action) => {
         return {
           ...state,
           teamMember: action.payload.data,
           loading: false,
-          getTeamMemberProfileStatus: 'success'
-        }
+          getTeamMemberProfileStatus: 'success',
+        };
       })
       .addCase(getTeamMemberProfile.rejected, (state) => {
         return {
           ...state,
           loading: false,
-          getTeamMemberProfileStatus: 'error'
-        }
+          getTeamMemberProfileStatus: 'error',
+        };
       });
 
     // new cases for delete team member profile
@@ -395,34 +424,36 @@ export const teamSlice = createSlice({
         return {
           ...state,
           loading: true,
-          deleteTeamMemberStatus: 'pending'
-        }
+          deleteTeamMemberStatus: 'pending',
+        };
       })
       .addCase(deleteTeamMember.fulfilled, (state, action) => {
         if (action.payload.status == false) {
-          toast.error(action.payload.message)
+          toast.error(action.payload.message);
           return {
             ...state,
             //   data: action.payload,
             loading: false,
-            deleteTeamMemberStatus: 'error'
-          }
+            deleteTeamMemberStatus: 'error',
+          };
         } else {
-          toast.success(action.payload.message)
+          if (action.payload.message) {
+            toast.success(action.payload.message);
+          }
           return {
             ...state,
             //   data: action.payload,
             loading: false,
-            deleteTeamMemberStatus: 'success'
-          }
+            deleteTeamMemberStatus: 'success',
+          };
         }
       })
       .addCase(deleteTeamMember.rejected, (state) => {
         return {
           ...state,
           loading: false,
-          deleteTeamMemberStatus: 'error'
-        }
+          deleteTeamMemberStatus: 'error',
+        };
       });
   },
 });

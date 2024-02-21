@@ -7,12 +7,14 @@ import { useRouter } from 'next/navigation';
 import { PiListBullets, PiPlusBold } from 'react-icons/pi';
 import { ActionIcon, Button } from 'rizzui';
 import cn from '@/utils/class-names';
-import { setGridView } from '@/redux/slices/user/task/taskSlice';
 import AddActivityFormPage from '@/app/shared/(user)/calender/create-edit-event/create-edit-activity-form';
 import EventCalendarView from '@/app/shared/(user)/calender/event-calendar';
 import { FaRegCalendarAlt } from 'react-icons/fa';
 import ActivitySelectionForm from '@/app/shared/(user)/forms/activity-selection-form';
 import ActivityTablePage from './activity-table';
+import { useState } from 'react';
+import { getAllActivity, setCalendarView } from '@/redux/slices/user/activity/activitySlice';
+import DatePeriodSelectionForm from '@/app/shared/(user)/forms/select-period-form';
 
 const pageHeader = {
   title: 'Activity',
@@ -25,18 +27,17 @@ export default function CalendarMainPage() {
   const signIn = useSelector((state: any) => state?.root?.signIn)
   const clientSliceData = useSelector((state: any) => state?.root?.client);
   const taskData = useSelector((state: any) => state?.root?.task);
-  const activityData = useSelector((state: any) => state?.root?.activity);
-  const { gridView } = useSelector((state: any) => state?.root?.task);
+  const { calendarView } = useSelector((state: any) => state?.root?.activity);
 
-  console.log("Activity is....", activityData?.activityName)
+
 
 
   const handleListView = () => {
-    dispatch(setGridView(false));
+    dispatch(setCalendarView(false));
   }
 
   const handleGridView = () => {
-    dispatch(setGridView(true));
+    dispatch(setCalendarView(true));
   }
 
 
@@ -62,14 +63,14 @@ export default function CalendarMainPage() {
           variant="flat"
           className={cn(
             'group bg-transparent hover:enabled:bg-gray-100 dark:hover:enabled:bg-gray-200',
-            !gridView && 'bg-gray-900 dark:bg-gray-200'
+            !calendarView && 'bg-gray-900 dark:bg-gray-200'
           )}
           onClick={handleListView}
         >
           <PiListBullets
             className={cn(
               'h-5 w-5 transition-colors group-hover:text-gray-900',
-              !gridView && 'text-white'
+              !calendarView && 'text-white'
             )}
           />
         </ActionIcon>
@@ -78,80 +79,23 @@ export default function CalendarMainPage() {
           variant="flat"
           className={cn(
             'group bg-transparent hover:enabled:bg-gray-100  dark:hover:enabled:bg-gray-200',
-            gridView && 'bg-gray-900 dark:bg-gray-200'
+            calendarView && 'bg-gray-900 dark:bg-gray-200'
           )}
           onClick={handleGridView}
         >
           <FaRegCalendarAlt
             className={cn(
               'h-5 w-5 transition-colors group-hover:text-gray-900',
-              gridView && 'text-white'
+              calendarView && 'text-white'
             )}
           />
         </ActionIcon>
       </div>
-      {!gridView ? (
-        <div className='mt-4'>
-          <div className="ms-auto mt-4 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-9 xl:grid-cols-9 gap-3">
-            <Button variant="outline" className="mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0">
-              To Do
-            </Button>
-            <Button
-              variant="outline"
-              className="mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0"
-            >
-              Overdue
-            </Button>
-            <Button
-              variant="outline"
-              className="mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0"
-            >
-              Done
-            </Button>
-            <div className='mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0 col-span-3 lg:col-span-2 md:col-span-2 sm:col-span-2'>
-              <ActivitySelectionForm />
-            </div>
-            <div className='mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0 col-span-3 lg:col-span-2 md:col-span-2 sm:col-span-2'>
-              <ActivitySelectionForm />
-            </div>
-          </div>
-        </div>
+
+      {!calendarView ? (
+        <ActivityTablePage />
       ) : (
-        <div className='mt-4'>
-          <div className="ms-auto mt-4 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 xl:grid-cols-7 gap-3">
-            <Button
-              variant="outline"
-              className="mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0"
-            >
-              Today
-            </Button>
-            <Button
-              variant="outline"
-              className="mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0"
-            >
-              Tomorrow
-            </Button>
-            <Button
-              variant="outline"
-              className="mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0"
-            >
-              This Week
-            </Button>
-            <div className='mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0 col-span-3 lg:col-span-2 md:col-span-2 sm:col-span-2'>
-              <ActivitySelectionForm />
-            </div>
-          </div>
-        </div>
-      )
-      }
-      {!gridView ? (
-        <div className='mt-8'>
-          <ActivityTablePage />
-        </div>
-      ) : (
-        <div className='mt-12'>
-          <EventCalendarView />
-        </div>
+        <EventCalendarView />
       )
       }
     </>

@@ -40,6 +40,7 @@ type GetAllActivityData = {
   client_id?: string;
   agency_id?: string;
   activity_type?: string;
+  filter?: any;
 }
 
 type GetActivityByIdData = {
@@ -61,6 +62,7 @@ interface ActivityInitialState {
   data: any;
   activity: any;
   activityName: string;
+  calendarView: boolean;
   addActivityStatus: string;
   getAllActivityStatus: string;
   getActivityStatus: string;
@@ -73,6 +75,7 @@ const initialState: ActivityInitialState = {
   data: '',
   activity: '',
   activityName: '',
+  calendarView: false,
   addActivityStatus: '',
   getAllActivityStatus: '',
   getActivityStatus: '',
@@ -172,6 +175,12 @@ export const activitySlice: any = createSlice({
       return {
         ...state,
         activityName: action?.payload
+      }
+    },
+    setCalendarView(state, action) {
+      return {
+        ...state,
+        calendarView: action.payload
       }
     },
   },
@@ -333,5 +342,5 @@ export const activitySlice: any = createSlice({
   },
 });
 
-export const { RemoveActivityData, setActivityName } = activitySlice.actions;
+export const { RemoveActivityData, setActivityName, setCalendarView } = activitySlice.actions;
 export default activitySlice.reducer;

@@ -9,7 +9,7 @@ import { Button } from 'rizzui';
 import Link from 'next/link';
 import { routes } from '@/config/routes';
 import { PiPlusBold } from 'react-icons/pi';
-import { DeleteInvoice, getAllInvoiceDataTable } from '@/redux/slices/user/invoice/invoiceSlice';
+import { DeleteInvoice, getAllInvoiceDataTable, setPagginationParams } from '@/redux/slices/user/invoice/invoiceSlice';
 
 const pageHeader = {
   title: 'Invoice',
@@ -22,6 +22,7 @@ export default function InvoiceDataTablePage() {
 
   const handleChangePage = async (paginationParams: any) => {
     let { page, items_per_page, sort_field, sort_order, search } = paginationParams;
+    await dispatch(setPagginationParams(paginationParams))
     const response = await dispatch(getAllInvoiceDataTable({ page, items_per_page, sort_field, sort_order, search }));
     const { data } = response?.payload;
     const maxPage: number = data?.page_count;
@@ -31,14 +32,14 @@ export default function InvoiceDataTablePage() {
       await dispatch(getAllInvoiceDataTable({ page, items_per_page, sort_field, sort_order, search }));
       return data?.invoiceList;
     }
-    if(data && data?.invoiceList && data?.invoiceList.length !== 0 ) {
+    if (data && data?.invoiceList && data?.invoiceList.length !== 0) {
       return data?.invoiceList
     }
   };
 
   const handleDeleteById = async (id: string | string[], currentPage?: any, countPerPage?: number, sortConfig?: Record<string, string>, searchTerm?: string) => {
     try {
-      const res = await dispatch(DeleteInvoice({ invoiceIdsToDelete: id}));
+      const res = await dispatch(DeleteInvoice({ invoiceIdsToDelete: id }));
       if (res.payload.success === true) {
         const reponse = await dispatch(getAllInvoiceDataTable({ page: currentPage, items_per_page: countPerPage, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm }));
       }
@@ -51,13 +52,13 @@ export default function InvoiceDataTablePage() {
     <>
       <PageHeader title={pageHeader.title}>
         <div className="mt-4 flex items-center gap-3 @lg:mt-0">
-        <Link href={routes.invoiceForm} className='w-full'>
-        <Button
-        className="mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0"
-        >
-          <PiPlusBold className="me-1.5 h-[17px] w-[17px]" />
-          Add Invoice</Button>
-        </Link>
+          <Link href={routes.invoiceForm} className='w-full'>
+            <Button
+              className="mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0"
+            >
+              <PiPlusBold className="me-1.5 h-[17px] w-[17px]" />
+              Add Invoice</Button>
+          </Link>
         </div>
       </PageHeader>
       <CustomTable

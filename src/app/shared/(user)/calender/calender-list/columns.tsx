@@ -61,6 +61,13 @@ function getStatusBadge(status: string) {
           <Text className="ms-2 font-medium text-gray-600">In Progress</Text>
         </div>
       );
+    case 'cancel':
+      return (
+        <div className="flex items-center">
+          <Badge color="danger" renderAsDot />
+          <Text className="ms-2 font-medium text-red-dark">Cancel</Text>
+        </div>
+      );
     default:
       return (
         <div className="flex items-center">
@@ -221,33 +228,68 @@ export const GetActivityColumns = ({
       render: (_: string, row: any) => {
         return (
           <div>
-            {(signIn?.role !== 'client' && signIn?.role !== 'team_client') &&
+            {row?.activity_type?.name === "task" ? (
               <div className="flex items-center justify-end gap-3 pe-4">
+                {(signIn?.role !== 'client' && signIn?.role !== 'team_client') &&
+                  <CustomModalButton
+                    icon={<PencilIcon className="h-4 w-4" />}
+                    view={<AddActivityFormPage title="Edit Activity" row={row} isTaskModule={false} />}
+                    customSize="1050px"
+                    title='Edit Activity'
+                  />
+                }
                 <CustomModalButton
-                  icon={<PencilIcon className="h-4 w-4" />}
-                  view={<AddActivityFormPage title="Edit Activity" row={row} isTaskModule={false} />}
-                  customSize="1050px"
-                  title='Edit Activity'
+                  icon={<EyeIcon className="h-4 w-4" />}
+                  view={<ViewTaskForm data={row} />}
+                  customSize="625px"
+                  title='View Activity'
                 />
-                <ConfirmationPopover
-                  title={`Complete the meeting`}
-                  description={`Are you sure you want to complete the meeting?`}
-                  action='Complete'
-                  icon={<MdOutlineDone className="h-4 w-4" />}
-                  data={row?._id}
-                />
-                <ConfirmationPopover
-                  title={`Cancel the meeting`}
-                  description={`Are you sure you want to cancel the meeting?`}
-                  action='Cancel'
-                  icon={<PiXBold className="h-4 w-4" />}
-                  data={row?._id}
-                />
-                {/* <Button size="sm" variant="outline" className='bg-white text-black' aria-label={'Cancel Activity'}>
-                    <PiXBold className="h-4 w-4" />
-                  </Button> */}
+                {(signIn?.role !== 'client' && signIn?.role !== 'team_client') &&
+                  <DeletePopover
+                    title={`Delete the Task`}
+                    description={`Are you sure you want to delete?`}
+                    onDelete={() => onDeleteItem(row._id, currentPage, pageSize, data?.length <= 1 ? true : false, sortConfig, searchTerm)}
+                  />
+                }
               </div>
-            }
+            ) : (
+              <div>
+                <div className="flex items-center justify-end gap-3 pe-4">
+                  {(signIn?.role !== 'client' && signIn?.role !== 'team_client') &&
+                    <CustomModalButton
+                      icon={<PencilIcon className="h-4 w-4" />}
+                      view={<AddActivityFormPage title="Edit Activity" row={row} isTaskModule={false} />}
+                      customSize="1050px"
+                      title='Edit Activity'
+                    />
+                  }
+                  <CustomModalButton
+                    icon={<EyeIcon className="h-4 w-4" />}
+                    view={<ViewTaskForm data={row} />}
+                    customSize="625px"
+                    title='View Activity'
+                  />
+                  {(signIn?.role !== 'client' && signIn?.role !== 'team_client' && row?.activity_status?.name !== 'completed' && row?.activity_status?.name !== 'cancel') &&
+                    <ConfirmationPopover
+                      title={`Complete the meeting`}
+                      description={`Are you sure you want to complete the meeting?`}
+                      action='Complete'
+                      icon={<MdOutlineDone className="h-4 w-4" />}
+                      data={row?._id}
+                    />
+                  }
+                  {(signIn?.role !== 'client' && signIn?.role !== 'team_client' && row?.activity_status?.name !== 'completed' && row?.activity_status?.name !== 'cancel') &&
+                    <ConfirmationPopover
+                      title={`Cancel the meeting`}
+                      description={`Are you sure you want to cancel the meeting?`}
+                      action='Cancel'
+                      icon={<PiXBold className="h-4 w-4" />}
+                      data={row?._id}
+                    />
+                  }
+                </div>
+              </div>
+            )}
           </div>
         );
       },

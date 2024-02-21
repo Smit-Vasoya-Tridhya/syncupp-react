@@ -29,6 +29,8 @@ import authSlice from './slices/affiliate/authSlice';
 import taskStatusSlice from './slices/user/task/taskStatusSlice';
 import activitySlice from './slices/user/activity/activitySlice';
 import contactusSlice from './slices/affiliate/contactusSlice';
+import faqSlice from './slices/affiliate/faqSlice';
+import invoicesformSlice from './slices/user/invoice/invoicesformSlice';
 
 const combinedReducer = combineReducers({
   signIn: signinSlice,
@@ -52,6 +54,7 @@ const combinedReducer = combineReducers({
   managesubcription: SubscriptionSlice,
   userAgency: userAgencySlice,
   invoice: invoiceSlice,
+  invoiceform: invoicesformSlice,
   agreement: agreementSlice,
   clienAgreement: clientAgreementSlice,
   task: taskSlice,
@@ -59,8 +62,9 @@ const combinedReducer = combineReducers({
   payment: paymentSlice,
   inquiry: inquirySlice,
   auth: authSlice,
+  contactus: contactusSlice,
+  faq: faqSlice,
   activity: activitySlice,
-  contactus: contactusSlice
 });
 
 const rootReducer = (state: any, action: any) => {

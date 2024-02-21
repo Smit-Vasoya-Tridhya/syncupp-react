@@ -12,7 +12,10 @@ import { MdOutlineDone } from 'react-icons/md';
 import { PiXBold } from 'react-icons/pi';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
-import { clientteamStatuschange, getAllTeamMember } from '@/redux/slices/user/team-member/teamSlice';
+import {
+  clientteamStatuschange,
+  getAllTeamMember,
+} from '@/redux/slices/user/team-member/teamSlice';
 import { initiateRazorpay } from '@/services/clientpaymentService';
 import { useState } from 'react';
 import DeletePopover from '@/app/shared/delete-popover';
@@ -23,7 +26,14 @@ type Columns = {
   sortConfig?: any;
   handleSelectAll: any;
   checkedItems: string[];
-  onDeleteItem: (id: string | string[], currentPage?: any, countPerPage?: number, Islastitem?: boolean, sortConfig?: Record<string, string>, searchTerm?: string) => void;
+  onDeleteItem: (
+    id: string | string[],
+    currentPage?: any,
+    countPerPage?: number,
+    Islastitem?: boolean,
+    sortConfig?: Record<string, string>,
+    searchTerm?: string
+  ) => void;
   onHeaderCellClick: (value: string) => void;
   onChecked?: (id: string) => void;
   currentPage?: number;
@@ -67,17 +77,11 @@ function getStatusBadge(status: string) {
 function getRoleName(role: string) {
   switch (role?.toLowerCase()) {
     case 'team_member':
-      return (
-        <Text className="font-medium text-gray-700">Team member</Text>
-      );
+      return <Text className="font-medium text-gray-700">Team member</Text>;
     case 'admin':
-      return (
-        <Text className="font-medium text-gray-700">Admin</Text>
-      );
+      return <Text className="font-medium text-gray-700">Admin</Text>;
     default:
-      return (
-        <Text className="font-medium text-gray-700">-</Text>
-      );
+      return <Text className="font-medium text-gray-700">-</Text>;
   }
 }
 
@@ -91,33 +95,53 @@ export const GetclientteamColumns = ({
   onChecked,
   currentPage,
   pageSize,
-  searchTerm
+  searchTerm,
 }: Columns) => {
-
-  const token = localStorage.getItem('token')
-  const router = useRouter()
-  const dispatch = useDispatch()
+  const token = localStorage.getItem('token');
+  const router = useRouter();
+  const dispatch = useDispatch();
   const clientSliceData = useSelector((state: any) => state?.root?.client);
   const loading = useSelector((state: any) => state?.root?.client?.loading);
 
-  const [loadingflag, setloadingflag] = useState(false)
-
+  const [loadingflag, setloadingflag] = useState(false);
 
   const ClintteamlistAPIcall = async () => {
-    dispatch(getAllTeamMember({ page: currentPage, items_per_page: pageSize, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm, client_id: clientSliceData?.clientId, pagination: true }));
-
-  }
+    dispatch(
+      getAllTeamMember({
+        page: currentPage,
+        items_per_page: pageSize,
+        sort_field: sortConfig?.key,
+        sort_order: sortConfig?.direction,
+        search: searchTerm,
+        client_id: clientSliceData?.clientId,
+        pagination: true,
+      })
+    );
+  };
 
   const StatusHandler = (row: any) => {
     // console.log(row, 'row')
-    dispatch(clientteamStatuschange({ id: row?.reference_id?._id })).then((result: any) => {
-      if (clientteamStatuschange.fulfilled.match(result) && result.payload.success === true) {
-        dispatch(getAllTeamMember({ page: currentPage, items_per_page: pageSize, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm, client_id: clientSliceData?.clientId, pagination: true }));
+    dispatch(clientteamStatuschange({ id: row?.reference_id?._id })).then(
+      (result: any) => {
+        if (
+          clientteamStatuschange.fulfilled.match(result) &&
+          result.payload.success === true
+        ) {
+          dispatch(
+            getAllTeamMember({
+              page: currentPage,
+              items_per_page: pageSize,
+              sort_field: sortConfig?.key,
+              sort_order: sortConfig?.direction,
+              search: searchTerm,
+              client_id: clientSliceData?.clientId,
+              pagination: true,
+            })
+          );
+        }
       }
-    });
-  }
-
-
+    );
+  };
 
   return [
     {
@@ -138,8 +162,10 @@ export const GetclientteamColumns = ({
         <div className="inline-flex ps-3.5">
           <Checkbox
             className="cursor-pointer"
-            checked={checkedItems.includes(row._id)}
-            {...(onChecked && { onChange: () => onChecked(row._id) })}
+            checked={checkedItems.includes(row?.reference_id._id)}
+            {...(onChecked && {
+              onChange: () => onChecked(row?.reference_id._id),
+            })}
           />
         </div>
       ),
@@ -152,13 +178,14 @@ export const GetclientteamColumns = ({
           ascending={
             sortConfig?.direction === 'asc' && sortConfig?.key === 'name'
           }
-        />),
+        />
+      ),
       onHeaderCell: () => onHeaderCellClick('name'),
       dataIndex: 'name',
       key: 'name',
       width: 200,
       render: (value: string) => (
-        <Text className="font-medium text-gray-700 capitalize">{value}</Text>
+        <Text className="font-medium capitalize text-gray-700">{value}</Text>
       ),
     },
     {
@@ -167,16 +194,22 @@ export const GetclientteamColumns = ({
           title="Mobile Number"
           sortable
           ascending={
-            sortConfig?.direction === 'asc' && sortConfig?.key === 'contact_number'
+            sortConfig?.direction === 'asc' &&
+            sortConfig?.key === 'contact_number'
           }
-        />),
+        />
+      ),
       onHeaderCell: () => onHeaderCellClick('contact_number'),
       dataIndex: 'contact_number',
       key: 'contact_number',
       width: 200,
       render: (value: string) => (
         <>
-          {value && value != "" ? <Text className="font-medium text-gray-700">{value}</Text> : <Text className="font-medium text-gray-700">-</Text>}
+          {value && value != '' ? (
+            <Text className="font-medium text-gray-700">{value}</Text>
+          ) : (
+            <Text className="font-medium text-gray-700">-</Text>
+          )}
         </>
       ),
     },
@@ -188,7 +221,8 @@ export const GetclientteamColumns = ({
           ascending={
             sortConfig?.direction === 'asc' && sortConfig?.key === 'email'
           }
-        />),
+        />
+      ),
       onHeaderCell: () => onHeaderCellClick('email'),
       dataIndex: 'email',
       key: 'email',
@@ -220,7 +254,8 @@ export const GetclientteamColumns = ({
           ascending={
             sortConfig?.direction === 'asc' && sortConfig?.key === 'status'
           }
-        />),
+        />
+      ),
       onHeaderCell: () => onHeaderCellClick('status'),
       dataIndex: 'status',
       key: 'status',
@@ -243,7 +278,7 @@ export const GetclientteamColumns = ({
       width: 150,
       render: (value: string) => {
         const date = moment(value).fromNow();
-        return <Text className="font-medium text-gray-700">{date}</Text>
+        return <Text className="font-medium text-gray-700">{date}</Text>;
       },
     },
     {
@@ -252,9 +287,8 @@ export const GetclientteamColumns = ({
       dataIndex: 'action',
       key: 'action',
       width: 80,
-      render: (_: string, row: any) => (
-
-        row?.status === "requested" ? (
+      render: (_: string, row: any) =>
+        row?.status === 'requested' ? (
           <div className="flex items-center justify-end gap-3 pe-4">
             <Tooltip
               size="sm"
@@ -263,7 +297,12 @@ export const GetclientteamColumns = ({
               color="invert"
             >
               <Link href={routes?.client_teams?.details(row?._id)}>
-                <Button size="sm" variant="outline" className='bg-white text-black' aria-label={'View Member'}>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="bg-white text-black"
+                  aria-label={'View Member'}
+                >
                   <EyeIcon className="h-4 w-4" />
                 </Button>
               </Link>
@@ -274,7 +313,23 @@ export const GetclientteamColumns = ({
               placement="top"
               color="invert"
             >
-              <Button disabled={loadingflag} onClick={() => { initiateRazorpay(router, routes.client_team, token, row?.reference_id?._id, ClintteamlistAPIcall, setloadingflag) }} size="sm" variant="outline" className='bg-white text-black' aria-label={'Approve Team member'}>
+              <Button
+                disabled={loadingflag}
+                onClick={() => {
+                  initiateRazorpay(
+                    router,
+                    routes.client_team,
+                    token,
+                    row?.reference_id?._id,
+                    ClintteamlistAPIcall,
+                    setloadingflag
+                  );
+                }}
+                size="sm"
+                variant="outline"
+                className="bg-white text-black"
+                aria-label={'Approve Team member'}
+              >
                 <MdOutlineDone className="h-4 w-4" />
               </Button>
             </Tooltip>
@@ -284,14 +339,32 @@ export const GetclientteamColumns = ({
               placement="top"
               color="invert"
             >
-              <Button disabled={loading} onClick={() => { StatusHandler(row) }} size="sm" variant="outline" className='bg-white text-black' aria-label={'Reject Team member'}>
+              <Button
+                disabled={loading}
+                onClick={() => {
+                  StatusHandler(row);
+                }}
+                size="sm"
+                variant="outline"
+                className="bg-white text-black"
+                aria-label={'Reject Team member'}
+              >
                 <PiXBold className="h-4 w-4" />
               </Button>
             </Tooltip>
             <DeletePopover
               title={`Delete the Team member`}
               description={`Are you sure you want to delete?`}
-              onDelete={() => onDeleteItem(row._id, currentPage, pageSize, data?.length <= 1 ? true : false, sortConfig, searchTerm)}
+              onDelete={() =>
+                onDeleteItem(
+                  row.reference_id._id,
+                  currentPage,
+                  pageSize,
+                  data?.length <= 1 ? true : false,
+                  sortConfig,
+                  searchTerm
+                )
+              }
             />
           </div>
         ) : (
@@ -303,14 +376,18 @@ export const GetclientteamColumns = ({
               color="invert"
             >
               <Link href={routes?.client_teams?.details(row?._id)}>
-                <Button size="sm" variant="outline" className='bg-white text-black' aria-label={'View Member'}>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="bg-white text-black"
+                  aria-label={'View Member'}
+                >
                   <EyeIcon className="h-4 w-4" />
                 </Button>
               </Link>
             </Tooltip>
           </div>
-        )
-      ),
+        ),
     },
   ];
-}
+};
