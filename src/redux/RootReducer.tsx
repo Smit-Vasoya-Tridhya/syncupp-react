@@ -31,6 +31,7 @@ import activitySlice from './slices/user/activity/activitySlice';
 import contactusSlice from './slices/affiliate/contactusSlice';
 import faqSlice from './slices/affiliate/faqSlice';
 import invoicesformSlice from './slices/user/invoice/invoicesformSlice';
+import clientInvoiceSlice from './slices/user/client/invoice/clientinvoiceSlice';
 
 const combinedReducer = combineReducers({
   signIn: signinSlice,
@@ -65,6 +66,7 @@ const combinedReducer = combineReducers({
   contactus: contactusSlice,
   faq: faqSlice,
   activity: activitySlice,
+  clieninvoice: clientInvoiceSlice
 });
 
 const rootReducer = (state: any, action: any) => {

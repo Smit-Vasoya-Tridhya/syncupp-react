@@ -49,7 +49,7 @@ export default function CreateInvoice() {
   const [selectedClient, setselectedClient] = useState<any>(null);
   const [sentstatus, setsentStatus] = useState<any>(false);
 
-  console.log(InvoiceLoader, 'InvoiceLoader')
+  // console.log(InvoiceLoader, 'InvoiceLoader')
 
   const clientOptions =
     invoiceSliceData?.getInvoiceApidata?.data &&
@@ -135,7 +135,7 @@ export default function CreateInvoice() {
         // enableReinitialize
         >
           {({ values, isSubmitting, setFieldValue, errors }: any) => (
-            console.log(errors, 'errors', values),
+            // console.log(errors, 'errors', values),
             (
               <Form className="flex flex-grow flex-col @container [&_label]:font-medium">
                 <div className="flex-grow pb-10">
@@ -272,7 +272,6 @@ export default function CreateInvoice() {
                                 inputProps={{ label: 'Date Create' }}
                                 placeholderText="Select Date"
                                 onChange={(e) => {
-                                  console.log(e, 'eeeeeeee');
                                   setFieldValue('invoice_date', e);
                                   // Update the form field value
                                 }}
@@ -299,7 +298,6 @@ export default function CreateInvoice() {
                                 minDate={values.invoice_date}
                                 placeholderText="Select Date"
                                 onChange={(e) => {
-                                  console.log(e, 'eeeeeeee');
                                   setFieldValue('due_date', e);
                                   // Update the form field value
                                 }}

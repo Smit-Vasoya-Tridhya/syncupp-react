@@ -2,11 +2,15 @@ import {
   EditCmsAboutus,
   EditCmsConatctUs,
   EditCmsPrivacyPolicy,
+  EditCmscancellation,
+  EditCmsshipping,
   GetCmsAboutus,
   GetCmsConatctUS,
   GetCmsPrivacyPolicy,
   GetCmsTermscondition,
   PostTermAndCondotionEnroll,
+  getCmscancellation,
+  getCmsshipping,
 } from '@/api/admin/cms/cmsApis';
 import { createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { toast } from 'react-hot-toast';
@@ -140,6 +144,62 @@ export const EditPrivacy: any = createAsyncThunk(
     }
   }
 );
+export const Editcancllation: any = createAsyncThunk(
+  'cms/editcancellation',
+  async (data: any) => {
+    try {
+      const response: any = await EditCmscancellation(data);
+      return response;
+    } catch (error: any) {
+      return {
+        status: false,
+        message: error.response.data.message,
+      } as FaqDataResponse;
+    }
+  }
+);
+export const Getcancelation: any = createAsyncThunk(
+  'cms/getgetcancellation',
+  async (data: any) => {
+    try {
+      const response: any = await getCmscancellation();
+      return response;
+    } catch (error: any) {
+      return {
+        status: false,
+        message: error.response.data.message,
+      } as FaqDataResponse;
+    }
+  }
+);
+export const Editshipping: any = createAsyncThunk(
+  'cms/editshipping',
+  async (data: any) => {
+    try {
+      const response: any = await EditCmsshipping(data);
+      return response;
+    } catch (error: any) {
+      return {
+        status: false,
+        message: error.response.data.message,
+      } as FaqDataResponse;
+    }
+  }
+);
+export const Getshipping: any = createAsyncThunk(
+  'cms/getshipping',
+  async (data: any) => {
+    try {
+      const response: any = await getCmsshipping();
+      return response;
+    } catch (error: any) {
+      return {
+        status: false,
+        message: error.response.data.message,
+      } as FaqDataResponse;
+    }
+  }
+);
 
 export const GetPrivacy: any = createAsyncThunk(
   'cms/getgetPRivacy',
@@ -197,6 +257,110 @@ export const cmsSlice = createSlice({
           addTermAndConditionStatus: 'error',
         };
       });
+    //edit cancellation
+    builder
+      .addCase(Editcancllation.pending, (state) => {
+        return {
+          ...state,
+          loading: true,
+        };
+      })
+      .addCase(Editcancllation.fulfilled, (state, action) => {
+        if (action.payload.status == true) {
+          toast.error(action.payload.message);
+        } else {
+          toast.success(action.payload.message);
+        }
+        return {
+          ...state,
+          // data: action.payload,
+          loading: false,
+        };
+      })
+      .addCase(Editcancllation.rejected, (state) => {
+        return {
+          ...state,
+          loading: false,
+          addTermAndConditionStatus: 'error',
+        };
+      });
+
+    //edit shipping
+    builder
+      .addCase(Editshipping.pending, (state) => {
+        return {
+          ...state,
+          loading: true,
+        };
+      })
+      .addCase(Editshipping.fulfilled, (state, action) => {
+        if (action.payload.status == true) {
+          toast.error(action.payload.message);
+        } else {
+          toast.success(action.payload.message);
+        }
+        return {
+          ...state,
+          // data: action.payload,
+          loading: false,
+        };
+      })
+      .addCase(Editshipping.rejected, (state) => {
+        return {
+          ...state,
+          loading: false,
+          addTermAndConditionStatus: 'error',
+        };
+      });
+    //get cancellation
+
+    builder
+      .addCase(Getcancelation.pending, (state) => {
+        return {
+          ...state,
+          loading: true,
+        };
+      })
+      .addCase(Getcancelation.fulfilled, (state, action) => {
+        return {
+          ...state,
+          // data: action.payload,
+          loading: false,
+          conatcUSdata: action.payload,
+        };
+      })
+      .addCase(Getcancelation.rejected, (state) => {
+        return {
+          ...state,
+          loading: false,
+          addTermAndConditionStatus: 'error',
+        };
+      });
+
+    //get shipping
+    builder
+      .addCase(Getshipping.pending, (state) => {
+        return {
+          ...state,
+          loading: true,
+        };
+      })
+      .addCase(Getshipping.fulfilled, (state, action) => {
+        return {
+          ...state,
+          // data: action.payload,
+          loading: false,
+          conatcUSdata: action.payload,
+        };
+      })
+      .addCase(Getshipping.rejected, (state) => {
+        return {
+          ...state,
+          loading: false,
+          addTermAndConditionStatus: 'error',
+        };
+      });
+
     //edit about us
 
     builder

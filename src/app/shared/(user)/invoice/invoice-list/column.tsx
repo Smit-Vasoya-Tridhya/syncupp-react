@@ -336,6 +336,7 @@ export const InvoiceColumns = ({
                 variant="outline"
                 className="bg-white text-black"
                 aria-label={'View Member'}
+                disabled={row?.status != 'draft'}
               >
                 <PencilIcon className="h-4 w-4" />
               </Button>
@@ -347,7 +348,7 @@ export const InvoiceColumns = ({
             placement="top"
             color="invert"
           >
-            <Link href={`${routes.invoiceView}/?_id=${row._id}`}>
+            <Link href={`${routes.invoiceView(row._id)}`}>
               <Button
                 size="sm"
                 variant="outline"

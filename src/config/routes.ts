@@ -13,6 +13,8 @@ export const routes = {
     verify: '/client/verify',
     payment: '/client/payment',
     agreement: '/client/agreement',
+    invoice: '/client/invoice',
+    invoicedetails: (id: string) => `/client/invoice/${id}`,
     details: (id: string) => `/client/details/${id}`,
   },
   team: '/team',
@@ -33,14 +35,16 @@ export const routes = {
   invoice: '/invoice',
   invoiceForm: '/invoice/create',
   invoiceEdit: '/invoice/edit',
-  invoiceView: '/invoice/view-invoice',
+  // invoiceView: '/invoice/view-invoice',
+  invoiceView: (id: string) => `/invoice/${id}`,
+
   viewTeam: '/agency-team/team-details',
   task: '/tasks',
   manageSubcription: '/manage-subscripation',
   userCalendar: '/calendar',
   userCalendarForm: '/calendar/calendar-form',
   userCalendarAddActivity: '/calendar/create-edit',
-  
+
   agreement: '/agreement',
 
   // Admin panel
@@ -52,9 +56,9 @@ export const routes = {
     dashboard: '/admin/dashboard',
     viewProfile: '/admin/profile',
     faq: '/admin/faq',
-    agencylist: "/admin/agencylist",
-    inquiry: "/admin/inquiry",
-    payment: "/admin/payment-transaction",
+    agencylist: '/admin/agencylist',
+    inquiry: '/admin/inquiry',
+    payment: '/admin/payment-transaction',
     agencyView: '/admin/agency-details',
     clientReview: '/admin/client-review',
     cms: '/admin/cms',
@@ -64,6 +68,8 @@ export const routes = {
     cmsPricing: '/admin/cms/pricing/edit',
     cmsPrivacy: '/admin/cms/privacy/edit',
     cmsPriceCampare: '/admin/cms/pricing-campare/edit',
+    cmsshippinganddelivery: '/admin/cms/shipping-and-delivery/edit',
+    cmscancellationandrefund: '/admin/cms/cancellation-and-refund/edit',
 
     cmsAboutView: '/admin/cms/about-us/view-aboutus',
     cmsContactView: '/admin/cms/contact-us/view-contactus',

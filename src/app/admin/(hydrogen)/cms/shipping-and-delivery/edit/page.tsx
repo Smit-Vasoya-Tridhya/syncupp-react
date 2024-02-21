@@ -1,14 +1,14 @@
 import { metaObject } from '@/config/site.config';
-import InvoiceDetails from './invoice-details';
+import Shippinganddeliveryform from './shipping-and-deliveryform';
 
 export const metadata = {
-  ...metaObject('Invoice'),
+  ...metaObject('Shipping and Delivery'),
 };
 
 export default function Page() {
   return (
     <>
-    <InvoiceDetails/>
+      <Shippinganddeliveryform />
     </>
   );
 }
