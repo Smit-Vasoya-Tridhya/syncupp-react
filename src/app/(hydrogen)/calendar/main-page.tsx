@@ -7,14 +7,13 @@ import { useRouter } from 'next/navigation';
 import { PiListBullets, PiPlusBold } from 'react-icons/pi';
 import { ActionIcon, Button } from 'rizzui';
 import cn from '@/utils/class-names';
-import { setGridView } from '@/redux/slices/user/task/taskSlice';
 import AddActivityFormPage from '@/app/shared/(user)/calender/create-edit-event/create-edit-activity-form';
 import EventCalendarView from '@/app/shared/(user)/calender/event-calendar';
 import { FaRegCalendarAlt } from 'react-icons/fa';
 import ActivitySelectionForm from '@/app/shared/(user)/forms/activity-selection-form';
 import ActivityTablePage from './activity-table';
 import { useState } from 'react';
-import { getAllActivity } from '@/redux/slices/user/activity/activitySlice';
+import { getAllActivity, setCalendarView } from '@/redux/slices/user/activity/activitySlice';
 import DatePeriodSelectionForm from '@/app/shared/(user)/forms/select-period-form';
 
 const pageHeader = {
@@ -28,8 +27,7 @@ export default function CalendarMainPage() {
   const signIn = useSelector((state: any) => state?.root?.signIn)
   const clientSliceData = useSelector((state: any) => state?.root?.client);
   const taskData = useSelector((state: any) => state?.root?.task);
-  const activityData = useSelector((state: any) => state?.root?.activity);
-  const { gridView } = useSelector((state: any) => state?.root?.task);
+  const { calendarView } = useSelector((state: any) => state?.root?.activity);
 
   const [activityType, setActivityType] = useState('');
   const [statusType, setStatusType] = useState('');
@@ -57,11 +55,11 @@ export default function CalendarMainPage() {
 
 
   const handleListView = () => {
-    dispatch(setGridView(false));
+    dispatch(setCalendarView(false));
   }
 
   const handleGridView = () => {
-    dispatch(setGridView(true));
+    dispatch(setCalendarView(true));
   }
 
 
@@ -87,14 +85,14 @@ export default function CalendarMainPage() {
           variant="flat"
           className={cn(
             'group bg-transparent hover:enabled:bg-gray-100 dark:hover:enabled:bg-gray-200',
-            !gridView && 'bg-gray-900 dark:bg-gray-200'
+            !calendarView && 'bg-gray-900 dark:bg-gray-200'
           )}
           onClick={handleListView}
         >
           <PiListBullets
             className={cn(
               'h-5 w-5 transition-colors group-hover:text-gray-900',
-              !gridView && 'text-white'
+              !calendarView && 'text-white'
             )}
           />
         </ActionIcon>
@@ -103,20 +101,20 @@ export default function CalendarMainPage() {
           variant="flat"
           className={cn(
             'group bg-transparent hover:enabled:bg-gray-100  dark:hover:enabled:bg-gray-200',
-            gridView && 'bg-gray-900 dark:bg-gray-200'
+            calendarView && 'bg-gray-900 dark:bg-gray-200'
           )}
           onClick={handleGridView}
         >
           <FaRegCalendarAlt
             className={cn(
               'h-5 w-5 transition-colors group-hover:text-gray-900',
-              gridView && 'text-white'
+              calendarView && 'text-white'
             )}
           />
         </ActionIcon>
       </div>
       
-      {!gridView ? (
+      {!calendarView ? (
         <div className='mt-4'>
           <div className="ms-auto mt-4 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-9 xl:grid-cols-9 gap-3">
             <Button
@@ -185,7 +183,7 @@ export default function CalendarMainPage() {
         </div>
       )
       }
-      {!gridView ? (
+      {!calendarView ? (
         <div className='mt-8'>
           <ActivityTablePage statusType={statusType} activityType={activityType} startDate={startDate} endDate={endDate} period={period} />
         </div>
