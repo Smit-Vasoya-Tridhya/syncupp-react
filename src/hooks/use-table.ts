@@ -114,6 +114,8 @@ export function useTable<T extends AnyObject>(
       }
   };
 
+  
+
 
   /*
    * Handle sorting

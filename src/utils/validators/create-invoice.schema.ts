@@ -13,7 +13,7 @@ export const invoiceFormSchema = Yup.object().shape({
     Yup.object().shape({
       item: Yup.string().required(messages.itemNameIsRequired).max(20, messages.itemNameLength),
       description: Yup.string().required(messages.itemDescIsRequired).max(150, messages.invoiceDescriptionLength),
-      qty: Yup.number().required(messages.itemQtyIsRequired).max(9999999, messages.quantitymaxDigitLength),
+      qty: Yup.number().integer(messages.quantytyAllowInteger).required(messages.itemQtyIsRequired).max(9999999, messages.quantitymaxDigitLength).test('is-integer', messages.quantytyAllowInteger, value => Number.isInteger(value)),
       tax: Yup.number().max(100, messages.maxTaxIsRequired).required(messages.taxIsRequired),
       rate: Yup.number().required(messages.rateIsRequired).max(9999999, messages.ratemaxDigitLength),
     })

@@ -39,12 +39,16 @@ type Columns = {
   data: any[];
   sortConfig?: any;
   handleSelectAll: any;
+  handlecustomeSelectAll: any,
   checkedItems: string[];
-  onDeleteItem: (id: string) => void;
+  onDeleteItem: (id: string | string[], currentPage?: any, countPerPage?: number, Islastitem?: boolean, sortConfig?: Record<string, string>, searchTerm?: string) => void;
   onHeaderCellClick: (value: string) => void;
   onChecked?: (id: string) => void;
   row: any;
   setOpen: any;
+  currentPage?: number;
+  pageSize?: number;
+  searchTerm?: string;
 };
 
 export const InvoiceColumns = ({
@@ -54,9 +58,13 @@ export const InvoiceColumns = ({
   onDeleteItem,
   onHeaderCellClick,
   handleSelectAll,
+  handlecustomeSelectAll,
   onChecked,
   row,
   setOpen,
+  currentPage,
+  pageSize,
+  searchTerm,
 }: Columns) => {
 
   const dispatch = useDispatch();
@@ -96,6 +104,7 @@ export const InvoiceColumns = ({
 
   const StatusHandler = (status: string, id: string, setOpen: any) => {
 
+    handlecustomeSelectAll()
 
     let { page, items_per_page, sort_field, sort_order, search } = paginationParams;
 
@@ -123,7 +132,7 @@ export const InvoiceColumns = ({
         <div className="ps-3.5">
           <Checkbox
             title={'Select All'}
-            onChange={handleSelectAll}
+            onChange={handlecustomeSelectAll}
             checked={checkedItems.length === data.length}
             className="cursor-pointer"
           />
@@ -195,7 +204,7 @@ export const InvoiceColumns = ({
       key: 'total',
       width: 200,
       render: (value: string) => (
-        <Text className="font-medium text-gray-700">{value && value != '' ? value : "-"}</Text>
+        <Text className="font-medium text-gray-700">{value && value != '' ? "$ " + value : "-"}</Text>
       ),
     },
     {
@@ -397,7 +406,9 @@ export const InvoiceColumns = ({
           {row?.status === 'draft' ? <DeletePopover
             title={`Delete the Invoice`}
             description={`Are you sure you want to delete?`}
-            onDelete={() => onDeleteItem(row._id)}
+            // onDelete={() => onDeleteItem([row._id])}
+            onDelete={() => onDeleteItem([row._id], currentPage, pageSize, data?.length <= 1 ? true : false, sortConfig, searchTerm)}
+
           /> : <Button
             size="sm"
             variant="outline"

@@ -319,7 +319,7 @@ export default function EditAgreementForm({ params }: { params: { id: string } }
                         </div>
                         <h3 className='flex justify-between items-center border-2 rounded border-solid border-gray-300 bg-gray-100 p-3'>
                             <span>{formdata?.title}</span>
-                            <span>{formdata?.due_date && formdata?.due_date != "" ? moment(formdata?.due_date).format("Do MMM. ‘YY") : ""}</span>
+                            <span>{formdata?.due_date && formdata?.due_date != "" ? "Due Date : " + moment(formdata?.due_date).format("Do MMM. ‘YY") : ""}</span>
                         </h3>
                         <div className='mt-5' dangerouslySetInnerHTML={{ __html: formdata?.description }} />
                         <div className='flex justify-between mt-5 font-medium text-gray-700 dark:text-gray-600 mb-1.5'>

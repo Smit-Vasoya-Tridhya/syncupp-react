@@ -36,6 +36,7 @@ import cn from '@/utils/class-names';
 import { handleKeyDown } from '@/utils/common-functions';
 import { createinvoiceapicall } from '@/redux/slices/user/invoice/invoicesformSlice';
 import { getInvoiceApi } from '@/redux/slices/user/invoice/invoiceSlice';
+import PageHeader from '@/app/shared/page-header';
 
 export default function CreateInvoice() {
   const dispatch = useDispatch();
@@ -68,15 +69,24 @@ export default function CreateInvoice() {
     dispatch(getInvoiceApi());
   }, []);
 
-  const calculateTotalTax = (invoiceContent: any) => {
-    return invoiceContent
-      .reduce((totalTax: any, item: any) => {
-        const itemTotal = item?.rate * item?.qty;
-        const taxAmount = (itemTotal * item?.tax) / 100;
-        return totalTax + taxAmount;
-      }, 0)
-      .toFixed(2);
-  };
+
+
+  function calculateTotalTax(invoiceContent: any) {
+    let total = 0;
+
+    if (invoiceContent && Array.isArray(invoiceContent) && invoiceContent.length > 0) {
+      for (let index = 0; index < invoiceContent.length; index++) {
+        const item: any = invoiceContent[index];
+        if (item && typeof item.qty === 'number' && typeof item.rate === 'number' && typeof item.tax === 'number') {
+          const itemTotal = (item.rate * item.qty) + ((item.rate * item.qty) / 100) * item.tax;
+          total += parseFloat(itemTotal.toFixed(2));
+        }
+      }
+    }
+
+    return total.toFixed(2);
+  }
+
 
   const initialsValue: InvoiceFormInput = {
     invoice_number: '',
@@ -141,21 +151,17 @@ export default function CreateInvoice() {
                 <div className="flex-grow pb-10">
                   <div className="grid grid-cols-1 gap-8 divide-y divide-dashed divide-gray-200 @2xl:gap-10 @3xl:gap-12">
                     {/* Page Title & Back button */}
-                    <div className="flex w-full">
-                      <div>
-                        <FormBlockWrapper
-                          title={'Add Invoice'}
-                          className="text-2xl"
-                        ></FormBlockWrapper>
-                      </div>
-                      <div className="ml-[68%]">
-                        <Link href={routes.invoice} className="w-full">
-                          <Button className="mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0">
-                            <FaArrowLeft className="me-1.5 h-[17px] w-[17px]" />
-                            Back
-                          </Button>
-                        </Link>
-                      </div>
+                    <div>
+                      <PageHeader title="Create Invoice">
+                        <div >
+                          <Link href={routes.invoice} className="w-full">
+                            <Button className="float-end mt-5 bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0">
+                              <FaArrowLeft className="me-1.5 h-[17px] w-[17px]" />
+                              Back
+                            </Button>
+                          </Link>
+                        </div>
+                      </PageHeader>
                     </div>
 
                     {/* From Input Section  */}
@@ -569,9 +575,7 @@ export default function CreateInvoice() {
                                     <Text className="flex items-center justify-between text-base font-semibold text-gray-900">
                                       Total:{' '}
                                       <Text as="span">
-                                        {calculateTotalTax(
-                                          values.invoice_content
-                                        )}
+                                        {calculateTotalTax(values.invoice_content)}
                                       </Text>
                                     </Text>
                                   </div>

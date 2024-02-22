@@ -10,7 +10,7 @@ import { InvoiceFormInput } from '@/utils/validators/create-invoice.schema';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { getInvoiceDataByID } from '@/redux/slices/user/invoice/invoiceSlice';
+import { getInvoiceDataByID, postDownloadInvoice } from '@/redux/slices/user/invoice/invoiceSlice';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from 'rizzui';
@@ -18,13 +18,16 @@ import { FaArrowLeft } from 'react-icons/fa';
 import { routes } from '@/config/routes';
 import { getSingleClientinvoice } from '@/redux/slices/user/client/invoice/clientinvoiceSlice';
 import Spinner from '@/components/ui/spinner';
+import { IoMdDownload } from "react-icons/io";
 
 export default function InvoiceDetails({ params }: { params: { id: string } }) {
-    const { singleInvoicedetails, loading } = useSelector((state: any) => state?.root?.clieninvoice);
-    console.log(singleInvoicedetails, 'singleInvoicedetails')
 
     const dispatch = useDispatch();
     const router = useRouter();
+
+    const { singleInvoicedetails, loading } = useSelector((state: any) => state?.root?.clieninvoice);
+    const IncoiceLoader = useSelector((state: any) => state?.root?.invoice)?.loading
+    // console.log(singleInvoicedetails, 'singleInvoicedetails')
 
     useEffect(() => {
         dispatch(getSingleClientinvoice(params?.id));
@@ -32,55 +35,6 @@ export default function InvoiceDetails({ params }: { params: { id: string } }) {
 
     const data = singleInvoicedetails.data?.[0];
 
-    const defaultValuess = {
-        invoice_number: data?.invoice_number ?? '',
-        due_date: data?.due_date ?? '',
-        invoice_date: data?.invoice_date ?? '',
-        invoice_content: {
-            item: data?.invoice_content?.item ?? '',
-            qty: data?.invoice_content?.qty ?? '',
-            rate: data?.invoice_content?.rate ?? '',
-            tax: data?.invoice_content?.tax ?? '',
-            amount: data?.invoice_content?.amount ?? '',
-            description: data?.invoice_content?.description ?? '',
-        },
-
-        sub_total: data?.sub_total ?? 0,
-        total: data?.total ?? 0,
-        createdAt: data?.createdAt ?? '',
-        updatedAt: data?.updatedAt ?? '',
-        status: data?.status ?? '',
-        from: {
-            name: data?.from?.name ?? '',
-            company_name: data?.from?.company_name ?? '',
-            address: data?.from?.address ?? '',
-            pincode: data?.from?.pincode ?? 0,
-            state: {
-                name: data?.from?.state?.name ?? '',
-            },
-            city: {
-                name: data?.from?.city?.name ?? '',
-            },
-            country: {
-                name: data?.from?.country?.name ?? '',
-            },
-        },
-        to: {
-            name: data?.to?.name ?? '',
-            company_name: data?.to?.company_name ?? '',
-            address: data?.to?.address ?? '',
-            pincode: data?.to?.pincode ?? 0,
-            state: {
-                name: data?.to?.state?.name ?? '',
-            },
-            city: {
-                name: data?.to?.city?.name ?? '',
-            },
-            country: {
-                name: data?.to?.country?.name ?? '',
-            },
-        },
-    };
 
     const columns = [
         {
@@ -178,17 +132,34 @@ export default function InvoiceDetails({ params }: { params: { id: string } }) {
         return `${year}-${month}-${day}`;
     }
 
+    const DownloadInvoice = () => {
+        dispatch(postDownloadInvoice({ invoice_id: params?.id })).then(
+            (result: any) => {
+                if (postDownloadInvoice.fulfilled.match(result)) {
+                    // console.log('resultt', result)
+                    if (result && result.payload.success === true) { }
+                }
+            }
+        );
+    };
+
     return (
         <>
             {loading ? <div className='p-10 flex items-center justify-center'>
                 <Spinner size="xl" tag='div' className='ms-3' />
             </div> : <>
-                <Link href={routes.invoice} className="w-full">
-                    <Button className="float-end mb-3 mt-5 bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0">
-                        <FaArrowLeft className="me-1.5 h-[17px] w-[17px]" />
-                        Back
+
+                <div>
+                        <Button disabled={IncoiceLoader} onClick={DownloadInvoice} className="float-end ms-1 mb-3 mt-5 bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0">
+                        <IoMdDownload className=" h-[17px] w-[17px]" />
                     </Button>
-                </Link>
+                    <Link href={routes.invoice} className="w-full">
+                        <Button className="float-end mb-3 mt-5 bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0">
+                            <FaArrowLeft className="me-1.5 h-[17px] w-[17px]" />
+                            Back
+                        </Button>
+                    </Link>
+                </div>
                 <div className="w-full rounded-xl border border-gray-200 p-5 text-sm sm:p-6 lg:p-8 2xl:p-10">
                     <div className="mb-12 flex flex-col-reverse items-start justify-between md:mb-16 md:flex-row">
                         <Image
