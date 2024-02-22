@@ -133,14 +133,7 @@ export default function InvoiceDetails({ params }: { params: { id: string } }) {
     }
 
     const DownloadInvoice = () => {
-        dispatch(postDownloadInvoice({ invoice_id: params?.id })).then(
-            (result: any) => {
-                if (postDownloadInvoice.fulfilled.match(result)) {
-                    // console.log('resultt', result)
-                    if (result && result.payload.success === true) { }
-                }
-            }
-        );
+        dispatch(postDownloadInvoice({ invoice_id: params?.id }))
     };
 
     return (
