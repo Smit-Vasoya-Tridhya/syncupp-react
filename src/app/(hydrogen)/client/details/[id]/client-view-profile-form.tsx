@@ -57,7 +57,7 @@ export default function ClientViewProfileForm(props: any) {
     })
   }, [id, dispatch]);
 
-  let data = clientSliceData?.client;
+  let data = clientSliceData?.clientProfile;
 
   const handleTaskClick = (task: any) => {
     setSelectedTask(task);

@@ -99,6 +99,7 @@ interface ClientInitialState {
   agencyName: string;
   clientId: string;
   clientName: string;
+  clientProfile: string;
   addClientStatus: string;
   verifyClientStatus: string;
   clientRedirectStatus: string;
@@ -125,6 +126,7 @@ const initialState: ClientInitialState = {
   agencyName: '',
   clientId: '',
   clientName: '',
+  clientProfile: '',
   addClientStatus: '',
   verifyClientStatus: '',
   clientRedirectStatus: '',
@@ -523,6 +525,7 @@ export const clientSlice = createSlice({
         return {
           ...state,
           client: action?.payload?.data,
+          clientProfile: action?.payload?.data,
           loading: false,
           getClientStatus: 'success',
         };

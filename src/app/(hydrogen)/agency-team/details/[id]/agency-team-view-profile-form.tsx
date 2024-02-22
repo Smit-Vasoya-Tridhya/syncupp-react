@@ -13,6 +13,8 @@ import { routes } from '@/config/routes';
 import { FaArrowLeft } from 'react-icons/fa';
 import PageHeader from '@/app/shared/page-header';
 import { getTeamMemberProfile } from '@/redux/slices/user/team-member/teamSlice';
+import Spinner from '@/components/ui/spinner';
+import AgencyTeamActivityTablePage from './agency-team-activity-details';
 
 
 
@@ -41,13 +43,21 @@ export default function AgencyTeamMemberViewProfileForm(props: any) {
   const router = useRouter();
 
   const [selectedTask, setSelectedTask] = useState('Activity');
+  const [teamId, setTeamId] = useState('');
+
 
 
   useEffect(() => {
-    id && dispatch(getTeamMemberProfile({ _id: id }))
+    id && dispatch(getTeamMemberProfile({ _id: id })).then((result: any) => {
+      if (getTeamMemberProfile.fulfilled.match(result)) {
+        if (result && result.payload.success === true) {
+          setTeamId(result?.payload?.data[0]?.reference_id)
+        }
+      }
+    })
   }, [id, dispatch]);
 
-  let [data] = teamMemberData?.teamMember;
+  let [data] = teamMemberData?.teamMemberProfile;
 
   const handleTaskClick = (task: any) => {
     setSelectedTask(task);
@@ -96,7 +106,15 @@ export default function AgencyTeamMemberViewProfileForm(props: any) {
       </div>
       <div className="mt-3">
         {selectedTask === 'Activity' && (
-          <span>Activity</span>
+          <div>
+            {teamId === '' ? (
+              <div className='p-10 flex items-center justify-center'>
+                <Spinner size="xl" tag='div' />
+              </div>
+            ) : (
+              <AgencyTeamActivityTablePage teamId={teamId} />
+            )}
+          </div>
         )}
         {selectedTask === 'Agreement' && (
           <span>Agreement</span>

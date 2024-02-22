@@ -17,6 +17,7 @@ import AddActivityFormPage from '../../calender/create-edit-event/create-edit-ac
 import { PiXBold } from 'react-icons/pi';
 import { MdOutlineDone } from 'react-icons/md';
 import ConfirmationPopover from '@/app/shared/confirmation-popover';
+import { usePathname } from 'next/navigation';
 
 type Columns = {
   data: any[];
@@ -115,6 +116,8 @@ export const GetActivityColumns = ({
 }: Columns) => {
 
   const signIn = useSelector((state: any) => state?.root?.signIn)
+  // const pathname = usePathname();
+  // console.log("pathname is....", pathname.startsWith('/client/details'))
 
   return [
     {

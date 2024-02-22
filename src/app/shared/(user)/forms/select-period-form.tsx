@@ -1,9 +1,7 @@
 'use client';
 
 import { Form } from '@/components/ui/form';
-import { getClientAgencies, setAgencyId, setAgencyName } from '@/redux/slices/user/client/clientSlice';
 import { useEffect, useState } from 'react';
-import { Controller } from 'react-hook-form';
 import { useDispatch, useSelector } from "react-redux";
 import { usePathname } from 'next/navigation';
 import { DatePicker } from '@/components/ui/datepicker';
@@ -15,7 +13,7 @@ import { getAllActivity } from '@/redux/slices/user/activity/activitySlice';
 
 export default function DatePeriodSelectionForm(props: any) {
 
-    const { setStartDate, setEndDate, activityType, statusType, setPeriod, clientId } = props;
+    const { setStartDate, setEndDate, activityType, statusType, setPeriod, clientId, teamId, clientTeamId } = props;
 
     const dispatch = useDispatch();
     const pathname = usePathname();
@@ -37,9 +35,9 @@ export default function DatePeriodSelectionForm(props: any) {
         !!end && setEndDate(moment(end).format('DD-MM-YYYY'))
 
         if (signIn?.role !== 'client' && signIn?.role !== 'team_client') {
-            !!end && dispatch(getAllActivity({ page: 1, sort_field: 'createdAt', sort_order: 'desc', client_id: clientId, filter: { status: statusType, activity_type: activityType, date: 'period', start_date: moment(start).format('DD-MM-YYYY'), end_date: moment(end).format('DD-MM-YYYY') }, pagination: true }))
+            !!end && dispatch(getAllActivity({ page: 1, sort_field: 'createdAt', sort_order: 'desc', client_id: clientId, team_id: teamId, client_team_id: clientTeamId, filter: { status: statusType, activity_type: activityType, date: 'period', start_date: moment(start).format('DD-MM-YYYY'), end_date: moment(end).format('DD-MM-YYYY') }, pagination: true }))
         } else {
-            !!end && dispatch(getAllActivity({ page: 1, sort_field: 'createdAt', sort_order: 'desc', agency_id: clientSliceData?.agencyId, filter: { status: statusType, activity_type: activityType, date: 'period', start_date: moment(start).format('DD-MM-YYYY'), end_date: moment(end).format('DD-MM-YYYY') }, pagination: true }))
+            !!end && dispatch(getAllActivity({ page: 1, sort_field: 'createdAt', sort_order: 'desc', agency_id: clientSliceData?.agencyId, client_team_id: clientTeamId, filter: { status: statusType, activity_type: activityType, date: 'period', start_date: moment(start).format('DD-MM-YYYY'), end_date: moment(end).format('DD-MM-YYYY') }, pagination: true }))
         }
 
         !!end && setPeriod('period')

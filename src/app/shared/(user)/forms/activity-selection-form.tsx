@@ -4,12 +4,11 @@ import { Form } from '@/components/ui/form';
 import { Controller } from 'react-hook-form';
 import { useDispatch, useSelector } from "react-redux";
 import Select from '@/components/ui/select';
-import { getAllTask } from '@/redux/slices/user/task/taskSlice';
 import { getAllActivity, setActivityName } from '@/redux/slices/user/activity/activitySlice';
 
 
 export default function ActivitySelectionForm(props: any) {
-    const { setActivityType, statusType, startDate, endDate, period, clientId } = props;
+    const { setActivityType, statusType, startDate, endDate, period, clientId, teamId, clientTeamId } = props;
     const dispatch = useDispatch();
     const activityData = useSelector((state: any) => state?.root?.activity);
     const signIn = useSelector((state: any) => state?.root?.signIn)
@@ -33,16 +32,16 @@ export default function ActivitySelectionForm(props: any) {
         if (signIn?.role !== 'client' && signIn?.role !== 'team_client') {
 
             endDate === '' ?
-                dispatch(getAllActivity({ page: 1, sort_field: 'createdAt', sort_order: 'desc', client_id: clientId, filter: { status: statusType, activity_type: selectedOption?.value }, pagination: true }))
+                dispatch(getAllActivity({ page: 1, sort_field: 'createdAt', sort_order: 'desc', client_id: clientId, team_id: teamId, client_team_id: clientTeamId, filter: { status: statusType, activity_type: selectedOption?.value }, pagination: true }))
                 :
-                dispatch(getAllActivity({ page: 1, sort_field: 'createdAt', sort_order: 'desc', client_id: clientId, filter: { status: statusType, activity_type: selectedOption?.value, date: period, start_date: startDate, end_date: endDate }, pagination: true }))
+                dispatch(getAllActivity({ page: 1, sort_field: 'createdAt', sort_order: 'desc', client_id: clientId, team_id: teamId, client_team_id: clientTeamId, filter: { status: statusType, activity_type: selectedOption?.value, date: period, start_date: startDate, end_date: endDate }, pagination: true }))
 
         } else {
 
             endDate === '' ?
-                dispatch(getAllActivity({ page: 1, sort_field: 'createdAt', sort_order: 'desc', agency_id: clientSliceData?.agencyId, filter: { status: statusType, activity_type: selectedOption?.value }, pagination: true }))
+                dispatch(getAllActivity({ page: 1, sort_field: 'createdAt', sort_order: 'desc', agency_id: clientSliceData?.agencyId, client_team_id: clientTeamId, filter: { status: statusType, activity_type: selectedOption?.value }, pagination: true }))
                 :
-                dispatch(getAllActivity({ page: 1, sort_field: 'createdAt', sort_order: 'desc', agency_id: clientSliceData?.agencyId, filter: { status: statusType, activity_type: selectedOption?.value, date: period, start_date: startDate, end_date: endDate }, pagination: true }))
+                dispatch(getAllActivity({ page: 1, sort_field: 'createdAt', sort_order: 'desc', agency_id: clientSliceData?.agencyId, client_team_id: clientTeamId, filter: { status: statusType, activity_type: selectedOption?.value, date: period, start_date: startDate, end_date: endDate }, pagination: true }))
 
         }
 
