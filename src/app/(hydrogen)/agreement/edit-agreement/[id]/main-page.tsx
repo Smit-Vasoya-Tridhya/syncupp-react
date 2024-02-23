@@ -170,7 +170,7 @@ export default function EditAgreementForm({ params }: { params: { id: string } }
                         <PageHeader title="Edit Agreement" >
                             <div>
                                 <Link href={routes.agreement} className="w-full">
-                                    <Button className="float-end mt-5 bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0">
+                                    <Button className="float-end mt-5 bg-[#53216F] hover:bg-[#8e45b8] text-xs @lg:w-auto sm:text-sm lg:mt-0">
                                         <FaArrowLeft className="me-1.5 h-[17px] w-[17px]" />
                                         Back
                                     </Button>
