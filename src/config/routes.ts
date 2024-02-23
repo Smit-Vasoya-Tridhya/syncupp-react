@@ -46,6 +46,7 @@ export const routes = {
   userCalendarAddActivity: '/calendar/create-edit',
 
   agreement: '/agreement',
+  createAgreement:`/agreement/create-agreement`,
 
   // Admin panel
   admin: {

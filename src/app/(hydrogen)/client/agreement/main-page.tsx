@@ -73,9 +73,7 @@ export default function AgreementPage() {
     return (
         <>
             {/* <h1>Aggrement</h1> */}
-            <PageHeader title={pageHeader.title} />
-
-            {/* <Button type='button' onClick={() => { router.push(`/agreement/create-agreement`)}}>Add</Button> */}
+            <PageHeader title={pageHeader.title} /> 
             <CustomTable
                 data={agreementDetails?.data?.agreements || []}
                 total={agreementDetails?.data?.page_count || 1}
