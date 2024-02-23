@@ -2,7 +2,7 @@
 
 import type { CalendarEvent } from '@/types';
 import dayjs from 'dayjs';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Calendar, dayjsLocalizer } from 'react-big-calendar';
 import EventForm from '@/app/shared/(user)/calender/event-calendar/event-form';
 import DetailsEvents from '@/app/shared/(user)/calender/event-calendar/details-event';
@@ -11,6 +11,10 @@ import useEventCalendar from '@/hooks/use-event-calendar';
 import cn from '@/utils/class-names';
 import { Button } from 'rizzui';
 import DatePeriodSelectionForm from '../../forms/select-period-form';
+import AddActivityFormPage from '../create-edit-event/create-edit-activity-form';
+import { useDispatch } from 'react-redux';
+import { getAllActivity } from '@/redux/slices/user/activity/activitySlice';
+import moment from 'moment';
 
 const localizer = dayjsLocalizer(dayjs);
 // rbc-active -> black button active
@@ -20,9 +24,22 @@ const calendarToolbarClassName =
 export default function EventCalendarView() {
   const { events } = useEventCalendar();
   const { openModal } = useModal();
+  const dispatch = useDispatch();
 
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+
+
+  const firstDayOfMonth = moment().startOf('month').format('DD-MM-YYYY');
+  // console.log("first day of month...", firstDayOfMonth);
+
+  const endDayOfMonth = moment().endOf('month').format('DD-MM-YYYY');
+  // console.log("end day of month...", endDayOfMonth);
+
+
+  useEffect(() => {
+    dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', filter: { date: 'period', start_date: firstDayOfMonth, end_date: endDayOfMonth }, pagination: false }))
+  }, [dispatch, firstDayOfMonth, endDayOfMonth]);
 
 
 
@@ -30,8 +47,9 @@ export default function EventCalendarView() {
   const handleSelectSlot = useCallback(
     ({ start, end }: { start: Date; end: Date }) => {
       openModal({
-        view: <EventForm startDate={start} endDate={end} />,
-        customSize: '650px',
+        // view: <EventForm startDate={start} endDate={end} />,
+        view: <AddActivityFormPage title="Add Activity" />,
+        customSize: '1050px',
       });
     },
     [openModal]
@@ -43,7 +61,8 @@ export default function EventCalendarView() {
     (event: CalendarEvent) => {
       openModal({
         view: <DetailsEvents event={event} />,
-        customSize: '500px',
+        // view: <AddActivityFormPage title="Edit Activity" />,
+        customSize: '1050px',
       });
     },
     [openModal]

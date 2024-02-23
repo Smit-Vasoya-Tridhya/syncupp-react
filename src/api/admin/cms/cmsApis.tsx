@@ -151,3 +151,22 @@ export const GetCmsTermscondition = async (): Promise<ApiResponse> => {
   const responseData: ApiResponse = response.data;
   return responseData;
 };
+export const GetCmsPricingPlan = async (): Promise<ApiResponse> => {
+  const response = await AxiosDefault({
+    url: '/api/v1/crm/price-plan',
+    method: 'GET',
+    contentType: 'application/json',
+  });
+  const responseData: ApiResponse = response.data;
+  return responseData;
+};
+export const EditCmsPricingPaln = async (data: any): Promise<ApiResponse> => {
+  const response = await AxiosDefault({
+    url: '/api/v1/crm/price-plan',
+    method: 'PUT',
+    data: data,
+    contentType: 'application/json',
+  });
+  const responseData: ApiResponse = response.data;
+  return responseData;
+};

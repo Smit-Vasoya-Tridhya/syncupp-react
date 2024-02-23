@@ -13,6 +13,8 @@ import { routes } from '@/config/routes';
 import { FaArrowLeft } from 'react-icons/fa';
 import PageHeader from '@/app/shared/page-header';
 import { getClientById } from '@/redux/slices/user/client/clientSlice';
+import ClientActivityTablePage from './client-activity-details';
+import Spinner from '@/components/ui/spinner';
 
 
 
@@ -41,13 +43,27 @@ export default function ClientViewProfileForm(props: any) {
   const router = useRouter();
 
   const [selectedTask, setSelectedTask] = useState('Activity');
+  const [clientId, setClientId] = useState('');
+  const [clientName, setClientName] = useState('');
+// console.log("client name...", clientName)
 
 
   useEffect(() => {
-    id && dispatch(getClientById({ clientId: id }))
-  }, [id, dispatch]); 
+    id && dispatch(getClientById({ clientId: id })).then((result: any) => {
+      if (getClientById.fulfilled.match(result)) {
+        if (result && result.payload.success === true) {
+          setClientId(result?.payload?.data?.reference_id)
+          const fullName =
+            (result?.payload?.data?.first_name.charAt(0).toUpperCase() + result?.payload?.data?.first_name.slice(1)) +
+            ' ' +
+            (result?.payload?.data?.last_name.charAt(0).toUpperCase() + result?.payload?.data?.last_name.slice(1));
+          setClientName(fullName)
+        }
+      }
+    })
+  }, [id, dispatch]);
 
-  let data = clientSliceData?.client;
+  let data = clientSliceData?.clientProfile;
 
   const handleTaskClick = (task: any) => {
     setSelectedTask(task);
@@ -100,7 +116,15 @@ export default function ClientViewProfileForm(props: any) {
       </div>
       <div className="mt-3">
         {selectedTask === 'Activity' && (
-          <span>Activity</span>
+          <div>
+            {clientId === '' && clientName === '' ? (
+              <div className='p-10 flex items-center justify-center'>
+                <Spinner size="xl" tag='div' />
+              </div>
+            ) : (
+              <ClientActivityTablePage clientId={clientId} clientName={clientName} />
+            )}
+          </div>
         )}
         {selectedTask === 'Agreement' && (
           <span>Agreement</span>

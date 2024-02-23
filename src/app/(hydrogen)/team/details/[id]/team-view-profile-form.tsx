@@ -13,6 +13,9 @@ import { routes } from '@/config/routes';
 import { FaArrowLeft } from 'react-icons/fa';
 import PageHeader from '@/app/shared/page-header';
 import { getTeamMemberProfile } from '@/redux/slices/user/team-member/teamSlice';
+import Spinner from '@/components/ui/spinner';
+import TeamActivityTablePage from './team-activity-details';
+import { setClientTeamId } from '@/redux/slices/user/client/clientSlice';
 
 
 
@@ -41,13 +44,21 @@ export default function TeamMemberViewProfileForm(props: any) {
   const router = useRouter();
 
   const [selectedTask, setSelectedTask] = useState('Activity');
+  const [teamId, setTeamId] = useState('');
 
 
   useEffect(() => {
-    id && dispatch(getTeamMemberProfile({ _id: id }))
+    id && dispatch(getTeamMemberProfile({ _id: id })).then((result: any) => {
+      if (getTeamMemberProfile.fulfilled.match(result)) {
+        if (result && result.payload.success === true) {
+          setTeamId(result?.payload?.data[0]?.reference_id)
+          dispatch(setClientTeamId(result?.payload?.data[0]?.reference_id));
+        }
+      }
+    })
   }, [id, dispatch]);
 
-  let [data] = teamMemberData?.teamMember;
+  let [data] = teamMemberData?.teamMemberProfile;
 
   const handleTaskClick = (task: any) => {
     setSelectedTask(task);
@@ -57,7 +68,7 @@ export default function TeamMemberViewProfileForm(props: any) {
     <>
       <PageHeader title={pageHeader.title}>
         <div className="mt-4 flex items-center gap-3 @lg:mt-0">
-          <Link href={routes?.agency_team}>
+          <Link href={routes?.team}>
             <Button className="mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0">
               <FaArrowLeft className="me-1.5 h-[17px] w-[17px]" />
               Back
@@ -96,7 +107,15 @@ export default function TeamMemberViewProfileForm(props: any) {
       </div>
       <div className="mt-3">
         {selectedTask === 'Activity' && (
-          <span>Activity</span>
+          <div>
+            {teamId === '' ? (
+              <div className='p-10 flex items-center justify-center'>
+                <Spinner size="xl" tag='div' />
+              </div>
+            ) : (
+              <TeamActivityTablePage teamId={teamId} />
+            )}
+          </div>
         )}
         {selectedTask === 'Agreement' && (
           <span>Agreement</span>

@@ -12,7 +12,9 @@ import DatePeriodSelectionForm from '@/app/shared/(user)/forms/select-period-for
 import ActivitySelectionForm from '@/app/shared/(user)/forms/activity-selection-form';
 
 
-export default function ActivityTablePage(props: any) {
+export default function TeamActivityTablePage(props: any) {
+
+    const { teamId } = props;
 
 
     const dispatch = useDispatch();
@@ -28,32 +30,28 @@ export default function ActivityTablePage(props: any) {
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
 
-    // console.log("Activity is....", activityData?.activityName)
-    // console.log("Activity is....", activityType)
-    // console.log("Start date is....", startDate)
-    // console.log("End date is....", endDate)
 
     const handleStatusFilterApiCall = (filterStatusValue: string) => {
         setStatusType(filterStatusValue);
         if (signIn?.role !== 'client' && signIn?.role !== 'team_client') {
             if (activityType === '' && endDate === '' && startDate === '') {
-                dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', filter: { status: filterStatusValue }, pagination: true }))
+                dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc',  client_team_id: teamId, filter: { status: filterStatusValue }, pagination: true }))
             } else if (endDate === '' && startDate === '' && activityType !== '') {
-                dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', filter: { status: filterStatusValue, activity_type: activityType }, pagination: true }))
+                dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc',  client_team_id: teamId, filter: { status: filterStatusValue, activity_type: activityType }, pagination: true }))
             } else if (endDate !== '' && startDate !== '' && activityType !== '') {
-                dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', filter: { status: filterStatusValue, activity_type: activityType, date: period, start_date: startDate, end_date: endDate }, pagination: true }))
+                dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc',  client_team_id: teamId, filter: { status: filterStatusValue, activity_type: activityType, date: period, start_date: startDate, end_date: endDate }, pagination: true }))
             } else if (endDate !== '' && startDate !== '' && activityType === '') {
-                dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', filter: { status: filterStatusValue, date: period, start_date: startDate, end_date: endDate }, pagination: true }))
+                dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc',  client_team_id: teamId, filter: { status: filterStatusValue, date: period, start_date: startDate, end_date: endDate }, pagination: true }))
             }
         } else {
             if (activityType === '' && endDate === '' && startDate === '') {
-                dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', agency_id: clientSliceData?.agencyId, filter: { status: filterStatusValue }, pagination: true }))
+                dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc',  client_team_id: teamId, agency_id: clientSliceData?.agencyId, filter: { status: filterStatusValue }, pagination: true }))
             } else if (endDate === '' && startDate === '' && activityType !== '') {
-                dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', agency_id: clientSliceData?.agencyId, filter: { status: filterStatusValue, activity_type: activityType }, pagination: true }))
+                dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc',  client_team_id: teamId, agency_id: clientSliceData?.agencyId, filter: { status: filterStatusValue, activity_type: activityType }, pagination: true }))
             } else if (endDate !== '' && startDate !== '' && activityType !== '') {
-                dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', agency_id: clientSliceData?.agencyId, filter: { status: filterStatusValue, activity_type: activityType, date: period, start_date: startDate, end_date: endDate }, pagination: true }))
+                dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc',  client_team_id: teamId, agency_id: clientSliceData?.agencyId, filter: { status: filterStatusValue, activity_type: activityType, date: period, start_date: startDate, end_date: endDate }, pagination: true }))
             } else if (endDate !== '' && startDate !== '' && activityType === '') {
-                dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', agency_id: clientSliceData?.agencyId, filter: { status: filterStatusValue, date: period, start_date: startDate, end_date: endDate }, pagination: true }))
+                dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc',  client_team_id: teamId, agency_id: clientSliceData?.agencyId, filter: { status: filterStatusValue, date: period, start_date: startDate, end_date: endDate }, pagination: true }))
             }
         }
     }
@@ -64,14 +62,14 @@ export default function ActivityTablePage(props: any) {
 
         dispatch(setPaginationDetails({ pageNumber: page, itemsPerPageNumber: items_per_page }))
 
-        const response = signIn?.role !== 'client' && signIn?.role !== 'team_client' ? await dispatch(getAllActivity({ page, items_per_page, sort_field, sort_order, search, filter: { status: statusType, activity_type: activityType, date: period, start_date: startDate, end_date: endDate }, pagination: true })) : await dispatch(getAllActivity({ page, items_per_page, sort_field, sort_order, search, agency_id: clientSliceData?.agencyId, filter: { status: statusType, activity_type: activityType, date: period, start_date: startDate, end_date: endDate }, pagination: true }));
+        const response = signIn?.role !== 'client' && signIn?.role !== 'team_client' ? await dispatch(getAllActivity({ page, items_per_page, sort_field, sort_order, search,  client_team_id: teamId, filter: { status: statusType, activity_type: activityType, date: period, start_date: startDate, end_date: endDate }, pagination: true })) : await dispatch(getAllActivity({ page, items_per_page, sort_field, sort_order, search, agency_id: clientSliceData?.agencyId,  client_team_id: teamId, filter: { status: statusType, activity_type: activityType, date: period, start_date: startDate, end_date: endDate }, pagination: true }));
         const { data } = response?.payload;
         const maxPage: number = data?.page_count;
 
         if (page > maxPage) {
             page = maxPage > 0 ? maxPage : 1;
             // await dispatch(getAllActivity({ page, items_per_page, sort_field, sort_order, search }));
-            signIn?.role !== 'client' && signIn?.role !== 'team_client' ? await dispatch(getAllActivity({ page, items_per_page, sort_field, sort_order, search, filter: { status: statusType, activity_type: activityType, date: period, start_date: startDate, end_date: endDate }, pagination: true })) : await dispatch(getAllActivity({ page, items_per_page, sort_field, sort_order, search, agency_id: clientSliceData?.agencyId, filter: { status: statusType, activity_type: activityType, date: period, start_date: startDate, end_date: endDate }, pagination: true }));
+            signIn?.role !== 'client' && signIn?.role !== 'team_client' ? await dispatch(getAllActivity({ page, items_per_page, sort_field, sort_order, search,  client_team_id: teamId, filter: { status: statusType, activity_type: activityType, date: period, start_date: startDate, end_date: endDate }, pagination: true })) : await dispatch(getAllActivity({ page, items_per_page, sort_field, sort_order, search, agency_id: clientSliceData?.agencyId,  client_team_id: teamId, filter: { status: statusType, activity_type: activityType, date: period, start_date: startDate, end_date: endDate }, pagination: true }));
             return data?.client
         }
         if (data && data?.client && data?.client?.length !== 0) {
@@ -86,7 +84,7 @@ export default function ActivityTablePage(props: any) {
         try {
             const res = typeof id === 'string' ? await dispatch(deleteTask({ taskIdsToDelete: [id] })) : await dispatch(deleteTask({ taskIdsToDelete: id }));
             if (res.payload.success === true) {
-                const reponse = signIn?.role !== 'client' && signIn?.role !== 'team_client' ? await dispatch(getAllActivity({ page: currentPage, items_per_page: countPerPage, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm, filter: { status: statusType, activity_type: activityType, date: period, start_date: startDate, end_date: endDate }, pagination: true })) : await dispatch(getAllActivity({ page: currentPage, items_per_page: countPerPage, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm, agency_id: clientSliceData?.agencyId, filter: { status: statusType, activity_type: activityType, date: period, start_date: startDate, end_date: endDate }, pagination: true }));
+                const reponse = signIn?.role !== 'client' && signIn?.role !== 'team_client' ? await dispatch(getAllActivity({ page: currentPage, items_per_page: countPerPage, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm,  client_team_id: teamId, filter: { status: statusType, activity_type: activityType, date: period, start_date: startDate, end_date: endDate }, pagination: true })) : await dispatch(getAllActivity({ page: currentPage, items_per_page: countPerPage, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm, agency_id: clientSliceData?.agencyId,  client_team_id: teamId, filter: { status: statusType, activity_type: activityType, date: period, start_date: startDate, end_date: endDate }, pagination: true }));
             }
         } catch (error) {
             console.error(error);
@@ -129,10 +127,10 @@ export default function ActivityTablePage(props: any) {
                         Done
                     </Button>
                     <div className='mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0 col-span-3 lg:col-span-2 md:col-span-2 sm:col-span-2'>
-                        <DatePeriodSelectionForm setStartDate={setStartDate} setEndDate={setEndDate} statusType={statusType} activityType={activityType} setPeriod={setPeriod} />
+                        <DatePeriodSelectionForm setStartDate={setStartDate} setEndDate={setEndDate} statusType={statusType} activityType={activityType} setPeriod={setPeriod} clientTeamId={teamId} />
                     </div>
                     <div className='mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0 col-span-3 lg:col-span-2 md:col-span-2 sm:col-span-2'>
-                        <ActivitySelectionForm setActivityType={setActivityType} statusType={statusType} startDate={startDate} endDate={endDate} period={period} />
+                        <ActivitySelectionForm setActivityType={setActivityType} statusType={statusType} startDate={startDate} endDate={endDate} period={period} clientTeamId={teamId} />
                     </div>
                 </div>
             </div>

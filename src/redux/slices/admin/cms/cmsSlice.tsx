@@ -1,11 +1,13 @@
 import {
   EditCmsAboutus,
   EditCmsConatctUs,
+  EditCmsPricingPaln,
   EditCmsPrivacyPolicy,
   EditCmscancellation,
   EditCmsshipping,
   GetCmsAboutus,
   GetCmsConatctUS,
+  GetCmsPricingPlan,
   GetCmsPrivacyPolicy,
   GetCmsTermscondition,
   PostTermAndCondotionEnroll,
@@ -91,6 +93,35 @@ export const EditAboutUs: any = createAsyncThunk(
   async (data: any) => {
     try {
       const response: any = await EditCmsAboutus(data);
+      return response;
+    } catch (error: any) {
+      return {
+        status: false,
+        message: error.response.data.message,
+      } as FaqDataResponse;
+    }
+  }
+);
+
+export const Getpricingplan: any = createAsyncThunk(
+  'cms/getpricingplan',
+  async (data: any) => {
+    try {
+      const response: any = await GetCmsPricingPlan();
+      return response;
+    } catch (error: any) {
+      return {
+        status: false,
+        message: error.response.data.message,
+      } as FaqDataResponse;
+    }
+  }
+);
+export const Editpricingplan: any = createAsyncThunk(
+  'cms/editpricingplan',
+  async (data: any) => {
+    try {
+      const response: any = await EditCmsPricingPaln(data);
       return response;
     } catch (error: any) {
       return {
@@ -278,6 +309,57 @@ export const cmsSlice = createSlice({
         };
       })
       .addCase(Editcancllation.rejected, (state) => {
+        return {
+          ...state,
+          loading: false,
+          addTermAndConditionStatus: 'error',
+        };
+      });
+
+    //get pricing plan
+    builder
+      .addCase(Getpricingplan.pending, (state) => {
+        return {
+          ...state,
+          loading: true,
+        };
+      })
+      .addCase(Getpricingplan.fulfilled, (state, action) => {
+        return {
+          ...state,
+          // data: action.payload,
+          loading: false,
+          conatcUSdata: action.payload,
+        };
+      })
+      .addCase(Getpricingplan.rejected, (state) => {
+        return {
+          ...state,
+          loading: false,
+          addTermAndConditionStatus: 'error',
+        };
+      });
+    //edit cancellation
+    builder
+      .addCase(Editpricingplan.pending, (state) => {
+        return {
+          ...state,
+          loading: true,
+        };
+      })
+      .addCase(Editpricingplan.fulfilled, (state, action) => {
+        if (action.payload.status == true) {
+          toast.error(action.payload.message);
+        } else {
+          toast.success(action.payload.message);
+        }
+        return {
+          ...state,
+          // data: action.payload,
+          loading: false,
+        };
+      })
+      .addCase(Editpricingplan.rejected, (state) => {
         return {
           ...state,
           loading: false,

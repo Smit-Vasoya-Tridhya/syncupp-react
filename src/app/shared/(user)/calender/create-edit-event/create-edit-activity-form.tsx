@@ -28,7 +28,7 @@ const menuItems = [
 
 export default function AddActivityFormPage(props: any) {
 
-  const { title, row, form, isTaskModule } = props;
+  const { title, row, form, isTaskModule, isClientEdit, isTeamEdit, isClientModule, clientName, clientId, isTeamModule, teamName, teamId, isAgencyTeam, isClientTeam } = props;
   // console.log("row data....", row);
 
   const dispatch = useDispatch();
@@ -111,16 +111,16 @@ export default function AddActivityFormPage(props: any) {
                 }
                 <div className="mt-3">
                   {selectedTask === 'Task' && (
-                    <AddTaskForm title={title} row={row} />
+                    <AddTaskForm title={title} row={row} isClientEdit={isClientEdit} isTeamEdit={isTeamEdit} isClientModule={isClientModule} clientReferenceId={clientId} clientName={clientName} isTeamModule={isTeamModule} teamName={teamName} teamReferenceId={teamId} isAgencyTeam={isAgencyTeam} isClientTeam={isClientTeam}  />
                   )}
                   {selectedTask === 'Call meeting' && (
                     <div className="h-full">
-                      <AddCallMeetingForm title={title} row={row} />
+                      <AddCallMeetingForm title={title} row={row} isClientEdit={isClientEdit} isTeamEdit={isTeamEdit} isClientModule={isClientModule} clientReferenceId={clientId} clientName={clientName} isTeamModule={isTeamModule} teamName={teamName} teamReferenceId={teamId} isAgencyTeam={isAgencyTeam} isClientTeam={isClientTeam} />
                     </div>
                   )}
                   {selectedTask === 'Others' && (
                     <div>
-                      <AddOtherForm title={title} row={row} />
+                      <AddOtherForm title={title} row={row} isClientEdit={isClientEdit} isTeamEdit={isTeamEdit} isClientModule={isClientModule} clientReferenceId={clientId} clientName={clientName} isTeamModule={isTeamModule} teamName={teamName} teamReferenceId={teamId} isAgencyTeam={isAgencyTeam} isClientTeam={isClientTeam} />
                     </div>
                   )}
                 </div>

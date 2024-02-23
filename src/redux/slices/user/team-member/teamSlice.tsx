@@ -74,6 +74,7 @@ const initialState = {
   clientId: '',
   clientName: '',
   teamList: '',
+  teamMemberProfile: '',
   getAllTeamMemberStatus: '',
   addTeamMemberStatus: '',
   editTeamMemberStatus: '',
@@ -406,6 +407,7 @@ export const teamSlice = createSlice({
         return {
           ...state,
           teamMember: action.payload.data,
+          teamMemberProfile: action.payload.data,
           loading: false,
           getTeamMemberProfileStatus: 'success',
         };

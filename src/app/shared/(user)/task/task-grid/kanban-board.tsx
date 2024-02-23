@@ -26,13 +26,22 @@ import { putTaskKanbanStatusChange } from "@/redux/slices/user/task/taskStatusSl
 function KanbanBoard() {
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(getAllTask({ pagination: false }))
-  }, [dispatch]);
-
+  
   const taskData = useSelector((state: any) => state?.root?.task);
   const signIn = useSelector((state: any) => state?.root?.signIn);
+  const clientSliceData = useSelector((state: any) => state?.root?.client);
+
+
+
   // console.log("Tasks.....", taskData?.data?.activity)
+
+  // console.log("agency id....", clientSliceData?.agencyId)
+
+  useEffect(() => {
+    signIn?.role !== 'client' && signIn?.role !== 'team_client' ? dispatch(getAllTask({ pagination: false })) : dispatch(getAllTask({ pagination: false, agency_id: clientSliceData?.agencyId }))
+  }, [dispatch, clientSliceData, signIn]);
+
+
 
   const [columns, setColumns] = useState<Column[]>(defaultCols);
   const columnsId = useMemo(() => columns?.map((col) => col?._id), [columns]);

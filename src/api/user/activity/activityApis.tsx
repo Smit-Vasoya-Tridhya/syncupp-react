@@ -44,9 +44,11 @@ type GetAllActivityApiData = {
   sort_field?: string;
   search?: string;
   client_id?: string;
+  team_id?: string;
   agency_id?: string;
   activity_type?: string;
   filter?: any;
+  pagination?: boolean;
 }
 
 
