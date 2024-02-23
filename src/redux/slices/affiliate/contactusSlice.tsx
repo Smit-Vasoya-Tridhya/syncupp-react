@@ -80,5 +80,4 @@ export const contactusSlice = createSlice({
 });
 
 
-// export const { logoutUserAdmin } = contactusSlice.actions;
 export default contactusSlice.reducer;

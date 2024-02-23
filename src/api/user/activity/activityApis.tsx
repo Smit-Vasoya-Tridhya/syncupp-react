@@ -43,6 +43,12 @@ type GetAllActivityApiData = {
   sort_order?: string;
   sort_field?: string;
   search?: string;
+  client_id?: string;
+  team_id?: string;
+  agency_id?: string;
+  activity_type?: string;
+  filter?: any;
+  pagination?: boolean;
 }
 
 
@@ -79,7 +85,7 @@ export const PatchEditActivityApi = async (data: PatchEditActivityApiData) => {
 
 export const GetAllActivityApi = async (data: GetAllActivityApiData) => {
   const response = await AxiosDefault({
-    url: "/api/v1/activity/task-list",
+    url: "/api/v1/activity/list",
     method: "POST",
     data: data,
     contentType: "application/json", 

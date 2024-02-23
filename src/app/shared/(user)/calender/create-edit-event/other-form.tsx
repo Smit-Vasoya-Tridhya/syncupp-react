@@ -24,7 +24,7 @@ import { AddOtherFormSchema, addOtherFormSchema } from '@/utils/validators/add-a
 import { Switch, Text, Textarea } from 'rizzui';
 import { AiOutlineUsergroupAdd } from 'react-icons/ai';
 import { GiNotebook } from 'react-icons/gi';
-import { getActivityById, patchEditActivity, postAddActivity } from '@/redux/slices/user/activity/activitySlice';
+import { getActivityById, getAllActivity, patchEditActivity, postAddActivity } from '@/redux/slices/user/activity/activitySlice';
 
 const QuillEditor = dynamic(() => import('@/components/ui/quill-editor'), {
   ssr: false,
@@ -34,7 +34,7 @@ const QuillEditor = dynamic(() => import('@/components/ui/quill-editor'), {
 
 export default function AddCallMeetingForm(props: any) {
 
-  const { title, row } = props;
+  const { title, row, isClientModule, isClientEdit, isTeamEdit, clientName, clientReferenceId, isTeamModule, teamName, teamReferenceId, isAgencyTeam, isClientTeam } = props;
   // console.log("row data....", row);
 
   const dispatch = useDispatch();
@@ -57,11 +57,17 @@ export default function AddCallMeetingForm(props: any) {
   // api call for get clients and team member
 
   useEffect(() => {
-    dispatch(getAllClient({ pagination: false }))
+    dispatch(getAllClient({ pagination: false, for_activity: true }))
     dispatch(getAllTeamMember({ pagination: false }))
   }, [dispatch]);
 
+  useEffect(() => {
+    isClientModule && clientReferenceId && setClientId(clientReferenceId)
+  }, [clientReferenceId, isClientModule]);
 
+  useEffect(() => {
+    isTeamModule && teamReferenceId && setTeamId(teamReferenceId)
+  }, [teamReferenceId, isTeamModule]);
 
   useEffect(() => {
     if (signIn && signIn?.teamMemberRole === 'team_member') {
@@ -98,23 +104,54 @@ export default function AddCallMeetingForm(props: any) {
     });
   }, [row, dispatch]);
 
-  let [data] = activityData?.activity ?? [{}];
+  let [data] = activityData?.activity ?? initialValues;
 
   // const dueee_date = moment(data?.due_date).toDate();
   // console.log(dueee_date, "formateedddd", data?.due_date)
 
-  let defaultValuess = {
+  let defaultValuess = isClientModule ? {
     title: data?.title,
-    description: data?.internal_info,
+    description: data?.agenda,
     // due_date: new Date(data?.due_date),
     due_date: moment(data?.due_date).toDate(),
-    recurring_date: moment(data?.recurring_date).toDate(),
-    start_time: moment(data?.start_time).toDate(),
-    end_time: moment(data?.end_time).toDate(),
-    client: data?.client_fullName,
+    recurring_date: moment(data?.recurring_end_date).toDate(),
+    start_time: moment(data?.meeting_start_time).toDate(),
+    end_time: moment(data?.meeting_end_time).toDate(),
+    client: isClientModule ? clientName : data?.client_name,
     assigned: signIn?.teamMemberRole === 'team_member' ? signIn?.user?.data?.user?.name : data?.assigned_to_name,
-    done: data?.status === 'completed' ? true : false
-  };
+    done: data?.status === 'completed' ? true : false,
+    notes: data?.internal_info
+  } : isTeamModule ? {
+    title: data?.title,
+    description: data?.agenda,
+    // due_date: new Date(data?.due_date),
+    due_date: moment(data?.due_date).toDate(),
+    recurring_date: moment(data?.recurring_end_date).toDate(),
+    start_time: moment(data?.meeting_start_time).toDate(),
+    end_time: moment(data?.meeting_end_time).toDate(),
+    client: data?.client_name,
+    assigned: isTeamModule && teamName ? teamName : data?.assigned_to_name,
+    done: data?.status === 'completed' ? true : false,
+    notes: data?.internal_info
+  } : {
+    title: data?.title,
+    description: data?.agenda,
+    // due_date: new Date(data?.due_date),
+    due_date: moment(data?.due_date).toDate(),
+    recurring_date: moment(data?.recurring_end_date).toDate(),
+    start_time: moment(data?.meeting_start_time).toDate(),
+    end_time: moment(data?.meeting_end_time).toDate(),
+    client: data?.client_name,
+    assigned: signIn?.teamMemberRole === 'team_member' ? signIn?.user?.data?.user?.name : data?.assigned_to_name,
+    done: data?.status === 'completed' ? true : false,
+    notes: data?.internal_info
+  }
+
+  useEffect(() => {
+    if (title === 'Edit Activity' && data?.recurring_end_date) {
+      setRecurringStatus(true)
+    }
+  }, [title, data])
 
 
 
@@ -128,15 +165,7 @@ export default function AddCallMeetingForm(props: any) {
     return { name: team?.name, value: team?.reference_id, key: team }
   }) : [];
 
-  // const handleClientChange = (selectedOption: Record<string, any>) => {
-  //   // console.log("selected option....", selectedOption)
-  //   dispatch(getAllTeamMember({ sort_field: 'createdAt', sort_order: 'desc', client_id: selectedOption?.value, pagination: true }))
-  // }
 
-  // const handleTeamChange = (selectedOption: Record<string, any>) => {
-  //   // console.log("selected option....", selectedOption)
-  //   dispatch(getAllTeamMember({ sort_field: 'createdAt', sort_order: 'desc', client_id: selectedOption?.value, pagination: true }))
-  // }
 
 
   const handleSwitchChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -152,20 +181,37 @@ export default function AddCallMeetingForm(props: any) {
 
 
   const onSubmit: SubmitHandler<AddOtherFormSchema> = (dataa) => {
-    console.log('Add other form dataa---->', dataa);
+    // console.log('Add other form dataa---->', dataa);
 
-    const formData = {
-      title: dataa?.title,
-      agenda: dataa?.description,
-      due_date: new String(dataa?.due_date),
-      recurring_end_date: new String(dataa?.recurring_date),
-      meeting_start_time: new String(dataa?.start_time),
-      meeting_end_time: new String(dataa?.end_time),
-      client_id: clientId,
-      assign_to: teamId,
-      activity_type: 'call_meeting',
-      internal_info: dataa?.notes,
-      mark_as_done: dataa?.done,
+    let formData;
+
+    if (recurringStatus) {
+      formData = {
+        title: dataa?.title,
+        agenda: dataa?.description,
+        due_date: moment(dataa?.due_date).format('DD-MM-YYYY'),
+        meeting_start_time: moment(dataa?.start_time).format('HH:mm'),
+        meeting_end_time: moment(dataa?.end_time).format('HH:mm'),
+        recurring_end_date: moment(dataa?.recurring_date).format('DD-MM-YYYY'),
+        client_id: clientId,
+        assign_to: teamId,
+        activity_type: 'others',
+        internal_info: dataa?.notes,
+        mark_as_done: dataa?.done,
+      }
+    } else {
+      formData = {
+        title: dataa?.title,
+        agenda: dataa?.description,
+        due_date: moment(dataa?.due_date).format('DD-MM-YYYY'),
+        meeting_start_time: moment(dataa?.start_time).format('HH:mm'),
+        meeting_end_time: moment(dataa?.end_time).format('HH:mm'),
+        client_id: clientId,
+        assign_to: teamId,
+        activity_type: 'others',
+        internal_info: dataa?.notes,
+        mark_as_done: dataa?.done,
+      }
     }
 
     // console.log('Add activity form dataa---->', formData);
@@ -180,7 +226,17 @@ export default function AddCallMeetingForm(props: any) {
         if (postAddActivity.fulfilled.match(result)) {
           if (result && result.payload.success === true) {
             closeModal();
-            // dispatch(getAllTask({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
+            
+            if(title === 'New Activity' && isClientModule && isAgencyTeam) {
+              dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', client_id: clientReferenceId, pagination: true }))
+            } else if(title === 'New Activity' && !isAgencyTeam && !isTeamModule) {
+              dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', client_team_id: clientReferenceId, pagination: true }))
+            } else if(title === 'New Activity' && isTeamModule && isAgencyTeam) {
+              dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', team_id: teamReferenceId, pagination: true }))
+            } else if((title === 'New Activity' && !isClientModule) || (title === 'New Activity' && !isTeamModule)) {
+              dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
+            }
+
           }
         }
       });
@@ -189,7 +245,17 @@ export default function AddCallMeetingForm(props: any) {
         if (patchEditActivity.fulfilled.match(result)) {
           if (result && result.payload.success === true) {
             closeModal();
-            // dispatch(getAllTask({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
+          
+            if(title === 'Edit Activity' && isClientEdit && !isClientTeam) {
+              dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', client_id: clientId, pagination: true }))
+            } else if(title === 'Edit Activity' && !isClientEdit && isTeamEdit && !isClientTeam) {
+              dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', team_id: teamId, pagination: true }))
+            } else if(title === 'Edit Activity' && isClientEdit && isClientTeam) {
+              dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', client_team_id: clientId, pagination: true }))
+            } else if((title === 'Edit Activity' && !isClientEdit) || (title === 'Edit Activity' && !isTeamEdit)) {
+              dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
+            }
+          
           }
         }
       });
@@ -252,16 +318,16 @@ export default function AddCallMeetingForm(props: any) {
                       />
                     )}
                   />
-                  <div className={cn('grid grid-cols-2 gap-5')}>
+                  <div className={cn('grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-5 items-center')}>
                     <Controller
                       name="due_date"
                       control={control}
                       render={({ field: { value, onChange } }) => (
                         <DatePicker
-                          placeholderText="Select Due date"
+                          placeholderText="Select start date"
                           selected={value}
                           inputProps={{
-                            label: 'Due Date',
+                            label: 'Start Date',
                             color: 'info'
                           }}
                           onChange={onChange}
@@ -273,71 +339,74 @@ export default function AddCallMeetingForm(props: any) {
                         />
                       )}
                     />
-                    <div className='flex justify-start items-end'>
-                      <Switch className="[&>label>span.transition]:shrink-0 [&>label>span]:font-medium" label='Recurring' variant='active' onChange={(event) => handleSwitchChange(event)} />
+                    <Controller
+                      name="start_time"
+                      control={control}
+                      render={({ field: { value, onChange } }) => (
+                        <DatePicker
+                          placeholderText="Select start time"
+                          selected={value}
+                          inputProps={{
+                            label: 'Start Time',
+                            color: 'info'
+                          }}
+                          onChange={onChange}
+                          showTimeSelect
+                          showTimeSelectOnly
+                          dateFormat="hh:mm aa"
+                        />
+                      )}
+                    />
+                    <Controller
+                      name="end_time"
+                      control={control}
+                      render={({ field: { value, onChange } }) => (
+                        <DatePicker
+                          placeholderText="Select end time"
+                          selected={value}
+                          inputProps={{
+                            label: 'End Time',
+                            color: 'info'
+                          }}
+                          onChange={onChange}
+                          showTimeSelect
+                          showTimeSelectOnly
+                          dateFormat="hh:mm aa"
+                        />
+                      )}
+                    />
+
+                  </div>
+                  <div className={cn('flex items-center gap-12 h-[70px]')}>
+                    <div className='flex justify-start items-end w-auto'>
+                      <Switch className="[&>label>span.transition]:shrink-0 [&>label>span]:font-medium" label='Recurring' labelPlacement='left' variant='active' checked={data?.recurring_end_date && title === 'Edit Activity'} onChange={(event) => handleSwitchChange(event)} />
                       {/* <Switch className="[&>label>span.transition]:shrink-0 [&>label>span]:font-medium" variant='active' onChange={(event) => handleSwitchChange(row._id, event)} disabled={value == "payment_pending"} defaultChecked={value == "confirmed" ? true : false} /> */}
                     </div>
+                    {recurringStatus &&
+                      <div className='w-full'>
+                        <Controller
+                          name="recurring_date"
+                          control={control}
+                          render={({ field: { value, onChange } }) => (
+                            <DatePicker
+                              placeholderText="Select recurring end date"
+                              selected={value}
+                              inputProps={{
+                                label: 'Recurring End Date',
+                                color: 'info'
+                              }}
+                              onChange={onChange}
+                              selectsStart
+                              startDate={value}
+                              minDate={new Date()}
+                              // showTimeSelect
+                              dateFormat="MMMM dd, yyyy"
+                            />
+                          )}
+                        />
+                      </div>
+                    }
                   </div>
-                  {recurringStatus &&
-                    <div className={cn('grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-5 items-center')}>
-                      <Controller
-                        name="recurring_date"
-                        control={control}
-                        render={({ field: { value, onChange } }) => (
-                          <DatePicker
-                            placeholderText="Select recurring date"
-                            selected={value}
-                            inputProps={{
-                              label: 'Recurring Due Date',
-                              color: 'info'
-                            }}
-                            onChange={onChange}
-                            selectsStart
-                            startDate={value}
-                            minDate={new Date()}
-                            // showTimeSelect
-                            dateFormat="MMMM dd, yyyy"
-                          />
-                        )}
-                      />
-                      <Controller
-                        name="start_time"
-                        control={control}
-                        render={({ field: { value, onChange } }) => (
-                          <DatePicker
-                            placeholderText="Select start time"
-                            selected={value}
-                            inputProps={{
-                              label: 'Start Time',
-                              color: 'info'
-                            }}
-                            onChange={onChange}
-                            showTimeSelect
-                            showTimeSelectOnly
-                            dateFormat="hh:mm aa"
-                          />
-                        )}
-                      />
-                      <Controller
-                        name="end_time"
-                        control={control}
-                        render={({ field: { value, onChange } }) => (
-                          <DatePicker
-                            placeholderText="Select end time"
-                            selected={value}
-                            inputProps={{
-                              label: 'End Time',
-                              color: 'info'
-                            }}
-                            onChange={onChange}
-                            showTimeSelect
-                            showTimeSelectOnly
-                            dateFormat="hh:mm aa"
-                          />
-                        )}
-                      />
-                    </div>
-                  }
                   {clientSliceData?.loading ? (<SelectLoader />) : (
                     <Controller
                       control={control}
@@ -356,6 +425,7 @@ export default function AddCallMeetingForm(props: any) {
                           error={errors?.client?.message as string}
                           color='info'
                           // getOptionValue={(option) => option.value}
+                          disabled={isClientModule || isClientEdit}
                           className="[&>label>span]:font-medium"
                           dropdownClassName="p-1 border w-auto border-gray-100 shadow-lg"
                         />
@@ -377,7 +447,7 @@ export default function AddCallMeetingForm(props: any) {
                           value={signIn?.teamMemberRole === 'team_member' ? signIn?.user?.data?.user?.name : value}
                           placeholder='Select Team member'
                           label='Assigned *'
-                          disabled={signIn?.teamMemberRole === 'team_member'}
+                          disabled={signIn?.teamMemberRole === 'team_member' || isTeamModule || isTeamEdit}
                           error={errors?.assigned?.message as string}
                           color='info'
                           // getOptionValue={(option) => option.value}
@@ -387,12 +457,12 @@ export default function AddCallMeetingForm(props: any) {
                       )}
                     />
                   )}
-                  <span className="flex cursor-pointer items-center text-lg gap-2 font-medium">
+                  <span className="flex cursor-pointer items-center gap-2 font-medium">
                     <AiOutlineUsergroupAdd className="h-[25px] w-[25px]" />
                     <Text>Add Attendees</Text>
                   </span>
                   <span
-                    className="flex cursor-pointer items-center text-lg gap-2 font-medium"
+                    className="flex cursor-pointer items-center gap-2 font-medium"
                     onClick={handleAddNoteClick}
                   >
                     <GiNotebook className="h-[25px] w-[25px]" />
@@ -421,13 +491,15 @@ export default function AddCallMeetingForm(props: any) {
                     </Button>
                   </div>
                   <div className='flex justify-end items-center gap-2 ms-auto'>
-                    <Checkbox
-                      {...register('done')}
-                      label="Mark as done"
-                      color="info"
-                      variant="flat"
-                      className="[&>label>span]:font-medium"
-                    />
+                    {title === 'Edit Activity' &&
+                      <Checkbox
+                        {...register('done')}
+                        label="Mark as done"
+                        color="info"
+                        variant="flat"
+                        className="[&>label>span]:font-medium"
+                      />
+                    }
                     <Button
                       type="submit"
                       className="hover:gray-700 @xl:w-auto dark:bg-gray-200 dark:text-white"

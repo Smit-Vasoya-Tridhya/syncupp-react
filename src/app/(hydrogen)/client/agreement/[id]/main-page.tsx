@@ -64,7 +64,7 @@ export default function AgreementDetailsPage({ params }: { params: { id: string 
             </div >
             <h3 className='flex justify-between items-center border-2 rounded border-solid border-gray-300 bg-gray-100 p-3'>
                 <span>{singleAgreementdetails?.data?.title}</span>
-                <span>{singleAgreementdetails?.data?.due_date && singleAgreementdetails?.data?.due_date != "" ? moment(singleAgreementdetails?.data?.due_date).format("Do MMM. ‘YY") : ""}</span>
+                <span>{singleAgreementdetails?.data?.due_date && singleAgreementdetails?.data?.due_date != "" ? "Due Date : " + moment(singleAgreementdetails?.data?.due_date).format("Do MMM. ‘YY") : ""}</span>
             </h3>
             <div className='mt-5' dangerouslySetInnerHTML={{ __html: singleAgreementdetails?.data?.agreement_content }} />
             <div className='flex justify-between mt-5 font-medium text-gray-700 dark:text-gray-600 mb-1.5'>

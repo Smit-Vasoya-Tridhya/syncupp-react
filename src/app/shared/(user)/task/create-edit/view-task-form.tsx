@@ -209,8 +209,8 @@ export default function ViewTaskForm(props: any) {
               <div className="flex gap-2">
                 <span>Task Description: </span>
                 <span className="font-medium text-gray-1000 capitalize">
-                  {/* {dataa?.internal_info && dataa?.internal_info?.slice(3, dataa?.internal_info?.length - 4)} */}
-                  <p dangerouslySetInnerHTML={{ __html: dataa?.internal_info }}></p>
+                  {/* {dataa?.agenda && dataa?.agenda?.slice(3, dataa?.agenda?.length - 4)} */}
+                  <p dangerouslySetInnerHTML={{ __html: dataa?.agenda }}></p>
                 </span>
               </div>
             </div>

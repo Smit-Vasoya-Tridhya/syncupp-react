@@ -1,5 +1,17 @@
-import { DeleteClientApi, GetAllCityApi, GetAllClientApi, GetAllCountryApi, GetAllStateApi, GetClientAgenciesApi, GetClientByIdApi, PatchEditClientApi, PostAddClientApi, PostClientRedirectApi, PostVerifyClientApi } from "@/api/user/client/clientApis";
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {
+  DeleteClientApi,
+  GetAllCityApi,
+  GetAllClientApi,
+  GetAllCountryApi,
+  GetAllStateApi,
+  GetClientAgenciesApi,
+  GetClientByIdApi,
+  PatchEditClientApi,
+  PostAddClientApi,
+  PostClientRedirectApi,
+  PostVerifyClientApi,
+} from '@/api/user/client/clientApis';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { toast } from 'react-hot-toast';
 
 type AddClientData = {
@@ -15,10 +27,10 @@ type AddClientData = {
   pincode?: string;
   title?: string;
   contact_number?: string;
-}
+};
 
 type EditClientData = {
-  clientId: string,
+  clientId: string;
   first_name: string;
   last_name: string;
   email: string;
@@ -31,7 +43,7 @@ type EditClientData = {
   pincode?: string;
   title?: string;
   contact_number?: string;
-}
+};
 
 type VerifyClientData = {
   email: string;
@@ -40,11 +52,11 @@ type VerifyClientData = {
   // first_name?: string;
   // last_name?: string;
   redirect: boolean;
-}
+};
 
 type RedirectClientData = {
   email: string;
-}
+};
 
 type GetAllClientData = {
   page?: number;
@@ -53,24 +65,25 @@ type GetAllClientData = {
   sort_field?: string;
   search?: string;
   pagination?: boolean;
-}
+  for_activity?: boolean;
+};
 
 type GetClientByIdData = {
   clientId: string;
-}
+};
 
 type DeleteClientData = {
   client_ids: string[];
-}
+};
 
 type MasterData = {
   search?: string;
   stateId?: string;
   countryId?: string;
-}
+};
 interface PostAPIResponse {
   status: boolean;
-  message: string
+  message: string;
 }
 interface ClientInitialState {
   loading: boolean;
@@ -86,6 +99,8 @@ interface ClientInitialState {
   agencyName: string;
   clientId: string;
   clientName: string;
+  clientProfile: string;
+  clientTeamId: string;
   addClientStatus: string;
   verifyClientStatus: string;
   clientRedirectStatus: string;
@@ -94,8 +109,8 @@ interface ClientInitialState {
   editClientStatus: string;
   deleteClientStatus: string;
   getClientProfileStatus: string;
-  addClientdetails: any,
-  paginationParams?: any
+  addClientdetails: any;
+  paginationParams?: any;
 }
 
 const initialState: ClientInitialState = {
@@ -112,6 +127,8 @@ const initialState: ClientInitialState = {
   agencyName: '',
   clientId: '',
   clientName: '',
+  clientProfile: '',
+  clientTeamId: '',
   addClientStatus: '',
   verifyClientStatus: '',
   clientRedirectStatus: '',
@@ -121,143 +138,177 @@ const initialState: ClientInitialState = {
   deleteClientStatus: '',
   getClientProfileStatus: '',
   addClientdetails: {},
-  paginationParams: {}
+  paginationParams: {},
 };
 
 export const postAddClient: any = createAsyncThunk(
-  "client/postAddClient",
+  'client/postAddClient',
   async (data: AddClientData) => {
     try {
       const response: any = await PostAddClientApi(data);
       return response;
     } catch (error: any) {
-      return { status: false, message: error.response.data.message } as PostAPIResponse;
+      return {
+        status: false,
+        message: error.response.data.message,
+      } as PostAPIResponse;
     }
   }
 );
 
 export const postVerifyClient: any = createAsyncThunk(
-  "client/postVerifyClient",
+  'client/postVerifyClient',
   async (data: VerifyClientData) => {
     try {
       const response: any = await PostVerifyClientApi(data);
       return response;
     } catch (error: any) {
-      return { status: false, message: error.response.data.message, code: error.response.data.status } as any;
+      return {
+        status: false,
+        message: error.response.data.message,
+        code: error.response.data.status,
+      } as any;
     }
   }
 );
 
 export const postClientRedirect: any = createAsyncThunk(
-  "client/postClientRedirect",
+  'client/postClientRedirect',
   async (data: RedirectClientData) => {
     try {
       const response: any = await PostClientRedirectApi(data);
       return response;
     } catch (error: any) {
-      return { status: false, message: error.response.data.message } as PostAPIResponse;
+      return {
+        status: false,
+        message: error.response.data.message,
+      } as PostAPIResponse;
     }
   }
 );
 
 export const patchEditClient: any = createAsyncThunk(
-  "client/patchEditClient",
+  'client/patchEditClient',
   async (data: EditClientData) => {
     try {
       const response: any = await PatchEditClientApi(data);
       return response;
     } catch (error: any) {
-      return { status: false, message: error.response.data.message } as PostAPIResponse;
+      return {
+        status: false,
+        message: error.response.data.message,
+      } as PostAPIResponse;
     }
   }
 );
 
 export const getAllClient: any = createAsyncThunk(
-  "client/getAllClient",
+  'client/getAllClient',
   async (data: GetAllClientData) => {
     try {
       const response: any = await GetAllClientApi(data);
       return { response: response, pagination: data?.pagination };
     } catch (error: any) {
-      return { status: false, message: error.response.data.message } as PostAPIResponse;
+      return {
+        status: false,
+        message: error.response.data.message,
+      } as PostAPIResponse;
     }
   }
 );
 
 export const getClientById: any = createAsyncThunk(
-  "client/getClientById",
+  'client/getClientById',
   async (data: GetClientByIdData) => {
     try {
       const response: any = await GetClientByIdApi(data);
       return response;
     } catch (error: any) {
-      return { status: false, message: error.response.data.message } as PostAPIResponse;
+      return {
+        status: false,
+        message: error.response.data.message,
+      } as PostAPIResponse;
     }
   }
 );
 
 export const deleteClient: any = createAsyncThunk(
-  "client/deleteClient",
+  'client/deleteClient',
   async (data: DeleteClientData) => {
     try {
       const response: any = await DeleteClientApi(data);
       return response;
     } catch (error: any) {
-      return { status: false, message: error.response.data.message } as PostAPIResponse;
+      return {
+        status: false,
+        message: error.response.data.message,
+      } as PostAPIResponse;
     }
   }
 );
 
 export const getCountry: any = createAsyncThunk(
-  "client/getCountry",
+  'client/getCountry',
   async (data: MasterData) => {
     try {
       const response: any = await GetAllCountryApi(data);
       return response;
     } catch (error: any) {
-      return { status: false, message: error.response.data.message } as PostAPIResponse;
+      return {
+        status: false,
+        message: error.response.data.message,
+      } as PostAPIResponse;
     }
   }
 );
 
 export const getState: any = createAsyncThunk(
-  "client/getState",
+  'client/getState',
   async (data: MasterData) => {
     try {
       const response: any = await GetAllStateApi(data);
       return response;
     } catch (error: any) {
-      return { status: false, message: error.response.data.message } as PostAPIResponse;
+      return {
+        status: false,
+        message: error.response.data.message,
+      } as PostAPIResponse;
     }
   }
 );
 
 export const getCities: any = createAsyncThunk(
-  "client/getCities",
+  'client/getCities',
   async (data: MasterData) => {
     try {
       const response: any = await GetAllCityApi(data);
       return response;
     } catch (error: any) {
-      return { status: false, message: error.response.data.message } as PostAPIResponse;
+      return {
+        status: false,
+        message: error.response.data.message,
+      } as PostAPIResponse;
     }
   }
 );
 
 export const getClientAgencies: any = createAsyncThunk(
-  "client/getClientAgencies",
+  'client/getClientAgencies',
   async () => {
     try {
       const response: any = await GetClientAgenciesApi();
       return response;
     } catch (error: any) {
-      return { status: false, message: error.response.data.message } as PostAPIResponse;
+      return {
+        status: false,
+        message: error.response.data.message,
+      } as PostAPIResponse;
     }
   }
 );
 
 export const clientSlice = createSlice({
-  name: "client",
+  name: 'client',
   initialState,
   reducers: {
     RemoveRegionalData(state) {
@@ -266,44 +317,50 @@ export const clientSlice = createSlice({
         // countries: '',
         states: '',
         cities: '',
-      }
+      };
     },
     RemoveClientData(state) {
       return {
         ...state,
-        client: ''
-      }
+        client: '',
+      };
     },
     setAgencyId(state, action) {
       return {
         ...state,
-        agencyId: action.payload
-      }
+        agencyId: action.payload,
+      };
     },
     setPagginationParams(state, action) {
       return {
         ...state,
-        paginationParams: action.payload
-      }
+        paginationParams: action.payload,
+      };
     },
     setAgencyName(state, action) {
       return {
         ...state,
-        agencyName: action.payload
-      }
+        agencyName: action.payload,
+      };
     },
     setClientId(state, action) {
       return {
         ...state,
-        clientId: action.payload
-      }
+        clientId: action.payload,
+      };
     },
     setClientName(state, action) {
       return {
         ...state,
-        clientName: action.payload
-      }
-    }
+        clientName: action.payload,
+      };
+    },
+    setClientTeamId(state, action) {
+      return {
+        ...state,
+        clientTeamId: action.payload,
+      };
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -311,12 +368,12 @@ export const clientSlice = createSlice({
         return {
           ...state,
           loading: true,
-          addClientStatus: 'pending'
-        }
+          addClientStatus: 'pending',
+        };
       })
       .addCase(postAddClient.fulfilled, (state, action) => {
         if (action.payload.status == false) {
-          toast.error(action.payload.message)
+          toast.error(action.payload.message);
         } else {
           // toast.success(action.payload.message)
         }
@@ -324,15 +381,15 @@ export const clientSlice = createSlice({
           ...state,
           addClientdetails: action.payload,
           loading: false,
-          addClientStatus: 'success'
-        }
+          addClientStatus: 'success',
+        };
       })
       .addCase(postAddClient.rejected, (state) => {
         return {
           ...state,
           loading: false,
-          addClientStatus: 'error'
-        }
+          addClientStatus: 'error',
+        };
       });
     // new cases for Verify client
     builder
@@ -340,28 +397,28 @@ export const clientSlice = createSlice({
         return {
           ...state,
           loading: true,
-          verifyClientStatus: 'pending'
-        }
+          verifyClientStatus: 'pending',
+        };
       })
       .addCase(postVerifyClient.fulfilled, (state, action) => {
         if (action.payload.status == false) {
-          toast.error(action.payload.message)
+          toast.error(action.payload.message);
         } else {
-          toast.success(action.payload.message)
+          toast.success(action.payload.message);
         }
         return {
           ...state,
           //   data: action.payload,
           loading: false,
-          verifyClientStatus: 'success'
-        }
+          verifyClientStatus: 'success',
+        };
       })
       .addCase(postVerifyClient.rejected, (state) => {
         return {
           ...state,
           loading: false,
-          verifyClientStatus: 'error'
-        }
+          verifyClientStatus: 'error',
+        };
       });
     // new cases for client redirect
     builder
@@ -369,23 +426,23 @@ export const clientSlice = createSlice({
         return {
           ...state,
           loading: true,
-          clientRedirectStatus: 'pending'
-        }
+          clientRedirectStatus: 'pending',
+        };
       })
       .addCase(postClientRedirect.fulfilled, (state, action) => {
         return {
           ...state,
           redirect: action?.payload?.data?.password_required,
           loading: false,
-          clientRedirectStatus: 'success'
-        }
+          clientRedirectStatus: 'success',
+        };
       })
       .addCase(postClientRedirect.rejected, (state) => {
         return {
           ...state,
           loading: false,
-          clientRedirectStatus: 'error'
-        }
+          clientRedirectStatus: 'error',
+        };
       });
     // new cases for Edit client
     builder
@@ -393,28 +450,28 @@ export const clientSlice = createSlice({
         return {
           ...state,
           loading: true,
-          editClientStatus: 'pending'
-        }
+          editClientStatus: 'pending',
+        };
       })
       .addCase(patchEditClient.fulfilled, (state, action) => {
         if (action.payload.status == false) {
-          toast.error(action.payload.message)
+          toast.error(action.payload.message);
         } else {
-          toast.success(action.payload.message)
+          toast.success(action.payload.message);
         }
         return {
           ...state,
           //   data: action.payload,
           loading: false,
-          editClientStatus: 'success'
-        }
+          editClientStatus: 'success',
+        };
       })
       .addCase(patchEditClient.rejected, (state) => {
         return {
           ...state,
           loading: false,
-          editClientStatus: 'error'
-        }
+          editClientStatus: 'error',
+        };
       });
 
     // new cases for get all client
@@ -423,24 +480,23 @@ export const clientSlice = createSlice({
         return {
           ...state,
           loading: true,
-          getAllClientStatus: 'pending'
-        }
+          getAllClientStatus: 'pending',
+        };
       })
       .addCase(getAllClient.fulfilled, (state, action) => {
         if (action?.payload?.status == false) {
-          toast.error(action.payload.message)
+          toast.error(action.payload.message);
           return {
             ...state,
-            loading: false
-          }
-        }
-        else if (action?.payload?.pagination) {
+            loading: false,
+          };
+        } else if (action?.payload?.pagination) {
           return {
             ...state,
             data: action?.payload?.response?.data,
             loading: false,
-            getAllClientStatus: 'success'
-          }
+            getAllClientStatus: 'success',
+          };
         } else {
           // const fullName = action?.payload?.response?.data[0]?.first_name + " " + action?.payload?.response?.data[0]?.last_name
           return {
@@ -449,15 +505,15 @@ export const clientSlice = createSlice({
             clientList: action?.payload?.response?.data,
             clientId: action?.payload?.response?.data[0]?.reference_id,
             clientName: action?.payload?.response?.data[0]?.name,
-          }
+          };
         }
       })
       .addCase(getAllClient.rejected, (state) => {
         return {
           ...state,
           loading: false,
-          getAllClientStatus: 'error'
-        }
+          getAllClientStatus: 'error',
+        };
       });
     // new cases for get client
     builder
@@ -465,8 +521,8 @@ export const clientSlice = createSlice({
         return {
           ...state,
           loading: true,
-          getClientStatus: 'pending'
-        }
+          getClientStatus: 'pending',
+        };
       })
       .addCase(getClientById.fulfilled, (state, action) => {
         // if(action.payload.status == false){
@@ -477,16 +533,17 @@ export const clientSlice = createSlice({
         return {
           ...state,
           client: action?.payload?.data,
+          clientProfile: action?.payload?.data,
           loading: false,
-          getClientStatus: 'success'
-        }
+          getClientStatus: 'success',
+        };
       })
       .addCase(getClientById.rejected, (state) => {
         return {
           ...state,
           loading: false,
-          getClientStatus: 'error'
-        }
+          getClientStatus: 'error',
+        };
       });
     // new cases for delete client
     builder
@@ -494,72 +551,83 @@ export const clientSlice = createSlice({
         return {
           ...state,
           loading: true,
-          deleteClientStatus: 'pending'
-        }
+          deleteClientStatus: 'pending',
+        };
       })
       .addCase(deleteClient.fulfilled, (state, action) => {
         if (action.payload.status == false) {
-          toast.error(action.payload.message)
+          toast.error(action.payload.message);
           return {
             ...state,
             //   data: action.payload,
             loading: false,
-            deleteClientStatus: 'error'
-          }
+            deleteClientStatus: 'error',
+          };
         } else {
-          toast.success(action.payload.message)
+          if (action.payload.message) {
+            toast.success(action.payload.message);
+          }
+
           return {
             ...state,
             //   data: action.payload,
             loading: false,
-            deleteClientStatus: 'success'
-          }
+            deleteClientStatus: 'success',
+          };
         }
       })
       .addCase(deleteClient.rejected, (state) => {
         return {
           ...state,
           loading: false,
-          deleteClientStatus: 'error'
-        }
+          deleteClientStatus: 'error',
+        };
       });
     // new cases for get countries
-    builder
-      .addCase(getCountry.fulfilled, (state, action) => {
-        return {
-          ...state,
-          countries: action.payload.data,
-        }
-      });
+    builder.addCase(getCountry.fulfilled, (state, action) => {
+      return {
+        ...state,
+        countries: action.payload.data,
+      };
+    });
     // new cases for get states
-    builder
-      .addCase(getState.fulfilled, (state, action) => {
-        return {
-          ...state,
-          states: action.payload.data,
-        }
-      });
+    builder.addCase(getState.fulfilled, (state, action) => {
+      return {
+        ...state,
+        states: action.payload.data,
+      };
+    });
     // new cases for get cities
-    builder
-      .addCase(getCities.fulfilled, (state, action) => {
-        return {
-          ...state,
-          cities: action.payload.data,
-        }
-      });
+    builder.addCase(getCities.fulfilled, (state, action) => {
+      return {
+        ...state,
+        cities: action.payload.data,
+      };
+    });
     // new cases for get agencies list
-    builder
-      .addCase(getClientAgencies.fulfilled, (state, action) => {
-        const fullName = action?.payload?.data[0]?.first_name + " " + action?.payload?.data[0]?.last_name
-        return {
-          ...state,
-          agencies: action?.payload?.data,
-          agencyId: action?.payload?.data[0]?.reference_id,
-          agencyName: fullName
-        }
-      });
+    builder.addCase(getClientAgencies.fulfilled, (state, action) => {
+      const fullName =
+        (action?.payload?.data[0]?.first_name.charAt(0).toUpperCase() + action?.payload?.data[0]?.first_name.slice(1)) +
+        ' ' +
+        (action?.payload?.data[0]?.last_name.charAt(0).toUpperCase() + action?.payload?.data[0]?.last_name.slice(1));
+      return {
+        ...state,
+        agencies: action?.payload?.data,
+        agencyId: action?.payload?.data[0]?.reference_id,
+        agencyName: fullName,
+      };
+    });
   },
 });
 
-export const { RemoveRegionalData, RemoveClientData, setAgencyId, setAgencyName, setClientId, setClientName, setPagginationParams } = clientSlice.actions;
+export const {
+  RemoveRegionalData,
+  RemoveClientData,
+  setAgencyId,
+  setAgencyName,
+  setClientId,
+  setClientName,
+  setPagginationParams,
+  setClientTeamId,
+} = clientSlice.actions;
 export default clientSlice.reducer;

@@ -24,7 +24,7 @@ import { AddCallMeetingSchema, addCallMeetingSchema } from '@/utils/validators/a
 import { Text, Textarea } from 'rizzui';
 import { AiOutlineUsergroupAdd } from 'react-icons/ai';
 import { GiNotebook } from 'react-icons/gi';
-import { getActivityById, patchEditActivity, postAddActivity } from '@/redux/slices/user/activity/activitySlice';
+import { getActivityById, getAllActivity, patchEditActivity, postAddActivity } from '@/redux/slices/user/activity/activitySlice';
 
 const QuillEditor = dynamic(() => import('@/components/ui/quill-editor'), {
   ssr: false,
@@ -34,7 +34,7 @@ const QuillEditor = dynamic(() => import('@/components/ui/quill-editor'), {
 
 export default function AddCallMeetingForm(props: any) {
 
-  const { title, row } = props;
+  const { title, row, isClientModule, isClientEdit, isTeamEdit, clientName, clientReferenceId, isTeamModule, teamName, teamReferenceId, isAgencyTeam, isClientTeam  } = props;
   // console.log("row data....", row);
 
   const dispatch = useDispatch();
@@ -57,11 +57,17 @@ export default function AddCallMeetingForm(props: any) {
   // api call for get clients and team member
 
   useEffect(() => {
-    dispatch(getAllClient({ pagination: false }))
+    dispatch(getAllClient({ pagination: false, for_activity: true }))
     dispatch(getAllTeamMember({ pagination: false }))
   }, [dispatch]);
 
+  useEffect(() => {
+    isClientModule && clientReferenceId && setClientId(clientReferenceId)
+  }, [clientReferenceId, isClientModule]);
 
+  useEffect(() => {
+    isTeamModule && teamReferenceId && setTeamId(teamReferenceId)
+  }, [teamReferenceId, isTeamModule]);
 
   useEffect(() => {
     if (signIn && signIn?.teamMemberRole === 'team_member') {
@@ -97,22 +103,42 @@ export default function AddCallMeetingForm(props: any) {
     });
   }, [row, dispatch]);
 
-  let [data] = activityData?.activity ?? [{}];
+  let [data] = activityData?.activity ?? initialValues;
 
   // const dueee_date = moment(data?.due_date).toDate();
-  // console.log(dueee_date, "formateedddd", data?.due_date)
+  // console.log("formateedddd", moment(data?.meeting_start_time).format('hh:mm A'))
 
-  let defaultValuess = {
+  let defaultValuess = isClientModule ? {
     title: data?.title,
-    description: data?.internal_info,
+    description: data?.agenda,
     // due_date: new Date(data?.due_date),
     due_date: moment(data?.due_date).toDate(),
-    start_time: moment(data?.start_time).toDate(),
-    end_time: moment(data?.end_time).toDate(),
-    client: data?.client_fullName,
+    start_time: moment(data?.meeting_start_time).toDate(),
+    end_time: moment(data?.meeting_end_time).toDate(),
+    client: isClientModule ? clientName : data?.client_name,
     assigned: signIn?.teamMemberRole === 'team_member' ? signIn?.user?.data?.user?.name : data?.assigned_to_name,
     done: data?.status === 'completed' ? true : false
-  };
+  } : isTeamModule ? {
+    title: data?.title,
+    description: data?.agenda,
+    // due_date: new Date(data?.due_date),
+    due_date: moment(data?.due_date).toDate(),
+    start_time: moment(data?.meeting_start_time).toDate(),
+    end_time: moment(data?.meeting_end_time).toDate(),
+    client: data?.client_name,
+    assigned: isTeamModule && teamName ? teamName : data?.assigned_to_name,
+    done: data?.status === 'completed' ? true : false
+  } : {
+    title: data?.title,
+    description: data?.agenda,
+    // due_date: new Date(data?.due_date),
+    due_date: moment(data?.due_date).toDate(),
+    start_time: moment(data?.meeting_start_time).toDate(),
+    end_time: moment(data?.meeting_end_time).toDate(),
+    client: data?.client_name,
+    assigned: signIn?.teamMemberRole === 'team_member' ? signIn?.user?.data?.user?.name : data?.assigned_to_name,
+    done: data?.status === 'completed' ? true : false
+  }
 
 
 
@@ -130,12 +156,13 @@ export default function AddCallMeetingForm(props: any) {
   const onSubmit: SubmitHandler<AddCallMeetingSchema> = (dataa) => {
     console.log('Add call meeting form dataa---->', dataa);
 
+
     const formData = {
       title: dataa?.title,
       agenda: dataa?.description,
-      due_date: new String(dataa?.due_date),
-      meeting_start_time: new String(dataa?.start_time),
-      meeting_end_time: new String(dataa?.end_time),
+      due_date: moment(dataa?.due_date).format('DD-MM-YYYY'),
+      meeting_start_time: moment(dataa?.start_time).format('HH:mm'),
+      meeting_end_time: moment(dataa?.end_time).format('HH:mm'),
       client_id: clientId,
       assign_to: teamId,
       activity_type: 'call_meeting',
@@ -155,7 +182,17 @@ export default function AddCallMeetingForm(props: any) {
         if (postAddActivity.fulfilled.match(result)) {
           if (result && result.payload.success === true) {
             closeModal();
-            // dispatch(getAllTask({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
+            
+            if(title === 'New Activity' && isClientModule && isAgencyTeam) {
+              dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', client_id: clientReferenceId, pagination: true }))
+            } else if(title === 'New Activity' && !isAgencyTeam && !isTeamModule) {
+              dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', client_team_id: clientReferenceId, pagination: true }))
+            } else if(title === 'New Activity' && isTeamModule && isAgencyTeam) {
+              dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', team_id: teamReferenceId, pagination: true }))
+            } else if((title === 'New Activity' && !isClientModule) || (title === 'New Activity' && !isTeamModule)) {
+              dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
+            }
+
           }
         }
       });
@@ -164,7 +201,17 @@ export default function AddCallMeetingForm(props: any) {
         if (patchEditActivity.fulfilled.match(result)) {
           if (result && result.payload.success === true) {
             closeModal();
-            // dispatch(getAllTask({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
+
+            if(title === 'Edit Activity' && isClientEdit && !isClientTeam) {
+              dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', client_id: clientId, pagination: true }))
+            } else if(title === 'Edit Activity' && !isClientEdit && isTeamEdit && !isClientTeam) {
+              dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', team_id: teamId, pagination: true }))
+            } else if(title === 'Edit Activity' && isClientEdit && isClientTeam) {
+              dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', client_team_id: clientId, pagination: true }))
+            } else if((title === 'Edit Activity' && !isClientEdit) || (title === 'Edit Activity' && !isTeamEdit)) {
+              dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
+            }
+
           }
         }
       });
@@ -233,10 +280,10 @@ export default function AddCallMeetingForm(props: any) {
                         control={control}
                         render={({ field: { value, onChange } }) => (
                           <DatePicker
-                            placeholderText="Select Due date"
+                            placeholderText="Select start date"
                             selected={value}
                             inputProps={{
-                              label: 'Due Date',
+                              label: 'Start Date',
                               color: 'info'
                             }}
                             onChange={onChange}
@@ -308,6 +355,7 @@ export default function AddCallMeetingForm(props: any) {
                           error={errors?.client?.message as string}
                           color='info'
                           // getOptionValue={(option) => option.value}
+                          disabled={isClientModule || isClientEdit}
                           className="[&>label>span]:font-medium"
                           dropdownClassName="p-1 border w-auto border-gray-100 shadow-lg"
                         />
@@ -329,7 +377,7 @@ export default function AddCallMeetingForm(props: any) {
                           value={signIn?.teamMemberRole === 'team_member' ? signIn?.user?.data?.user?.name : value}
                           placeholder='Select Team member'
                           label='Assigned *'
-                          disabled={signIn?.teamMemberRole === 'team_member'}
+                          disabled={signIn?.teamMemberRole === 'team_member' || isTeamModule || isTeamEdit}
                           error={errors?.assigned?.message as string}
                           color='info'
                           // getOptionValue={(option) => option.value}
@@ -339,12 +387,12 @@ export default function AddCallMeetingForm(props: any) {
                       )}
                     />
                   )}
-                  <span className="flex cursor-pointer items-center text-lg gap-2 font-medium">
+                  <span className="flex cursor-pointer items-center gap-2 font-medium">
                     <AiOutlineUsergroupAdd className="h-[25px] w-[25px]" />
                     <Text>Add Attendees</Text>
                   </span>
                   <span
-                    className="flex cursor-pointer items-center text-lg gap-2 font-medium"
+                    className="flex cursor-pointer items-center gap-2 font-medium"
                     onClick={handleAddNoteClick}
                   >
                     <GiNotebook className="h-[25px] w-[25px]" />
@@ -373,13 +421,15 @@ export default function AddCallMeetingForm(props: any) {
                     </Button>
                   </div>
                   <div className='flex justify-end items-center gap-2 ms-auto'>
-                    <Checkbox
-                      {...register('done')}
-                      label="Mark as done"
-                      color="info"
-                      variant="flat"
-                      className="[&>label>span]:font-medium"
-                    />
+                    {title === 'Edit Activity' &&
+                      <Checkbox
+                        {...register('done')}
+                        label="Mark as done"
+                        color="info"
+                        variant="flat"
+                        className="[&>label>span]:font-medium"
+                      />
+                    }
                     <Button
                       type="submit"
                       className="hover:gray-700 @xl:w-auto dark:bg-gray-200 dark:text-white"

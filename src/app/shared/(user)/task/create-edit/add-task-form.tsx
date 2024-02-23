@@ -105,7 +105,7 @@ export default function AddTaskForm(props: any) {
 
   let defaultValuess = {
     title: data?.title,
-    description: data?.internal_info,
+    description: data?.agenda,
     // due_date: new Date(data?.due_date),
     due_date: moment(data?.due_date).toDate(),
     client: data?.client_fullName,

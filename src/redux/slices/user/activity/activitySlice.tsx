@@ -37,6 +37,12 @@ type GetAllActivityData = {
   sort_order?: string;
   sort_field?: string;
   search?: string;
+  client_id?: string;
+  team_id?: string;
+  agency_id?: string;
+  activity_type?: string;
+  filter?: any;
+  pagination?: boolean;
 }
 
 type GetActivityByIdData = {
@@ -57,6 +63,10 @@ interface ActivityInitialState {
   loading: boolean;
   data: any;
   activity: any;
+  activityName: string;
+  calendarView: boolean;
+  pageNumber: number;
+  itemsPerPageNumber: number;
   addActivityStatus: string;
   getAllActivityStatus: string;
   getActivityStatus: string;
@@ -68,6 +78,10 @@ const initialState: ActivityInitialState = {
   loading: false,
   data: '',
   activity: '',
+  activityName: '',
+  calendarView: false,
+  pageNumber: 1,
+  itemsPerPageNumber: 5,
   addActivityStatus: '',
   getAllActivityStatus: '',
   getActivityStatus: '',
@@ -161,6 +175,25 @@ export const activitySlice: any = createSlice({
       return {
         ...state,
         activity: ''
+      }
+    },
+    setActivityName(state, action) {
+      return {
+        ...state,
+        activityName: action?.payload
+      }
+    },
+    setCalendarView(state, action) {
+      return {
+        ...state,
+        calendarView: action.payload
+      }
+    },
+    setPaginationDetails(state, action) {
+      return {
+        ...state,
+        pageNumber: action?.payload?.pageNumber,
+        itemsPerPageNumber: action?.payload?.itemsPerPageNumber,
       }
     },
   },
@@ -322,5 +355,5 @@ export const activitySlice: any = createSlice({
   },
 });
 
-export const { RemoveActivityData } = activitySlice.actions;
+export const { RemoveActivityData, setActivityName, setCalendarView, setPaginationDetails } = activitySlice.actions;
 export default activitySlice.reducer;

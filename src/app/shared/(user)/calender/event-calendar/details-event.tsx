@@ -11,6 +11,9 @@ import EventForm from './event-form';
 function DetailsEvents({ event }: { event: CalendarEvent }) {
   const { deleteEvent } = useEventCalendar();
   const { openModal, closeModal } = useModal();
+
+  // console.log("event...", event)
+
   function handleEditModal() {
     closeModal(),
       openModal({

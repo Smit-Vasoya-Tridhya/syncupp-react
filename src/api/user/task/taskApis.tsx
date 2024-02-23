@@ -2,7 +2,7 @@ import AxiosDefault from "@/services/AxiosDefault";
 
 type PostAddTaskApiData = {
   title: string;
-  internal_info?: string;
+  agenda?: string;
   due_date?: string;
   client_id?: string;
   assign_to?: string;
@@ -12,7 +12,7 @@ type PostAddTaskApiData = {
 type PatchEditTaskApiData = {
   _id: string;
   title: string;
-  internal_info?: string;
+  agenda?: string;
   due_date?: string;
   client_id?: string;
   assign_to?: string;

@@ -21,7 +21,7 @@ export type Task = {
   title?: string;
   due_date?: string;
   due_time?: string;
-  internal_info?: string;
+  agenda?: string;
   createdAt?: string;
   status?: string;
   client_name?: string;

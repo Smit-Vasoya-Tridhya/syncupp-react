@@ -17,7 +17,13 @@ export default function ClientSelectionForm() {
     const dispatch = useDispatch();
     const clientSliceData = useSelector((state: any) => state?.root?.client);
     useEffect(() => {
-        dispatch(getAllClient({ pagination: false }))
+        dispatch(getAllClient({ pagination: false })).then((result: any) => {
+            if (getAllClient.fulfilled.match(result)) {
+              if (result && result?.payload?.response?.success === true ) {
+                dispatch(getAllTeamMember({ sort_field: 'createdAt', sort_order: 'desc', client_id: result?.payload?.response?.data[0]?.reference_id, pagination: true, client_team: true }))
+              } 
+            }
+          })
     }, [dispatch]);
 
     // console.log("Clients list....", clientSliceData?.clients)
@@ -36,7 +42,7 @@ export default function ClientSelectionForm() {
         // console.log("selected option....", selectedOption)
         dispatch(setClientName(selectedOption?.name))
         dispatch(setClientId(selectedOption?.value))
-        dispatch(getAllTeamMember({ sort_field: 'createdAt', sort_order: 'desc', client_id: selectedOption?.value, pagination: true }))
+        dispatch(getAllTeamMember({ sort_field: 'createdAt', sort_order: 'desc', client_id: selectedOption?.value, pagination: true, client_team: true }))
     }
 
     const onSubmit = (data: any) => {

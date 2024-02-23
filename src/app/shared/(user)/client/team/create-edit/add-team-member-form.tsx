@@ -202,7 +202,7 @@ export default function AddTeamMemberForm(props: any) {
                 <Input
                   type="text"
                   onKeyDown={handleKeyDown}
-                  label="First name"
+                  label="First name *"
                   color="info"
                   placeholder="Enter your name"
                   className="[&>label>span]:font-medium"
@@ -212,7 +212,7 @@ export default function AddTeamMemberForm(props: any) {
                 <Input
                   type="text"
                   onKeyDown={handleKeyDown}
-                  label="Last name"
+                  label="Last name *"
                   color="info"
                   placeholder="Enter your name"
                   className="[&>label>span]:font-medium"

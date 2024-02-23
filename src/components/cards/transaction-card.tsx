@@ -27,12 +27,7 @@ export default function TransactionCard({
     transaction;
   const Icon = icon;
   return (
-    <div
-      className={cn(
-        'w-full rounded-[10px] border border-gray-300 px-6 py-7 @container',
-        className
-      )}
-    >
+    <div className="max-w-[505px] rounded-lg border border-l-4 border-primary bg-primary-lighter/10 p-7">
       <div className="mb-4 flex items-center gap-5">
         <span
           style={{ backgroundColor: iconWrapperFill }}

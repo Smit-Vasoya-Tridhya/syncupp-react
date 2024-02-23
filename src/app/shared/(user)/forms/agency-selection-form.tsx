@@ -11,6 +11,7 @@ import Select from '@/components/ui/select';
 import SelectLoader from '@/components/loader/select-loader';
 import { usePathname } from 'next/navigation';
 import { getAllTask } from '@/redux/slices/user/task/taskSlice';
+import { getAllActivity } from '@/redux/slices/user/activity/activitySlice';
 
 
 export default function AgencySelectionForm() {
@@ -18,6 +19,8 @@ export default function AgencySelectionForm() {
     const pathname = usePathname();
     const clientSliceData = useSelector((state: any) => state?.root?.client);
     const { gridView } = useSelector((state: any) => state?.root?.task);
+    const { calendarView } = useSelector((state: any) => state?.root?.activity);
+
 
     useEffect(() => { dispatch(getClientAgencies()) }, [dispatch]);
     let initialValue: Record<string, string> = {
@@ -32,7 +35,7 @@ export default function AgencySelectionForm() {
     const handleAgencyChange = (selectedOption: Record<string, any>) => {
         dispatch(setAgencyName(selectedOption?.name))
         dispatch(setAgencyId(selectedOption?.value))
-        console.log("pathname...", pathname)
+        // console.log("pathname...", pathname)
         if(pathname === "/team") {
             dispatch(getAllTeamMember({
                 sort_field: 'createdAt',
@@ -40,9 +43,12 @@ export default function AgencySelectionForm() {
                 agency_id: selectedOption?.value,
                 pagination: true
             }));
-        } else if(pathname === "/task") {
-
-            !gridView ? dispatch(getAllTask({ sort_field: 'createdAt', sort_order: 'desc', agency_id: selectedOption?.value, pagination: true })) : dispatch(getAllTask({ pagination: false }))
+        } else if(pathname === "/tasks") {
+            !gridView ? dispatch(getAllTask({ sort_field: 'createdAt', sort_order: 'desc', agency_id: selectedOption?.value, pagination: true })) : dispatch(getAllTask({ pagination: false, agency_id: selectedOption?.value }))
+        } else if(pathname === "/calendar") {
+            !calendarView ? dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', agency_id: selectedOption?.value, pagination: true })) : dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', agency_id: selectedOption?.value, pagination: false }))
+        } else if(pathname.startsWith('/team/details')) {
+            dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', agency_id: selectedOption?.value, client_team_id: clientSliceData?.clientTeamId, pagination: true }))
         }
     }
 

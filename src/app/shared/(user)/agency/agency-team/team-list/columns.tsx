@@ -21,13 +21,19 @@ import { getAllTeamMember } from '@/redux/slices/user/team-member/teamSlice';
 import { useState } from 'react';
 import Spinner from '@/components/ui/spinner';
 
-
 type Columns = {
   data: any[];
   sortConfig?: any;
   handleSelectAll: any;
   checkedItems: string[];
-  onDeleteItem: (id: string | string[], currentPage?: any, countPerPage?: number, Islastitem?: boolean, sortConfig?: Record<string, string>, searchTerm?: string) => void;
+  onDeleteItem: (
+    id: string | string[],
+    currentPage?: any,
+    countPerPage?: number,
+    Islastitem?: boolean,
+    sortConfig?: Record<string, string>,
+    searchTerm?: string
+  ) => void;
   onHeaderCellClick: (value: string) => void;
   onChecked?: (id: string) => void;
   currentPage?: number;
@@ -64,17 +70,11 @@ function getStatusBadge(status: string) {
 function getRoleName(role: string) {
   switch (role?.toLowerCase()) {
     case 'team_member':
-      return (
-        <Text className="font-medium text-gray-700">Team member</Text>
-      );
+      return <Text className="font-medium text-gray-700">Team member</Text>;
     case 'admin':
-      return (
-        <Text className="font-medium text-gray-700">Admin</Text>
-      );
+      return <Text className="font-medium text-gray-700">Admin</Text>;
     default:
-      return (
-        <Text className="font-medium text-gray-700">-</Text>
-      );
+      return <Text className="font-medium text-gray-700">-</Text>;
   }
 }
 
@@ -88,22 +88,32 @@ export const GetclientTeamColumns = ({
   onChecked,
   currentPage,
   pageSize,
-  searchTerm
+  searchTerm,
 }: Columns) => {
+  const token = localStorage.getItem('token');
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const [loadingflag, setloadingflag] = useState(false);
+  const [showloaderflag, setshowloaderflag] = useState(null);
 
-  const token = localStorage.getItem('token')
-  const router = useRouter()
-  const dispatch = useDispatch()
-  const [loadingflag, setloadingflag] = useState(false)
-  const [showloaderflag, setshowloaderflag] = useState(null)
-
-  const paginationParams = useSelector((state: any) => state?.root?.teamMember?.paginationParams);
+  const paginationParams = useSelector(
+    (state: any) => state?.root?.teamMember?.paginationParams
+  );
 
   const ClintteamlistAPIcall = async () => {
-    let { page, items_per_page, sort_field, sort_order, search } = paginationParams;
-    await dispatch(getAllTeamMember({ page, items_per_page, sort_field, sort_order, search, pagination: true }));
-
-  }
+    let { page, items_per_page, sort_field, sort_order, search } =
+      paginationParams;
+    await dispatch(
+      getAllTeamMember({
+        page,
+        items_per_page,
+        sort_field,
+        sort_order,
+        search,
+        pagination: true,
+      })
+    );
+  };
 
   return [
     {
@@ -124,8 +134,10 @@ export const GetclientTeamColumns = ({
         <div className="inline-flex ps-3.5">
           <Checkbox
             className="cursor-pointer"
-            checked={checkedItems.includes(row._id)}
-            {...(onChecked && { onChange: () => onChecked(row._id) })}
+            checked={checkedItems.includes(row?.reference_id?._id)}
+            {...(onChecked && {
+              onChange: () => onChecked(row?.reference_id?._id),
+            })}
           />
         </div>
       ),
@@ -138,13 +150,14 @@ export const GetclientTeamColumns = ({
           ascending={
             sortConfig?.direction === 'asc' && sortConfig?.key === 'name'
           }
-        />),
+        />
+      ),
       onHeaderCell: () => onHeaderCellClick('name'),
       dataIndex: 'name',
       key: 'name',
       width: 200,
       render: (value: string) => (
-        <Text className="font-medium text-gray-700 capitalize">{value}</Text>
+        <Text className="font-medium capitalize text-gray-700">{value}</Text>
       ),
     },
     {
@@ -153,16 +166,22 @@ export const GetclientTeamColumns = ({
           title="Mobile Number"
           sortable
           ascending={
-            sortConfig?.direction === 'asc' && sortConfig?.key === 'contact_number'
+            sortConfig?.direction === 'asc' &&
+            sortConfig?.key === 'contact_number'
           }
-        />),
+        />
+      ),
       onHeaderCell: () => onHeaderCellClick('contact_number'),
       dataIndex: 'contact_number',
       key: 'contact_number',
       width: 200,
       render: (value: string) => (
         <>
-          {value && value != "" ? <Text className="font-medium text-gray-700">{value}</Text> : <Text className="font-medium text-gray-700">-</Text>}
+          {value && value != '' ? (
+            <Text className="font-medium text-gray-700">{value}</Text>
+          ) : (
+            <Text className="font-medium text-gray-700">-</Text>
+          )}
         </>
       ),
     },
@@ -174,7 +193,8 @@ export const GetclientTeamColumns = ({
           ascending={
             sortConfig?.direction === 'asc' && sortConfig?.key === 'email'
           }
-        />),
+        />
+      ),
       onHeaderCell: () => onHeaderCellClick('email'),
       dataIndex: 'email',
       key: 'email',
@@ -191,7 +211,8 @@ export const GetclientTeamColumns = ({
           ascending={
             sortConfig?.direction === 'asc' && sortConfig?.key === 'role'
           }
-        />),
+        />
+      ),
       onHeaderCell: () => onHeaderCellClick('role'),
       dataIndex: 'reference_id',
       key: 'reference_id',
@@ -206,12 +227,16 @@ export const GetclientTeamColumns = ({
           ascending={
             sortConfig?.direction === 'asc' && sortConfig?.key === 'status'
           }
-        />),
+        />
+      ),
       onHeaderCell: () => onHeaderCellClick('status'),
       dataIndex: 'status',
       key: 'status',
       width: 200,
-      render: (value: string) => getStatusBadge((value && value === "payment_pending" ? "Payment Pending" : value)),
+      render: (value: string) =>
+        getStatusBadge(
+          value && value === 'payment_pending' ? 'Payment Pending' : value
+        ),
     },
     {
       title: (
@@ -229,7 +254,7 @@ export const GetclientTeamColumns = ({
       width: 200,
       render: (value: string) => {
         const date = moment(value).fromNow();
-        return <Text className="font-medium text-gray-700">{date}</Text>
+        return <Text className="font-medium text-gray-700">{date}</Text>;
       },
     },
     {
@@ -240,18 +265,37 @@ export const GetclientTeamColumns = ({
       width: 120,
       render: (_: string, row: any) => (
         <>
-          {row?.status === "payment_pending" ? <div> <Button disabled={loadingflag} className='w-full' onClick={() => {
-            initiateRazorpay(router, routes.agency_team, token, row?.reference_id?._id, ClintteamlistAPIcall, setloadingflag)
-            setshowloaderflag(row?._id)
-          }}>Pay {loadingflag && showloaderflag === row?._id && < Spinner size="sm" tag='div' className='ms-3' color='white' />}</Button></div> :
-
+          {row?.status === 'payment_pending' ? (
+            <div>
+              {' '}
+              <Button
+                disabled={loadingflag}
+                className="w-full"
+                onClick={() => {
+                  initiateRazorpay(
+                    router,
+                    routes.agency_team,
+                    token,
+                    row?.reference_id?._id,
+                    ClintteamlistAPIcall,
+                    setloadingflag
+                  );
+                  setshowloaderflag(row?._id);
+                }}
+              >
+                Pay{' '}
+                {loadingflag && showloaderflag === row?._id && (
+                  <Spinner size="sm" tag="div" className="ms-3" color="white" />
+                )}
+              </Button>
+            </div>
+          ) : (
             <div className="flex items-center justify-end gap-3 pe-4">
-
               <CustomModalButton
                 icon={<PencilIcon className="h-4 w-4" />}
                 view={<AddTeamMemberForm title="Edit Team member" row={row} />}
                 customSize="625px"
-                title='Edit Team member'
+                title="Edit Team member"
               />
               <Tooltip
                 size="sm"
@@ -259,21 +303,30 @@ export const GetclientTeamColumns = ({
                 placement="top"
                 color="invert"
               >
-                {/* <Link href={routes.viewTeam}> */}
+                <Link href={routes?.agency_teams?.details(row?._id)}>
                 <Button size="sm" variant="outline" className='bg-white text-black' aria-label={'View Member'}>
                   <EyeIcon className="h-4 w-4" />
                 </Button>
-                {/* </Link> */}
+                </Link>
               </Tooltip>
               <DeletePopover
                 title={`Delete the Team member`}
                 description={`Are you sure you want to delete?`}
-                onDelete={() => onDeleteItem(row._id, currentPage, pageSize, data?.length <= 1 ? true : false, sortConfig, searchTerm)}
+                onDelete={() =>
+                  onDeleteItem(
+                    row?.reference_id?._id,
+                    currentPage,
+                    pageSize,
+                    data?.length <= 1 ? true : false,
+                    sortConfig,
+                    searchTerm
+                  )
+                }
               />
-            </div>}
-
+            </div>
+          )}
         </>
       ),
     },
   ];
-}
+};

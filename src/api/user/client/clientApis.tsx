@@ -55,6 +55,7 @@ type GetAllClientApiData = {
   sort_field?: string;
   search?: string;
   pagination?: boolean;
+  for_activity?: boolean;
 }
 
 type GetClientByIdApiData = {

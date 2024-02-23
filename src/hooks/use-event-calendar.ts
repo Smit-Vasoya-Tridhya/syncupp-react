@@ -4,26 +4,27 @@ import { CalendarEvent } from '@/types';
 
 const event = [
   {
-    id: uniqueId(),
-    start: new Date(),
-    end: new Date(),
+    id: "123",
+    start: new Date(2024, 2,1,5,0,0,0),
+    end: new Date(2024, 3,1,6,0,0,0),
     allDay: false,
-    title: '',
+    title: 'Event 1',
     description: 'About Planning',
     location: `At Paige's place`,
   },
 ];
+// console.log(event );
 
-export const eventAtom = atom<CalendarEvent[]>(event);
+export const eventAtom = atom<any[]>(event);
 
 export default function useEventCalendar() {
   const [events, setEvents] = useAtom(eventAtom);
 
-  function createEvent(event: CalendarEvent) {
+  function createEvent(event: any) {
     setEvents((prev) => [...prev, event]);
   }
 
-  function updateEvent(updatedEvent: CalendarEvent) {
+  function updateEvent(updatedEvent: any) {
     // Use map to replace the object with the same id
     const updatedEvents = events.map((event) => {
       if (event.id === updatedEvent.id) {

@@ -277,7 +277,7 @@ export const GetColumns = ({
                 placement="top"
                 color="invert"
               >
-                <Link href={routes.clientViewProfile}>
+                <Link href={routes?.clients?.details(row?._id)}>
                 <Button size="sm" variant="outline" className='bg-white text-black' aria-label={'View Member'}>
                   <EyeIcon className="h-4 w-4" />
                 </Button>

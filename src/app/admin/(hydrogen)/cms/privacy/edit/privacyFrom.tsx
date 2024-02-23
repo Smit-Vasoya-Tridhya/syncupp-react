@@ -72,7 +72,8 @@ export default function CmsPrivacyForm() {
         ? termAndCondition?.conatcUSdata?.data?.description
         : '',
   };
-  if (Object.entries(termAndCondition?.conatcUSdata).length === 0) {
+  console.log(termAndCondition?.conatcUSdata, 'data');
+  if (!termAndCondition?.conatcUSdata) {
     return (
       <div className="flex items-center justify-center p-10">
         <Spinner size="xl" tag="div" className="ms-3" />

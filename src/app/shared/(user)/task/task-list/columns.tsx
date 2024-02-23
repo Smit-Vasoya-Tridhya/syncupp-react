@@ -14,6 +14,8 @@ import moment from 'moment';
 import AddTaskForm from '../create-edit/add-task-form';
 import { useSelector } from 'react-redux';
 import ViewTaskForm from '../create-edit/view-task-form';
+import AddActivityFormPage from '../../calender/create-edit-event/create-edit-activity-form';
+import cn from '@/utils/class-names';
 
 type Columns = {
   data: any[];
@@ -83,46 +85,30 @@ export const GetColumns = ({
 
   const signIn = useSelector((state: any) => state?.root?.signIn)
 
-  return [
+
+
+  let taskColumnArray = [
     {
       title: (
-        <div className="ps-3.5">
-          <Checkbox
-            title={'Select All'}
-            onChange={handleSelectAll}
-            checked={checkedItems.length === data.length}
-            className="cursor-pointer"
+        <div className={cn((signIn?.role === 'client' || signIn?.role === 'team_client') && 'ps-3.5')}>
+          <HeaderCell
+            title="Task Name"
+            sortable
+            ascending={
+              sortConfig?.direction === 'asc' && sortConfig?.key === 'title'
+            }
           />
         </div>
       ),
-      dataIndex: 'checked',
-      key: 'checked',
-      width: 50,
-      render: (_: any, row: any) => (
-        <div className="inline-flex ps-3.5">
-          <Checkbox
-            className="cursor-pointer"
-            checked={checkedItems.includes(row._id)}
-            {...(onChecked && { onChange: () => onChecked(row._id) })}
-          />
-        </div>
-      ),
-    },
-    {
-      title: (
-        <HeaderCell
-          title="Task Name"
-          sortable
-          ascending={
-            sortConfig?.direction === 'asc' && sortConfig?.key === 'title'
-          }
-        />),
       onHeaderCell: () => onHeaderCellClick('title'),
       dataIndex: 'title',
       key: 'title',
       width: 200,
       render: (value: string) => (
-        <Text className="font-medium w-28 text-gray-700 truncate normal-case">{value}</Text>
+        <Text className={cn(
+          "font-medium w-28 text-gray-700 truncate normal-case",
+          (signIn?.role === 'client' || signIn?.role === 'team_client') && 'ps-3.5'
+        )}>{value}</Text>
       ),
     },
     {
@@ -238,15 +224,15 @@ export const GetColumns = ({
       dataIndex: 'action',
       key: 'action',
       width: 120,
-      render: (_: string, row: TeamMemberType) => {
+      render: (_: string, row: any) => {
         return (
           <div>
             <div className="flex items-center justify-end gap-3 pe-4">
-              {(signIn?.role !== 'client' && signIn?.role !== 'team_client') &&
+              {(signIn?.role !== 'client' && signIn?.role !== 'team_client' && row?.status !== 'completed') &&
                 <CustomModalButton
                   icon={<PencilIcon className="h-4 w-4" />}
-                  view={<AddTaskForm title="Edit Task" row={row} />}
-                  customSize="925px"
+                  view={<AddActivityFormPage title="Edit Task" row={row} isTaskModule={true} />}
+                  customSize="1050px"
                   title='Edit Task'
                 />
               }
@@ -269,4 +255,33 @@ export const GetColumns = ({
       },
     },
   ];
+
+  if (signIn?.role !== 'client' && signIn?.role !== 'team_client') {
+    taskColumnArray.unshift({
+      title: (
+        <div className="ps-3.5">
+          <Checkbox
+            title={'Select All'}
+            onChange={handleSelectAll}
+            checked={checkedItems.length === data.length}
+            className="cursor-pointer"
+          />
+        </div>
+      ),
+      dataIndex: 'checked',
+      key: 'checked',
+      width: 50,
+      render: (_: any, row: any) => (
+        <div className="inline-flex ps-3.5">
+          <Checkbox
+            className="cursor-pointer"
+            checked={checkedItems.includes(row._id)}
+            {...(onChecked && { onChange: () => onChecked(row._id) })}
+          />
+        </div>
+      ),
+    },)
+  }
+
+  return taskColumnArray
 }

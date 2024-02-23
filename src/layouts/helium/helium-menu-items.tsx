@@ -3,8 +3,8 @@ import cn from '@/utils/class-names';
 import Link from 'next/link';
 import { Fragment } from 'react';
 import { PiFolderNotchDuotone, PiUser, PiUsersThree } from 'react-icons/pi';
-import { FaTasks, FaFileInvoiceDollar, FaRegCalendarAlt } from 'react-icons/fa';
-import { FaFilePen } from 'react-icons/fa6';
+import { FaTasks, FaFileInvoiceDollar, FaRegCalendarAlt } from "react-icons/fa";
+import { FaFilePen } from "react-icons/fa6";
 import { useSelector } from 'react-redux';
 import { Title } from '@/components/ui/text';
 import { usePathname } from 'next/navigation';
@@ -17,9 +17,9 @@ export const MenuItems = () => {
   const pathname = usePathname();
   let menuItems: Record<string, any>[] = [];
   switch (
-    signIn?.user?.data?.user?.role?.name ||
-    socialSignup?.user?.data?.user?.role?.name ||
-    signIn?.role
+  signIn?.user?.data?.user?.role?.name ||
+  socialSignup?.user?.data?.user?.role?.name ||
+  signIn?.role
   ) {
     case 'agency':
       menuItems = [
@@ -68,6 +68,11 @@ export const MenuItems = () => {
           href: routes.manageSubcription,
           icon: <AiOutlineDollar />,
         },
+        {
+          name: 'Refferal',
+          href: routes.referal,
+          icon: <PiUsersThree />,
+        },
       ];
       break;
 
@@ -87,6 +92,16 @@ export const MenuItems = () => {
           name: 'Tasks',
           href: routes.task,
           icon: <FaTasks />,
+        },
+        {
+          name: 'Calendar',
+          href: routes.userCalendar,
+          icon: <FaRegCalendarAlt />,
+        },
+        {
+          name: 'Invoice',
+          href: routes.clients.invoice,
+          icon: <FaFileInvoiceDollar />,
         },
         {
           name: 'Agreement',
@@ -114,6 +129,11 @@ export const MenuItems = () => {
           icon: <FaTasks />,
         },
         {
+          name: 'Calendar',
+          href: routes.userCalendar,
+          icon: <FaRegCalendarAlt />,
+        },
+        {
           name: 'Agreement',
           href: routes.clients.agreement,
           icon: <FaFilePen />,
@@ -133,6 +153,11 @@ export const MenuItems = () => {
             name: 'Tasks',
             href: routes.task,
             icon: <FaTasks />,
+          },
+          {
+            name: 'Calendar',
+            href: routes.userCalendar,
+            icon: <FaRegCalendarAlt />,
           },
         ];
       } else if (signIn?.teamMemberRole === 'admin') {

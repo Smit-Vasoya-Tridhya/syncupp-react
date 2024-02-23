@@ -78,7 +78,7 @@ export const postAddTask: any = createAsyncThunk(
     try {
       const apiData = {
         title: data?.title,
-        internal_info: data?.description,
+        agenda: data?.description,
         due_date: data?.due_date,
         client_id: data?.client,
         assign_to: data?.assigned,
@@ -99,7 +99,7 @@ export const patchEditTask: any = createAsyncThunk(
       const apiData = {
         _id: data?._id,
         title: data?.title,
-        internal_info: data?.description,
+        agenda: data?.description,
         due_date: data?.due_date,
         client_id: data?.client,
         assign_to: data?.assigned,

@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useModal } from '@/app/shared/modal-views/use-modal';
 import cn from '@/utils/class-names';
 import { PiXBold } from 'react-icons/pi';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import EventCalendarDayView from './calendar-day-view';
 import AddTaskForm from './task-form';
 import { FaRegCalendarAlt } from 'react-icons/fa';
@@ -28,7 +28,7 @@ const menuItems = [
 
 export default function AddActivityFormPage(props: any) {
 
-  const { title, row } = props;
+  const { title, row, form, isTaskModule, isClientEdit, isTeamEdit, isClientModule, clientName, clientId, isTeamModule, teamName, teamId, isAgencyTeam, isClientTeam } = props;
   // console.log("row data....", row);
 
   const dispatch = useDispatch();
@@ -39,6 +39,16 @@ export default function AddActivityFormPage(props: any) {
   const taskData = useSelector(
     (state: any) => state?.root?.task
   );
+
+  useEffect(() => {
+    if(row?.activity_type?.name === 'task' && title === 'Edit Activity'){
+      setSelectedTask('Task');
+    } else if(row?.activity_type?.name === 'call_meeting' && title === 'Edit Activity'){
+      setSelectedTask('Call meeting');
+    } else if(row?.activity_type?.name === 'others' && title === 'Edit Activity'){
+      setSelectedTask('Others');
+    }
+  }, [selectedTask, row, title])
 
 
   const handleTaskClick = (task: any) => {
@@ -69,54 +79,48 @@ export default function AddActivityFormPage(props: any) {
               )}
             >
               <div>
-                {/* <div className="grid grid-cols-[repeat(3,1fr)] w-full bg-gray-100 cursor-pointer">
-                      <div className={`inline-flex gap-2 items-center text-[17px] p-3 ${selectedTask === 'task' ? 'bg-gray-500 text-white' : ``}`} onClick={() => handleTaskClick('task')}>
-                          <PiNotepadDuotone className="h-[25px] w-[25px]" />
-                          <Text>Task</Text>
-                      </div>
-                      <div  className={`inline-flex gap-2 items-center text-[17px] p-3 ${selectedTask === 'meeting' ? 'bg-gray-500 text-white' : ``}`} onClick={() => handleTaskClick('meeting')}>
-                          <PiPhoneCallDuotone className="h-[25px] w-[25px]" />
-                          <Text>Call Meeting</Text>
-                      </div>
-                      <div  className={`inline-flex gap-2 items-center text-[17px] p-3 ${selectedTask === 'others' ? 'bg-gray-500 text-white' : ``}`} onClick={() => handleTaskClick('others')}>
-                      <FaRegCalendarAlt className="h-[25px] w-[25px]"/>
-                        <Text className="cursor-pointer">Others</Text>
-                      </div>
-                    </div> */}
-                <div className='border-b-[1px]'>
-                  {menuItems.map((menu, index) => (
-                    <Button
-                      key={index}
-                      className={cn(
-                        'group relative cursor-pointer whitespace-nowrap py-2.5 font-medium text-gray-500 before:absolute before:bottom-0 before:left-0 before:z-[1] before:h-0.5  before:bg-gray-1000 before:transition-all hover:text-gray-900',
-                        menu.label === selectedTask
-                          ? 'before:visible before:w-full before:opacity-100'
-                          : 'before:invisible before:w-0 before:opacity-0'
-                      )}
-                      variant='text'
-                      onClick={() => handleTaskClick(menu.label)}
-                    >
-                      <Text
-                        as="span"
-                        className="inline-flex rounded-md px-2.5 py-1.5 transition-all duration-200 group-hover:bg-gray-100/70"
+                {!isTaskModule &&
+                  <div className='border-b-[1px]'>
+                    {menuItems.map((menu, index) => (
+                      <Button
+                        key={index}
+                        className={cn(
+                          'group relative cursor-pointer whitespace-nowrap py-2.5 font-medium text-gray-500 before:absolute before:bottom-0 before:left-0 before:z-[1] before:h-0.5  before:bg-gray-1000 before:transition-all hover:text-gray-900',
+                          menu.label === selectedTask
+                            ? 'before:visible before:w-full before:opacity-100'
+                            : 'before:invisible before:w-0 before:opacity-0',
+                            title === 'Edit Activity' && menu.label !== selectedTask && 'bg-transparent cursor-auto'
+                        )}
+                        variant='text'
+                        disabled={title === 'Edit Activity' && menu.label !== selectedTask}
+                        onClick={() => handleTaskClick(menu.label)}
                       >
-                        {menu.label}
-                      </Text>
-                    </Button>
-                  ))}
-                </div>
+                        <Text
+                          as="span"
+                          className={cn(
+                            "inline-flex rounded-md px-2.5 py-1.5 transition-all duration-200 group-hover:bg-gray-100/70",
+                            menu.label === selectedTask && 'text-black',
+                            menu.label !== selectedTask && title === 'Edit Activity' && 'group-hover:bg-transparent',
+                          )}
+                        >
+                          {menu.label}
+                        </Text>
+                      </Button>
+                    ))}
+                  </div>
+                }
                 <div className="mt-3">
                   {selectedTask === 'Task' && (
-                    <AddTaskForm title={title} className="w-full p-0" />
+                    <AddTaskForm title={title} row={row} isClientEdit={isClientEdit} isTeamEdit={isTeamEdit} isClientModule={isClientModule} clientReferenceId={clientId} clientName={clientName} isTeamModule={isTeamModule} teamName={teamName} teamReferenceId={teamId} isAgencyTeam={isAgencyTeam} isClientTeam={isClientTeam}  />
                   )}
                   {selectedTask === 'Call meeting' && (
                     <div className="h-full">
-                      <AddCallMeetingForm title={title} />
+                      <AddCallMeetingForm title={title} row={row} isClientEdit={isClientEdit} isTeamEdit={isTeamEdit} isClientModule={isClientModule} clientReferenceId={clientId} clientName={clientName} isTeamModule={isTeamModule} teamName={teamName} teamReferenceId={teamId} isAgencyTeam={isAgencyTeam} isClientTeam={isClientTeam} />
                     </div>
                   )}
                   {selectedTask === 'Others' && (
                     <div>
-                      <AddOtherForm title={title}  />
+                      <AddOtherForm title={title} row={row} isClientEdit={isClientEdit} isTeamEdit={isTeamEdit} isClientModule={isClientModule} clientReferenceId={clientId} clientName={clientName} isTeamModule={isTeamModule} teamName={teamName} teamReferenceId={teamId} isAgencyTeam={isAgencyTeam} isClientTeam={isClientTeam} />
                     </div>
                   )}
                 </div>
