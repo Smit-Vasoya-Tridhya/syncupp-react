@@ -1,4 +1,4 @@
-'use client';
+  'use client';
 
 import { Title, Text } from '@/components/ui/text';
 import cn from '@/utils/class-names';

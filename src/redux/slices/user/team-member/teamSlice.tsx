@@ -8,6 +8,8 @@ import {
   PostAddTeamMemberApi,
   PostTeamMemberVerifyApi,
   PutEditTeamMemberApi,
+  RefferalPaymentApi,
+  RefferalPaymentStatisticsApi,
 } from '@/api/user/team-member/teamApis';
 
 type TeamData = {
@@ -32,6 +34,12 @@ type DeleteTeamMemberData = {
   teamMemberIds: string[];
   agency_id?: string;
 };
+
+type RefferalPaymentData = {
+  user_id: string;
+  without_referral?: boolean;
+}
+
 type GetTeamMemberProfileApiData = {
   _id: string;
   name: string;
@@ -75,6 +83,7 @@ const initialState = {
   clientName: '',
   teamList: '',
   teamMemberProfile: '',
+  refferalStatisticsData: '',
   getAllTeamMemberStatus: '',
   addTeamMemberStatus: '',
   editTeamMemberStatus: '',
@@ -83,6 +92,8 @@ const initialState = {
   verifyTeamMemberStatus: '',
   paginationParams: '',
   addClientteamdetails: '',
+  getRefferalStatisticsStatus: '',
+  postRefferalPaymentStatus: '',
 };
 
 export const addTeamMember: any = createAsyncThunk(
@@ -214,6 +225,36 @@ export const deleteTeamMember: any = createAsyncThunk(
         agency_id: data?.agency_id,
       };
       const response: any = await DeleteTeamMemberApi(data);
+      return response;
+    } catch (error: any) {
+      return {
+        status: false,
+        message: error.response.data.message,
+      } as TeamMemberDataResponse;
+    }
+  }
+);
+
+export const refferalPaymentStatistics: any = createAsyncThunk(
+  'teamMember/refferalPaymentStatistics',
+  async () => {
+    try {
+      const response: any = await RefferalPaymentStatisticsApi();
+      return response;
+    } catch (error: any) {
+      return {
+        status: false,
+        message: error.response.data.message,
+      } as TeamMemberDataResponse;
+    }
+  }
+);
+
+export const refferalPayment: any = createAsyncThunk(
+  'teamMember/refferalPayment',
+  async (data: RefferalPaymentData ) => {
+    try {
+      const response: any = await RefferalPaymentApi(data);
       return response;
     } catch (error: any) {
       return {
@@ -457,6 +498,83 @@ export const teamSlice = createSlice({
           deleteTeamMemberStatus: 'error',
         };
       });
+
+      // new cases for refferal payment statistics 
+    builder
+    .addCase(refferalPaymentStatistics.pending, (state) => {
+      return {
+        ...state,
+        loading: true,
+        getRefferalStatisticsStatus: 'pending',
+      };
+    })
+    .addCase(refferalPaymentStatistics.fulfilled, (state, action) => {
+      if (action.payload.status == false) {
+        toast.error(action.payload.message);
+        return {
+          ...state,
+          //   data: action.payload,
+          loading: false,
+          getRefferalStatisticsStatus: 'error',
+        };
+      } else {
+        // if (action.payload.message) {
+        //   toast.success(action.payload.message);
+        // }
+        return {
+          ...state,
+          refferalStatisticsData: action?.payload?.data,
+          loading: false,
+          getRefferalStatisticsStatus: 'success',
+        };
+      }
+    })
+    .addCase(refferalPaymentStatistics.rejected, (state) => {
+      return {
+        ...state,
+        loading: false,
+        getRefferalStatisticsStatus: 'error',
+      };
+    });
+
+     // new cases for refferal payment 
+     builder
+     .addCase(refferalPayment.pending, (state) => {
+       return {
+         ...state,
+         loading: true,
+         postRefferalPaymentStatus: 'pending',
+       };
+     })
+     .addCase(refferalPayment.fulfilled, (state, action) => {
+       if (action.payload.status == false) {
+         toast.error(action.payload.message);
+         return {
+           ...state,
+           //   data: action.payload,
+           loading: false,
+           postRefferalPaymentStatus: 'error',
+         };
+       } else {
+         if (action.payload.message) {
+           toast.success(action.payload.message);
+         }
+         return {
+           ...state,
+           loading: false,
+           //   data: action.payload,
+           postRefferalPaymentStatus: 'success',
+         };
+       }
+     })
+     .addCase(refferalPayment.rejected, (state) => {
+       return {
+         ...state,
+         loading: false,
+         postRefferalPaymentStatus: 'error',
+       };
+     });
+
   },
 });
 
