@@ -117,7 +117,7 @@ export default function CreateAgreementForm() {
     //Preview mode Handler
     const handlePreview = (watch: any, trigger: any, isDirty: any, isValid: any) => {
 
-     
+
 
         if (isValid) {
             // Toggle to preview mode
@@ -360,7 +360,7 @@ export default function CreateAgreementForm() {
                     </div>
                     <h3 className="flex items-center justify-between rounded border-2 border-solid border-gray-300 bg-gray-100 p-3 min-h-12">
                         <span>{formdata?.title}</span>
-                        <span>{formdata?.due_date && formdata?.due_date != "" ? moment(formdata?.due_date).format("Do MMM. ‘YY") : ""}</span>
+                        <span>{formdata?.due_date && formdata?.due_date != "" ? "Due Date : " + moment(formdata?.due_date).format("Do MMM. ‘YY") : ""}</span>
                     </h3>
                     <div
                         className="mt-5"

@@ -132,5 +132,6 @@ export const messages = {
   descriptionRequired: 'Description is required',
   descriptionmaxLength: 'Description must be at most 4000 characters long',
   ratemaxDigitLength: 'Rate cannot exceed 7 digits',
-  quantitymaxDigitLength: 'Item quantity cannot exceed 7 digits.'
+  quantitymaxDigitLength: 'Item quantity cannot exceed 7 digits.',
+  quantytyAllowInteger: 'Quantity must be an integer'
 };

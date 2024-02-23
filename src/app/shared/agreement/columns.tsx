@@ -25,7 +25,7 @@ type Columns = {
     data: any[];
     sortConfig?: any;
     handleSelectAll: any;
-    handlecustomeSelectAll:any;
+    handlecustomeSelectAll: any;
     checkedItems: string[];
     onDeleteItem: (id: string | string[], currentPage?: any, countPerPage?: number, Islastitem?: boolean, sortConfig?: Record<string, string>, searchTerm?: string) => void;
     onHeaderCellClick: (value: string) => void;
@@ -55,6 +55,7 @@ export const AgreementColumns = ({
 
 
     const StatusHandler = (status: string, id: string, setOpen: any) => {
+        handlecustomeSelectAll()
         setOpen(false)
         dispatch(updateagreementStatus({ data: { status: status }, id: id })).then((result: any) => {
             if (updateagreementStatus.fulfilled.match(result)) {
@@ -87,7 +88,7 @@ export const AgreementColumns = ({
                         onChange={handlecustomeSelectAll}
                         checked={checkedItems.length === data.length}
                         className="cursor-pointer"
-                        
+
                     />
                 </div>
             ),

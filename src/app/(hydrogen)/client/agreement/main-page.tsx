@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import CustomTable from '@/components/common-tables/table';
 import { deleteAgencyAgreement } from '@/redux/slices/user/agreement/agreementSlice';
@@ -31,6 +31,15 @@ export default function AgreementPage() {
     const { agreementDetails, loading } = useSelector((state: any) => state?.root?.clienAgreement);
     const clientSliceData = useSelector((state: any) => state?.root?.client);
     const [pageSize, setPageSize] = useState(5)
+
+
+    useEffect(() => {
+
+        console.log(clientSliceData?.agencyId,'clientSliceData?.agencyId')
+        // dispatch(getAllclientagreement({ page, items_per_page, sort_field, sort_order, search, agency_id: clientSliceData?.agencyId }));
+
+    }, [clientSliceData?.agencyId])
+
 
     //Paggination Handler
     const handleChangePage = async (paginationParams: any) => {
