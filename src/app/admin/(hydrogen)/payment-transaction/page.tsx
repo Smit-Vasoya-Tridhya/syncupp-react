@@ -71,7 +71,6 @@ export default function PaymentTransactionlistPage() {
         <>
             {/* <h1>Aggrement</h1> */}
             <PageHeader title={pageHeader.title} />
-            {/* <Button type='button' onClick={() => { router.push(`/agreement/create-agreement`)}}>Add</Button> */}
             <CustomTable
                 data={DummyData || []}
                 total={10}
