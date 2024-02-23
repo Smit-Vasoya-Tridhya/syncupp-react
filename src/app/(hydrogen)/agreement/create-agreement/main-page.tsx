@@ -8,7 +8,7 @@ import { useMedia } from '@/hooks/use-media';
 import { useDispatch, useSelector } from 'react-redux';
 import { DatePicker } from '@/components/ui/datepicker';
 import { handleKeyDown } from '@/utils/common-functions';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { AgrementFormTypes, agrementFormSchema } from '@/utils/validators/agreement.schema';
 import { Input } from 'rizzui';
 import SelectLoader from '@/components/loader/select-loader';
@@ -47,8 +47,12 @@ export default function CreateAgreementForm() {
     const dispatch = useDispatch();
     const router = useRouter();
 
+    const searchParams = useSearchParams();
+    const reference_id = searchParams.get("reference");
+
     const { user } = useSelector((state: any) => state?.root?.signIn?.user?.data);
     const { clientlistDetails, loading } = useSelector((state: any) => state?.root?.agreement);
+    const clientSliceData = useSelector((state: any) => state?.root?.client)?.clientProfile;
 
     // console.log(clientlistDetails, 'clientlistDetails')
 
@@ -67,17 +71,23 @@ export default function CreateAgreementForm() {
     const [dueDate, setDueDate] = useState<Date | null>(null);
     const [preview, setpreview] = useState(false);
     const [sendbuttonflag, setsendbuttonflag] = useState<boolean>(false)
-    const [selectedClient, setselectedClient] = useState<any>(null)
+    const [selectedClient, setselectedClient] = useState<any>(reference_id ? clientOptions.find((option: any) => option?.key?.reference_id === reference_id) : null)
+
     const [formdata, setformData] = useState({
         title: '',
-        recipient: '',
+        recipient: reference_id ? selectedClient?.name : '',
         due_date: '',
         description: '',
     })
 
+
+    useEffect(() => {
+        reference_id ? setselectedClient(clientOptions.find((option: any) => option?.key?.reference_id === reference_id)) : setselectedClient(null)
+    }, [clientlistDetails])
+
     useEffect(() => {
         dispatch(getDropdownclientlist())
-    }, [dispatch])
+    }, [])
 
     // initial value State
     const initialValues: AgrementFormTypes = {
@@ -96,13 +106,14 @@ export default function CreateAgreementForm() {
             receiver: selectedClient?.value,
             due_date: data?.due_date,
             agreement_content: data?.description,
-            send: sendbuttonflag
+            send: sendbuttonflag,
+            // ...(reference_id && { client_id: reference_id }),
         };
 
         // If in preview mode, dispatch the API call
         dispatch(createagreement(agreementData)).then((result: any) => {
             if (createagreement.fulfilled.match(result) && result.payload.success === true) {
-                router.replace(`/agreement`);
+                reference_id ? router.replace(routes.clients.details(clientSliceData?._id)) : router.replace(routes.agreement);
 
             }
         });
@@ -212,6 +223,7 @@ export default function CreateAgreementForm() {
                                                 render={({ field: { onChange, value } }) => (
                                                     <Select
                                                         options={clientOptions}
+                                                        disabled={reference_id ? true : false}
                                                         onChange={(selectedOption: any) => {
                                                             setselectedClient(selectedOption);
                                                             onChange(selectedOption?.name);

@@ -62,8 +62,6 @@ export default function InvoicePage() {
         <>
             {/* <h1>Aggrement</h1> */}
             <PageHeader title={pageHeader.title} />
-
-            {/* <Button type='button' onClick={() => { router.push(`/agreement/create-agreement`)}}>Add</Button> */}
             <CustomTable
                 data={invoiceDetails?.data?.invoiceList || []}
                 total={invoiceDetails?.data?.page_count || 1}

@@ -66,7 +66,6 @@ export default function AdmininquirylistPage() {
         <>
             {/* <h1>Aggrement</h1> */}
             <PageHeader title={pageHeader.title} />
-            {/* <Button type='button' onClick={() => { router.push(`/agreement/create-agreement`)}}>Add</Button> */}
             <CustomTable
                 data={inquirylistDetails?.data?.inquiries || []}
                 total={inquirylistDetails?.data?.page_count || 1}

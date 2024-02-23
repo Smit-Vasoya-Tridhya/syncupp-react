@@ -18,6 +18,7 @@ import moment from 'moment';
 import { downloadAgreement, getAllAgencyagreement, sendAgreement, updateagreementStatus } from '@/redux/slices/user/agreement/agreementSlice';
 import { PiTrashFill } from 'react-icons/pi';
 import TrashIcon from '@/components/icons/trash';
+import { usePathname } from 'next/navigation';
 
 
 
@@ -52,6 +53,9 @@ export const AgreementColumns = ({
 
     const dispatch = useDispatch();
     const { agreementDetails, loading } = useSelector((state: any) => state?.root?.agreement);
+    const clientSliceData = useSelector((state: any) => state?.root?.client)?.clientProfile;
+    const pathname = usePathname().startsWith('/client/details/')
+    // client_id: pathname ? clientSliceData?.reference_id : null
 
 
     const StatusHandler = (status: string, id: string, setOpen: any) => {
@@ -61,7 +65,7 @@ export const AgreementColumns = ({
             if (updateagreementStatus.fulfilled.match(result)) {
                 // console.log('resultt', result)
                 if (result && result.payload.success === true) {
-                    dispatch(getAllAgencyagreement({ page: currentPage, items_per_page: pageSize, sort_field: sortConfig?.key, sort_order: sortConfig?.direction }));
+                    dispatch(getAllAgencyagreement({ page: currentPage, items_per_page: pageSize, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, client_id: pathname ? clientSliceData?.reference_id : null }));
                 }
             }
         })
@@ -72,7 +76,7 @@ export const AgreementColumns = ({
             if (sendAgreement.fulfilled.match(result)) {
                 // console.log('resultt', result)
                 if (result && result.payload.success === true) {
-                    dispatch(getAllAgencyagreement({ page: currentPage, items_per_page: pageSize, sort_field: sortConfig?.key, sort_order: sortConfig?.direction }));
+                    dispatch(getAllAgencyagreement({ page: currentPage, items_per_page: pageSize, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, client_id: pathname ? clientSliceData?.reference_id : null }));
                 }
             }
         })

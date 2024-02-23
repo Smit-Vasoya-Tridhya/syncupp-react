@@ -15,6 +15,7 @@ import PageHeader from '@/app/shared/page-header';
 import { getClientById } from '@/redux/slices/user/client/clientSlice';
 import ClientActivityTablePage from './client-activity-details';
 import Spinner from '@/components/ui/spinner';
+import ClientAgreementTablePage from './client-agreement-details';
 
 
 
@@ -45,7 +46,7 @@ export default function ClientViewProfileForm(props: any) {
   const [selectedTask, setSelectedTask] = useState('Activity');
   const [clientId, setClientId] = useState('');
   const [clientName, setClientName] = useState('');
-// console.log("client name...", clientName)
+  // console.log("client name...", clientName)
 
 
   useEffect(() => {
@@ -127,7 +128,7 @@ export default function ClientViewProfileForm(props: any) {
           </div>
         )}
         {selectedTask === 'Agreement' && (
-          <span>Agreement</span>
+          <ClientAgreementTablePage />
         )}
         {selectedTask === 'Invoice' && (
           <span>Invoice</span>
