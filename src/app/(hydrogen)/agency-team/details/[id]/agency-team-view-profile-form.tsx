@@ -44,6 +44,7 @@ export default function AgencyTeamMemberViewProfileForm(props: any) {
 
   const [selectedTask, setSelectedTask] = useState('Activity');
   const [teamId, setTeamId] = useState('');
+  const [teamName, setTeamName] = useState('');
 
 
 
@@ -52,6 +53,11 @@ export default function AgencyTeamMemberViewProfileForm(props: any) {
       if (getTeamMemberProfile.fulfilled.match(result)) {
         if (result && result.payload.success === true) {
           setTeamId(result?.payload?.data[0]?.reference_id)
+          const fullName =
+            (result?.payload?.data[0]?.first_name.charAt(0).toUpperCase() + result?.payload?.data[0]?.first_name.slice(1)) +
+            ' ' +
+            (result?.payload?.data[0]?.last_name.charAt(0).toUpperCase() + result?.payload?.data[0]?.last_name.slice(1));
+          setTeamName(fullName)
         }
       }
     })
@@ -107,12 +113,12 @@ export default function AgencyTeamMemberViewProfileForm(props: any) {
       <div className="mt-3">
         {selectedTask === 'Activity' && (
           <div>
-            {teamId === '' ? (
+            {teamId === '' && teamName === '' ? (
               <div className='p-10 flex items-center justify-center'>
                 <Spinner size="xl" tag='div' />
               </div>
             ) : (
-              <AgencyTeamActivityTablePage teamId={teamId} />
+              <AgencyTeamActivityTablePage teamId={teamId} teamName={teamName} />
             )}
           </div>
         )}

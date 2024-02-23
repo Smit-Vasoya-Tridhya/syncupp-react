@@ -10,9 +10,6 @@ import cn from '@/utils/class-names';
 import { Button } from 'rizzui';
 import DatePeriodSelectionForm from '@/app/shared/(user)/forms/select-period-form';
 import ActivitySelectionForm from '@/app/shared/(user)/forms/activity-selection-form';
-import ModalButton from '@/app/shared/modal-button';
-import AddActivityFormPage from '@/app/shared/(user)/calender/create-edit-event/create-edit-activity-form';
-import { PiPlusBold } from 'react-icons/pi';
 
 
 export default function TeamActivityTablePage(props: any) {
@@ -33,10 +30,6 @@ export default function TeamActivityTablePage(props: any) {
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
 
-    // console.log("Activity is....", activityData?.activityName)
-    // console.log("Activity is....", activityType)
-    // console.log("Start date is....", startDate)
-    // console.log("End date is....", endDate)
 
     const handleStatusFilterApiCall = (filterStatusValue: string) => {
         setStatusType(filterStatusValue);
@@ -137,18 +130,6 @@ export default function TeamActivityTablePage(props: any) {
                     <div className='mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0 col-span-3 lg:col-span-2 md:col-span-2 sm:col-span-2'>
                         <ActivitySelectionForm setActivityType={setActivityType} statusType={statusType} startDate={startDate} endDate={endDate} period={period} clientTeamId={teamId} />
                     </div>
-                    <div className='mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0 col-span-3 lg:col-span-2 md:col-span-2 sm:col-span-2'>
-                        <ModalButton
-                            label="Add Activity"
-                            view={<AddActivityFormPage title="New Activity" isTaskModule={false} />}
-                            customSize="1050px"
-                            className="mt-0 w-full max-h-[800px] overflow-auto hover:bg-gray-700 @lg:w-auto dark:bg-gray-100 dark:text-white dark:hover:bg-gray-200 dark:active:bg-gray-100"
-                            icon={<PiPlusBold className="me-1.5 h-[17px] w-[17px]" />}
-                        />
-                    </div>
-                </div>
-                <div>
-
                 </div>
             </div>
             <div className='mt-8'>

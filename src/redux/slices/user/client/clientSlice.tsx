@@ -100,6 +100,7 @@ interface ClientInitialState {
   clientId: string;
   clientName: string;
   clientProfile: string;
+  clientTeamId: string;
   addClientStatus: string;
   verifyClientStatus: string;
   clientRedirectStatus: string;
@@ -127,6 +128,7 @@ const initialState: ClientInitialState = {
   clientId: '',
   clientName: '',
   clientProfile: '',
+  clientTeamId: '',
   addClientStatus: '',
   verifyClientStatus: '',
   clientRedirectStatus: '',
@@ -351,6 +353,12 @@ export const clientSlice = createSlice({
       return {
         ...state,
         clientName: action.payload,
+      };
+    },
+    setClientTeamId(state, action) {
+      return {
+        ...state,
+        clientTeamId: action.payload,
       };
     },
   },
@@ -599,9 +607,9 @@ export const clientSlice = createSlice({
     // new cases for get agencies list
     builder.addCase(getClientAgencies.fulfilled, (state, action) => {
       const fullName =
-        action?.payload?.data[0]?.first_name +
+        (action?.payload?.data[0]?.first_name.charAt(0).toUpperCase() + action?.payload?.data[0]?.first_name.slice(1)) +
         ' ' +
-        action?.payload?.data[0]?.last_name;
+        (action?.payload?.data[0]?.last_name.charAt(0).toUpperCase() + action?.payload?.data[0]?.last_name.slice(1));
       return {
         ...state,
         agencies: action?.payload?.data,
@@ -620,5 +628,6 @@ export const {
   setClientId,
   setClientName,
   setPagginationParams,
+  setClientTeamId,
 } = clientSlice.actions;
 export default clientSlice.reducer;

@@ -17,7 +17,7 @@ import { PiPlusBold } from 'react-icons/pi';
 
 export default function ClientTeamActivityTablePage(props: any) {
 
-    const { teamId } = props;
+    const { teamId, teamName } = props;
 
 
     const dispatch = useDispatch();
@@ -42,13 +42,13 @@ export default function ClientTeamActivityTablePage(props: any) {
         setStatusType(filterStatusValue);
         if (signIn?.role !== 'client' && signIn?.role !== 'team_client') {
             if (activityType === '' && endDate === '' && startDate === '') {
-                dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc',  client_team_id: teamId, filter: { status: filterStatusValue }, pagination: true }))
+                dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', client_team_id: teamId, filter: { status: filterStatusValue }, pagination: true }))
             } else if (endDate === '' && startDate === '' && activityType !== '') {
-                dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc',  client_team_id: teamId, filter: { status: filterStatusValue, activity_type: activityType }, pagination: true }))
+                dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', client_team_id: teamId, filter: { status: filterStatusValue, activity_type: activityType }, pagination: true }))
             } else if (endDate !== '' && startDate !== '' && activityType !== '') {
-                dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc',  client_team_id: teamId, filter: { status: filterStatusValue, activity_type: activityType, date: period, start_date: startDate, end_date: endDate }, pagination: true }))
+                dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', client_team_id: teamId, filter: { status: filterStatusValue, activity_type: activityType, date: period, start_date: startDate, end_date: endDate }, pagination: true }))
             } else if (endDate !== '' && startDate !== '' && activityType === '') {
-                dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc',  client_team_id: teamId, filter: { status: filterStatusValue, date: period, start_date: startDate, end_date: endDate }, pagination: true }))
+                dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', client_team_id: teamId, filter: { status: filterStatusValue, date: period, start_date: startDate, end_date: endDate }, pagination: true }))
             }
         } else {
             if (activityType === '' && endDate === '' && startDate === '') {
@@ -67,14 +67,14 @@ export default function ClientTeamActivityTablePage(props: any) {
     const handleChangePage = async (paginationParams: any) => {
         let { page, items_per_page, sort_field, sort_order, search } = paginationParams;
 
-        const response = signIn?.role !== 'client' && signIn?.role !== 'team_client' ? await dispatch(getAllActivity({ page, items_per_page, sort_field, sort_order, search,  client_team_id: teamId, filter: { status: statusType, activity_type: activityType, date: period, start_date: startDate, end_date: endDate }, pagination: true })) : await dispatch(getAllActivity({ page, items_per_page, sort_field, sort_order, search, agency_id: clientSliceData?.agencyId,  client_team_id: teamId, filter: { status: statusType, activity_type: activityType, date: period, start_date: startDate, end_date: endDate }, pagination: true }));
+        const response = signIn?.role !== 'client' && signIn?.role !== 'team_client' ? await dispatch(getAllActivity({ page, items_per_page, sort_field, sort_order, search, client_team_id: teamId, filter: { status: statusType, activity_type: activityType, date: period, start_date: startDate, end_date: endDate }, pagination: true })) : await dispatch(getAllActivity({ page, items_per_page, sort_field, sort_order, search, agency_id: clientSliceData?.agencyId, client_team_id: teamId, filter: { status: statusType, activity_type: activityType, date: period, start_date: startDate, end_date: endDate }, pagination: true }));
         const { data } = response?.payload;
         const maxPage: number = data?.page_count;
 
         if (page > maxPage) {
             page = maxPage > 0 ? maxPage : 1;
             // await dispatch(getAllActivity({ page, items_per_page, sort_field, sort_order, search }));
-            signIn?.role !== 'client' && signIn?.role !== 'team_client' ? await dispatch(getAllActivity({ page, items_per_page, sort_field, sort_order, search,  client_team_id: teamId, filter: { status: statusType, activity_type: activityType, date: period, start_date: startDate, end_date: endDate }, pagination: true })) : await dispatch(getAllActivity({ page, items_per_page, sort_field, sort_order, search, agency_id: clientSliceData?.agencyId,  client_team_id: teamId, filter: { status: statusType, activity_type: activityType, date: period, start_date: startDate, end_date: endDate }, pagination: true }));
+            signIn?.role !== 'client' && signIn?.role !== 'team_client' ? await dispatch(getAllActivity({ page, items_per_page, sort_field, sort_order, search, client_team_id: teamId, filter: { status: statusType, activity_type: activityType, date: period, start_date: startDate, end_date: endDate }, pagination: true })) : await dispatch(getAllActivity({ page, items_per_page, sort_field, sort_order, search, agency_id: clientSliceData?.agencyId, client_team_id: teamId, filter: { status: statusType, activity_type: activityType, date: period, start_date: startDate, end_date: endDate }, pagination: true }));
             return data?.client
         }
         if (data && data?.client && data?.client?.length !== 0) {
@@ -89,7 +89,7 @@ export default function ClientTeamActivityTablePage(props: any) {
         try {
             const res = typeof id === 'string' ? await dispatch(deleteTask({ taskIdsToDelete: [id] })) : await dispatch(deleteTask({ taskIdsToDelete: id }));
             if (res.payload.success === true) {
-                const reponse = signIn?.role !== 'client' && signIn?.role !== 'team_client' ? await dispatch(getAllActivity({ page: currentPage, items_per_page: countPerPage, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm,  client_team_id: teamId, filter: { status: statusType, activity_type: activityType, date: period, start_date: startDate, end_date: endDate }, pagination: true })) : await dispatch(getAllActivity({ page: currentPage, items_per_page: countPerPage, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm, agency_id: clientSliceData?.agencyId,  client_team_id: teamId, filter: { status: statusType, activity_type: activityType, date: period, start_date: startDate, end_date: endDate }, pagination: true }));
+                const reponse = signIn?.role !== 'client' && signIn?.role !== 'team_client' ? await dispatch(getAllActivity({ page: currentPage, items_per_page: countPerPage, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm, client_team_id: teamId, filter: { status: statusType, activity_type: activityType, date: period, start_date: startDate, end_date: endDate }, pagination: true })) : await dispatch(getAllActivity({ page: currentPage, items_per_page: countPerPage, sort_field: sortConfig?.key, sort_order: sortConfig?.direction, search: searchTerm, agency_id: clientSliceData?.agencyId, client_team_id: teamId, filter: { status: statusType, activity_type: activityType, date: period, start_date: startDate, end_date: endDate }, pagination: true }));
             }
         } catch (error) {
             console.error(error);
@@ -140,7 +140,7 @@ export default function ClientTeamActivityTablePage(props: any) {
                     <div className='mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0 col-span-3 lg:col-span-2 md:col-span-2 sm:col-span-2'>
                         <ModalButton
                             label="Add Activity"
-                            view={<AddActivityFormPage title="New Activity" isTaskModule={false} />}
+                            view={<AddActivityFormPage title="New Activity" isTaskModule={false} isTeamModule={false} isClientModule={true} isAgencyTeam={false} clientId={teamId} clientName={teamName} />}
                             customSize="1050px"
                             className="mt-0 w-full max-h-[800px] overflow-auto hover:bg-gray-700 @lg:w-auto dark:bg-gray-100 dark:text-white dark:hover:bg-gray-200 dark:active:bg-gray-100"
                             icon={<PiPlusBold className="me-1.5 h-[17px] w-[17px]" />}
@@ -148,7 +148,6 @@ export default function ClientTeamActivityTablePage(props: any) {
                     </div>
                 </div>
                 <div>
-
                 </div>
             </div>
             <div className='mt-8'>

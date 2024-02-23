@@ -6,7 +6,6 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Tooltip } from '@/components/ui/tooltip';
 import EyeIcon from '@/components/icons/eye';
 import PencilIcon from '@/components/icons/pencil';
-import { TeamMemberType } from '@/data/products-data';
 import DeletePopover from '@/app/shared/delete-popover';
 import CustomModalButton from '@/app/shared/custom-modal-button';
 import { Badge, Button } from 'rizzui';
@@ -116,7 +115,7 @@ export const GetActivityColumns = ({
 }: Columns) => {
 
   const signIn = useSelector((state: any) => state?.root?.signIn)
-  // const pathname = usePathname();
+  const pathname = usePathname();
   // console.log("pathname is....", pathname.startsWith('/client/details'))
 
   return [
@@ -236,7 +235,7 @@ export const GetActivityColumns = ({
                 {(signIn?.role !== 'client' && signIn?.role !== 'team_client' && row?.activity_status?.name !== 'completed') &&
                   <CustomModalButton
                     icon={<PencilIcon className="h-4 w-4" />}
-                    view={<AddActivityFormPage title="Edit Activity" row={row} isTaskModule={false} />}
+                    view={<AddActivityFormPage title="Edit Activity" row={row} isTaskModule={false} isClientEdit={pathname.startsWith('/client/details') || pathname.startsWith('/client-team/details')} isClientTeam={pathname.startsWith('/client-team/details')} isTeamEdit={pathname.startsWith('/agency-team/details')} />}
                     customSize="1050px"
                     title='Edit Activity'
                   />
@@ -261,7 +260,7 @@ export const GetActivityColumns = ({
                   {(signIn?.role !== 'client' && signIn?.role !== 'team_client' && row?.activity_status?.name !== 'completed' && row?.activity_status?.name !== 'cancel') &&
                     <CustomModalButton
                       icon={<PencilIcon className="h-4 w-4" />}
-                      view={<AddActivityFormPage title="Edit Activity" row={row} isTaskModule={false} />}
+                      view={<AddActivityFormPage title="Edit Activity" row={row} isTaskModule={false} isClientEdit={pathname.startsWith('/client/details') || pathname.startsWith('/client-team/details')} isClientTeam={pathname.startsWith('/client-team/details')} isTeamEdit={pathname.startsWith('/agency-team/details')} />}
                       customSize="1050px"
                       title='Edit Activity'
                     />

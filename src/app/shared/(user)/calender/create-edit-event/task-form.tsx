@@ -32,7 +32,7 @@ const QuillEditor = dynamic(() => import('@/components/ui/quill-editor'), {
 
 export default function AddTaskForm(props: any) {
 
-  const { title, row } = props;
+  const { title, row, isClientEdit, isTeamEdit, isClientModule, clientName, clientReferenceId, isTeamModule, teamName, teamReferenceId, isAgencyTeam, isClientTeam } = props;
   // console.log("row data....", row);
 
   const dispatch = useDispatch();
@@ -55,6 +55,16 @@ export default function AddTaskForm(props: any) {
   }, [dispatch]);
 
 
+  useEffect(() => {
+    isClientModule && clientReferenceId && setClientId(clientReferenceId)
+  }, [clientReferenceId, isClientModule]);
+
+
+  useEffect(() => {
+    isTeamModule && teamReferenceId && setTeamId(teamReferenceId)
+  }, [teamReferenceId, isTeamModule]);
+
+
 
   useEffect(() => {
     if (signIn && signIn?.teamMemberRole === 'team_member') {
@@ -72,7 +82,7 @@ export default function AddTaskForm(props: any) {
     client: '',
     assigned: signIn?.teamMemberRole === 'team_member' ? signIn?.user?.data?.user?.name : '',
     done: false
-  };
+  }
 
 
 
@@ -92,7 +102,23 @@ export default function AddTaskForm(props: any) {
   // const dueee_date = moment(data?.due_date).toDate();
   // console.log(dueee_date, "formateedddd", data?.due_date)
 
-  let defaultValuess = {
+  let defaultValuess = isClientModule ? {
+    title: data?.title,
+    description: data?.agenda,
+    // due_date: new Date(data?.due_date),
+    due_date: moment(data?.due_date).toDate(),
+    client: isClientModule ? clientName : data?.client_fullName,
+    assigned: signIn?.teamMemberRole === 'team_member' ? signIn?.user?.data?.user?.name : data?.assigned_to_name,
+    done: data?.status === 'completed' ? true : false
+  } : isTeamModule ? {
+    title: data?.title,
+    description: data?.agenda,
+    // due_date: new Date(data?.due_date),
+    due_date: moment(data?.due_date).toDate(),
+    client: data?.client_fullName,
+    assigned: isTeamModule && teamName ? teamName : data?.assigned_to_name,
+    done: data?.status === 'completed' ? true : false
+  } : {
     title: data?.title,
     description: data?.agenda,
     // due_date: new Date(data?.due_date),
@@ -100,7 +126,7 @@ export default function AddTaskForm(props: any) {
     client: data?.client_fullName,
     assigned: signIn?.teamMemberRole === 'team_member' ? signIn?.user?.data?.user?.name : data?.assigned_to_name,
     done: data?.status === 'completed' ? true : false
-  };
+  }
 
 
 
@@ -120,7 +146,7 @@ export default function AddTaskForm(props: any) {
 
 
   const onSubmit: SubmitHandler<AddTaskSchema> = (dataa) => {
-    console.log('Add task dataa---->', dataa);
+    // console.log('Add task dataa---->', dataa);
 
     const formData = {
       ...dataa,
@@ -135,14 +161,24 @@ export default function AddTaskForm(props: any) {
       Object.entries(formData).filter(([_, value]) => value !== undefined && value !== '')
     );
 
-
     if (title === 'New Activity' || title === 'New Task') {
       dispatch(postAddTask(filteredFormData)).then((result: any) => {
         if (postAddTask.fulfilled.match(result)) {
           if (result && result.payload.success === true) {
             closeModal();
+           
             title === 'New Task' && dispatch(getAllTask({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
-            title === 'New Activity' && dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }))
+           
+            if(title === 'New Activity' && isClientModule && isAgencyTeam) {
+              dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', client_id: clientReferenceId, pagination: true }))
+            } else if(title === 'New Activity' && !isAgencyTeam && !isTeamModule) {
+              dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', client_team_id: clientReferenceId, pagination: true }))
+            } else if(title === 'New Activity' && isTeamModule && isAgencyTeam) {
+              dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', team_id: teamReferenceId, pagination: true }))
+            } else if((title === 'New Activity' && !isClientModule) || (title === 'New Activity' && !isTeamModule)) {
+              dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
+            }
+
           }
         }
       });
@@ -151,8 +187,19 @@ export default function AddTaskForm(props: any) {
         if (patchEditTask.fulfilled.match(result)) {
           if (result && result.payload.success === true) {
             closeModal();
+
             title === 'Edit Task' && dispatch(getAllTask({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
-            title === 'Edit Activity' && dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }))
+           
+            if(title === 'Edit Activity' && isClientEdit && !isClientTeam) {
+              dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', client_id: clientId, pagination: true }))
+            } else if(title === 'Edit Activity' && !isClientEdit && isTeamEdit && !isClientTeam) {
+              dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', team_id: teamId, pagination: true }))
+            } else if(title === 'Edit Activity' && isClientEdit && isClientTeam) {
+              dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', client_team_id: clientId, pagination: true }))
+            } else if((title === 'Edit Activity' && !isClientEdit) || (title === 'Edit Activity' && !isTeamEdit)) {
+              dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
+            }
+
           }
         }
       });
@@ -253,6 +300,7 @@ export default function AddTaskForm(props: any) {
                           color='info'
                           // getOptionValue={(option) => option.value}
                           className="[&>label>span]:font-medium"
+                          disabled={isClientModule || isClientEdit}
                           dropdownClassName="p-1 border w-auto border-gray-100 shadow-lg"
                         />
                       )}
@@ -273,7 +321,7 @@ export default function AddTaskForm(props: any) {
                           value={signIn?.teamMemberRole === 'team_member' ? signIn?.user?.data?.user?.name : value}
                           placeholder='Select Team member'
                           label='Assigned *'
-                          disabled={signIn?.teamMemberRole === 'team_member'}
+                          disabled={signIn?.teamMemberRole === 'team_member' || isTeamModule || isTeamEdit}
                           error={errors?.assigned?.message as string}
                           color='info'
                           // getOptionValue={(option) => option.value}

@@ -44,7 +44,8 @@ export default function ClientViewProfileForm(props: any) {
 
   const [selectedTask, setSelectedTask] = useState('Activity');
   const [clientId, setClientId] = useState('');
-
+  const [clientName, setClientName] = useState('');
+// console.log("client name...", clientName)
 
 
   useEffect(() => {
@@ -52,6 +53,11 @@ export default function ClientViewProfileForm(props: any) {
       if (getClientById.fulfilled.match(result)) {
         if (result && result.payload.success === true) {
           setClientId(result?.payload?.data?.reference_id)
+          const fullName =
+            (result?.payload?.data?.first_name.charAt(0).toUpperCase() + result?.payload?.data?.first_name.slice(1)) +
+            ' ' +
+            (result?.payload?.data?.last_name.charAt(0).toUpperCase() + result?.payload?.data?.last_name.slice(1));
+          setClientName(fullName)
         }
       }
     })
@@ -111,12 +117,12 @@ export default function ClientViewProfileForm(props: any) {
       <div className="mt-3">
         {selectedTask === 'Activity' && (
           <div>
-            {clientId === '' ? (
+            {clientId === '' && clientName === '' ? (
               <div className='p-10 flex items-center justify-center'>
                 <Spinner size="xl" tag='div' />
               </div>
             ) : (
-              <ClientActivityTablePage clientId={clientId} />
+              <ClientActivityTablePage clientId={clientId} clientName={clientName} />
             )}
           </div>
         )}

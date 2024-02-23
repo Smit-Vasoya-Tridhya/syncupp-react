@@ -17,7 +17,7 @@ import { PiPlusBold } from 'react-icons/pi';
 
 export default function ClientActivityTablePage(props: any) {
 
-    const { clientId } = props;
+    const { clientId, clientName } = props;
 
 
     const dispatch = useDispatch();
@@ -140,7 +140,7 @@ export default function ClientActivityTablePage(props: any) {
                     <div className='mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0 col-span-3 lg:col-span-2 md:col-span-2 sm:col-span-2'>
                         <ModalButton
                             label="Add Activity"
-                            view={<AddActivityFormPage title="New Activity" isTaskModule={false} />}
+                            view={<AddActivityFormPage title="New Activity" isTaskModule={false} isTeamModule={false} isClientModule={true} isAgencyTeam={true} clientId={clientId} clientName={clientName}  />}
                             customSize="1050px"
                             className="mt-0 w-full max-h-[800px] overflow-auto hover:bg-gray-700 @lg:w-auto dark:bg-gray-100 dark:text-white dark:hover:bg-gray-200 dark:active:bg-gray-100"
                             icon={<PiPlusBold className="me-1.5 h-[17px] w-[17px]" />}
