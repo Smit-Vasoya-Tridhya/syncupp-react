@@ -120,7 +120,7 @@ export default function TeamDataTablePage() {
             label="Add Team member"
             view={<AddTeamMemberForm title="New Team member" />}
             customSize="625px"
-            className="mt-0 w-full hover:bg-gray-700 @lg:w-auto dark:bg-gray-100 dark:text-white dark:hover:bg-gray-200 dark:active:bg-gray-100"
+            className="mt-0 w-full  @lg:w-auto bg-[#53216F] hover:bg-[#8e45b8]"
             icon={<PiPlusBold className="me-1.5 h-[17px] w-[17px]" />}
           />
         </div>

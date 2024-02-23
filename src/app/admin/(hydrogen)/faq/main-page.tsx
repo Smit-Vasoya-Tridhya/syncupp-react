@@ -54,7 +54,7 @@ export default function FaqPage() {
               label="Add FAQ"
               view={<AddFaqForm title="FAQ" />}
               customSize="800px"
-              className="mt-0 w-full hover:bg-gray-700 @lg:w-auto dark:bg-gray-100 dark:text-white dark:hover:bg-gray-200 dark:active:bg-gray-100"
+              className="mt-0 w-full bg-[#53216F] hover:bg-[#8e45b8] @lg:w-auto dark:bg-gray-100 dark:text-white dark:hover:bg-gray-200 dark:active:bg-gray-100"
               icon={<PiPlusBold className="me-1.5 h-[17px] w-[17px]" />}
             />
           </div>
