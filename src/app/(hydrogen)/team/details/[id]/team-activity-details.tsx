@@ -5,7 +5,7 @@ import { useState } from 'react';
 import CustomTable from '@/components/common-tables/table';
 import { deleteTask } from '@/redux/slices/user/task/taskSlice';
 import { GetActivityColumns } from '@/app/shared/(user)/calender/calender-list/columns';
-import { getAllActivity } from '@/redux/slices/user/activity/activitySlice';
+import { getAllActivity, setPaginationDetails } from '@/redux/slices/user/activity/activitySlice';
 import cn from '@/utils/class-names';
 import { Button } from 'rizzui';
 import DatePeriodSelectionForm from '@/app/shared/(user)/forms/select-period-form';
@@ -59,6 +59,8 @@ export default function TeamActivityTablePage(props: any) {
 
     const handleChangePage = async (paginationParams: any) => {
         let { page, items_per_page, sort_field, sort_order, search } = paginationParams;
+
+        dispatch(setPaginationDetails({ pageNumber: page, itemsPerPageNumber: items_per_page }))
 
         const response = signIn?.role !== 'client' && signIn?.role !== 'team_client' ? await dispatch(getAllActivity({ page, items_per_page, sort_field, sort_order, search,  client_team_id: teamId, filter: { status: statusType, activity_type: activityType, date: period, start_date: startDate, end_date: endDate }, pagination: true })) : await dispatch(getAllActivity({ page, items_per_page, sort_field, sort_order, search, agency_id: clientSliceData?.agencyId,  client_team_id: teamId, filter: { status: statusType, activity_type: activityType, date: period, start_date: startDate, end_date: endDate }, pagination: true }));
         const { data } = response?.payload;

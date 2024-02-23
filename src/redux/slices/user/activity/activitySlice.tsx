@@ -65,6 +65,8 @@ interface ActivityInitialState {
   activity: any;
   activityName: string;
   calendarView: boolean;
+  pageNumber: number;
+  itemsPerPageNumber: number;
   addActivityStatus: string;
   getAllActivityStatus: string;
   getActivityStatus: string;
@@ -78,6 +80,8 @@ const initialState: ActivityInitialState = {
   activity: '',
   activityName: '',
   calendarView: false,
+  pageNumber: 1,
+  itemsPerPageNumber: 5,
   addActivityStatus: '',
   getAllActivityStatus: '',
   getActivityStatus: '',
@@ -183,6 +187,13 @@ export const activitySlice: any = createSlice({
       return {
         ...state,
         calendarView: action.payload
+      }
+    },
+    setPaginationDetails(state, action) {
+      return {
+        ...state,
+        pageNumber: action?.payload?.pageNumber,
+        itemsPerPageNumber: action?.payload?.itemsPerPageNumber,
       }
     },
   },
@@ -344,5 +355,5 @@ export const activitySlice: any = createSlice({
   },
 });
 
-export const { RemoveActivityData, setActivityName, setCalendarView } = activitySlice.actions;
+export const { RemoveActivityData, setActivityName, setCalendarView, setPaginationDetails } = activitySlice.actions;
 export default activitySlice.reducer;
