@@ -286,7 +286,7 @@ export default function AddTeamMemberForm(props: any) {
                     } */}
                     <Button
                       type="submit"
-                      className="hover:gray-700 ms-3 @xl:w-auto dark:bg-gray-200 dark:text-white"
+                      className="bg-[#53216F] hover:bg-[#8e45b8] ms-3 @xl:w-auto dark:bg-gray-200 dark:text-white"
                       disabled={(teamMemberData?.addTeamMemberStatus === 'pending' || teamMemberData?.editTeamMemberStatus === 'pending') && save}
                       onClick={handleSaveClick}
                     >

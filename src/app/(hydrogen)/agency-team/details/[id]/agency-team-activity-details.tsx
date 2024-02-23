@@ -144,7 +144,7 @@ export default function AgencyTeamActivityTablePage(props: any) {
                             label="Add Activity"
                             view={<AddActivityFormPage title="New Activity" isTaskModule={false} isTeamModule={true} isClientModule={false} isAgencyTeam={true} teamId={teamId} teamName={teamName} />}
                             customSize="1050px"
-                            className="mt-0 w-full max-h-[800px] overflow-auto hover:bg-gray-700 @lg:w-auto dark:bg-gray-100 dark:text-white dark:hover:bg-gray-200 dark:active:bg-gray-100"
+                            className="mt-0 w-full max-h-[800px] overflow-auto bg-[#53216F] hover:bg-[#8e45b8] @lg:w-auto dark:bg-gray-100 dark:text-white dark:hover:bg-gray-200 dark:active:bg-gray-100"
                             icon={<PiPlusBold className="me-1.5 h-[17px] w-[17px]" />}
                         />
                     </div>

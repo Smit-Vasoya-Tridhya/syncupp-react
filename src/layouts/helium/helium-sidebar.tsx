@@ -22,7 +22,7 @@ export default function HeliumSidebar({ className }: { className?: string }) {
         className
       )}
     >
-      <div className="h-full bg-gray-900 p-1.5 pl-0  pr-1.5 dark:bg-gray-100/70 xl:rounded-2xl">
+      <div className="h-full bg-gradient-to-t from-[#390257] to-[#D1A5EB] p-1.5 pl-0  pr-1.5 dark:bg-gray-100/ xl:rounded-2xl">
         <div className="sticky top-0 z-40 flex justify-center px-6 pb-5 pt-5 2xl:px-8 2xl:pt-6">
           <Link href={'/'} aria-label="Site Logo">
             <Image
