@@ -30,6 +30,10 @@ export default function EventForm({
   const { closeModal } = useModal();
   const { createEvent, updateEvent } = useEventCalendar();
   const isUpdateEvent = event !== undefined;
+
+  // console.log("start date..", startDate);
+  // console.log("end date..", endDate);
+
   const onSubmit: SubmitHandler<EventFormInput> = (data) => {
     const isNewEvent = data.id === '' || data.id === undefined;
     toast.success(
