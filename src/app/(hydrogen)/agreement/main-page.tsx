@@ -64,7 +64,7 @@ export default function AgreementPage(props: any) {
         }
     };
 
-    console.log(agreementDetails, 'agreementDetails')
+    // console.log(agreementDetails, 'agreementDetails') 
 
     return (
         <>
