@@ -64,9 +64,9 @@ interface ActivityInitialState {
   data: any;
   activity: any;
   activityName: string;
+  userReferenceId: string;
   calendarView: boolean;
-  pageNumber: number;
-  itemsPerPageNumber: number;
+  paginationParams: any;
   addActivityStatus: string;
   getAllActivityStatus: string;
   getActivityStatus: string;
@@ -79,9 +79,9 @@ const initialState: ActivityInitialState = {
   data: '',
   activity: '',
   activityName: '',
+  userReferenceId: '',
   calendarView: false,
-  pageNumber: 1,
-  itemsPerPageNumber: 5,
+  paginationParams: {},
   addActivityStatus: '',
   getAllActivityStatus: '',
   getActivityStatus: '',
@@ -190,12 +190,18 @@ export const activitySlice: any = createSlice({
       }
     },
     setPaginationDetails(state, action) {
+      console.log("pagination params....", action?.payload)
       return {
         ...state,
-        pageNumber: action?.payload?.pageNumber,
-        itemsPerPageNumber: action?.payload?.itemsPerPageNumber,
+        paginationParams: action?.payload,
       }
     },
+    setActivityUserReferenceId(state, action) {
+      return {
+        ...state,
+        userReferenceId: action?.payload
+      }
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -355,5 +361,5 @@ export const activitySlice: any = createSlice({
   },
 });
 
-export const { RemoveActivityData, setActivityName, setCalendarView, setPaginationDetails } = activitySlice.actions;
+export const { RemoveActivityData, setActivityName, setCalendarView, setPaginationDetails, setActivityUserReferenceId } = activitySlice.actions;
 export default activitySlice.reducer;

@@ -26,6 +26,7 @@ function DropdownMenu() {
   const { userProfile , loading} = useSelector((state: any) => state?.root?.signIn);
 
   const handleClick = () => {
+    closeModal();
     dispatch(signOutUser()).then((result: any) => {
       if (signOutUser.fulfilled.match(result)) {
         // router.replace('/signin');
@@ -63,7 +64,7 @@ function DropdownMenu() {
           </Text>
         </div>
       </div>
-      <div onClick={()=>{closeModal()}} className="grid px-3.5 py-3.5 font-medium text-gray-700">
+      <div className="grid px-3.5 py-3.5 font-medium text-gray-700">
         <Link
           className="mt-0 justify-start bg-white text-gray-900"
           href={routes.viewProfile}
@@ -78,7 +79,7 @@ function DropdownMenu() {
           className="mt-0 justify-start bg-white text-gray-900"
         />
       </div>
-      <div onClick={()=>{closeModal()}} className="border-t border-gray-300 px-6 py-4">
+      <div className="border-t border-gray-300 px-6 py-4">
         <Button
           className="ml-2 h-auto w-full justify-start p-0 font-medium text-gray-700 outline-none focus-within:text-gray-600 hover:text-gray-900 focus-visible:ring-0"
           variant="text"

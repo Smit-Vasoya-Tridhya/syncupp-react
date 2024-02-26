@@ -107,15 +107,15 @@ export default function AddTaskForm(props: any) {
     description: data?.agenda,
     // due_date: new Date(data?.due_date),
     due_date: moment(data?.due_date).toDate(),
-    client: isClientModule ? clientName : data?.client_fullName,
-    assigned: signIn?.teamMemberRole === 'team_member' ? signIn?.user?.data?.user?.name : data?.assigned_to_name,
+    client: isClientModule ? clientName : data?.client_name,
+    assigned: signIn?.teamMemberRole === 'team_member' ? signIn?.user?.data?.user?.first_name.charAt(0).toUpperCase() + signIn?.user?.data?.user?.first_name.slice(1) + " " + signIn?.user?.data?.user?.last_name.charAt(0).toUpperCase() + signIn?.user?.data?.user?.last_name.slice(1) : data?.assigned_to_name,
     done: data?.status === 'completed' ? true : false
   } : isTeamModule ? {
     title: data?.title,
     description: data?.agenda,
     // due_date: new Date(data?.due_date),
     due_date: moment(data?.due_date).toDate(),
-    client: data?.client_fullName,
+    client: data?.client_name,
     assigned: isTeamModule && teamName ? teamName : data?.assigned_to_name,
     done: data?.status === 'completed' ? true : false
   } : {
@@ -123,21 +123,20 @@ export default function AddTaskForm(props: any) {
     description: data?.agenda,
     // due_date: new Date(data?.due_date),
     due_date: moment(data?.due_date).toDate(),
-    client: data?.client_fullName,
-    assigned: signIn?.teamMemberRole === 'team_member' ? signIn?.user?.data?.user?.name : data?.assigned_to_name,
+    client: data?.client_name,
+    assigned: signIn?.teamMemberRole === 'team_member' ? signIn?.user?.data?.user?.first_name.charAt(0).toUpperCase() + signIn?.user?.data?.user?.first_name.slice(1) + " " + signIn?.user?.data?.user?.last_name.charAt(0).toUpperCase() + signIn?.user?.data?.user?.last_name.slice(1) : data?.assigned_to_name,
     done: data?.status === 'completed' ? true : false
   }
 
 
-
-
-
   let clientOptions: Record<string, any>[] = clientSliceData?.clientList && clientSliceData?.clientList?.length > 0 ? clientSliceData?.clientList?.map((client: Record<string, any>) => {
-    return { name: client?.name, value: client?.reference_id, key: client }
+    let client_name = client?.first_name.charAt(0).toUpperCase() + client?.first_name.slice(1) + " " + client?.last_name.charAt(0).toUpperCase() + client?.last_name.slice(1);
+    return { name: client_name, value: client?.reference_id, key: client }
   }) : [];
 
   let teamOptions: Record<string, any>[] = teamMemberData?.teamList && teamMemberData?.teamList?.length > 0 ? teamMemberData?.teamList?.map((team: Record<string, any>) => {
-    return { name: team?.name, value: team?.reference_id, key: team }
+    let team_name = team?.first_name.charAt(0).toUpperCase() + team?.first_name.slice(1) + " " + team?.last_name.charAt(0).toUpperCase() + team?.last_name.slice(1);
+    return { name: team_name, value: team?.reference_id, key: team }
   }) : [];
 
 
@@ -210,7 +209,7 @@ export default function AddTaskForm(props: any) {
 
   if (!taskData?.task && (title === 'Edit Activity' || title === 'Edit Task')) {
     return (
-      <div className='p-10 flex items-center justify-center'>
+      <div className='p-10 mt-[14rem] flex items-center justify-center'>
         <Spinner size="xl" tag='div' />
       </div>
     )

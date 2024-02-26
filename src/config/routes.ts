@@ -29,6 +29,7 @@ export const routes = {
   agency_team_payment: '/agency-team/payment',
   client_team: '/client-team',
   client_teams: {
+    payment: '/client-team/payment',
     details: (id: string) => `/client-team/details/${id}`,
   },
   referal: '/referal',

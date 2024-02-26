@@ -281,6 +281,12 @@ export const teamSlice = createSlice({
         paginationParams: action.payload,
       };
     },
+    setUserReferenceId(state, action) {
+      return {
+        ...state,
+        addClientteamdetails: action.payload,
+      };
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -547,6 +553,7 @@ export const teamSlice = createSlice({
        };
      })
      .addCase(refferalPayment.fulfilled, (state, action) => {
+        // console.log("refferalPayment api response", action?.payload)
        if (action.payload.status == false) {
          toast.error(action.payload.message);
          return {
@@ -556,9 +563,14 @@ export const teamSlice = createSlice({
            postRefferalPaymentStatus: 'error',
          };
        } else {
-         if (action.payload.message) {
-           toast.success(action.payload.message);
-         }
+        //  if (action.payload.message) {
+        //    toast.success(action.payload.message);
+        //  }
+         if (action.payload.data.success === true) {
+          toast.success(action.payload.message);
+        } else {
+          toast.error(action.payload.message);
+        }
          return {
            ...state,
            loading: false,
@@ -578,5 +590,5 @@ export const teamSlice = createSlice({
   },
 });
 
-export const { RemoveTeamMemberData, setPagginationParams } = teamSlice.actions;
+export const { RemoveTeamMemberData, setPagginationParams, setUserReferenceId } = teamSlice.actions;
 export default teamSlice.reducer;

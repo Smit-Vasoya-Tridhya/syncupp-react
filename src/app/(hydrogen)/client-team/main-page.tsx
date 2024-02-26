@@ -8,6 +8,7 @@ import { GetclientteamColumns } from '@/app/shared/(user)/agency/client-team/tea
 import {
   deleteTeamMember,
   getAllTeamMember,
+  setPagginationParams,
 } from '@/redux/slices/user/team-member/teamSlice';
 import ClientSelectionForm from '@/app/shared/(user)/forms/client-selection-form';
 import Spinner from '@/components/ui/spinner';
@@ -31,6 +32,8 @@ export default function TeamDataTablePage() {
   const handleChangePage = async (paginationParams: any) => {
     let { page, items_per_page, sort_field, sort_order, search } =
       paginationParams;
+
+      dispatch(setPagginationParams(paginationParams))
     const response =
       clientSliceData?.clientList.length > 0 &&
       (await dispatch(

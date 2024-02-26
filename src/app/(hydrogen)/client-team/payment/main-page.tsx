@@ -4,7 +4,6 @@ import cn from "@/utils/class-names";
 import { Title, Text } from '@/components/ui/text';
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllClient } from "@/redux/slices/user/client/clientSlice";
 import { initiateRazorpay } from "@/services/clientpaymentService";
 import { routes } from "@/config/routes";
 import { useState } from "react";
@@ -25,11 +24,14 @@ export default function AgreementTeamPaymentPage() {
     const dispatch = useDispatch();
     const { closeModal } = useModal();
 
+
     const { addClientteamdetails, refferalStatisticsData, paginationParams } = useSelector((state: any) => state?.root?.teamMember);
     // const paginationParams = useSelector((state: any) => state?.root?.teamMember?.paginationParams);
     // console.log(addClientteamdetails, 'addClientteamdetails')
     // const { userProfile } = useSelector((state: any) => state?.root?.signIn);
     const { loading } = useSelector((state: any) => state?.root?.payment);
+  const clientSliceData = useSelector((state: any) => state?.root?.client);
+
 
     const [loadingflag, setloadingflag] = useState(false)
     const [selectedValue, setSelectedValue] = useState('option2Value');
@@ -37,8 +39,7 @@ export default function AgreementTeamPaymentPage() {
 
     const ClintteamlistAPIcall = async () => {
         let { page, items_per_page, sort_field, sort_order, search } = paginationParams;
-        await dispatch(getAllTeamMember({ page, items_per_page, sort_field, sort_order, search, pagination: true }));
-
+        await getAllTeamMember({ page, items_per_page, sort_field, sort_order, search, client_id: clientSliceData?.clientId, pagination: true, client_team: true })
     }
 
     const handleRadioChange = (event: any) => {
@@ -48,21 +49,23 @@ export default function AgreementTeamPaymentPage() {
 
     const handlePaymentApiCall = () => {
 
+        // add reference id of client team note*********************
+
         if (selectedValue === 'option1Value') {
             setloadingflag(true)
             dispatch(refferalPayment({ user_id: addClientteamdetails?.data?.reference_id })).then((result: any) => {
                 if (refferalPayment.fulfilled.match(result)) {
                     if (result && result.payload.success === true) {
-                        dispatch(getAllTeamMember({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
+                        dispatch(getAllTeamMember({ sort_field: 'createdAt', sort_order: 'desc', client_id: clientSliceData?.clientId, pagination: true }));
+                        router.replace(routes?.client_team)
                         setloadingflag(false)
-                        router.replace(routes?.agency_team)
                     } else {
                         setloadingflag(false)
                     }
                 }
             });
         } else {
-            initiateRazorpay(router, routes.agency_team, token, addClientteamdetails?.data?.reference_id, ClintteamlistAPIcall, setloadingflag, closeModal)
+            initiateRazorpay(router, routes?.client_team, token, addClientteamdetails?.data?.reference_id, ClintteamlistAPIcall, setloadingflag, closeModal)
         }
 
     }
@@ -72,7 +75,7 @@ export default function AgreementTeamPaymentPage() {
         <>
             <PageHeader title="Payment">
 
-                <Link href={routes.agency_team} className="w-full">
+                <Link href={routes?.client_team} className="w-full">
                     <Button className="float-end mt-5 bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0">
                         <FaArrowLeft className="me-1.5 h-[17px] w-[17px]" />
                         Back
@@ -96,6 +99,8 @@ export default function AgreementTeamPaymentPage() {
                             <div className="rounded-lg border border-gray-200">
                                 <div className="px-3 py-2">
                                     <input
+                                        // disabled
+                                        // style={{ cursor: "not-allowed" }}
                                         type="radio"
                                         id="option1"
                                         name="options"

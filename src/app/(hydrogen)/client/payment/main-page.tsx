@@ -13,17 +13,22 @@ import Spinner from "@/components/ui/spinner";
 import PageHeader from "@/app/shared/page-header";
 import Link from "next/link";
 import { FaArrowLeft } from "react-icons/fa";
+import { refferalPayment } from "@/redux/slices/user/team-member/teamSlice";
+import { useModal } from "@/app/shared/modal-views/use-modal";
 
 
 export default function ClientPaymentPage() {
 
     const token = localStorage.getItem('token')
 
-    const router = useRouter()
-    const dispatch = useDispatch()
+    const router = useRouter();
+    const dispatch = useDispatch();
+    const { closeModal } = useModal();
+
 
     const { addClientdetails } = useSelector((state: any) => state?.root?.client);
-    const { userProfile } = useSelector((state: any) => state?.root?.signIn);
+    const { refferalStatisticsData } = useSelector((state: any) => state?.root?.teamMember);
+    // const { userProfile } = useSelector((state: any) => state?.root?.signIn);
     const paginationParams = useSelector((state: any) => state?.root?.client?.paginationParams);
     const { loading } = useSelector((state: any) => state?.root?.payment);
 
@@ -42,6 +47,27 @@ export default function ClientPaymentPage() {
         setSelectedValue(event.target.value);
     };
 
+    const handlePaymentApiCall = () => {
+
+        if (selectedValue === 'option1Value') {
+            setloadingflag(true)
+            dispatch(refferalPayment({ user_id: addClientdetails?.data?.reference_id })).then((result: any) => {
+                if (refferalPayment.fulfilled.match(result)) {
+                    if (result && result.payload.success === true) {
+                        dispatch(getAllClient({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
+                        setloadingflag(false)
+                        router.replace(routes?.client)
+                    } else {
+                        setloadingflag(false)
+                    }
+                }
+            });
+        } else {
+            initiateRazorpay(router, routes.client, token, addClientdetails?.data?.reference_id, ClintlistAPIcall, setloadingflag, closeModal)
+        }
+
+    }
+
     return (
         <>
             <PageHeader title="Payment">
@@ -59,17 +85,17 @@ export default function ClientPaymentPage() {
                     'isomorphic-form isomorphic-form mx-auto flex w-full max-w-[1536px] flex-grow flex-col @container [&_label.block>span]:font-medium'
                 )}
             >
+
                 <div className="items-start @5xl:grid @5xl:grid-cols-12 @5xl:gap-7 @6xl:grid-cols-10 @7xl:gap-10">
                     <div className="gap-4 border-gray-200 @container @5xl:col-span-8 @5xl:border-e @5xl:pb-12 @5xl:pe-7 @6xl:col-span-7 @7xl:pe-12">
                         <div className="flex flex-col gap-4 @xs:gap-7 @5xl:gap-9">
                             {/* <Title as="h4" className="mb-3.5 font-semibold @2xl:mb-5">
                                 Payment
                             </Title> */}
+
                             <div className="rounded-lg border border-gray-200">
                                 <div className="px-3 py-2">
                                     <input
-                                        disabled
-                                        style={{ cursor: "not-allowed" }}
                                         type="radio"
                                         id="option1"
                                         name="options"
@@ -84,7 +110,8 @@ export default function ClientPaymentPage() {
                                             Purchase with Referral points
                                         </Title>
                                         <Text as="p">
-                                            Comming soon...
+                                            {/* Comming soon... */}
+                                            Referral points : {refferalStatisticsData?.referral_point}
                                         </Text>
                                     </div>
                                 </div>
@@ -106,7 +133,7 @@ export default function ClientPaymentPage() {
                                             Subscription
                                         </Title>
                                         <Text as="p">
-                                            Subscription Amount : {userProfile?.payable_amount}
+                                            Subscription Amount : {refferalStatisticsData?.payable_amount}
                                         </Text>
                                     </div>
                                 </div>
@@ -125,19 +152,19 @@ export default function ClientPaymentPage() {
                         <div className="rounded-lg border border-gray-200 p-4 @xs:p-6 @5xl:rounded-none @5xl:border-none @5xl:px-0">
                             <div className="pt-4 @xl:pt-6">
                                 <div className="mb-4 flex items-center justify-between last:mb-0">
-                                    Subscription Amount
+                                    {selectedValue === 'option2Value' ? "Subscription Amount" : "Referral Amount"}
                                     <Text as="span" className="font-medium text-gray-900">
                                         {/* {subtotal} */}
-                                        {userProfile?.payable_amount}
+                                        {selectedValue === 'option2Value' ? refferalStatisticsData?.payable_amount : refferalStatisticsData?.redeem_required_point}
                                     </Text>
                                 </div>
                                 <div className="flex items-center justify-between border-t border-gray-200 py-4 text-base font-bold text-gray-1000">
                                     Total
-                                    <Text>{userProfile?.payable_amount}</Text>
+                                    <Text>{selectedValue === 'option2Value' ? refferalStatisticsData?.payable_amount : refferalStatisticsData?.redeem_required_point}</Text>
                                 </div>
                                 <Button
                                     disabled={loadingflag}
-                                    onClick={() => { initiateRazorpay(router, routes.client, token, addClientdetails?.data?.reference_id, ClintlistAPIcall, setloadingflag) }}
+                                    onClick={handlePaymentApiCall}
                                     type="button"
                                     className="mt-3 w-full text-base @md:h-12 dark:bg-gray-100 dark:text-white dark:active:bg-gray-100"
                                 >

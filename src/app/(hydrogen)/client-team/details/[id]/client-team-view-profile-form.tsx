@@ -15,6 +15,7 @@ import PageHeader from '@/app/shared/page-header';
 import { getTeamMemberProfile } from '@/redux/slices/user/team-member/teamSlice';
 import Spinner from '@/components/ui/spinner';
 import ClientTeamActivityTablePage from './client-team-activity-details';
+import { setActivityUserReferenceId } from '@/redux/slices/user/activity/activitySlice';
 
 
 
@@ -52,6 +53,7 @@ export default function ClientTeamMemberViewProfileForm(props: any) {
       if (getTeamMemberProfile.fulfilled.match(result)) {
         if (result && result.payload.success === true) {
           setTeamId(result?.payload?.data[0]?.reference_id)
+          dispatch(setActivityUserReferenceId(result?.payload?.data[0]?.reference_id));
           const fullName =
             (result?.payload?.data[0]?.first_name.charAt(0).toUpperCase() + result?.payload?.data[0]?.first_name.slice(1)) +
             ' ' +

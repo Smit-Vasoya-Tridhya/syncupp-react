@@ -123,9 +123,9 @@ export const GetColumns = ({
       onHeaderCell: () => onHeaderCellClick('createdAt'),
       dataIndex: 'createdAt',
       key: 'createdAt',
-      width: 300,
+      width: 400,
       render: (value: string) => (
-        <Text className="font-medium text-gray-700">{moment(value).format("DD MMM, YY - hh:mm A")}</Text>
+        <Text className="font-medium text-gray-700">{moment(value).format("DD MMM, YYYY - hh:mm A")}</Text>
       ),
     },
     {
@@ -140,9 +140,9 @@ export const GetColumns = ({
       onHeaderCell: () => onHeaderCellClick('due_date'),
       dataIndex: 'due_date',
       key: 'due_date',
-      width: 300,
+      width: 400,
       render: (value: any) => (
-        <Text className="font-medium text-gray-700">{moment(value).format("DD MMM, YY - hh:mm A")}</Text>
+        <Text className="font-medium text-gray-700">{moment(value).format("DD MMM, YYYY - hh:mm A")}</Text>
       ),
     },
     {

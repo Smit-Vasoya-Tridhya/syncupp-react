@@ -16,6 +16,7 @@ import { getClientById } from '@/redux/slices/user/client/clientSlice';
 import ClientActivityTablePage from './client-activity-details';
 import Spinner from '@/components/ui/spinner';
 import ClientAgreementTablePage from './client-agreement-details';
+import { setActivityUserReferenceId } from '@/redux/slices/user/activity/activitySlice';
 
 
 
@@ -54,6 +55,7 @@ export default function ClientViewProfileForm(props: any) {
       if (getClientById.fulfilled.match(result)) {
         if (result && result.payload.success === true) {
           setClientId(result?.payload?.data?.reference_id)
+          dispatch(setActivityUserReferenceId(result?.payload?.data?.reference_id));
           const fullName =
             (result?.payload?.data?.first_name.charAt(0).toUpperCase() + result?.payload?.data?.first_name.slice(1)) +
             ' ' +

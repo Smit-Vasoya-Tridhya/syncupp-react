@@ -147,6 +147,7 @@ export default function AddTeamMemberForm(props: any) {
                         if (result && result.payload.success === true) {
                           closeModal();
                           dispatch(getAllTeamMember({ sort_field: 'createdAt', sort_order: 'desc', agency_id: clientSliceData?.agencyId, pagination: true }));
+                          setloadingflag(false)
                         } else {
                           setloadingflag(false)
                         }

@@ -361,6 +361,12 @@ export const clientSlice = createSlice({
         clientTeamId: action.payload,
       };
     },
+    setUserReferenceId(state, action) {
+      return {
+        ...state,
+        addClientdetails: action.payload,
+      };
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -498,13 +504,16 @@ export const clientSlice = createSlice({
             getAllClientStatus: 'success',
           };
         } else {
-          // const fullName = action?.payload?.response?.data[0]?.first_name + " " + action?.payload?.response?.data[0]?.last_name
+          const fullName =
+          (action?.payload?.response?.data[0]?.first_name.charAt(0).toUpperCase() + action?.payload?.response?.data[0]?.first_name.slice(1)) +
+          ' ' +
+          (action?.payload?.response?.data[0]?.last_name.charAt(0).toUpperCase() + action?.payload?.response?.data[0]?.last_name.slice(1));
           return {
             ...state,
             loading: false,
             clientList: action?.payload?.response?.data,
             clientId: action?.payload?.response?.data[0]?.reference_id,
-            clientName: action?.payload?.response?.data[0]?.name,
+            clientName: fullName === 'NaN NaN' ? '' : fullName,
           };
         }
       })
@@ -629,5 +638,6 @@ export const {
   setClientName,
   setPagginationParams,
   setClientTeamId,
+  setUserReferenceId,
 } = clientSlice.actions;
 export default clientSlice.reducer;

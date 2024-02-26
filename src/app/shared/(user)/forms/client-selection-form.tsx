@@ -32,9 +32,10 @@ export default function ClientSelectionForm() {
         client_selection: clientSliceData?.clientName ?? ''
     }
 
-    let clientOptions: Record<string, any>[] = clientSliceData?.clientList && clientSliceData?.clientList?.length > 0 ? clientSliceData?.clientList?.map((client: Record<string, any>) => (
-        { name: client?.name, value: client?.reference_id, key: client }
-    )) : [];
+    let clientOptions: Record<string, any>[] = clientSliceData?.clientList && clientSliceData?.clientList?.length > 0 ? clientSliceData?.clientList?.map((client: Record<string, any>) => {
+        let client_name = client?.first_name.charAt(0).toUpperCase() + client?.first_name.slice(1) + " " + client?.last_name.charAt(0).toUpperCase() + client?.last_name.slice(1)
+        return { name: client_name, value: client?.reference_id, key: client }
+    }) : [];
 
     // console.log(clientOptions, 'clientOptions')
 

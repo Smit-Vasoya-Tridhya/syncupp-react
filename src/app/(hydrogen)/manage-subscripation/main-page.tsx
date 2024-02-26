@@ -213,7 +213,7 @@ function SubcripationPage() {
               Billing Date :-{' '}
               {moment
                 .unix(CardData?.data?.next_billing_date)
-                .format('Do MMM. ‘YY')}
+                .format("DD MMM, YYYY")}
             </span>
           </div>
         </div>

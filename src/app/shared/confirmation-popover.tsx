@@ -13,6 +13,10 @@ type ConfirmationPopoverProps = {
     action?: string;
     icon?: React.ReactNode;
     data?: any;
+    isCalendarModule?: boolean;
+    isClientModule?: boolean;
+    isAgencyTeamModule?: boolean;
+    isClientTeamModule?: boolean;
 };
 
 export default function ConfirmationPopover({
@@ -20,12 +24,16 @@ export default function ConfirmationPopover({
     description,
     action,
     icon,
-    data
+    data,
+    isCalendarModule,
+    isClientModule,
+    isAgencyTeamModule,
+    isClientTeamModule
 }: ConfirmationPopoverProps) {
 
     const dispatch = useDispatch();
-    const activityData = useSelector((state: any) => state?.root?.activity);
-
+    const { paginationParams, userReferenceId } = useSelector((state: any) => state?.root?.activity);
+    let { page, items_per_page, sort_field, sort_order, search, filter } = paginationParams;
 
     return (
         <Popover
@@ -39,7 +47,10 @@ export default function ConfirmationPopover({
                         dispatch(putTaskStatusChange({ _id: data, status: 'completed' })).then((result: any) => {
                             if (putTaskStatusChange.fulfilled.match(result)) {
                               if (result && result.payload.success === true) {
-                                dispatch(getAllActivity({ page: activityData?.pageNumber, items_per_page: activityData?.itemsPerPageNumber, sort_field: 'createdAt', sort_order: 'desc', pagination: true }))
+                                isCalendarModule && dispatch(getAllActivity({ page, items_per_page, sort_field, sort_order, search, filter, pagination: true }))
+                                isClientModule && dispatch(getAllActivity({ page, items_per_page, sort_field, sort_order, search, client_id: userReferenceId, filter, pagination: true }))
+                                isAgencyTeamModule && dispatch(getAllActivity({ page, items_per_page, sort_field, sort_order, search, team_id: userReferenceId, filter, pagination: true }))
+                                isClientTeamModule && dispatch(getAllActivity({ page, items_per_page, sort_field, sort_order, search, client_team_id: userReferenceId, filter, pagination: true }))
                               }
                             }
                           });
@@ -47,7 +58,10 @@ export default function ConfirmationPopover({
                         dispatch(putTaskStatusChange({ _id: data, status: 'cancel' })).then((result: any) => {
                             if (putTaskStatusChange.fulfilled.match(result)) {
                               if (result && result.payload.success === true) {
-                                dispatch(getAllActivity({ page: activityData?.pageNumber, items_per_page: activityData?.itemsPerPageNumber, sort_field: 'createdAt', sort_order: 'desc', pagination: true }))
+                                isCalendarModule && dispatch(getAllActivity({ page, items_per_page, sort_field, sort_order, search, filter, pagination: true }))
+                                isClientModule && dispatch(getAllActivity({ page, items_per_page, sort_field, sort_order, search, client_id: userReferenceId, filter, pagination: true }))
+                                isAgencyTeamModule && dispatch(getAllActivity({ page, items_per_page, sort_field, sort_order, search, team_id: userReferenceId, filter, pagination: true }))
+                                isClientTeamModule && dispatch(getAllActivity({ page, items_per_page, sort_field, sort_order, search, client_team_id: userReferenceId, filter, pagination: true }))
                               }
                             }
                           });

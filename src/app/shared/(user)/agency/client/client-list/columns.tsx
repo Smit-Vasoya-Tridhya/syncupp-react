@@ -17,9 +17,11 @@ import { initiateRazorpay } from '@/services/clientpaymentService';
 import { useRouter } from 'next/navigation';
 import { routes } from '@/config/routes';
 import { useSelector, useDispatch } from 'react-redux';
-import { getAllClient } from '@/redux/slices/user/client/clientSlice';
+import { getAllClient, setUserReferenceId } from '@/redux/slices/user/client/clientSlice';
 import { useState } from 'react';
 import Spinner from '@/components/ui/spinner';
+import { refferalPayment, refferalPaymentStatistics } from '@/redux/slices/user/team-member/teamSlice';
+import { useModal } from '@/app/shared/modal-views/use-modal';
 
 type Columns = {
   data: any[];
@@ -80,20 +82,67 @@ export const GetColumns = ({
   searchTerm
 }: Columns) => {
   const token = localStorage.getItem('token')
-  const router = useRouter()
-  const dispatch = useDispatch()
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const { closeModal } = useModal();
   const [loadingflag, setloadingflag] = useState(false)
   const [showloaderflag, setshowloaderflag] = useState(null)
 
   const paginationParams = useSelector((state: any) => state?.root?.client?.paginationParams);
-
-
 
   const ClintlistAPIcall = async () => {
     let { page, items_per_page, sort_field, sort_order, search } = paginationParams;
     await dispatch(getAllClient({ page, items_per_page, sort_field, sort_order, search, pagination: true }));
 
   }
+
+  
+
+  const handlePaymentApi = (row: any) => {
+
+    console.log("row in agency team column...", row)
+    dispatch(setUserReferenceId({ data: { reference_id: row?.reference_id?._id } }));
+    setloadingflag(true);
+    setshowloaderflag(row?._id);
+
+
+    dispatch(refferalPaymentStatistics()).then((result: any) => {
+      if (refferalPaymentStatistics.fulfilled.match(result)) {
+        if (result && result.payload.success === true) {
+
+          if (result?.payload?.data?.available_sheets > 0) {
+            // console.log(142, userReferenceId)
+            dispatch(refferalPayment({ user_id: row?.reference_id?._id, without_referral: true })).then((result: any) => {
+              if (refferalPayment.fulfilled.match(result)) {
+                if (result && result.payload.success === true) {
+                  ClintlistAPIcall(); // api call for listing
+                  setloadingflag(false)
+                } else {
+                  setloadingflag(false)
+                }
+              }
+            });
+
+          } else if (result?.payload?.data?.redirect_payment_page) {
+            console.log(146)
+
+            router.push(routes?.clients?.payment)
+
+          } else if (!result?.payload?.data?.redirect_payment_page) {
+            console.log(151)
+            initiateRazorpay(router, routes.client, token, row?.reference_id?._id, ClintlistAPIcall, setloadingflag, closeModal)
+
+          }
+
+        } else {
+          setloadingflag(false)
+        }
+      } 
+    });
+
+  }
+
+
 
   return [
     {
@@ -258,10 +307,7 @@ export const GetColumns = ({
       render: (_: string, row: any) => (
         // console.log(row?.reference_id?._id, 'row'),
         <>
-          {row?.status === "payment_pending" ? <div> <Button disabled={loadingflag} className='w-full' onClick={() => {
-            initiateRazorpay(router, routes.client, token, row?.reference_id?._id, ClintlistAPIcall, setloadingflag)
-            setshowloaderflag(row?._id)
-          }}>Pay
+          {row?.status === "payment_pending" ? <div> <Button disabled={loadingflag} className='w-full' onClick={() => handlePaymentApi(row)}>Pay
             {loadingflag && showloaderflag === row?._id && <Spinner size="sm" tag='div' className='ms-3' color='white' />}
           </Button></div> : <>
             <div className="flex items-center justify-end gap-3 pe-4">
@@ -278,9 +324,9 @@ export const GetColumns = ({
                 color="invert"
               >
                 <Link href={routes?.clients?.details(row?._id)}>
-                <Button size="sm" variant="outline" className='bg-white text-black' aria-label={'View Member'}>
-                  <EyeIcon className="h-4 w-4" />
-                </Button>
+                  <Button size="sm" variant="outline" className='bg-white text-black' aria-label={'View Member'}>
+                    <EyeIcon className="h-4 w-4" />
+                  </Button>
                 </Link>
               </Tooltip>
               <DeletePopover
