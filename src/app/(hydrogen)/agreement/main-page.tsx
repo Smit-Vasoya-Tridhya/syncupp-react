@@ -70,6 +70,9 @@ export default function AgreementPage(props: any) {
         <>
             {/* <h1>Aggrement</h1> */}
             <PageHeader title={!pathname ? pageHeader.title : ""}>
+                {/* <div className="mt-4 flex items-center gap-3 @lg:mt-0">
+                    <Button type='button' onClick={() => { pathname ? router.push(`${routes.createAgreement}?reference=${clientSliceData?.reference_id}`) : router.push(routes.createAgreement) }} className='mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0'><PiPlusBold className="me-1.5 h-[17px] w-[17px]" />Add Agreement</Button>
+                </div> */}
                 <div className="mt-4 flex items-center gap-3 @lg:mt-0">
                     <Button type='button' onClick={() => { pathname ? router.push(`${routes.createAgreement}?reference=${clientSliceData?.reference_id}`) : router.push(routes.createAgreement) }} className='mt-5 w-full bg-[#53216F] hover:bg-[#8e45b8]" text-xs @lg:w-auto sm:text-sm lg:mt-0'><PiPlusBold className="me-1.5 h-[17px] w-[17px]" />Add Agreement</Button>
                 </div>

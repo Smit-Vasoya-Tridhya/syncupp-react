@@ -128,6 +128,7 @@ export default function EventCalendarView() {
           dayLayoutAlgorithm="no-overlap"
           onSelectEvent={handleSelectEvent}
           onSelectSlot={handleSelectSlot}
+          // onNavigate={(date) => console.log(date)}
           selectable
           scrollToTime={scrollToTime}
           className={cn('h-[650px] md:h-[1000px]', calendarToolbarClassName)}

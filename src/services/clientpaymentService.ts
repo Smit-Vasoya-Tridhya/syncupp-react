@@ -44,7 +44,7 @@ const clientpaymentService = {
     router: any,
     setloadingflag: any
   ): Promise<Object> => {
-    // console.log(token, 'token')
+    // console.log(token, 'token in client create subscription')
     try {
       setloadingflag(true);
       const result: any = await axios.post<{ data: { user_id: string } }>(
@@ -75,7 +75,8 @@ const clientpaymentService = {
 
   verifyPaymentSignature: async (
     data: RazorpayResponse,
-    setloadingflag: any
+    setloadingflag: any,
+    closeModal?: any,
   ): Promise<string> => {
     try {
       setloadingflag(true);
@@ -87,6 +88,7 @@ const clientpaymentService = {
 
       if (result?.data?.success) {
         setloadingflag(false);
+        closeModal();
       }
 
       return result.data;
@@ -117,8 +119,17 @@ const clientpaymentService = {
     signupdata: any,
     reference_id: any,
     ClintlistAPIcall: any,
-    setloadingflag: any
+    setloadingflag: any,
+    closeModal?: any,
   ): Promise<void> => {
+
+      // console.log(router, 'router')
+      // console.log(route, 'route')
+      // console.log(signupdata, 'signupdata')
+      // console.log(reference_id, 'reference_id')
+      // console.log(ClintlistAPIcall, 'ClintlistAPIcall')
+
+
     try {
       const subscriptiondata: any =
         await clientpaymentService.ClientcreateSubscription(
@@ -168,7 +179,8 @@ const clientpaymentService = {
           const verificationResult: any =
             await clientpaymentService.verifyPaymentSignature(
               data,
-              setloadingflag
+              setloadingflag,
+              closeModal
             );
           // console.log(verificationResult, 'verificationResult')
 

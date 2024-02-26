@@ -61,6 +61,11 @@ type GetTeamMemberProfileApiData = {
   agency_id?: string;
 };
 
+type RefferalPaymentApiData = {
+  user_id: string;
+  without_referral?: boolean;
+}
+
 type StatusChange = {
   id: string;
 };
@@ -145,6 +150,29 @@ export const GetTeamMemberProfileApi = async (data: GetTeamMemberProfileApiData)
   const response = await AxiosDefault({
     url: `/api/v1/team-member/details/${data._id}`,
     method: "GET",
+    data: data,
+    contentType: "application/json",
+  });
+  const responseData = response.data;
+  return responseData;
+};
+
+// get reafferal payment statistics
+export const RefferalPaymentStatisticsApi = async () => {
+  const response = await AxiosDefault({
+    url: `/api/v1/payment/payment-scopes`,
+    method: "GET",
+    contentType: "application/json",
+  });
+  const responseData = response.data;
+  return responseData;
+};
+
+// post reafferal payment api
+export const RefferalPaymentApi = async (data: RefferalPaymentApiData) => {
+  const response = await AxiosDefault({
+    url: `/api/v1/payment/referral-payout`,
+    method: "POST",
     data: data,
     contentType: "application/json",
   });
