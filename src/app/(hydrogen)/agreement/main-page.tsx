@@ -29,7 +29,7 @@ export default function AgreementPage(props: any) {
     const pathname = usePathname().startsWith('/client/details/')
     // const searchParams = useSearchParams();
     // const reference_id = searchParams.get("reference");
-    console.log(clientSliceData, 'clientSliceData', pathname, 'pathname')
+    // console.log(clientSliceData, 'clientSliceData', pathname, 'pathname')
 
 
     const { agreementDetails, loading } = useSelector((state: any) => state?.root?.agreement);
