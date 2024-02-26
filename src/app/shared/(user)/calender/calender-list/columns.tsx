@@ -278,6 +278,10 @@ export const GetActivityColumns = ({
                       action='Complete'
                       icon={<MdOutlineDone className="h-4 w-4" />}
                       data={row?._id}
+                      isCalendarModule={pathname.startsWith('/calendar')}
+                      isClientModule={pathname.startsWith('/client/details')}
+                      isAgencyTeamModule={pathname.startsWith('/agency-team/details')}
+                      isClientTeamModule={pathname.startsWith('/client-team/details')}
                     />
                   }
                   {(signIn?.role !== 'client' && signIn?.role !== 'team_client' && row?.activity_status?.name !== 'completed' && row?.activity_status?.name !== 'cancel') &&
@@ -287,6 +291,10 @@ export const GetActivityColumns = ({
                       action='Cancel'
                       icon={<PiXBold className="h-4 w-4" />}
                       data={row?._id}
+                      isCalendarModule={pathname.startsWith('/calendar')}
+                      isClientModule={pathname.startsWith('/client/details')}
+                      isAgencyTeamModule={pathname.startsWith('/agency-team/details')}
+                      isClientTeamModule={pathname.startsWith('/client-team/details')}
                     />
                   }
                 </div>

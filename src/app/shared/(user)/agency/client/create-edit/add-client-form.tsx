@@ -19,17 +19,14 @@ import { ClientSchema, clientSchema } from '@/utils/client-schema';
 import { RemoveRegionalData, getAllClient, getCities, getClientById, getCountry, getState, patchEditClient, postAddClient } from '@/redux/slices/user/client/clientSlice';
 import { useEffect, useState } from 'react';
 import { routes } from '@/config/routes';
+import { refferalPayment, refferalPaymentStatistics } from '@/redux/slices/user/team-member/teamSlice';
+import { initiateRazorpay } from '@/services/clientpaymentService';
 
 const Select = dynamic(() => import('@/components/ui/select'), {
   ssr: false,
   loading: () => <SelectLoader />,
 });
 
-// const titleOption = [
-//   { name: 'Mr.', value: 'Mr.' },
-//   { name: 'Mrs.', value: 'Mrs.' },
-//   { name: 'Miss.', value: 'Miss.' },
-// ]
 
 export default function AddClientForm(props: any) {
   const { title, row ,fdata, setFdata} = props;
@@ -39,11 +36,13 @@ export default function AddClientForm(props: any) {
   const router = useRouter();
   const [save, setSave] = useState(false)
   const [loader, setLoader] = useState(false);
-  const [reset, setReset] = useState({})
+  const [reset, setReset] = useState({});
+  const [loadingflag, setloadingflag] = useState(false)
+  const paginationParams = useSelector((state: any) => state?.root?.client?.paginationParams);
+  const token = localStorage.getItem('token')
 
-  // const peopleCountChange = (titleOption: string) => {
-  //     peopleCount: titleOption
-  // };
+
+  
   let initialValues: ClientSchema = {
     // name: "",
     first_name: "",
@@ -60,6 +59,12 @@ export default function AddClientForm(props: any) {
     contact_number: "",
     // titleOption: ""
   };  
+
+  const ClintlistAPIcall = async () => {
+    let { page, items_per_page, sort_field, sort_order, search } = paginationParams;
+    await dispatch(getAllClient({ page, items_per_page, sort_field, sort_order, search, pagination: true }));
+
+}
 
   useEffect(() => {
     dispatch(getCountry());
@@ -125,6 +130,8 @@ export default function AddClientForm(props: any) {
   };
   
   const onSubmit: SubmitHandler<ClientSchema> = (dataa) => {
+    setloadingflag(true);
+    
     const formData = {
       first_name: dataa?.first_name ?? '',
       last_name: dataa?.last_name ?? '',
@@ -147,18 +154,59 @@ export default function AddClientForm(props: any) {
     if(title === 'New Client') {
       dispatch(postAddClient(fullData)).then((result: any) => {
         if (postAddClient.fulfilled.match(result)) {
-          // result.payload?.data?.referral_points 
-
-          // console.log(result.payload?.data?.referral_points,'result')
           setLoader(false);
           setSave(false);
           if (result && result.payload.success === true) {
-            router.push(routes.clients.payment)
+
+            const userReferenceId = result?.payload?.data?.reference_id ?? '';
+
+            dispatch(refferalPaymentStatistics()).then((result: any) => {
+              if (refferalPaymentStatistics.fulfilled.match(result)) {
+                if (result && result.payload.success === true) {
+
+                  if (result?.payload?.data?.available_sheets > 0) {
+                    // console.log(142, userReferenceId)
+                    dispatch(refferalPayment({ user_id: userReferenceId, without_referral: true })).then((result: any) => {
+                      if (refferalPayment.fulfilled.match(result)) {
+                        if (result && result.payload.success === true) {
+                          closeModal();
+                          dispatch(getAllClient({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
+                          setloadingflag(false)
+                        } else {
+                          setloadingflag(false)
+                        }
+                      }
+                    });
+
+                  } else if (result?.payload?.data?.redirect_payment_page) {
+                    console.log(146)
+
+                    router.push(routes?.clients?.payment)
+
+                  } else if (!result?.payload?.data?.redirect_payment_page) {
+                    console.log(151)
+
+                    initiateRazorpay(router, routes.client, token, userReferenceId, ClintlistAPIcall, setloadingflag, closeModal)
+
+                  }
+
+                } else {
+                  setloadingflag(false)
+                }
+              } 
+            });
+
             // save && closeModal();
-            setReset({...initialValues})
+            // setReset({ ...initialValues })
             dispatch(getAllClient({ sort_field: 'createdAt', sort_order: 'desc', pagination: true }));
             dispatch(RemoveRegionalData())
             setSave(false);
+
+
+
+
+          } else {
+            setloadingflag(false)
           }
         }
       });
@@ -463,17 +511,11 @@ export default function AddClientForm(props: any) {
                   <Button
                     type="submit"
                     className="bg-[#53216F] hover:bg-[#8e45b8] ms-3 @xl:w-auto dark:bg-gray-200 dark:text-white"
-                    disabled={
-                      (clientSliceData?.addClientStatus === 'pending' ||
-                        clientSliceData?.editClientStatus === 'pending') &&
-                      save
-                    }
+                    disabled={loadingflag}
                     onClick={handleSaveClick}
                   >
                     Save
-                    {(clientSliceData?.addClientStatus === 'pending' ||
-                      clientSliceData?.editClientStatus === 'pending') &&
-                      save && (
+                    {loadingflag && (
                         <Spinner
                           size="sm"
                           tag="div"

@@ -25,6 +25,8 @@ export default function ClientActivityTablePage(props: any) {
     const signIn = useSelector((state: any) => state?.root?.signIn)
     const clientSliceData = useSelector((state: any) => state?.root?.client);
     const activityData = useSelector((state: any) => state?.root?.activity);
+    const { paginationParams } = useSelector((state: any) => state?.root?.activity);
+
 
     const [pageSize, setPageSize] = useState<number>(5);
     const [activityType, setActivityType] = useState('');
@@ -40,6 +42,8 @@ export default function ClientActivityTablePage(props: any) {
 
     const handleStatusFilterApiCall = (filterStatusValue: string) => {
         setStatusType(filterStatusValue);
+        dispatch(setPaginationDetails({ ...paginationParams, filter: { status: filterStatusValue, activity_type: activityType, date: period, start_date: startDate, end_date: endDate }}))
+
         if (signIn?.role !== 'client' && signIn?.role !== 'team_client') {
             if (activityType === '' && endDate === '' && startDate === '') {
                 dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', client_id: clientId, filter: { status: filterStatusValue }, pagination: true }))
@@ -67,7 +71,7 @@ export default function ClientActivityTablePage(props: any) {
     const handleChangePage = async (paginationParams: any) => {
         let { page, items_per_page, sort_field, sort_order, search } = paginationParams;
 
-        dispatch(setPaginationDetails({ pageNumber: page, itemsPerPageNumber: items_per_page }))
+        dispatch(setPaginationDetails({ ...paginationParams, filter: { status: statusType, activity_type: activityType, date: period, start_date: startDate, end_date: endDate }}))
 
         const response = signIn?.role !== 'client' && signIn?.role !== 'team_client' ? await dispatch(getAllActivity({ page, items_per_page, sort_field, sort_order, search, client_id: clientId, filter: { status: statusType, activity_type: activityType, date: period, start_date: startDate, end_date: endDate }, pagination: true })) : await dispatch(getAllActivity({ page, items_per_page, sort_field, sort_order, search, agency_id: clientSliceData?.agencyId, client_id: clientId, filter: { status: statusType, activity_type: activityType, date: period, start_date: startDate, end_date: endDate }, pagination: true }));
         const { data } = response?.payload;

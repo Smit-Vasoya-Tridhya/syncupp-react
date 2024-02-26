@@ -4,7 +4,7 @@ import { Form } from '@/components/ui/form';
 import { Controller } from 'react-hook-form';
 import { useDispatch, useSelector } from "react-redux";
 import Select from '@/components/ui/select';
-import { getAllActivity, setActivityName } from '@/redux/slices/user/activity/activitySlice';
+import { getAllActivity, setActivityName, setPaginationDetails } from '@/redux/slices/user/activity/activitySlice';
 
 
 export default function ActivitySelectionForm(props: any) {
@@ -13,6 +13,8 @@ export default function ActivitySelectionForm(props: any) {
     const activityData = useSelector((state: any) => state?.root?.activity);
     const signIn = useSelector((state: any) => state?.root?.signIn)
     const clientSliceData = useSelector((state: any) => state?.root?.client);
+    const { paginationParams } = useSelector((state: any) => state?.root?.activity);
+
 
 
     let initialValue: Record<string, string> = {
@@ -28,6 +30,9 @@ export default function ActivitySelectionForm(props: any) {
     const handleAgencyChange = (selectedOption: Record<string, any>) => {
         setActivityType(selectedOption?.value)
         dispatch(setActivityName(selectedOption?.value));
+
+        dispatch(setPaginationDetails({ ...paginationParams, page: 1, filter: { status: statusType, activity_type: selectedOption?.value, date: period, start_date: startDate, end_date: endDate }}))
+
 
         if (signIn?.role !== 'client' && signIn?.role !== 'team_client') {
 

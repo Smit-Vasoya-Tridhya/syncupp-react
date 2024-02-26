@@ -17,9 +17,10 @@ import moment from 'moment';
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { initiateRazorpay } from '@/services/clientpaymentService';
-import { getAllTeamMember } from '@/redux/slices/user/team-member/teamSlice';
+import { getAllTeamMember, refferalPayment, refferalPaymentStatistics, setUserReferenceId } from '@/redux/slices/user/team-member/teamSlice';
 import { useState } from 'react';
 import Spinner from '@/components/ui/spinner';
+import { useModal } from '@/app/shared/modal-views/use-modal';
 
 type Columns = {
   data: any[];
@@ -93,6 +94,7 @@ export const GetclientTeamColumns = ({
   const token = localStorage.getItem('token');
   const router = useRouter();
   const dispatch = useDispatch();
+  const { closeModal } = useModal();
   const [loadingflag, setloadingflag] = useState(false);
   const [showloaderflag, setshowloaderflag] = useState(null);
 
@@ -114,6 +116,61 @@ export const GetclientTeamColumns = ({
       })
     );
   };
+
+
+  const handlePaymentApi = (row: any) => {
+
+    console.log("row in agency team column...", row)
+    dispatch(setUserReferenceId({ data: { reference_id: row?.reference_id?._id } }));
+    setloadingflag(true);
+    setshowloaderflag(row?._id);
+
+
+    dispatch(refferalPaymentStatistics()).then((result: any) => {
+      if (refferalPaymentStatistics.fulfilled.match(result)) {
+        if (result && result.payload.success === true) {
+
+          if (result?.payload?.data?.available_sheets > 0) {
+            // console.log(142, userReferenceId)
+            dispatch(refferalPayment({ user_id: row?.reference_id?._id, without_referral: true })).then((result: any) => {
+              if (refferalPayment.fulfilled.match(result)) {
+                if (result && result.payload.success === true) {
+                  ClintteamlistAPIcall(); // api call for listing
+                  setloadingflag(false)
+                } else {
+                  setloadingflag(false)
+                }
+              }
+            });
+
+          } else if (result?.payload?.data?.redirect_payment_page) {
+            console.log(146)
+
+            router.push(routes.agency_team_payment)
+
+          } else if (!result?.payload?.data?.redirect_payment_page) {
+            console.log(151)
+
+            initiateRazorpay(
+              router,
+              routes.agency_team,
+              token,
+              row?.reference_id?._id,
+              ClintteamlistAPIcall,
+              setloadingflag,
+              closeModal
+            );
+
+          }
+
+        } else {
+          setloadingflag(false)
+        }
+      } 
+    });
+
+  }
+
 
   return [
     {
@@ -271,17 +328,7 @@ export const GetclientTeamColumns = ({
               <Button
                 disabled={loadingflag}
                 className="w-full"
-                onClick={() => {
-                  initiateRazorpay(
-                    router,
-                    routes.agency_team,
-                    token,
-                    row?.reference_id?._id,
-                    ClintteamlistAPIcall,
-                    setloadingflag
-                  );
-                  setshowloaderflag(row?._id);
-                }}
+                onClick={() => handlePaymentApi(row)}
               >
                 Pay{' '}
                 {loadingflag && showloaderflag === row?._id && (

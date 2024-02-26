@@ -7,15 +7,7 @@ import { Popover } from '@/components/ui/popover';
 import { Title } from '@/components/ui/text';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
-import TruckSolidIcon from '@/components/icons/truck-solid';
-import BrushSolidIcon from '@/components/icons/brush-solid';
-import CubeSolidIcon from '@/components/icons/cube-solid';
-import FileStackIcon from '@/components/icons/file-stack';
-import CloudTaskIcon from '@/components/icons/cloud-task';
-import ShoppingBagSolidIcon from '@/components/icons/shopping-bag-solid';
-import BulbSolidIcon from '@/components/icons/bulb-solid';
-import ParcelMapIcon from '@/components/icons/parcel-map';
-import Link from 'next/link';
+
 import { useMedia } from '@/hooks/use-media';
 import SimpleBar from '@/components/ui/simplebar';
 import { PiCheck } from 'react-icons/pi';
@@ -24,6 +16,7 @@ import {
   clearData,
   getAllnotification,
   readnotification,
+  receiveNotification,
 } from '@/redux/slices/soket/notification/notificationSlice';
 import { useSelector } from 'react-redux';
 import { useModal } from '@/app/shared/modal-views/use-modal';
@@ -31,6 +24,8 @@ import { useRouter } from 'next/navigation';
 import ViewTaskForm from '@/app/shared/(user)/task/create-edit/view-task-form';
 import { routes } from '@/config/routes';
 import Spinner from '@/components/ui/spinner';
+import Link from 'next/link';
+import { Button } from 'rizzui';
 
 dayjs.extend(relativeTime);
 
@@ -92,32 +87,35 @@ dayjs.extend(relativeTime);
 //   },
 // ];
 
-function NotificationsList({
-  setIsOpen,
-}: {
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}) {
+export default function Notificationpage() {
   const notification = useSelector((state: any) => state?.root?.notification);
-  const { loading } = useSelector((state: any) => state?.root?.notification);
   const signIn = useSelector((state: any) => state?.root?.signIn);
-  const { closeModal, openModal } = useModal();
-  const router = useRouter();
+  const { loading } = useSelector((state: any) => state?.root?.notification);
   const [payload, setPalyload] = useState({
     skip: 0,
     limit: 5,
   });
+  const [updatedData, setUpdateddata] = useState<any[]>([]);
+  const [viewmoreLoader, setViewMoreloader] = useState(false);
+  const { closeModal, openModal } = useModal();
+  const router = useRouter();
   //const dispatch = useDispatch();
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getAllnotification(payload));
+    dispatch(getAllnotification(payload)).then((result: any) => {
+      if (result && result.payload?.data?.notificationList) {
+        setViewMoreloader(false);
+        setUpdateddata([
+          ...updatedData,
+          ...result?.payload?.data.notificationList,
+        ]);
+      }
+    });
   }, [payload]);
   //redirect routes and open popup
-  const handleNotificationClick = async (item: any) => {
+  const handleNotificationClick = (item: any) => {
     //read notification
-    const res = await dispatch(readnotification({ notification_id: item._id }));
-    if (res?.payload?.success === true) {
-      dispatch(getAllnotification(payload));
-    }
+    dispatch(readnotification({ notification_id: item._id }));
     const data = {
       _id: item?.data_reference_id,
     };
@@ -150,7 +148,6 @@ function NotificationsList({
       default:
         '';
     }
-    setIsOpen(false);
   };
   const allnotification = async () => {
     const res = await dispatch(readnotification({ notification_id: 'all' }));
@@ -159,11 +156,14 @@ function NotificationsList({
     }
   };
   const viewAllActivity = () => {
-    setIsOpen(false);
-    router.push(routes.notification);
+    setViewMoreloader(true);
+    setPalyload({
+      ...payload,
+      skip: payload.skip + 5,
+    });
   };
   //api call
-  if (loading) {
+  if (loading && payload.skip == 0) {
     return (
       <div className="flex items-center justify-center p-10">
         <Spinner size="xl" tag="div" className="ms-3" />
@@ -171,95 +171,77 @@ function NotificationsList({
     );
   } else {
     return (
-      <div className="w-[320px] text-left sm:w-[360px] 2xl:w-[420px] rtl:text-right">
+      <div className="w-full text-left  rtl:text-right">
         <div className="mb-3 flex items-center justify-between ps-6">
           <Title as="h5">Notifications</Title>
           <Checkbox label="Mark All As Read" onChange={allnotification} />
         </div>
         <SimpleBar className="max-h-[420px]">
           <div className="grid cursor-pointer grid-cols-1 gap-1 ps-4">
-            {notification &&
-              notification?.notification &&
-              notification?.notification?.map((item: any) => (
-                <div
-                  key={item?.name + item?.id}
-                  className="group grid grid-cols-[auto_minmax(0,1fr)] gap-3 rounded-md px-2 py-2 pe-3 transition-colors hover:bg-gray-100 dark:hover:bg-gray-50"
-                  onClick={() => handleNotificationClick(item)}
-                >
-                  {/* <div className="flex h-9 w-9 items-center justify-center rounded bg-gray-100/70 p-1 dark:bg-gray-50/50 [&>svg]:h-auto [&>svg]:w-5">
+            {updatedData?.map((item: any) => (
+              <div
+                key={item?.name + item?.id}
+                className="group grid grid-cols-[auto_minmax(0,1fr)] gap-3 rounded-md px-2 py-2 pe-3 transition-colors hover:bg-gray-100 dark:hover:bg-gray-50"
+                onClick={() => handleNotificationClick(item)}
+              >
+                {/* <div className="flex h-9 w-9 items-center justify-center rounded bg-gray-100/70 p-1 dark:bg-gray-50/50 [&>svg]:h-auto [&>svg]:w-5">
                 {item.icon}
               </div> */}
-                  <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center">
-                    <div className="w-full">
-                      <Title
-                        as="h6"
-                        className={`mb-0.5 w-11/12 truncate text-sm ${
-                          item?.is_read ? 'font-normal' : 'font-semibold'
-                        }`}
-                      >
-                        {item?.message}
-                      </Title>
-                      <span className="ms-auto whitespace-nowrap pe-8 text-xs text-gray-500">
-                        {/* @ts-ignore */}
-                        {dayjs(item?.createdAt).fromNow(true)}
+                <div className="contents grid-cols-[minmax(0,1fr)_auto] items-center">
+                  <div className="w-full">
+                    <Title
+                      as="h6"
+                      className={`mb-0.5 truncate text-sm hover:underline ${
+                        item?.is_read ? 'font-normal' : 'font-semibold'
+                      }`}
+                    >
+                      {item?.message}
+                    </Title>
+                    <span className="ms-auto whitespace-nowrap pe-8 text-xs text-gray-500">
+                      {/* @ts-ignore */}
+                      {dayjs(item?.createdAt).fromNow(true)}
+                    </span>
+                  </div>
+                  <div className="ms-auto flex-shrink-0">
+                    {item?.is_read ? (
+                      <Badge
+                        renderAsDot
+                        size="lg"
+                        color="primary"
+                        className="scale-90"
+                      />
+                    ) : (
+                      <span className="inline-block rounded-full bg-gray-100 p-0.5 dark:bg-gray-50">
+                        <PiCheck className="h-auto w-[9px]" />
                       </span>
-                    </div>
-                    <div className="ms-auto flex-shrink-0">
-                      {item?.is_read ? (
-                        <Badge
-                          renderAsDot
-                          size="lg"
-                          color="primary"
-                          className="scale-90"
-                        />
-                      ) : (
-                        <span className="inline-block rounded-full bg-gray-100 p-0.5 dark:bg-gray-50">
-                          <PiCheck className="h-auto w-[9px]" />
-                        </span>
-                      )}
-                    </div>
+                    )}
                   </div>
                 </div>
-              ))}
+              </div>
+            ))}
           </div>
         </SimpleBar>
         <Link
-          href={routes.notification}
-          onClick={() => setIsOpen(false)}
+          href={'#'}
+          onClick={viewAllActivity}
           className="-me-6 block px-6 pb-0.5 pt-3 text-center hover:underline"
         >
-          View All Activity
+          <div className="flex">
+            Load more
+            {viewmoreLoader && <Spinner size="sm" tag="div" className="ms-3" />}
+          </div>
         </Link>
+        {/* <Link
+          href={'#'}
+          onClick={viewAllActivity}
+          className="-me-6 block px-6 pb-0.5 pt-3 text-center hover:underline"
+        >
+          <div className="flex">
+            Load more
+            {loading && <Spinner size="sm" tag="div" className="ms-3" />}
+          </div>
+        </Link> */}
       </div>
     );
   }
-}
-
-export default function NotificationDropdown({
-  children,
-}: {
-  children: JSX.Element & { ref?: RefObject<any> };
-}) {
-  const isMobile = useMedia('(max-width: 480px)', false);
-  const [isOpen, setIsOpen] = useState(false);
-  const [payload, setPalyload] = useState({
-    skip: 0,
-    limit: 5,
-  });
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getAllnotification(payload));
-  }, [payload]);
-  return (
-    <Popover
-      isOpen={isOpen}
-      setIsOpen={setIsOpen}
-      content={() => <NotificationsList setIsOpen={setIsOpen} />}
-      shadow="sm"
-      placement={isMobile ? 'bottom' : 'bottom-end'}
-      className="z-50 px-0 pb-4 pe-6 pt-5 dark:bg-gray-100 [&>svg]:hidden [&>svg]:dark:fill-gray-100 sm:[&>svg]:inline-flex"
-    >
-      {children}
-    </Popover>
-  );
 }

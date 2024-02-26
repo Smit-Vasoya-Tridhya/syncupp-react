@@ -9,6 +9,7 @@ export const routes = {
   viewProfile: '/view-profile',
   dashboard: '/dashboard',
   client: '/client',
+  notification: '/notification',
   clients: {
     verify: '/client/verify',
     payment: '/client/payment',
@@ -29,6 +30,7 @@ export const routes = {
   agency_team_payment: '/agency-team/payment',
   client_team: '/client-team',
   client_teams: {
+    payment: '/client-team/payment',
     details: (id: string) => `/client-team/details/${id}`,
   },
   referal: '/referal',
@@ -46,7 +48,7 @@ export const routes = {
   userCalendarAddActivity: '/calendar/create-edit',
 
   agreement: '/agreement',
-  createAgreement:`/agreement/create-agreement`,
+  createAgreement: `/agreement/create-agreement`,
 
   // Admin panel
   admin: {

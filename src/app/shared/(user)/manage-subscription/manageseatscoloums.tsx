@@ -57,7 +57,7 @@ export const getColumns = ({
     onHeaderCell: () => onHeaderCellClick('seat_no'),
     dataIndex: 'seat_no',
     key: 'seat_no',
-    width: 200,
+    width: 100,
     render: (value: string, row: any, index: number) => {
       // const capitalizedValue = value.charAt(0).toUpperCase() + value.slice(1);
       return (
@@ -145,8 +145,8 @@ export const getColumns = ({
           return (
             <div className="flex items-center justify-end gap-3 pe-4">
               <CustomeDeletePopover
-                title="Delete the User"
-                description={'Are you sure you want to delete'}
+                title="Remove the User"
+                description={'Are you sure you want to remove the User?'}
                 onDelete={() =>
                   onDeleteItem(
                     row.user_id,
@@ -166,7 +166,7 @@ export const getColumns = ({
             <div className="flex items-center justify-end gap-3 pe-4">
               <CustomeDeletePopover
                 title="Cancel Subscription"
-                description={'Are you sure you want Cancel Subscription'}
+                description={'Are you sure you want to cancel the Subscription?'}
                 onDelete={() =>
                   onDeleteItem(
                     'subscription',

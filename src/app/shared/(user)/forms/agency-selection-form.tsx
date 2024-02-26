@@ -28,7 +28,7 @@ export default function AgencySelectionForm() {
     }
 
     let agencyOptions: Record<string, any>[] = clientSliceData?.agencies && clientSliceData?.agencies?.length > 0 ? clientSliceData?.agencies?.map((agency: Record<string, string>) => {
-        let agency_name = agency?.first_name + " " + agency?.last_name
+        let agency_name = agency?.first_name.charAt(0).toUpperCase() + agency?.first_name.slice(1) + " " + agency?.last_name.charAt(0).toUpperCase() + agency?.last_name.slice(1)
         return { name: agency_name, value: agency?.reference_id, key: agency }
     }) : [];
 

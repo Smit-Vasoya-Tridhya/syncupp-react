@@ -30,6 +30,24 @@ type Columns = {
   searchTerm?: string;
 };
 
+function getPaymentModeName(value: string) {
+  switch (value?.toLowerCase()) {
+    case 'payment':
+      return (
+        <div className="flex items-center">
+          <Text className="font-medium text-gray-700">Payment</Text>
+        </div>
+      );
+    case 'referral':
+      return (
+        <div className="flex items-center">
+          <Text className="font-medium text-gray-700">Referral</Text>
+        </div>
+      );
+  }
+}
+
+
 export const billingColumns = ({
   data,
   sortConfig,
@@ -42,91 +60,120 @@ export const billingColumns = ({
   pageSize,
   searchTerm,
 }: Columns) => [
-  {
-    title: (
-      <HeaderCell
-        title="No#"
-        sortable
-        ascending={
-          sortConfig?.direction === 'asc' && sortConfig?.key === 'brand'
-        }
-      />
-    ),
-    onHeaderCell: () => onHeaderCellClick('No'),
-    dataIndex: 'No',
-    key: 'No',
-    width: 200,
-    render: (_: string, row: any, index: number) => {
-      // const capitalizedValue = value.charAt(0).toUpperCase() + value.slice(1);
-      return (
-        <Text className="font-medium capitalize text-gray-700">
-          {index + 1}
-        </Text>
-      );
+    {
+      title: (
+        <HeaderCell
+          title="No#"
+          sortable
+          ascending={
+            sortConfig?.direction === 'asc' && sortConfig?.key === 'brand'
+          }
+        />
+      ),
+      onHeaderCell: () => onHeaderCellClick('No'),
+      dataIndex: 'No',
+      key: 'No',
+      width: 100,
+      render: (_: string, row: any, index: number) => {
+        // const capitalizedValue = value.charAt(0).toUpperCase() + value.slice(1);
+        return (
+          <Text className="font-medium capitalize text-gray-700">
+            {index + 1}
+          </Text>
+        );
+      },
     },
-  },
-  {
-    title: (
-      <HeaderCell
-        title="Billing Amount"
-        sortable
-        ascending={
-          sortConfig?.direction === 'asc' && sortConfig?.key === 'amount'
-        }
-      />
-    ),
-    onHeaderCell: () => onHeaderCellClick('amount'),
-    dataIndex: 'amount',
-    key: 'amount',
-    width: 200,
-    render: (value: string) => (
-      <>
-        <Text className="font-medium capitalize text-gray-700">
-          $ {parseFloat(value) / 100}
-        </Text>
-      </>
-    ),
-  },
-  {
-    title: (
-      <HeaderCell
-        title="Date"
-        sortable
-        ascending={
-          sortConfig?.direction === 'asc' && sortConfig?.key === 'createdAt'
-        }
-      />
-    ),
-    onHeaderCell: () => onHeaderCellClick('createdAt'),
-    dataIndex: 'createdAt',
-    key: 'createdAt',
-    width: 200,
-    render: (value: string) => (
-      <Text className="font-medium  text-gray-700">
-        {moment(value).format('Do MMM. ‘YY')}
-      </Text>
-    ),
-  },
-  {
-    title: (
-      <HeaderCell
-        title="Seats Counts"
-        sortable
-        ascending={
-          sortConfig?.direction === 'asc' && sortConfig?.key === 'seats_counts'
-        }
-      />
-    ),
-    onHeaderCell: () => onHeaderCellClick('seats_counts'),
-    dataIndex: 'seats_counts',
-    key: 'seats_counts',
-    width: 200,
-    render: (value: string) => {
-      return (
-        <Text className="font-medium  capitalize text-gray-700">
-          {!value ? 1 : value}
-        </Text>
-      );
+    {
+      title: (
+        <HeaderCell
+          title="Payment Mode"
+          sortable
+          ascending={
+            sortConfig?.direction === 'asc' && sortConfig?.key === 'payment_mode'
+          }
+        />
+      ),
+      onHeaderCell: () => onHeaderCellClick('payment_mode'),
+      dataIndex: 'payment_mode',
+      key: 'payment_mode',
+      width: 200,
+      render: (value: string) => getPaymentModeName(value),
     },
-  },
-];
+    {
+      title: (
+        <HeaderCell
+          title="Billing Amount"
+          sortable
+          ascending={
+            sortConfig?.direction === 'asc' && sortConfig?.key === 'amount'
+          }
+        />
+      ),
+      onHeaderCell: () => onHeaderCellClick('amount'),
+      dataIndex: 'amount',
+      key: 'amount',
+      width: 200,
+      render: (value: string, row: any) => {
+        if(row?.payment_mode === 'payment') {
+          return (
+            <>
+              <Text className="font-medium capitalize text-gray-700">
+                $ {parseFloat(value) / 100}
+              </Text>
+            </>
+          )
+        } else if(row?.payment_mode === 'referral') {
+          return (
+            <>
+              <Text className="font-medium capitalize text-gray-700">
+                {value}
+              </Text>
+            </>
+          )
+        }
+        
+      }
+    },
+    {
+      title: (
+        <HeaderCell
+          title="Date"
+          sortable
+          ascending={
+            sortConfig?.direction === 'asc' && sortConfig?.key === 'createdAt'
+          }
+        />
+      ),
+      onHeaderCell: () => onHeaderCellClick('createdAt'),
+      dataIndex: 'createdAt',
+      key: 'createdAt',
+      width: 200,
+      render: (value: string) => (
+        <Text className="font-medium  text-gray-700">
+          {moment(value).format("DD MMM, YYYY")}
+        </Text>
+      ),
+    },
+    {
+      title: (
+        <HeaderCell
+          title="Seats Counts"
+          sortable
+          ascending={
+            sortConfig?.direction === 'asc' && sortConfig?.key === 'seats_counts'
+          }
+        />
+      ),
+      onHeaderCell: () => onHeaderCellClick('seats_counts'),
+      dataIndex: 'seats_counts',
+      key: 'seats_counts',
+      width: 200,
+      render: (value: string) => {
+        return (
+          <Text className="font-medium  capitalize text-gray-700">
+            {!value ? 1 : value}
+          </Text>
+        );
+      },
+    },
+  ];

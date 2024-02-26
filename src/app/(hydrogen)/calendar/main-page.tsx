@@ -10,11 +10,9 @@ import cn from '@/utils/class-names';
 import AddActivityFormPage from '@/app/shared/(user)/calender/create-edit-event/create-edit-activity-form';
 import EventCalendarView from '@/app/shared/(user)/calender/event-calendar';
 import { FaRegCalendarAlt } from 'react-icons/fa';
-import ActivitySelectionForm from '@/app/shared/(user)/forms/activity-selection-form';
 import ActivityTablePage from './activity-table';
 import { useState } from 'react';
-import { getAllActivity, setCalendarView } from '@/redux/slices/user/activity/activitySlice';
-import DatePeriodSelectionForm from '@/app/shared/(user)/forms/select-period-form';
+import { setCalendarView } from '@/redux/slices/user/activity/activitySlice';
 
 const pageHeader = {
   title: 'Activity',
