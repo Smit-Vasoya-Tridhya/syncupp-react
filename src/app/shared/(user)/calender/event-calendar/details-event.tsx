@@ -7,6 +7,7 @@ import cn from '@/utils/class-names';
 import useEventCalendar from '@/hooks/use-event-calendar';
 import { formatDate } from '@/utils/format-date';
 import EventForm from './event-form';
+import AddActivityFormPage from '../create-edit-event/create-edit-activity-form';
 
 function DetailsEvents({ event }: { event: CalendarEvent }) {
   const { deleteEvent } = useEventCalendar();
@@ -17,8 +18,9 @@ function DetailsEvents({ event }: { event: CalendarEvent }) {
   function handleEditModal() {
     closeModal(),
       openModal({
-        view: <EventForm event={event} />,
-        customSize: '650px',
+        // view: <EventForm event={event} />,
+        view: <AddActivityFormPage title="Edit Activity" event={event} />,
+        customSize: '1050px',
       });
   }
   function handleDelete(eventID: string) {
@@ -66,7 +68,7 @@ function DetailsEvents({ event }: { event: CalendarEvent }) {
               {formatDate(event.end, 'h:mm A')}
             </span>
           </li>
-          {event.location && (
+          {/* {event.location && (
             <li className="flex gap-2">
               <PiMapPin className="h-5 w-5" />
               <span>Address:</span>
@@ -74,15 +76,15 @@ function DetailsEvents({ event }: { event: CalendarEvent }) {
                 {event.location}
               </span>
             </li>
-          )}
+          )} */}
         </ul>
         <div className={cn('grid grid-cols-2 gap-4 pt-5 ')}>
           <Button
             variant="outline"
-            onClick={() => handleDelete(event.id as string)}
+            onClick={() => closeModal()}
             className="dark:hover:border-gray-400"
           >
-            Delete
+            Cancel
           </Button>
           <Button
             className="hover:bg-gray-700 dark:bg-gray-200 dark:text-white dark:hover:bg-gray-300 dark:active:bg-gray-100"

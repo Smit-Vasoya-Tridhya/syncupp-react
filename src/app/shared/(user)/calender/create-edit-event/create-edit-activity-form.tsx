@@ -28,8 +28,8 @@ const menuItems = [
 
 export default function AddActivityFormPage(props: any) {
 
-  const { title, row, form, isTaskModule, isClientEdit, isTeamEdit, isClientModule, clientName, clientId, isTeamModule, teamName, teamId, isAgencyTeam, isClientTeam } = props;
-  // console.log("row data....", row);
+  const { title, row, form, isTaskModule, isClientEdit, isTeamEdit, isClientModule, clientName, clientId, isTeamModule, teamName, teamId, isAgencyTeam, isClientTeam, isCalendarModule } = props;
+  // console.log("row....", row);
 
   const dispatch = useDispatch();
   const router = useRouter();
@@ -49,6 +49,12 @@ export default function AddActivityFormPage(props: any) {
       setSelectedTask('Others');
     }
   }, [selectedTask, row, title])
+
+  useEffect(() => {
+    if(isCalendarModule && isTaskModule) {
+      setSelectedTask('Call meeting')
+    }
+  }, [isCalendarModule, isTaskModule]);
 
 
   const handleTaskClick = (task: any) => {
@@ -126,7 +132,7 @@ export default function AddActivityFormPage(props: any) {
                 </div>
               </div>
               <div className="">
-                <EventCalendarDayView />
+                <EventCalendarDayView title={title} isClientModule={isClientModule} isClientEdit={isClientEdit} clientReferenceId={isClientEdit ? row?.client_id?.reference_id : clientId} isTeamModule={isTeamModule} isTeamEdit={isTeamEdit} teamReferenceId={isTeamEdit ? row?.assign_to?.reference_id : teamId} isAgencyTeam={isAgencyTeam} isClientTeam={isClientTeam}  />
               </div>
             </div>
           </>

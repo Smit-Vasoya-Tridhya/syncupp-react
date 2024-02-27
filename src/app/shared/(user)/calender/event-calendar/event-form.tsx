@@ -31,8 +31,8 @@ export default function EventForm({
   const { createEvent, updateEvent } = useEventCalendar();
   const isUpdateEvent = event !== undefined;
 
-  // console.log("start date..", startDate);
-  // console.log("end date..", endDate);
+  console.log("start date..", startDate);
+  console.log("end date..", endDate);
 
   const onSubmit: SubmitHandler<EventFormInput> = (data) => {
     const isNewEvent = data.id === '' || data.id === undefined;

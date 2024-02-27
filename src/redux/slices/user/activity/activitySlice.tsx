@@ -62,6 +62,7 @@ interface PostAPIResponse {
 interface ActivityInitialState {
   loading: boolean;
   data: any;
+  eventCalendarData: any;
   activity: any;
   activityName: string;
   userReferenceId: string;
@@ -77,6 +78,7 @@ interface ActivityInitialState {
 const initialState: ActivityInitialState = {
   loading: false,
   data: '',
+  eventCalendarData: '',
   activity: '',
   activityName: '',
   userReferenceId: '',
@@ -93,14 +95,6 @@ export const postAddActivity: any = createAsyncThunk(
   "activity/postAddActivity",
   async (data: AddActivityData) => {
     try {
-      // const apiData = {
-      //   title: data?.title,
-      //   internal_info: data?.description,
-      //   due_date: data?.due_date,
-      //   client_id: data?.client,
-      //   assign_to: data?.assigned,
-      //   mark_as_done: data?.done
-      // }
       const response: any = await PostAddActivityApi(data);
       return response;
     } catch (error: any) {
@@ -113,15 +107,6 @@ export const patchEditActivity: any = createAsyncThunk(
   "activity/patchEditActivity",
   async (data: EditActivityData) => {
     try {
-      // const apiData = {
-      //   _id: data?._id,
-      //   title: data?.title,
-      //   internal_info: data?.description,
-      //   due_date: data?.due_date,
-      //   client_id: data?.client,
-      //   assign_to: data?.assigned,
-      //   mark_as_done: data?.done
-      // }
       const response: any = await PatchEditActivityApi(data);
       return response;
     } catch (error: any) {
@@ -148,7 +133,7 @@ export const getAllActivity: any = createAsyncThunk(
   async (data: GetAllActivityData) => {
     try {
       const response: any = await GetAllActivityApi(data);
-      return response;
+      return { response: response, pagination: data?.pagination };
     } catch (error: any) {
       return { status: false, message: error.response.data.message } as PostAPIResponse;
     }
@@ -276,13 +261,25 @@ export const activitySlice: any = createSlice({
       .addCase(getAllActivity.fulfilled, (state, action) => {
         // console.log(action.payload);
         if (action.payload.status === false) {
-          toast.error(action.payload.message)
-        }
-        return {
-          ...state,
-          data: action?.payload?.data,
-          loading: false,
-          getAllActivityStatus: 'success'
+          toast.error(action.payload.message);
+          return {
+            ...state,
+            loading: false,
+          };
+        } else if (action?.payload?.pagination) {
+          return {
+            ...state,
+            data: action?.payload?.response?.data,
+            loading: false,
+            getAllActivityStatus: 'success',
+          };
+        } else if (!action?.payload?.pagination) {
+          return {
+            ...state,
+            eventCalendarData: action?.payload?.response?.data,
+            loading: false,
+            getAllActivityStatus: 'success',
+          };
         }
       })
       .addCase(getAllActivity.rejected, (state) => {

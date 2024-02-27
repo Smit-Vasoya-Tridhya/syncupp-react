@@ -159,8 +159,8 @@ export default function ClientActivityTablePage(props: any) {
             </div>
             <div className='mt-8'>
                 <CustomTable
-                    data={activityData && activityData?.data?.activity}
-                    total={activityData && activityData?.data?.page_count}
+                    data={(activityData && activityData?.data?.activity) || []}
+                    total={(activityData && activityData?.data?.page_count) || 1}
                     loading={activityData && activityData?.loading}
                     pageSize={pageSize}
                     setPageSize={setPageSize}

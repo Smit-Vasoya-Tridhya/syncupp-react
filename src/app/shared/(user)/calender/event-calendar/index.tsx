@@ -7,14 +7,13 @@ import { Calendar, dayjsLocalizer } from 'react-big-calendar';
 import EventForm from '@/app/shared/(user)/calender/event-calendar/event-form';
 import DetailsEvents from '@/app/shared/(user)/calender/event-calendar/details-event';
 import { useModal } from '@/app/shared/modal-views/use-modal';
-import useEventCalendar from '@/hooks/use-event-calendar';
 import cn from '@/utils/class-names';
 import { Button } from 'rizzui';
-import DatePeriodSelectionForm from '../../forms/select-period-form';
 import AddActivityFormPage from '../create-edit-event/create-edit-activity-form';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getAllActivity } from '@/redux/slices/user/activity/activitySlice';
 import moment from 'moment';
+import CalendarDatePeriodSelectionForm from '../../forms/calendar-select-period-form';
 
 const localizer = dayjsLocalizer(dayjs);
 // rbc-active -> black button active
@@ -22,24 +21,109 @@ const calendarToolbarClassName =
   '[&_.rbc-toolbar_.rbc-toolbar-label]:whitespace-nowrap [&_.rbc-toolbar_.rbc-toolbar-label]:my-2 [&_.rbc-toolbar]:flex [&_.rbc-toolbar]:flex-col [&_.rbc-toolbar]:items-center @[56rem]:[&_.rbc-toolbar]:flex-row [&_.rbc-btn-group_button:hover]:bg-gray-300 [&_.rbc-btn-group_button]:duration-200 [&_.rbc-btn-group_button.rbc-active:hover]:bg-gray-600 dark:[&_.rbc-btn-group_button.rbc-active:hover]:bg-gray-300 [&_.rbc-btn-group_button.rbc-active:hover]:text-gray-50 dark:[&_.rbc-btn-group_button.rbc-active:hover]:text-gray-900';
 
 export default function EventCalendarView() {
-  const { events } = useEventCalendar();
+  // const { events } = useEventCalendar();
   const { openModal } = useModal();
   const dispatch = useDispatch();
 
+  const activityData = useSelector((state: any) => state?.root?.activity);
+  const signIn = useSelector((state: any) => state?.root?.signIn)
+  const clientSliceData = useSelector((state: any) => state?.root?.client);
+
+  const [events, setEvents] = useState<any[]>([]);
+  const [timeStatusType, setTimeStatusType] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
 
 
   const firstDayOfMonth = moment().startOf('month').format('DD-MM-YYYY');
-  // console.log("first day of month...", firstDayOfMonth);
-
   const endDayOfMonth = moment().endOf('month').format('DD-MM-YYYY');
-  // console.log("end day of month...", endDayOfMonth);
-
 
   useEffect(() => {
-    dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', filter: { date: 'period', start_date: firstDayOfMonth, end_date: endDayOfMonth }, pagination: false }))
-  }, [dispatch, firstDayOfMonth, endDayOfMonth]);
+    if (signIn?.role !== 'client' && signIn?.role !== 'team_client') {
+      dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', filter: { date: 'period', start_date: firstDayOfMonth, end_date: endDayOfMonth }, pagination: false })).then((result: any) => {
+        // console.log("result...", result);
+        if (getAllActivity.fulfilled.match(result)) {
+          if (result && result?.payload?.response?.success === true) {
+
+            const eventData = result?.payload?.response?.data && result?.payload?.response?.data.length > 0 && result?.payload?.response?.data?.map((dataa: any) => {
+              return {
+                ...dataa,
+                start: new Date(dataa?.start),
+                end: new Date(dataa?.end),
+              }
+            }) || [];
+
+            // console.log("customize event data....", eventData)
+
+            setEvents(eventData)
+          }
+        }
+      })
+    } else {
+      setTimeStatusType('');
+      dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', agency_id: clientSliceData?.agencyId, filter: { date: 'period', start_date: firstDayOfMonth, end_date: endDayOfMonth }, pagination: false })).then((result: any) => {
+        // console.log("result...", result);
+        if (getAllActivity.fulfilled.match(result)) {
+          if (result && result?.payload?.response?.success === true) {
+
+            const eventData = result?.payload?.response?.data && result?.payload?.response?.data.length > 0 && result?.payload?.response?.data?.map((dataa: any) => {
+              return {
+                ...dataa,
+                start: new Date(dataa?.start),
+                end: new Date(dataa?.end),
+              }
+            }) || [];
+
+            // console.log("customize event data....", eventData)
+
+            setEvents(eventData)
+          }
+        }
+      })
+    }
+  }, [dispatch, firstDayOfMonth, endDayOfMonth, signIn?.role, clientSliceData?.agencyId]);
+
+
+
+  const handleStatusFilterApiCall = (filterStatusValue: string) => {
+    setTimeStatusType(filterStatusValue);
+
+    if (signIn?.role !== 'client' && signIn?.role !== 'team_client') {
+      dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', filter: { date: filterStatusValue }, pagination: false })).then((result: any) => {
+        // console.log("result...", result);
+        if (getAllActivity.fulfilled.match(result)) {
+          if (result && result?.payload?.response?.success === true) {
+            const eventData = result?.payload?.response?.data && result?.payload?.response?.data.length > 0 && result?.payload?.response?.data?.map((dataa: any) => {
+              return {
+                ...dataa,
+                start: new Date(dataa?.start),
+                end: new Date(dataa?.end),
+              }
+            }) || [];
+            // console.log("customize event data....", eventData)
+            setEvents(eventData)
+          }
+        }
+      })
+    } else {
+      dispatch(getAllActivity({ sort_field: 'createdAt', sort_order: 'desc', agency_id: clientSliceData?.agencyId, filter: { date: filterStatusValue }, pagination: false })).then((result: any) => {
+        // console.log("result...", result);
+        if (getAllActivity.fulfilled.match(result)) {
+          if (result && result?.payload?.response?.success === true) {
+            const eventData = result?.payload?.response?.data && result?.payload?.response?.data.length > 0 && result?.payload?.response?.data?.map((dataa: any) => {
+              return {
+                ...dataa,
+                start: new Date(dataa?.start),
+                end: new Date(dataa?.end),
+              }
+            }) || [];
+            // console.log("customize event data....", eventData)
+            setEvents(eventData)
+          }
+        }
+      })
+    }
+  }
 
 
 
@@ -48,7 +132,7 @@ export default function EventCalendarView() {
     ({ start, end }: { start: Date; end: Date }) => {
       openModal({
         // view: <EventForm startDate={start} endDate={end} />,
-        view: <AddActivityFormPage title="Add Activity" />,
+        view: <AddActivityFormPage title="Add Activity" isTaskModule={true} isCalendarModule={true} />,
         customSize: '1050px',
       });
     },
@@ -61,8 +145,7 @@ export default function EventCalendarView() {
     (event: CalendarEvent) => {
       openModal({
         view: <DetailsEvents event={event} />,
-        // view: <AddActivityFormPage title="Edit Activity" />,
-        customSize: '1050px',
+        customSize: '500px',
       });
     },
     [openModal]
@@ -96,24 +179,36 @@ export default function EventCalendarView() {
         <div className="ms-auto mt-4 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 xl:grid-cols-7 gap-3">
           <Button
             variant="outline"
-            className="mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0"
+            className={cn(
+              "mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0",
+              timeStatusType === 'today' && 'text-white bg-black'
+            )}
+            onClick={() => handleStatusFilterApiCall("today")}
           >
             Today
           </Button>
           <Button
             variant="outline"
-            className="mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0"
+            className={cn(
+              "mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0",
+              timeStatusType === 'tomorrow' && 'text-white bg-black'
+            )}
+            onClick={() => handleStatusFilterApiCall("tomorrow")}
           >
             Tomorrow
           </Button>
           <Button
             variant="outline"
-            className="mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0"
+            className={cn(
+              "mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0",
+              timeStatusType === 'this_week' && 'text-white bg-black'
+            )}
+            onClick={() => handleStatusFilterApiCall("this_week")}
           >
             This Week
           </Button>
           <div className='mt-5 w-full bg-none text-xs @lg:w-auto sm:text-sm lg:mt-0 col-span-3 lg:col-span-2 md:col-span-2 sm:col-span-2'>
-            <DatePeriodSelectionForm setStartDate={setStartDate} setEndDate={setEndDate} />
+            <CalendarDatePeriodSelectionForm setStartDate={setStartDate} setEndDate={setEndDate} timeStatusType={timeStatusType} setTimeStatusType={setTimeStatusType} setEvents={setEvents} />
           </div>
         </div>
       </div>
