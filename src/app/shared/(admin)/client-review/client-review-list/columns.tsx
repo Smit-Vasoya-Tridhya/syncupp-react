@@ -88,7 +88,7 @@ export const ClientReviewColumns = ({
               <Image
                 alt=""
                 // src="https://isomorphic-furyroad.s3.amazonaws.com/public/avatars-blur/avatar-11.webp"
-                  src={Profile?.src}
+                src={Profile?.src}
                 fill
                 sizes="(max-width: 768px) 100vw"
                 className="object-cover"
@@ -170,7 +170,7 @@ export const ClientReviewColumns = ({
             customSize="800px"
           />
           <DeletePopover
-            title={`Delete the FAQ`}
+            title={`Delete the Client Review`}
             description={`Are you sure you want to delete?`}
             onDelete={() => onDeleteItem(row._id)}
           />

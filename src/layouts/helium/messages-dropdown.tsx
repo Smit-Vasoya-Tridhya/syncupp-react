@@ -131,7 +131,7 @@ function MessagesList({
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   return (
-    <div className="w-[320px] text-left rtl:text-right sm:w-[360px] 2xl:w-[420px]">
+    <div className="w-[320px] text-left sm:w-[360px] 2xl:w-[420px] rtl:text-right">
       <div className="mb-2 flex items-center justify-between ps-6">
         <Title as="h5">Messages</Title>
         <Link
@@ -182,16 +182,16 @@ function MessagesList({
                 </div>
                 <div className="ms-auto flex-shrink-0">
                   {item.unRead ? (
+                    <span className="inline-block rounded-full bg-gray-100 p-0.5 dark:bg-gray-50">
+                      <PiCheck className="h-auto w-[9px]" />
+                    </span>
+                  ) : (
                     <Badge
                       renderAsDot
                       size="lg"
                       color="primary"
                       className="scale-90"
                     />
-                  ) : (
-                    <span className="inline-block rounded-full bg-gray-100 p-0.5 dark:bg-gray-50">
-                      <PiCheck className="h-auto w-[9px]" />
-                    </span>
                   )}
                 </div>
               </div>

@@ -206,16 +206,17 @@ function NotificationsList({
                     </div>
                     <div className="ms-auto flex-shrink-0">
                       {item?.is_read ? (
-                        <Badge
-                          renderAsDot
-                          size="lg"
-                          color="primary"
-                          className="scale-90"
-                        />
+                         <span className="inline-block rounded-full bg-gray-100 p-0.5 dark:bg-gray-50">
+                         <PiCheck className="h-auto w-[9px]" />
+                       </span>
+                        
                       ) : (
-                        <span className="inline-block rounded-full bg-gray-100 p-0.5 dark:bg-gray-50">
-                          <PiCheck className="h-auto w-[9px]" />
-                        </span>
+                        <Badge
+                        renderAsDot
+                        size="lg"
+                        color="primary"
+                        className="scale-90"
+                      />
                       )}
                     </div>
                   </div>
