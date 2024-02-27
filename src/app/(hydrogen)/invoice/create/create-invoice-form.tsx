@@ -44,13 +44,15 @@ export default function CreateInvoice() {
 
   const invoiceSliceData = useSelector((state: any) => state?.root?.invoice);
   const InvoiceLoader = useSelector((state: any) => state?.root?.invoice)?.loading
-  const Invoiceformloader = useSelector((state: any) => state?.root?.invoice)?.loading
+  const Invoiceformloader = useSelector((state: any) => state?.root?.invoiceform)?.loading
   const { userProfile, loading } = useSelector((state: any) => state?.root?.signIn);
   // const { loading } = useSelector((state: any) => state?.root?.invoiceform);
   const [selectedClient, setselectedClient] = useState<any>(null);
   const [sentstatus, setsentStatus] = useState<any>(false);
+  const [dueDate, setDueDate] = useState<Date>(new Date());
+  const [invoiceformDate, setinvoiceformDate] = useState<Date>(new Date());
 
-  // console.log(InvoiceLoader, 'InvoiceLoader')
+  console.log(invoiceformDate, 'invoiceformDate')
 
   const clientOptions =
     invoiceSliceData?.getInvoiceApidata?.data &&
@@ -91,8 +93,8 @@ export default function CreateInvoice() {
   const initialsValue: InvoiceFormInput = {
     invoice_number: '',
     client_id: '',
-    due_date: new Date(),
-    invoice_date: new Date(),
+    due_date: dueDate,
+    invoice_date: invoiceformDate,
     invoice_content: [
       {
         item: '',
@@ -106,11 +108,11 @@ export default function CreateInvoice() {
 
   const handleSubmit = (values: any) => {
     values.due_date = moment(
-      values.due_date,
+      dueDate,
       'ddd MMM DD YYYY HH:mm:ss'
     ).format('YYYY-MM-DD');
     values.invoice_date = moment(
-      values.invoice_date,
+      invoiceformDate,
       'ddd MMM DD YYYY HH:mm:ss'
     ).format('YYYY-MM-DD');
     values.sent = sentstatus;
@@ -145,7 +147,7 @@ export default function CreateInvoice() {
         // enableReinitialize
         >
           {({ values, isSubmitting, setFieldValue, errors }: any) => (
-            // console.log(errors, 'errors', values),
+            console.log(errors, 'errors', values),
             (
               <Form className="flex flex-grow flex-col @container [&_label]:font-medium">
                 <div className="flex-grow pb-10">
@@ -277,11 +279,11 @@ export default function CreateInvoice() {
                                 {...field}
                                 inputProps={{ label: 'Date Create' }}
                                 placeholderText="Select Date"
-                                onChange={(e) => {
-                                  setFieldValue('invoice_date', e);
-                                  // Update the form field value
+                                onChange={(date: Date) => {
+                                  setinvoiceformDate(date)
+                                  setFieldValue('invoice_date', date);
                                 }}
-                                selected={values.invoice_date || null} // Set the selected date value
+                                selected={invoiceformDate}  // Set the selected date value
                               />
                             )}
                           </Field>
@@ -301,13 +303,14 @@ export default function CreateInvoice() {
                                   label: 'Due Date',
                                   // error: errors?.due_date,
                                 }}
-                                minDate={values.invoice_date}
+                                minDate={invoiceformDate}
                                 placeholderText="Select Date"
-                                onChange={(e) => {
-                                  setFieldValue('due_date', e);
+                                onChange={(date: Date) => {
+                                  setDueDate(date)
+                                  setFieldValue('due_date', date);
                                   // Update the form field value
                                 }}
-                                selected={values.due_date || null} // Set the selected date value
+                                selected={dueDate} // Set the selected date value
                               />
                             )}
                           </Field>

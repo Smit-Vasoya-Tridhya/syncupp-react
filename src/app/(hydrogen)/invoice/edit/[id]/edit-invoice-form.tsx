@@ -39,20 +39,21 @@ import { getInvoiceApi, getInvoiceDataByID } from '@/redux/slices/user/invoice/i
 import PageHeader from '@/app/shared/page-header';
 
 export default function EditInvoice({ params }: { params: { id: string } }) {
+
   const dispatch = useDispatch();
   const router = useRouter();
 
   const invoiceSliceData = useSelector((state: any) => state?.root?.invoice);
   const InvoiceLoader = useSelector((state: any) => state?.root?.invoice)?.loading
-  // const updateloader = useSelector((state: any) => state?.root?.invoiceform)
+  const updateloader = useSelector((state: any) => state?.root?.invoiceform)?.loading
   const { userProfile, loading } = useSelector((state: any) => state?.root?.signIn);
-  // const { loading } = useSelector((state: any) => state?.root?.invoiceform);
+
   const [selectedClient, setselectedClient] = useState<any>(null);
   const [sentstatus, setsentStatus] = useState<any>(false);
 
   const SingleInvoiceData: any = invoiceSliceData?.getInvoiceDataByIDdata?.data?.[0];
-
-  // console.log(updateloader, 'updateloader')
+  const [dueDate, setDueDate] = useState<Date>(SingleInvoiceData?.due_date ? new Date(SingleInvoiceData?.due_date) : new Date());
+  const [invoiceformDate, setinvoiceformDate] = useState<Date>(SingleInvoiceData?.invoice_date ? new Date(SingleInvoiceData?.invoice_date) : new Date());
 
   const clientOptions =
     invoiceSliceData?.getInvoiceApidata?.data &&
@@ -67,6 +68,7 @@ export default function EditInvoice({ params }: { params: { id: string } }) {
   useEffect(() => {
     dispatch(getUserProfile());
   }, []);
+
   useEffect(() => {
     dispatch(getInvoiceApi());
   }, []);
@@ -78,6 +80,16 @@ export default function EditInvoice({ params }: { params: { id: string } }) {
     }
   }, [params.id]);
 
+  useEffect(() => {
+    if (SingleInvoiceData?.due_date && SingleInvoiceData?.invoice_date) {
+      setDueDate(new Date(SingleInvoiceData?.due_date))
+      setinvoiceformDate(new Date(SingleInvoiceData?.invoice_date))
+      setselectedClient(clientOptions.find((option: any) => option.value === SingleInvoiceData?.to?._id))
+    }
+  }, [SingleInvoiceData]);
+
+
+  // Total point Calculations 
   function calculateTotalTax(invoiceContent: any) {
     let total = 0;
 
@@ -94,6 +106,7 @@ export default function EditInvoice({ params }: { params: { id: string } }) {
     return total.toFixed(2);
   }
 
+  // form initialvalue schema 
   const initialsValue: InvoiceFormInput = {
     invoice_number: SingleInvoiceData?.invoice_number,
     client_id: SingleInvoiceData?.to?._id,
@@ -121,16 +134,7 @@ export default function EditInvoice({ params }: { params: { id: string } }) {
       'ddd MMM DD YYYY HH:mm:ss'
     ).format('YYYY-MM-DD');
     values.sent = sentstatus;
-    // values?.invoice_id = params.id,
-
-    // console.log(values, 'values')
-    // dispatch(createinvoiceapicall(values)).then((result: any) => {
-    //   if (createinvoiceapicall.fulfilled.match(result)) {
-    //     if (result && result.payload.success === true) {
-    //       router.push(routes.invoice);
-    //     }
-    //   }
-    // });
+  
     const formData = values
     formData.invoice_id = params.id,
 
@@ -296,12 +300,13 @@ export default function EditInvoice({ params }: { params: { id: string } }) {
                                 {...field}
                                 inputProps={{ label: 'Date Create' }}
                                 placeholderText="Select Date"
-                                onChange={(e) => {
+                                onChange={(date: Date) => {
+                                  setinvoiceformDate(date)
                                   // console.log(e, 'eeeeeeee');
-                                  setFieldValue('invoice_date', e);
+                                  setFieldValue('invoice_date', date);
                                   // Update the form field value
                                 }}
-                                selected={values.invoice_date || null} // Set the selected date value
+                                selected={invoiceformDate} // Set the selected date value
                               />
                             )}
                           </Field>
@@ -323,12 +328,13 @@ export default function EditInvoice({ params }: { params: { id: string } }) {
                                 }}
                                 minDate={values.invoice_date}
                                 placeholderText="Select Date"
-                                onChange={(e) => {
+                                onChange={(date: Date) => {
                                   // console.log(e, 'eeeeeeee');
-                                  setFieldValue('due_date', e);
+                                  setDueDate(date)
+                                  setFieldValue('due_date', date);
                                   // Update the form field value
                                 }}
-                                selected={values.due_date || null} // Set the selected date value
+                                selected={dueDate} // Set the selected date value
                               />
                             )}
                           </Field>
@@ -623,10 +629,10 @@ export default function EditInvoice({ params }: { params: { id: string } }) {
                         }}
                         // isLoading={isLoading}
                         className="w-full @xl:w-auto dark:bg-gray-100 dark:text-white dark:active:bg-gray-100"
-                      // disabled={updateloader}
+                        disabled={updateloader}
                       >
                         Save & Send
-                        {false && (
+                        {(updateloader && sentstatus) && (
                           <Spinner
                             size="sm"
                             tag="div"
@@ -643,10 +649,10 @@ export default function EditInvoice({ params }: { params: { id: string } }) {
                         }}
                         // isLoading={isLoading}
                         className="w-full @xl:w-auto dark:bg-gray-100 dark:text-white dark:active:bg-gray-100"
-                      // disabled={updateloader}
+                        disabled={updateloader}
                       >
                         Save
-                        {false && (
+                        {(updateloader && !sentstatus) && (
                           <Spinner
                             size="sm"
                             tag="div"
